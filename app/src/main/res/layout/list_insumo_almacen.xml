@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingRight="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textNombre"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:clickable="false"
+            android:gravity="center_vertical"
+            android:text="Nombre"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="@dimen/titulos" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <ImageButton
+            android:id="@+id/entradaButton"
+            android:layout_width="@dimen/listButtons"
+            android:layout_height="@dimen/listButtons"
+            android:layout_gravity="fill"
+            android:background="@null"
+            android:onClick="logicDarEntrada"
+            android:scaleType="fitCenter"
+            android:src="@drawable/entrada" />
+
+        <ImageButton
+            android:id="@+id/salidaButton"
+            android:layout_width="@dimen/listButtons"
+            android:layout_height="match_parent"
+            android:layout_gravity="fill"
+            android:layout_marginLeft="20dp"
+            android:background="@null"
+            android:onClick="logicRebajar"
+            android:scaleType="fitCenter"
+            android:src="@drawable/salida"
+            tools:layout_width="@dimen/listButtons" />
+
+
+        <TextView
+            android:id="@+id/editPrecioPromedio"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="Media: 17.00 CUC "
+            android:textColor="@color/color_resaltado2"
+            android:textSize="@dimen/subtitulos" />
+
+        <TextView
+            android:id="@+id/textCantidad"
+            android:layout_width="109dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center|right"
+            android:text="Cantidad"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="@dimen/titulos"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textUM"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="bottom|left"
+            android:paddingLeft="10dp"
+            android:text="UM"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/color_fondo_resaltado"
+            android:textSize="@dimen/subtitulos"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/editTextStock"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="(+150)"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
