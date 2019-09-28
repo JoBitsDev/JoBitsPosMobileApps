@@ -86,9 +86,10 @@ public class adapterAlmacenInsumo extends ArrayAdapter<InsumoAlmacen> implements
             text = "+" + diferencia ;
             color = diferencia > i.getInsumo().getStockEstimation() * 0.5 ? Color.GREEN : Color.YELLOW;
         } else {
-            text = "(" + diferencia + ")";
+            text =  ""+ diferencia ;
             color = Color.RED;
         }
+
         holder.stock.setText(text);
         holder.stock.setTextColor(color);
         holder.entrada.setTag(position);

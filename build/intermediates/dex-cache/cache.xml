@@ -2,22 +2,40 @@
 <items version="2" >
 
     <item
-        is-multidex="false"
-        jar="/Users/Jorge/.android/build-cache/657e3a68b692f21e58d3d007c82a682c8b2d3056/output/jars/classes.jar"
-        jumboMode="false"
+        is-multidex="true"
+        jar="/Users/Jorge/Desktop/Desarrollo/FirstDream/Proyects/Restaurant Manager/Distribuciones/AndroidRestaurantManager_Almacen/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
         optimize="true"
         revision="28.0.3"
-        sha1="698658e3af1e3f2a5b199e0d09ee6c57793405bd">
-        <dex dex="/Users/Jorge/Desktop/Desarrollo/FirstDream/Proyects/Restaurant Manager/Distribuciones/AndroidRestaurantManager/app/build/intermediates/pre-dexed/debug/classes_23566674f414ac440916646d102a1c4d406d4122.jar" />
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="/Users/Jorge/Desktop/Desarrollo/FirstDream/Proyects/Restaurant Manager/Distribuciones/AndroidRestaurantManager_Almacen/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_de7f0185cc659d229a9cde42d6dced17c09d1c6f/classes.dex" />
     </item>
     <item
-        is-multidex="false"
+        is-multidex="true"
         jar="/Users/Jorge/Library/Android/sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar"
-        jumboMode="false"
+        jumboMode="true"
         optimize="true"
         revision="28.0.3"
         sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67">
-        <dex dex="/Users/Jorge/Desktop/Desarrollo/FirstDream/Proyects/Restaurant Manager/Distribuciones/AndroidRestaurantManager/app/build/intermediates/pre-dexed/debug/support-v4-19.1.0_88b19f799e7efb527f0a1044c9bc5cd67b4764e9.jar" />
+        <dex dex="/Users/Jorge/Desktop/Desarrollo/FirstDream/Proyects/Restaurant Manager/Distribuciones/AndroidRestaurantManager_Almacen/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-v4-19.1.0_88b19f799e7efb527f0a1044c9bc5cd67b4764e9/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/Jorge/Desktop/Desarrollo/FirstDream/Proyects/Restaurant Manager/Distribuciones/AndroidRestaurantManager_Almacen/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="28.0.3"
+        sha1="fe92ae4906ee5622426c39b096c721f2b9b769e7">
+        <dex dex="/Users/Jorge/Desktop/Desarrollo/FirstDream/Proyects/Restaurant Manager/Distribuciones/AndroidRestaurantManager_Almacen/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_f9424a119bbf13b3b144157a0af25e96fb9d14c4/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/Jorge/.android/build-cache/657e3a68b692f21e58d3d007c82a682c8b2d3056/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="28.0.3"
+        sha1="698658e3af1e3f2a5b199e0d09ee6c57793405bd">
+        <dex dex="/Users/Jorge/Desktop/Desarrollo/FirstDream/Proyects/Restaurant Manager/Distribuciones/AndroidRestaurantManager_Almacen/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_23566674f414ac440916646d102a1c4d406d4122/classes.dex" />
     </item>
 
 </items>

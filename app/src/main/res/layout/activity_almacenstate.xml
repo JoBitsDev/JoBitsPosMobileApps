@@ -38,11 +38,11 @@
             android:background="@color/alternativoparabotones"
             android:ems="10"
             android:gravity="right"
-            android:hint="Buscar..."
+            android:hint="@string/buscar"
             android:inputType="textPersonName"
             android:textColor="@color/color_Buttons"
             android:textSize="@dimen/icondimension"
-            android:visibility="invisible" />
+            android:visibility="visible" />
 
         <RadioGroup
             android:layout_width="wrap_content"

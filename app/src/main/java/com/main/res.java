@@ -16,7 +16,7 @@ public class res
 
     public static String MONEDA_SECUNDARIA = " CUC";
 
-    public static int conversion = 25;
+    public static int conversion = 24;
 
     public static void changeIP(String ip){
         IP = ip;

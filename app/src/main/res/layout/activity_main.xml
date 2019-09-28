@@ -35,12 +35,24 @@
         android:textColor="@color/color_Buttons"
         android:textSize="@dimen/titulos" />
 
+    <TextView
+        android:id="@+id/version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:text="@string/version"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#000000"
+        android:textSize="10sp" />
+
     <Button
         android:id="@+id/buttonNotificacion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/TextConnexion"
+        android:layout_above="@id/version"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:enabled="true"
         android:onClick="startService"
         android:text="Activar Notificaciones"
@@ -57,5 +69,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#19ff00"
         android:textSize="15sp" />
+
+
 
 </RelativeLayout>

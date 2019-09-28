@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -33,6 +35,36 @@ public class almacenstate extends BaseActivity {
         initComponents(getIntent().getExtras());
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_almacenstate, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        switch(id){
+            case R.id.action_imprimirEstado:return imprimirEstadoActual();
+            case R.id.action_ticket_compra: return imprimirTicketCompra();
+            default: return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    private boolean imprimirTicketCompra() {
+        return conn.imprimirTicketCompra();
+    }
+
+    private boolean imprimirEstadoActual() {
+    return conn.imprimirEstadoAlmacen();
     }
 
     private void initComponents(Bundle extras) {
@@ -75,6 +107,8 @@ public class almacenstate extends BaseActivity {
         final EditText amount = new EditText(v.getContext());
         input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
         input.setRawInputType(Configuration.KEYBOARD_12KEY);
+        amount.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        amount.setRawInputType(Configuration.KEYBOARD_12KEY);
         new AlertDialog.Builder(v.getContext()).
                 setView(input).
                 setTitle("Entrada de Insumo").
@@ -201,7 +235,6 @@ public class almacenstate extends BaseActivity {
         input.setRawInputType(Configuration.KEYBOARD_12KEY);
         final EditText razon = new EditText(v.getContext());
         razon.setInputType(InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE);
-        razon.setRawInputType(Configuration.KEYBOARD_QWERTY);
         new AlertDialog.Builder(v.getContext()).
                 setView(input).
                 setTitle("Merma").

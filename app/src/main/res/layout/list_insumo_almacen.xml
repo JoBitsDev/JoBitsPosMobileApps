@@ -32,8 +32,8 @@
 
         <ImageButton
             android:id="@+id/entradaButton"
-            android:layout_width="@dimen/listButtons"
-            android:layout_height="@dimen/listButtons"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_gravity="fill"
             android:background="@null"
             android:onClick="logicDarEntrada"
@@ -43,35 +43,34 @@
         <ImageButton
             android:id="@+id/salidaButton"
             android:layout_width="@dimen/listButtons"
-            android:layout_height="match_parent"
+            android:layout_height="40dp"
             android:layout_gravity="fill"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="5dp"
             android:background="@null"
             android:onClick="logicRebajar"
             android:scaleType="fitCenter"
             android:src="@drawable/salida"
-            tools:layout_width="@dimen/listButtons" />
+            tools:layout_width="40dp" />
 
 
         <TextView
             android:id="@+id/editPrecioPromedio"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="Media: 17.00 CUC "
-            android:textColor="@color/color_resaltado2"
-            android:textSize="@dimen/subtitulos" />
+            android:autoText="false"
+            android:gravity="start|center_vertical"
+            android:text="Costo Medio: 17.00 CUC "
+            android:textColor="@color/color_resaltado2" />
 
         <TextView
             android:id="@+id/textCantidad"
-            android:layout_width="109dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_marginLeft="5dp"
             android:gravity="center|right"
-            android:text="Cantidad"
+            android:text="#####"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textSize="@dimen/titulos"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
@@ -83,17 +82,15 @@
             android:text="UM"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/color_fondo_resaltado"
-            android:textSize="@dimen/subtitulos"
             android:textStyle="italic" />
 
         <TextView
             android:id="@+id/editTextStock"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
             android:gravity="center"
-            android:text="(+150)"
-            android:textSize="18sp" />
+            android:text="(+150)" />
 
     </LinearLayout>
 

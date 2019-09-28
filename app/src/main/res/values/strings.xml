@@ -21,5 +21,9 @@
         \ny que la PC servidor se encuentra encendida y con el servidor funcionando</string>
     <string name="agregar">Agregar</string>
     <string name="saldo_insuficiente">No hay suficiente saldo para extraer</string>
+    <string name="imprimir_estado_almacen">Imprimir estado ectual almacen</string>
+    <string name="imprimir_ticket_compra">Imprimir ticket de compras</string>
+    <string name="version">Version 1.0.1.1</string>
+    <string name="buscar">Buscar...</string>
 
 </resources>

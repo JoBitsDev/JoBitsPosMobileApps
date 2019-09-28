@@ -13,8 +13,12 @@ import java.util.concurrent.ExecutionException;
 public class almacenConn extends simpleConn {
 
     final String P = "com.restmanager.almacen/";
-    final String ENTRADA = "ENTRADA_",SALIDA = "SALIDA_",MERMA = "MERMAR",
-            LISTA_IPV = "IPVS";
+    final String ENTRADA = "ENTRADA_",
+                TICKET_COMPRA = "IMPRIMIR_TICKET_COMPRA",
+                ESTADO_ALMACEN = "IMPRIMIR_ESTADO_ALMACEN",
+                SALIDA = "SALIDA_",
+                MERMA = "MERMAR",
+                LISTA_IPV = "IPVS";
     String user, codAlmacen;
 
 
@@ -91,4 +95,28 @@ public class almacenConn extends simpleConn {
         }
         return new String[0];
     }
+
+    public boolean imprimirTicketCompra() {
+        try {
+            return connect(path + TICKET_COMPRA).equals("1");
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            return false;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean imprimirEstadoAlmacen() {
+        try {
+            return connect(path + ESTADO_ALMACEN).equals("1");
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            return false;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return false;
+        }
+        }
 }
