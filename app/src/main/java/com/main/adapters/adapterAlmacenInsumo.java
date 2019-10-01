@@ -114,6 +114,10 @@ public class adapterAlmacenInsumo extends ArrayAdapter<InsumoAlmacen> implements
         return displayedObjects.get(position);
     }
 
+    @Override
+    public InsumoAlmacen getItem(int position) {
+       return displayedObjects.get(position);
+    }
 
     public boolean contains(InsumoAlmacen p) {
         return displayedObjects.contains(p);

@@ -95,7 +95,7 @@ public class InsumoAlmacen implements Comparable<InsumoAlmacen>{
 
     @Override
     public String toString() {
-        return "restManager.persistencia.InsumoAlmacen[ insumoAlmacenPK=" + insumoAlmacenPK + " ]";
+        return "(" +almacen +") " + insumo;
     }
 
     /**

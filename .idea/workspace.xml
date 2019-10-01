@@ -45,55 +45,55 @@
     <session id="-929650496">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="21" />
+          <entry key="project.closed" value="23" />
           <entry key="project.open.time.1" value="2" />
           <entry key="project.open.time.10" value="3" />
           <entry key="project.open.time.11" value="1" />
           <entry key="project.open.time.12" value="5" />
-          <entry key="project.open.time.13" value="2" />
+          <entry key="project.open.time.13" value="3" />
           <entry key="project.open.time.14" value="1" />
           <entry key="project.open.time.15" value="1" />
-          <entry key="project.open.time.2" value="2" />
+          <entry key="project.open.time.2" value="3" />
           <entry key="project.open.time.3" value="2" />
           <entry key="project.open.time.487" value="1" />
           <entry key="project.open.time.9" value="2" />
-          <entry key="project.opened" value="22" />
+          <entry key="project.opened" value="24" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="gradle" value="7" />
-          <entry key="java" value="84" />
+          <entry key="java" value="89" />
           <entry key="png" value="5" />
           <entry key="pro" value="1" />
           <entry key="properties" value="3" />
-          <entry key="xml" value="38" />
+          <entry key="xml" value="41" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="Groovy" value="7" />
           <entry key="Image" value="5" />
-          <entry key="JAVA" value="84" />
+          <entry key="JAVA" value="89" />
           <entry key="ProGuard File" value="1" />
           <entry key="Properties" value="3" />
-          <entry key="XML" value="38" />
+          <entry key="XML" value="41" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="gradle" value="10" />
-          <entry key="java" value="5450" />
+          <entry key="java" value="5851" />
           <entry key="txt" value="427" />
-          <entry key="xml" value="311" />
+          <entry key="xml" value="316" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Groovy" value="10" />
-          <entry key="JAVA" value="5450" />
+          <entry key="JAVA" value="5851" />
           <entry key="PLAIN_TEXT" value="427" />
-          <entry key="XML" value="311" />
+          <entry key="XML" value="316" />
         </counts>
       </usages-collector>
     </session>
@@ -103,19 +103,50 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/firstdream/restaurantmanageralmacen/almacenstate.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="574">
-              <caret line="91" column="32" selection-start-line="91" selection-start-column="32" selection-end-line="91" selection-end-column="32" />
+            <state relative-caret-position="180">
+              <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1925#1926#0" expanded="true" />
                 <element signature="e#1975#1976#0" expanded="true" />
                 <element signature="e#2021#2022#0" expanded="true" />
                 <element signature="e#2068#2069#0" expanded="true" />
-                <element signature="method#logicDarSalida#0;class#almacenstate#0" />
+                <element signature="e#4303#6210#0" expanded="true" />
+                <element signature="e#4642#4870#0" expanded="true" />
+                <element signature="e#4869#4870#0" expanded="true" />
+                <element signature="e#4903#5880#0" expanded="true" />
+                <element signature="e#5879#5880#0" expanded="true" />
+                <element signature="e#6209#6210#0" expanded="true" />
+                <element signature="e#11215#12504#0" expanded="true" />
+                <element signature="e#12503#12504#0" expanded="true" />
+                <element signature="e#13192#13193#0" expanded="true" />
+                <element signature="e#13252#13253#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/main/InsumoAlmacen.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="360">
+              <caret line="97" column="31" selection-start-line="97" selection-start-column="31" selection-end-line="97" selection-end-column="31" />
+              <folding>
+                <element signature="e#2857#2858#0" expanded="true" />
+                <element signature="e#2906#2907#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/main/Almacen.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-464">
+              <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -123,32 +154,39 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/main/adapters/adapterAlmacenInsumo.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2827">
-              <caret line="27" column="13" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
-          <provider editor-type-id="android-designer2" />
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="269">
-              <caret line="43" column="46" lean-forward="true" selection-start-line="43" selection-start-column="46" selection-end-line="43" selection-end-column="46" />
+            <state relative-caret-position="405">
+              <caret line="118" column="14" selection-start-line="118" selection-start-column="14" selection-end-line="118" selection-end-column="14" />
               <folding>
-                <element signature="e#2000#2019#0" expanded="true" />
-                <element signature="e#2600#2617#0" expanded="true" />
+                <element signature="docComment;class#adapterAlmacenInsumo#0" />
+                <element signature="method#adapterAlmacenInsumo#0;class#adapterAlmacenInsumo#0" />
+                <element signature="method#adapterAlmacenInsumo#1;class#adapterAlmacenInsumo#0" />
+                <element signature="method#getView#0;class#adapterAlmacenInsumo#0" />
+                <element signature="e#3891#3892#0" expanded="true" />
+                <element signature="e#3937#3938#0" expanded="true" />
+                <element signature="method#darEntrada#0;class#adapterAlmacenInsumo#0" />
+                <element signature="e#4023#4058#0" />
+                <element signature="method#darEntrada#1;class#adapterAlmacenInsumo#0" />
+                <element signature="e#4810#4845#0" />
+                <element signature="method#rebajar#0;class#adapterAlmacenInsumo#0" />
+                <element signature="e#5577#5610#0" />
+                <element signature="docComment;method#getFilter#0;class#adapterAlmacenInsumo#0" />
+                <element signature="method#getFilter#0;class#adapterAlmacenInsumo#0" />
+                <element signature="class#6529:8587" />
+                <element signature="e#6553#6583#0" />
+                <element signature="method#publishResults#0;class#6529:8587" />
+                <element signature="method#performFiltering#0;class#6529:8587" />
+                <element signature="e#8624#8626#0" />
+                <element signature="class#ViewHolder#0;class#adapterAlmacenInsumo#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_almacenstate.xml">
-          <provider editor-type-id="android-designer2" />
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-219">
-              <caret line="40" column="30" selection-start-line="40" selection-start-column="30" selection-end-line="40" selection-end-column="30" />
+            <state relative-caret-position="375">
+              <caret line="25" column="40" selection-start-line="25" selection-start-column="40" selection-end-line="25" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -156,11 +194,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/firstdream/restaurantmanageralmacen/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="70">
+            <state relative-caret-position="-1486">
               <caret line="29" column="25" selection-start-line="29" selection-start-column="25" selection-end-line="29" selection-end-column="25" />
-              <folding>
-                <element signature="e#1891#1919#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -180,7 +215,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/firstdream/restaurantmanageralmacen/PantallaPrincipal.java" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/main/adapters/adapterProductoVOrden.java" />
@@ -192,7 +226,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/main/parser/InsumoAlmacenXMLParser.java" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/main/parser/InsumoAlmacenPKXMLParser.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/main/InsumoAlmacen.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/firstdream/restaurantmanageralmacen/Login.java" />
         <option value="$PROJECT_DIR$/build.gradle" />
@@ -201,20 +234,24 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/main/parser/insumoXMLParser.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/main/Insumo.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/list_insumo_almacen.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/main/adapters/adapterAlmacenInsumo.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/menu_almacenstate.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/firstdream/restaurantmanageralmacen/almacenstate.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/main/webServerCon/almacenConn.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/main/res.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/firstdream/restaurantmanageralmacen/Main.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_almacenstate.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/main/InsumoAlmacen.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/main/adapters/adapterAlmacenInsumo.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/firstdream/restaurantmanageralmacen/almacenstate.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="width" value="1280" />
-    <option name="height" value="800" />
+    <option name="x" value="-161" />
+    <option name="y" value="-900" />
+    <option name="width" value="1600" />
+    <option name="height" value="900" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -222,7 +259,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="ProjectPane" />
       <pane id="AndroidView">
         <subPane>
           <expand>
@@ -233,44 +272,18 @@
             <path>
               <item name="AndroidRestaurantManager_Almacen" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-            </path>
-            <path>
-              <item name="AndroidRestaurantManager_Almacen" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="firstdream" type="cbb59c9e:AndroidPsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="AndroidRestaurantManager_Almacen" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="firstdream" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="restaurantmanageralmacen" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="AndroidRestaurantManager_Almacen" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="restaurantmanageralmacen" type="cbb59c9e:AndroidPsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="AndroidRestaurantManager_Almacen" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
               <item name="res" type="d4f16f75:AndroidResFolderNode" />
             </path>
             <path>
               <item name="AndroidRestaurantManager_Almacen" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
               <item name="res" type="d4f16f75:AndroidResFolderNode" />
-              <item name="layout" type="ddeffd01:AndroidResFolderTypeNode" />
+              <item name="values" type="ddeffd01:AndroidResFolderTypeNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="ProjectPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -430,32 +443,32 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1280" height="800" extended-state="0" />
+    <frame x="-161" y="-900" width="1600" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" sideWeight="0.50082374" side_tool="true" weight="0.32956383" />
-      <window_info content_ui="combo" id="Project" order="1" sideWeight="0.47528517" visible="true" weight="0.19224556" />
-      <window_info id="Structure" order="2" sideWeight="0.5247148" side_tool="true" visible="true" weight="0.19224556" />
+      <window_info content_ui="combo" id="Project" order="1" sideWeight="0.47211897" visible="true" weight="0.19191271" />
+      <window_info active="true" id="Structure" order="2" sideWeight="0.527881" side_tool="true" visible="true" weight="0.19191271" />
       <window_info id="Favorites" order="3" sideWeight="0.50082374" side_tool="true" weight="0.32956383" />
       <window_info id="Build Variants" order="4" sideWeight="0.50082374" side_tool="true" weight="0.32991013" />
       <window_info id="Image Layers" order="5" />
       <window_info id="Designer" order="6" />
       <window_info id="Capture Tool" order="7" />
       <window_info anchor="bottom" id="Run" order="0" sideWeight="0.49935815" weight="0.32956153" />
-      <window_info anchor="bottom" id="Logcat" order="1" weight="0.37482318" />
+      <window_info anchor="bottom" id="Logcat" order="1" weight="0.37422553" />
       <window_info anchor="bottom" id="TODO" order="2" />
       <window_info anchor="bottom" id="Find" order="3" weight="0.32956153" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.32956153" />
       <window_info anchor="bottom" id="Terminal" order="5" />
       <window_info anchor="bottom" id="Event Log" order="6" sideWeight="0.5006418" side_tool="true" weight="0.32961586" />
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Build" order="8" sideWeight="0.49935815" visible="true" weight="0.2560113" />
+      <window_info anchor="bottom" id="Build" order="8" sideWeight="0.49935815" weight="0.25526643" />
       <window_info anchor="bottom" id="Android Profiler" order="9" />
       <window_info anchor="right" id="Device File Explorer" order="0" side_tool="true" />
       <window_info anchor="right" id="Capture Analysis" order="1" />
       <window_info anchor="right" id="Gradle" order="2" weight="0.32991013" />
       <window_info anchor="right" id="Theme Preview" order="3" />
-      <window_info active="true" anchor="right" id="Preview" order="4" visible="true" weight="0.24313408" />
+      <window_info anchor="right" id="Preview" order="4" weight="0.24261874" />
       <window_info anchor="right" id="Palette&#9;" order="5" />
       <window_info anchor="right" x="1042" y="-753" width="168" height="52" id="Attributes" order="6" type="FLOATING" />
     </layout>
@@ -525,18 +538,10 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/pantalla_principal.xml" />
     <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-17/android/app/ProgressDialog.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="42" column="13" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/main/Almacen.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="51" column="5" selection-start-line="51" selection-start-column="5" selection-end-line="51" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -554,13 +559,6 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/main/Orden.java" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/main/parser/OrdenXMLParser.java" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/main/webServerCon/ordenConn.java" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="65">
-          <caret line="20" column="33" selection-start-line="20" selection-start-column="24" selection-end-line="20" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-17/android/app/Activity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="172">
@@ -607,13 +605,6 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/play.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/main/InsumoAlmacen.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="511">
-          <caret line="114" column="87" selection-start-line="114" selection-start-column="87" selection-end-line="114" selection-end-column="87" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/main/parser/InsumoAlmacenXMLParser.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="86">
@@ -629,13 +620,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" />
-    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-17/android/widget/ArrayAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="328" column="15" selection-start-line="328" selection-start-column="15" selection-end-line="328" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/build/intermediates/res/merged/debug/values-v11/values-v11.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
@@ -734,21 +718,17 @@
       <provider editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider editor-type-id="android-manifest" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="675">
           <caret line="45" column="60" selection-start-line="45" selection-start-column="60" selection-end-line="45" selection-end-column="60" />
         </state>
       </provider>
+      <provider editor-type-id="android-manifest" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/main/webServerCon/almacenConn.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="16" column="55" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="55" />
-          <folding>
-            <element signature="method#darEntrada#0;class#almacenConn#0" />
-            <element signature="method#getCocinasNamesForIPV#0;class#almacenConn#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -767,42 +747,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/main/adapters/adapterAlmacenInsumo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2827">
-          <caret line="27" column="13" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/firstdream/restaurantmanageralmacen/almacenstate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="574">
-          <caret line="91" column="32" selection-start-line="91" selection-start-column="32" selection-end-line="91" selection-end-column="32" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1925#1926#0" expanded="true" />
-            <element signature="e#1975#1976#0" expanded="true" />
-            <element signature="e#2021#2022#0" expanded="true" />
-            <element signature="e#2068#2069#0" expanded="true" />
-            <element signature="method#logicDarSalida#0;class#almacenstate#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/firstdream/restaurantmanageralmacen/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="70">
-          <caret line="29" column="25" selection-start-line="29" selection-start-column="25" selection-end-line="29" selection-end-column="25" />
-          <folding>
-            <element signature="e#1891#1919#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_almacenstate.xml">
       <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-219">
+        <state relative-caret-position="495">
           <caret line="40" column="30" selection-start-line="40" selection-start-column="30" selection-end-line="40" selection-end-column="30" />
         </state>
       </provider>
@@ -810,11 +758,114 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
       <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="43" column="46" lean-forward="true" selection-start-line="43" selection-start-column="46" selection-end-line="43" selection-end-column="46" />
+        <state relative-caret-position="251">
+          <caret line="49" column="44" selection-start-line="49" selection-start-column="44" selection-end-line="49" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/firstdream/restaurantmanageralmacen/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1486">
+          <caret line="29" column="25" selection-start-line="29" selection-start-column="25" selection-end-line="29" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/main/Almacen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-464">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-17/android/widget/Filter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="82" column="22" selection-start-line="82" selection-start-column="22" selection-end-line="82" selection-end-column="22" />
           <folding>
-            <element signature="e#2000#2019#0" expanded="true" />
-            <element signature="e#2600#2617#0" expanded="true" />
+            <element signature="e#2781#2782#0" expanded="true" />
+            <element signature="e#2821#2822#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-17/android/widget/ArrayAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="335" column="13" selection-start-line="335" selection-start-column="13" selection-end-line="335" selection-end-column="13" />
+          <folding>
+            <element signature="e#11437#11438#0" expanded="true" />
+            <element signature="e#11482#11483#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/main/adapters/adapterAlmacenInsumo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="118" column="14" selection-start-line="118" selection-start-column="14" selection-end-line="118" selection-end-column="14" />
+          <folding>
+            <element signature="docComment;class#adapterAlmacenInsumo#0" />
+            <element signature="method#adapterAlmacenInsumo#0;class#adapterAlmacenInsumo#0" />
+            <element signature="method#adapterAlmacenInsumo#1;class#adapterAlmacenInsumo#0" />
+            <element signature="method#getView#0;class#adapterAlmacenInsumo#0" />
+            <element signature="e#3891#3892#0" expanded="true" />
+            <element signature="e#3937#3938#0" expanded="true" />
+            <element signature="method#darEntrada#0;class#adapterAlmacenInsumo#0" />
+            <element signature="e#4023#4058#0" />
+            <element signature="method#darEntrada#1;class#adapterAlmacenInsumo#0" />
+            <element signature="e#4810#4845#0" />
+            <element signature="method#rebajar#0;class#adapterAlmacenInsumo#0" />
+            <element signature="e#5577#5610#0" />
+            <element signature="docComment;method#getFilter#0;class#adapterAlmacenInsumo#0" />
+            <element signature="method#getFilter#0;class#adapterAlmacenInsumo#0" />
+            <element signature="class#6529:8587" />
+            <element signature="e#6553#6583#0" />
+            <element signature="method#publishResults#0;class#6529:8587" />
+            <element signature="method#performFiltering#0;class#6529:8587" />
+            <element signature="e#8624#8626#0" />
+            <element signature="class#ViewHolder#0;class#adapterAlmacenInsumo#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/main/InsumoAlmacen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="97" column="31" selection-start-line="97" selection-start-column="31" selection-end-line="97" selection-end-column="31" />
+          <folding>
+            <element signature="e#2857#2858#0" expanded="true" />
+            <element signature="e#2906#2907#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="25" column="40" selection-start-line="25" selection-start-column="40" selection-end-line="25" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/firstdream/restaurantmanageralmacen/almacenstate.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1925#1926#0" expanded="true" />
+            <element signature="e#1975#1976#0" expanded="true" />
+            <element signature="e#2021#2022#0" expanded="true" />
+            <element signature="e#2068#2069#0" expanded="true" />
+            <element signature="e#4303#6210#0" expanded="true" />
+            <element signature="e#4642#4870#0" expanded="true" />
+            <element signature="e#4869#4870#0" expanded="true" />
+            <element signature="e#4903#5880#0" expanded="true" />
+            <element signature="e#5879#5880#0" expanded="true" />
+            <element signature="e#6209#6210#0" expanded="true" />
+            <element signature="e#11215#12504#0" expanded="true" />
+            <element signature="e#12503#12504#0" expanded="true" />
+            <element signature="e#13192#13193#0" expanded="true" />
+            <element signature="e#13252#13253#0" expanded="true" />
           </folding>
         </state>
       </provider>

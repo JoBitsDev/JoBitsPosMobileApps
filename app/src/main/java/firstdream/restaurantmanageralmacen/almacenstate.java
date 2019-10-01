@@ -121,8 +121,17 @@ public class almacenstate extends BaseActivity {
                 }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                Float cantidad = Float.valueOf(0);
+                try {
+                    cantidad = Float.parseFloat(input.getText().toString()) * i.getInsumo().getCostoPorUnidad();
+                }catch(Exception e){
+                  return;
+                }
+                amount.setText(cantidad.toString());
+                amount.selectAll();
                 new AlertDialog.Builder(v.getContext()).setView(amount).setTitle("Monto").
-                        setMessage("Introduzca el valor de la entrada").setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        setMessage("Introduzca el valor de la entrada ").setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -282,6 +291,7 @@ public class almacenstate extends BaseActivity {
                         }).
                                 create().
                                 show();
+
                         dialog.dismiss();
 
                     }
