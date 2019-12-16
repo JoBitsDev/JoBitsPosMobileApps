@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textNombre"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:clickable="false"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Nombre"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="@dimen/titulos" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/adjuntoButton"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:onClick="onAdjuntoClick"
+            android:src="@drawable/adjunto" />
+
+        <ImageButton
+            android:id="@+id/comensalButton"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:onClick="onComensalClick"
+            android:scaleType="fitXY"
+            android:src="@drawable/empty_user" />
+
+
+        <ImageButton
+            android:id="@+id/addButton"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:onClick="onAddClick"
+            android:src="@android:drawable/ic_input_add" />
+
+        <ImageButton
+            android:id="@+id/removeButton"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:onClick="onRemoveClick"
+            android:src="@drawable/minus"
+            android:visibility="visible" />
+
+
+
+
+        <TextView
+            android:id="@+id/textCantidad"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:text="Cantidad"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="@dimen/precio"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textPrecio"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:text="Precio"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="@dimen/precio" />
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

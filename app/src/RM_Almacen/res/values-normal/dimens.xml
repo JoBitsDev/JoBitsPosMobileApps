@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_horizontal_margin">16sp</dimen>
+    <dimen name="activity_vertical_margin">16sp</dimen>
+    <dimen name="subtitulos">15sp</dimen>
+    <dimen name="icondimension">30sp</dimen>
+    <dimen name="titulos">25sp</dimen>
+    <dimen name="ListNames">25sp</dimen>
+    <dimen name="MainTitle">40sp</dimen>
+    <dimen name="precio">17sp</dimen>
+</resources>

@@ -15,7 +15,7 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import firstdream.restaurantmanageralmacen.R;
+import firstdream.rm.R;
 
 public class ReceiverService extends Service {
 

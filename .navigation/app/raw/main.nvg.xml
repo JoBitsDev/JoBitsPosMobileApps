@@ -6,7 +6,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.MenuState"      
-        className = "firstdream.restaurantmanageralmacen.Orden"/>
+        className = "com.main.activities.Orden"/>
       <point      
         x = "5820"      
         y = "5455"/>
@@ -14,7 +14,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "firstdream.restaurantmanageralmacen.Orden"/>
+        className = "com.main.activities.Orden"/>
       <point      
         x = "3241"      
         y = "5466"/>
@@ -22,7 +22,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.MenuState"      
-        className = "firstdream.restaurantmanageralmacen.Login"/>
+        className = "firstdream.rm.Login"/>
       <point      
         x = "5831"      
         y = "1540"/>
@@ -30,7 +30,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "firstdream.restaurantmanageralmacen.Login"/>
+        className = "firstdream.rm.Login"/>
       <point      
         x = "3241"      
         y = "1689"/>
@@ -38,7 +38,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.MenuState"      
-        className = "firstdream.restaurantmanageralmacen.Main"/>
+        className = "firstdream.rm.Main"/>
       <point      
         x = "3205"      
         y = "-10"/>
@@ -46,7 +46,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "firstdream.restaurantmanageralmacen.Main"/>
+        className = "firstdream.rm.Main"/>
       <point      
         x = "663"      
         y = "-10"/>
@@ -54,7 +54,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.MenuState"      
-        className = "firstdream.restaurantmanageralmacen.about"/>
+        className = "firstdream.rm.about"/>
       <point      
         x = "5747"      
         y = "3579"/>
@@ -62,7 +62,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "firstdream.restaurantmanageralmacen.about"/>
+        className = "firstdream.rm.about"/>
       <point      
         x = "3218"      
         y = "3594"/>

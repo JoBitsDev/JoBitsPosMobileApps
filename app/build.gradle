@@ -2,18 +2,32 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 17
     buildToolsVersion "28.0.3"
-
     defaultConfig {
-        applicationId "firstdream.restaurantmanageralmacen"
         minSdkVersion 17
         targetSdkVersion 17
-        versionCode 1
-        versionName "1.0"
+        applicationId 'firstdream.rm'
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    productFlavors {
+        RM_Dependiente {
+            applicationId 'firstdream.rm.dpte'
+            versionCode 15
+            versionName '1.2.4.1'
+        }
+        RM_Almacen {
+            applicationId 'firstdream.rm.almacen'
+            versionCode 5
+            versionName '1.0.2'
+        }
+        RM_Cocina {
+            applicationId 'firstdream.rm.cocina'
+            versionCode 5
+            versionName '1.0.2'
         }
     }
 }

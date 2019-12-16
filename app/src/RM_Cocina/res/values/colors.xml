@@ -1,0 +1,12 @@
+<resources>
+
+    <color name="black_overlay">#66000000</color>
+    <color name="color_Fondo">#174B42</color>
+    <color name="color_Labels">#000000</color>
+    <color name="color_Buttons">#000000</color>
+    <color name="color_Fondo2">#c1f3fb</color>
+    <color name="alternativoparabotones">#007276</color>
+    <color name="selector_listas" >#FFCBCBCB</color>
+    <color name="color_resaltado">#980404</color>
+
+</resources>

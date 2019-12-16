@@ -1,0 +1,37 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.main.activities.Orden"
+    >
+
+    <item
+        android:id="@+id/enviarCocina"
+        android:orderInCategory="100"
+        android:title="@string/botonEnviarCocina" />
+    <item
+        android:id="@+id/cerrarOrden"
+        android:orderInCategory="100"
+        android:title="@string/botonCerrarOrden" />
+
+    <item
+        android:id="@+id/moverAMesa"
+        android:orderInCategory="100"
+        android:title="@string/moverAMesaString" />
+
+
+    <item
+        android:id="@+id/cederACamarero"
+        android:orderInCategory="100"
+        android:title="@string/cederACamarero" />
+
+
+    <item
+        android:id = "@+id/compartirPedido"
+        android:orderInCategory="100"
+        android:title="@string/anclarOrden"
+        android:enabled="false"
+
+        />
+
+
+
+</menu>

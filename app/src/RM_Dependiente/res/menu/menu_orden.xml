@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.main.activities.Orden"
+    >
+    <item
+        android:id="@+id/moverAMesa"
+        android:orderInCategory="100"
+        android:title="@string/moverAMesaString" />
+    <item
+        android:id="@+id/cederACamarero"
+        android:orderInCategory="100"
+        android:title="@string/cederACamarero" />
+
+
+
+</menu>

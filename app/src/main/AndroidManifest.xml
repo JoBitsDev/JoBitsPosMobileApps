@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="firstdream.restaurantmanageralmacen">
+    package="firstdream.rm"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/logoapp"
-        android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
         <service
@@ -16,7 +20,7 @@
             android:exported="true" />
 
         <activity
-            android:name=".Main"
+            android:name="firstdream.rm.Main"
             android:label="@string/app_name">
             <intent-filter>
                 <action
@@ -27,25 +31,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Login"
+            android:name="firstdream.rm.Login"
             android:label="@string/title_activity_login" />
         <activity
-            android:name=".about"
+            android:name="firstdream.rm.about"
             android:label="@string/title_activity_about"
-            android:parentActivityName=".Main"
+            android:parentActivityName="firstdream.rm.Main"
             android:theme="@android:style/Theme.Dialog">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="firstdream.restaurantmanageralmacen.Main" />
-        </activity>
-        <activity
-            android:name=".almacenstate"
-            android:label="Almacen"
-            android:parentActivityName=".Login">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="firstdream.restaurantmanageralmacen.Login" />
+                android:value="firstdream.rm.Main" />
         </activity>
     </application>
 
 </manifest>
+

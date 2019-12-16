@@ -1,0 +1,188 @@
+package com.main.adapters;
+
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.TextView;
+
+import com.main.ProductovOrden;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import firstdream.rm.R;
+
+
+/**
+ * Created by Jorge on 9/7/17.
+ */
+public class adapterMenu extends BaseExpandableListAdapter {
+
+    private Context _context;
+    private List<ProductovOrden> displayedSecciones;
+    private List<Contenedor> contenedores;
+    private int[] colors = {Color.RED,Color.GRAY,Color.MAGENTA,Color.CYAN,Color.DKGRAY,Color.LTGRAY};
+
+
+    public adapterMenu(Context context, List<ProductovOrden> pedidos) {
+        this._context = context;
+        this.displayedSecciones = pedidos;
+
+       contenedores = createContenedores();
+    }
+
+    private List<Contenedor> createContenedores() {
+        ArrayList<Contenedor> ret = new ArrayList<Contenedor>();
+        for(ProductovOrden x: displayedSecciones){
+            Contenedor newContenedor = new Contenedor(x,x.getOrden().getMesacodMesa().getCodMesa()
+                    + " " + x.getOrden().getMesacodMesa().getEstado().split(" ")[1]);
+            int index = -1;
+            if((index = ret.indexOf(newContenedor)) != -1){
+            ret.get(index).addContenedor(newContenedor);
+            }else{
+                ret.add(newContenedor);
+            }
+
+        }
+        return ret;
+    }
+
+    @Override
+    public Object getChild(int groupPosition, int childPosititon) {
+        return this.contenedores.get(groupPosition).getPedido().get(childPosititon);
+
+    }
+
+    @Override
+    public long getChildId(int groupPosition, int childPosition) {
+        return childPosition;
+    }
+
+    @Override
+    public View getChildView(int groupPosition, final int childPosition,
+                             boolean isLastChild, View convertView, ViewGroup parent) {
+
+        final String
+                childNombre = ((ProductovOrden) getChild(groupPosition, childPosition)).getProductoVenta().getNombre(),
+                cantidad = String.valueOf(((ProductovOrden)getChild(groupPosition,childPosition)).getCantidad()),
+                nota = ((ProductovOrden) getChild(groupPosition, childPosition)).getNota();
+
+
+        if (convertView == null) {
+            LayoutInflater infalInflater = (LayoutInflater) this._context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = infalInflater.inflate(R.layout.list_orden, null);
+        }
+
+        TextView txtNombre = (TextView) convertView
+                .findViewById(R.id.textNombre);
+        TextView txtPrecio = (TextView) convertView
+                .findViewById(R.id.textCantidad);
+        TextView txtNota = (TextView) convertView
+                .findViewById(R.id.textViewNota);
+
+        txtNombre.setText(childNombre);
+        txtPrecio.setText(cantidad);
+        txtNota.setText(nota != null ? nota : "Sin Especificaciones");
+        if (nota == null){
+        txtNota.setTextColor(Color.BLACK);}
+        return convertView;
+    }
+
+    @Override
+    public int getChildrenCount(int groupPosition) {
+        return this.contenedores.get(groupPosition).getPedido().size();
+    }
+
+    @Override
+    public Object getGroup(int groupPosition) {
+        return this.contenedores.get(groupPosition);
+    }
+
+    @Override
+    public int getGroupCount() {
+        return this.contenedores.size();
+    }
+
+    @Override
+    public long getGroupId(int groupPosition) {
+        return groupPosition;
+    }
+
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded,
+                             View convertView, ViewGroup parent) {
+        String headerTitle = ((Contenedor) getGroup(groupPosition)).getCodOrden();
+        if (convertView == null) {
+            LayoutInflater infalInflater = (LayoutInflater) this._context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = infalInflater.inflate(R.layout.list_parent, null);
+        }
+
+        TextView lblListHeader = (TextView) convertView
+                .findViewById(R.id.boxParent);
+        lblListHeader.setTypeface(null, Typeface.BOLD);
+        lblListHeader.setText(headerTitle);
+        lblListHeader.setTextColor(colors[groupPosition%colors.length]);
+
+        return convertView;
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return false;
+    }
+
+    @Override
+    public boolean isChildSelectable(int groupPosition, int childPosition) {
+        return true;
+    }
+
+
+    private class Contenedor {
+        private List<ProductovOrden> pedido;
+        private String codOrden;
+
+        public Contenedor(ProductovOrden pedido, String codOrden) {
+            ArrayList<ProductovOrden> n = new ArrayList<ProductovOrden>();
+            n.add(pedido);
+            this.pedido = n;
+            this.codOrden = codOrden;
+        }
+
+        public List<ProductovOrden> getPedido() {
+            return pedido;
+        }
+
+        public void setPedido(List<ProductovOrden> pedido) {
+            this.pedido = pedido;
+        }
+
+        public String getCodOrden() {
+            return codOrden;
+        }
+
+        public void setCodOrden(String codOrden) {
+            this.codOrden = codOrden;
+        }
+
+        public void addContenedor(Contenedor c){
+             pedido.addAll(c.getPedido());
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Contenedor that = (Contenedor) o;
+            return getCodOrden().equals(that.getCodOrden());
+        }
+
+    }
+
+}
+

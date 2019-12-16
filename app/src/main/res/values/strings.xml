@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">RM Almacen</string>
+
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">Auntenticar</string>
 
-    <string name="title_activity_about">about</string>
+    <string name="title_activity_about">Sobre</string>
 
     <string name="user">User_Name</string>
     <string name="errorAlAutenticar">Nombre de usuario o contraseña incorrecta</string>
@@ -19,11 +19,5 @@
     <string name="exNoServerConn">No hay conexión con el servidor.
         \nVerifique que esta conectado a la wi-fi del restaurante
         \ny que la PC servidor se encuentra encendida y con el servidor funcionando</string>
-    <string name="agregar">Agregar</string>
-    <string name="saldo_insuficiente">No hay suficiente saldo para extraer</string>
-    <string name="imprimir_estado_almacen">Imprimir estado ectual almacen</string>
-    <string name="imprimir_ticket_compra">Imprimir ticket de compras</string>
-    <string name="version">Version 1.0.2</string>
-    <string name="buscar">Buscar...</string>
 
 </resources>

@@ -2,6 +2,8 @@ package com.main.webServerCon;
 
 import android.os.AsyncTask;
 
+import com.main.res;
+
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.BufferedReader;
@@ -35,9 +37,10 @@ public class simpleConn {
 
     }
 
-    public simpleConn(String ip) {
-        this.ip = ip;
+    public simpleConn() {
+        this.ip = res.IP;
         port = "8080";
+        path = "http://" + ip + ":" + port + "/"+STARTPATH;
     }
 
     /**

@@ -1,0 +1,128 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/color_Fondo2"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".Login">
+
+    <ImageButton
+        android:id="@+id/buttonrefresh"
+        android:layout_width="59dp"
+        android:layout_height="48dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="0dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/refrescar" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5">
+
+            <TextClock
+                android:id="@+id/textClock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/color_Labels"
+                android:textSize="@dimen/subtitulos" />
+
+            <TextView
+                android:id="@+id/textViewNombreRest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="false"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="false"
+                android:layout_centerHorizontal="true"
+                android:text="Rest Name"
+                android:textColor="@color/color_Labels"
+                android:textSize="50sp" />
+
+            <TextView
+                android:id="@+id/textViewNombreCocina"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="false"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:text="Cocina Name"
+                android:textColor="@color/color_Labels"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewNombreRest"
+                android:layout_alignParentTop="false"
+                android:layout_centerHorizontal="true"
+                android:text="@string/estadoMesas"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/color_Labels"
+                android:textSize="@dimen/subtitulos" />
+
+
+            <TextView
+                android:id="@+id/labelUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/imageButton"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentEnd="false"
+                android:layout_alignParentBottom="true"
+                android:text="@string/user"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/color_Labels" />
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentStart="false"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:background="@color/color_Fondo2"
+                android:scaleType="fitXY"
+                android:src="@drawable/empty_user" />
+
+        </RelativeLayout>
+
+        <ExpandableListView
+            android:id="@+id/listaMesas"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="20"
+            android:choiceMode="singleChoice" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonCambiarArea"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="61dp"
+                android:text="@string/label_cambiar_area" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
