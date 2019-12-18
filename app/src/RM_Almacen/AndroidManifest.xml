@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="firstdream.rm">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,12 +10,12 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="com.main.activities.PantallaPrincipal"
+            android:name="com.activities.PantallaPrincipalActivity"
             android:label="Almacen"
-            android:parentActivityName=".Login">
+            android:parentActivityName="com.activities.LoginActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="firstdream.rm.Login" />
+                android:value="com.activities.LoginActivity" />
         </activity>
     </application>
 

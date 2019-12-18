@@ -10,12 +10,12 @@
         >
 
         <activity
-            android:name="com.main.activities.PantallaPrincipal"
+            android:name="com.activities.PantallaPrincipalActivity"
             android:label="@string/title_activity_activity_principal"
-            android:parentActivityName="firstdream.rm.Main" >
+            android:parentActivityName="com.activities.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="firstdream.rm.Main" />
+                android:value="com.activities.MainActivity" />
         </activity>
 
     </application>

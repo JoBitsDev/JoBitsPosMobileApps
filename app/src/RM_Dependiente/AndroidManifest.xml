@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="firstdream.rm">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:icon="@mipmap/ic_launcher"
@@ -8,21 +7,21 @@
         >
 
         <activity
-            android:name="com.main.activities.OrdenReadOnly"
+            android:name="com.activities.OrdenReadOnlyActivity"
             android:label="@string/title_activity_orden"
             android:launchMode="singleTop"></activity>
         <activity
-            android:name="com.main.activities.Orden"
+            android:name="com.activities.OrdenActivity"
             android:label="@string/title_activity_orden"
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustNothing"></activity>
         <activity
-            android:name="com.main.activities.PantallaPrincipal"
+            android:name="com.activities.PantallaPrincipalActivity"
             android:label="@string/title_activity_activity_principal"
-            android:parentActivityName=".Main">
+            android:parentActivityName="com.activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="firstdream.rm.Main" />
+                android:value="com.activities.MainActivity" />
         </activity>
     </application>
 
