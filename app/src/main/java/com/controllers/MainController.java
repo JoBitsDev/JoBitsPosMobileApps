@@ -1,23 +1,17 @@
 package com.controllers;
 
 import android.os.AsyncTask;
+
 import java.io.IOException;
 import java.net.*;
 import java.util.concurrent.ExecutionException;
 
 public class MainController extends BaseController {
 
-    public boolean checkConnection() {
-        try {
-            Check c = new Check();
-            c.execute(URLCONN);
-            return c.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return false;
+    public boolean checkConnection() throws ExecutionException, InterruptedException {
+        Check c = new Check();
+        c.execute(URLCONN);
+        return c.get();
     }
 
     protected class Check extends AsyncTask<String, Void, Boolean> {

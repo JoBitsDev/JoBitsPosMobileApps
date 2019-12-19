@@ -9,8 +9,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.controllers.LoginController;
-import com.utils.EnvironmentVariables;
-import com.services.web_connections.LoginWebConnectionServiceService;
 
 import java.util.concurrent.ExecutionException;
 
@@ -56,7 +54,7 @@ public class LoginActivity extends BaseActivity {
         autenticar(v);
     }
 
-    private void autenticar(View view) {
+    private void autenticar(View v) {
         String username = user.getText().toString();
         String password = pass.getText().toString();
 
@@ -65,7 +63,6 @@ public class LoginActivity extends BaseActivity {
             loginResult.setText(R.string.errorAlAutenticar);
         } else {
             try {
-
                 if (controller.loginAction(username, password)) {
                     loginResult.setTextColor(Color.GREEN);
                     loginResult.setText(R.string.autenticacionCorrecta);
@@ -79,10 +76,9 @@ public class LoginActivity extends BaseActivity {
                     loginResult.setText(R.string.errorAlAutenticar);
                 }
 
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                super.showMessage(v.getContext().getResources().
+                        getText(R.string.exNoServerConn).toString());
             }
 
         }

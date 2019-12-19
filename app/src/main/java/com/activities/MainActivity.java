@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.controllers.MainController;
 import com.services.notifications.ReceiverNotificationService;
 
+import java.util.concurrent.ExecutionException;
+
 
 public class MainActivity extends BaseActivity {
 
@@ -62,27 +64,24 @@ public class MainActivity extends BaseActivity {
         if (!updateConnectionText()) {
             super.showMessage(v.getContext().getResources().
                     getText(R.string.exNoServerConn).toString());
-
-            /*
-            TODO: revisar que funcione el de arriba
-            ExceptionHandler.showMessageInAlert(
-                    new IOException(v.getContext().getResources().
-                            getText(R.string.exNoServerConn).toString()), v.getContext());*/
         } else {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
     }
 
     private boolean updateConnectionText() {
-        boolean bool = controller.checkConnection();
-        if (bool) {
+        try {
+            controller.checkConnection();
             connectionStatusText.setText(R.string.conexion_succesfull);
             connectionStatusText.setTextColor(Color.GREEN);
-        } else {
+
+            return true;
+        } catch (Exception e) {
             connectionStatusText.setText(R.string.no_network);
             connectionStatusText.setTextColor(Color.RED);
         }
-        return bool;
+
+        return false;
     }
 
     public void startService(View view) {
