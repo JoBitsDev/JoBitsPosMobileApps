@@ -304,18 +304,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             }
         });
 
-        salidaButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onRebajarClick(v);
-            }
-        });
-        entradaButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onEntradaClick(v);
-            }
-        });
+        //TODO: faltan dos listener que estan directo en el xml
     }
 
     @Override
