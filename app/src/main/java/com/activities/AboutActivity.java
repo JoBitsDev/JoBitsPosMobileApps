@@ -13,6 +13,16 @@ import android.view.MenuItem;
 public class AboutActivity extends BaseActivity {
 
     @Override
+    void initVarialbes() {
+
+    }
+
+    @Override
+    void addListeners() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
@@ -39,4 +49,5 @@ public class AboutActivity extends BaseActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }
