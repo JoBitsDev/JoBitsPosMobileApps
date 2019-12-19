@@ -56,7 +56,7 @@
 
 
         <TextView
-            android:id="@+id/result"
+            android:id="@+id/loginResult"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|top"
@@ -66,7 +66,7 @@
             android:textSize="20dp" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/loginButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="autenticar"

@@ -11,31 +11,36 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.controllers.PantallaPrincipalController;
 import com.services.models.InsumoAlmacenModel;
 import com.utils.adapters.AlmacenInsumoAdapter;
-import com.services.web_connections.AlmacenWebConnectionService;
 
 
 public class PantallaPrincipalActivity extends BaseActivity {
 
-    ListView lista;
-    TextView usuario, almacen;
-    EditText searchText;
-    AlmacenWebConnectionService conn;
-    RadioButton radioButtonSalida, radioButtonRebaja;
+    private ListView listView;
+    private TextView userText, almacenText;
+    private EditText searchText;
+    private RadioButton radioButtonSalida, radioButtonRebaja;
+    private ImageButton salidaButton;
+    private ImageButton entradaButton;
+    private PantallaPrincipalController controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_almacenstate);
-        initComponents(getIntent().getExtras());
+        setBundle(getIntent().getExtras());
 
-
+        initVarialbes();
+        addListeners();
+        setAdapters();
     }
 
     @Override
@@ -51,59 +56,18 @@ public class PantallaPrincipalActivity extends BaseActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        switch(id){
-            case R.id.action_imprimirEstado:return imprimirEstadoActual();
-            case R.id.action_ticket_compra: return imprimirTicketCompra();
-            default: return super.onOptionsItemSelected(item);
+        switch (id) {
+            case R.id.action_imprimirEstado:
+                return controller.imprimirEstadoActual();
+            case R.id.action_ticket_compra:
+                return controller.imprimirTicketCompra();
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
     }
 
-    private boolean imprimirTicketCompra() {
-        return conn.imprimirTicketCompra();
-    }
-
-    private boolean imprimirEstadoActual() {
-    return conn.imprimirEstadoAlmacen();
-    }
-
-    private void initComponents(Bundle extras) {
-        lista = (ListView) findViewById(R.id.listaInsumos);
-        usuario = (TextView) findViewById(R.id.textUser);
-        almacen = (TextView) findViewById(R.id.textViewNombreAlmacen);
-        usuario.setText(extras.getString(String.valueOf(R.string.user)));
-        searchText = (EditText) findViewById(R.id.editText);
-        conn = new AlmacenWebConnectionService(usuario.getText().toString(), null);
-        radioButtonSalida = (RadioButton) findViewById(R.id.radioButtonSalida);
-        radioButtonRebaja = (RadioButton) findViewById(R.id.radioButtonRebaja);
-
-
-        lista.setAdapter(getData());
-
-
-        searchText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                ((AlmacenInsumoAdapter) lista.getAdapter()).getFilter().filter(s.toString());
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-    }
-
-    public void logicDarEntrada(final View v) {
-        final InsumoAlmacenModel i = ((InsumoAlmacenModel) lista.getAdapter().getItem((Integer) v.getTag()));
-
+    public void onEntradaClick(final View v) {
+        final InsumoAlmacenModel i = ((InsumoAlmacenModel) listView.getAdapter().getItem((Integer) v.getTag()));
         final EditText input = new EditText(v.getContext());
         final EditText amount = new EditText(v.getContext());
         input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
@@ -126,8 +90,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 Float cantidad = Float.valueOf(0);
                 try {
                     cantidad = Float.parseFloat(input.getText().toString()) * i.getInsumoModel().getCostoPorUnidad();
-                }catch(Exception e){
-                  return;
+                } catch (Exception e) {
+                    return;
                 }
                 amount.setText(cantidad.toString());
                 amount.selectAll();
@@ -140,45 +104,42 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 }).setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        float cantidad = 0,monto = 0;
-                        try{
+                        float cantidad = 0, monto = 0;
+                        try {
                             cantidad = Float.parseFloat(input.getText().toString());
                             monto = Float.parseFloat(amount.getText().toString());
-                        }
-                        catch (Exception e){
+                        } catch (Exception e) {
                             dialog.dismiss();
                             return;
                         }
+                        controller.darEntrada(i, cantidad, monto);
 
-                        conn.darEntrada(i, cantidad, monto);
-                        lista.post(new Runnable() {
+                        listView.post(new Runnable() {
                             @Override
                             public void run() {
-                                lista.setAdapter(getData());
+                                listView.setAdapter(fetchData());
                             }
                         });
                         dialog.dismiss();
                     }
                 }).create().show();
                 dialog.dismiss();
-
             }
         }).
                 create().
                 show();
     }
 
-    public void logicRebajar(View v) {
+    public void onRebajarClick(View v) {
         if (radioButtonSalida.isChecked()) {
-            logicDarSalida(v);
+            onSalidaClick(v);
         } else {
-            logicDarRebaja(v);
+            onRebajaClick(v);
         }
     }
 
-    private void logicDarSalida(final View v) {
-        final InsumoAlmacenModel i = ((InsumoAlmacenModel) lista.getAdapter().getItem((Integer) v.getTag()));
-
+    private void onSalidaClick(final View v) {
+        final InsumoAlmacenModel i = ((InsumoAlmacenModel) listView.getAdapter().getItem((Integer) v.getTag()));
         final EditText input = new EditText(v.getContext());
         final String[] ipvs = getIPVData(i.getInsumoModel().getCodInsumo());
         input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
@@ -201,23 +162,24 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         float cantidad = 0;
-                                        try{
-                                        cantidad = Float.parseFloat(input.getText().toString());}
-                                        catch (Exception e){
+                                        try {
+                                            cantidad = Float.parseFloat(input.getText().toString());
+                                        } catch (Exception e) {
                                             dialog.dismiss();
                                         }
-                                        if(cantidad > i.getCantidad()){
-                                            Toast.makeText(v.getContext(),R.string.saldo_insuficiente,Toast.LENGTH_LONG);
+                                        if (cantidad > i.getCantidad()) {
+                                            Toast.makeText(v.getContext(), R.string.saldo_insuficiente, Toast.LENGTH_LONG);
                                             dialog.dismiss();
-                                        }else{
-                                        conn.darSalida(i, cantidad, ipvs[which]);
-                                        lista.post(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                lista.setAdapter(getData());
-                                            }
-                                        });
-                                        dialog.dismiss();}
+                                        } else {
+                                            controller.darSalida(i, cantidad, ipvs[which]);
+                                            listView.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    listView.setAdapter(fetchData());
+                                                }
+                                            });
+                                            dialog.dismiss();
+                                        }
                                     }
                                 }).
                                 setTitle("Destino").
@@ -230,16 +192,14 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                 create().
                                 show();
                         dialog.dismiss();
-
                     }
                 }).
                 create().
                 show();
     }
 
-    private void logicDarRebaja(final View v) {
-        final InsumoAlmacenModel i = ((InsumoAlmacenModel) lista.getAdapter().getItem((Integer) v.getTag()));
-
+    private void onRebajaClick(final View v) {
+        final InsumoAlmacenModel i = ((InsumoAlmacenModel) listView.getAdapter().getItem((Integer) v.getTag()));
         final EditText input = new EditText(v.getContext());
         input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
         input.setRawInputType(Configuration.KEYBOARD_12KEY);
@@ -270,23 +230,24 @@ public class PantallaPrincipalActivity extends BaseActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 float cantidad = 0;
-                                try{
-                                    cantidad = Float.parseFloat(input.getText().toString());}
-                                catch (Exception e){
+                                try {
+                                    cantidad = Float.parseFloat(input.getText().toString());
+                                } catch (Exception e) {
                                     dialog.dismiss();
                                 }
-                                if(cantidad > i.getCantidad()){
-                                    Toast.makeText(v.getContext(),R.string.saldo_insuficiente,Toast.LENGTH_LONG);
+                                if (cantidad > i.getCantidad()) {
+                                    Toast.makeText(v.getContext(), R.string.saldo_insuficiente, Toast.LENGTH_LONG);
                                     dialog.dismiss();
-                                }else{
-                                    conn.rebajar(i, cantidad, razon.getText().toString());
-                                    lista.post(new Runnable() {
+                                } else {
+                                    controller.rebajar(i, cantidad, razon.getText().toString());
+                                    listView.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            lista.setAdapter(getData());
+                                            listView.setAdapter(fetchData());
                                         }
                                     });
-                                    dialog.dismiss();}
+                                    dialog.dismiss();
+                                }
                             }
 
                         }).
@@ -294,19 +255,60 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                 show();
 
                         dialog.dismiss();
-
                     }
                 }).
                 create().
                 show();
     }
 
-    private AlmacenInsumoAdapter getData() {
-        return new AlmacenInsumoAdapter(this, R.id.listaInsumos, conn.getPrimerAlmacen());
+    private AlmacenInsumoAdapter fetchData() {
+        return new AlmacenInsumoAdapter(this, R.id.listaInsumos, controller.getPrimerAlmacen());
     }
 
     private String[] getIPVData(String insumoCod) {
-        return conn.getCocinasNamesForIPV(insumoCod);
+        return controller.getCocinasNamesForIPV(insumoCod);
     }
 
+    @Override
+    void initVarialbes() {
+        listView = (ListView) findViewById(R.id.listaInsumos);
+        userText = (TextView) findViewById(R.id.textUser);
+        almacenText = (TextView) findViewById(R.id.textViewNombreAlmacen);
+        userText.setText(getBundle().getString(String.valueOf(R.string.user)));
+        controller = new PantallaPrincipalController(userText.getText().toString());
+        searchText = (EditText) findViewById(R.id.editText);
+        radioButtonSalida = (RadioButton) findViewById(R.id.radioButtonSalida);
+        radioButtonRebaja = (RadioButton) findViewById(R.id.radioButtonRebaja);
+        salidaButton = (ImageButton) findViewById(R.id.salidaButton);
+        entradaButton = (ImageButton) findViewById(R.id.entradaButton);
+    }
+
+    @Override
+    void addListeners() {
+
+        searchText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                ((AlmacenInsumoAdapter) listView.getAdapter()).getFilter().filter(s.toString());
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        //TODO: faltan dos listener que estan directo en el xml
+    }
+
+    @Override
+    protected void setAdapters() {
+        listView.setAdapter(fetchData());
+    }
 }

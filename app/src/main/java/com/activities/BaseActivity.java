@@ -4,44 +4,60 @@ package com.activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.os.Bundle;
 
 /**
  * Created by Jorge on 17/11/18.
  */
 
-public class BaseActivity extends Activity{
+public abstract class BaseActivity extends Activity {
 
-        public ProgressDialog mProgressDialog;
+    public ProgressDialog mProgressDialog;
 
+    private Bundle bundle;
 
+    abstract void initVarialbes();
 
-        public void showProgressDialog() {
-            if (mProgressDialog == null) {
-                mProgressDialog = new ProgressDialog(this);
-                mProgressDialog.setMessage("Cargando ...");
-                mProgressDialog.setIndeterminate(true);
-            }
+    abstract void addListeners();
 
-            mProgressDialog.show();
+    protected void setAdapters(){
+
+    }
+
+    public void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage("Cargando ...");
+            mProgressDialog.setIndeterminate(true);
         }
 
+        mProgressDialog.show();
+    }
 
-        public void hideProgressDialog() {
-            if (mProgressDialog != null && mProgressDialog.isShowing()) {
-                mProgressDialog.dismiss();
-            }
+
+    public void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
         }
+    }
 
-        @Override
-        public void onStop() {
-            super.onStop();
-            hideProgressDialog();
-        }
+    @Override
+    public void onStop() {
+        super.onStop();
+        hideProgressDialog();
+    }
 
-    public void showMessage(String message){
+    public void showMessage(String message) {
         new AlertDialog.Builder(this).setMessage(message).create().show();
-
     }
 
+    public Bundle getBundle() {
+        return bundle;
     }
+
+    public void setBundle(Bundle bundle) {
+        this.bundle = bundle;
+    }
+
+}
 

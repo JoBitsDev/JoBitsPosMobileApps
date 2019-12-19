@@ -8,8 +8,7 @@ import java.util.concurrent.ExecutionException;
 
 public class LoginWebConnectionServiceService extends SimpleWebConnectionService {
 
-
-    private String user,pass;
+    private String user, pass;
 
     public LoginWebConnectionServiceService(String ip, String port, String user, String pass) {
         super(ip, port);
@@ -17,13 +16,10 @@ public class LoginWebConnectionServiceService extends SimpleWebConnectionService
         this.pass = pass;
     }
 
-    public boolean authenticate () throws ExecutionException, InterruptedException {
-           String r = connect(path+"com.restmanager.personal/l_"+user+"_"+pass);
-            return r.equals("1");
-
+    public boolean authenticate() throws ExecutionException, InterruptedException {
+        String r = connect(path + "com.restmanager.personal/l_" + user + "_" + pass);
+        return r.equals("1");
     }
-
-
 
 
 }
