@@ -37,8 +37,6 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
         setContentView(R.layout.activity_main);
 
         text = ((TextView)(findViewById(R.id.TextConnexion)));
@@ -59,10 +57,6 @@ public class MainActivity extends Activity {
                 else{
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
             }}});
-
-
-
-
     }
 
 
