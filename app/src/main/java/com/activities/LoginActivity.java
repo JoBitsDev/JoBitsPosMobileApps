@@ -15,10 +15,7 @@ import com.services.web_connections.LoginWebConnectionServiceService;
 
 import java.util.concurrent.ExecutionException;
 
-
-
-public class LoginActivity extends Activity {
-
+public class LoginActivity extends BaseActivity {
 
     LoginActivity l;
     TextView result;
@@ -29,7 +26,6 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
 
     }
-
 
 
     @Override
@@ -54,7 +50,7 @@ public class LoginActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void autenticar(View view){
+    public void autenticar(View view) {
 
         EditText user = (EditText) findViewById(R.id.user);
         EditText pass = (EditText) findViewById(R.id.pass);
@@ -62,23 +58,22 @@ public class LoginActivity extends Activity {
         String username = user.getText().toString();
         String password = pass.getText().toString();
 
-        if(username == null || username.isEmpty() || password == null || password.isEmpty()){
-            result.setText(R.string.errorAlAutenticar);}
-        else {
+        if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
+            result.setText(R.string.errorAlAutenticar);
+        } else {
             l = this;
-            LoginWebConnectionServiceService login = new LoginWebConnectionServiceService(EnvironmentVariables.IP,"8080",username,password);
+            LoginWebConnectionServiceService login = new LoginWebConnectionServiceService(EnvironmentVariables.IP, "8080", username, password);
 
             try {
-                if (login.authenticate()){
+                if (login.authenticate()) {
                     result.setTextColor(Color.GREEN);
                     result.setText(R.string.autenticacionCorrecta);
 
-                   Intent launch = new Intent(l, PantallaPrincipalActivity.class);
-                    launch.putExtra(String.valueOf(R.string.user),username);
+                    Intent launch = new Intent(l, PantallaPrincipalActivity.class);
+                    launch.putExtra(String.valueOf(R.string.user), username);
                     startActivity(launch);
 
-                }
-                else{
+                } else {
 
                     result.setTextColor(Color.RED);
                     result.setText(R.string.errorAlAutenticar);
@@ -93,11 +88,9 @@ public class LoginActivity extends Activity {
         }
 
 
-
-
     }
 
-    public void prueba (View view){
+    public void prueba(View view) {
 
     }
 }

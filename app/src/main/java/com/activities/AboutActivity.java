@@ -6,8 +6,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
-
-public class AboutActivity extends Activity {
+/**
+ * TODO: ALL
+ * NO SE VA A  USAR POR EL MOMENTO, NO TIENE NINGUN CONTROLLER ASOCIADO
+ */
+public class AboutActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
