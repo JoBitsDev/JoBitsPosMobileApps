@@ -34,10 +34,11 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="50dp"
             android:background="#ffffff"
+            android:gravity="center_vertical"
             android:hint="username"
-
+            android:inputType="text"
             android:maxLines="1" />
 
         <EditText
@@ -60,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|top"
-            android:onClick="autenticar"
+
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#ff0300"
             android:textSize="20dp" />
@@ -69,7 +70,7 @@
             android:id="@+id/loginButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="autenticar"
+
             android:text="Autenticar" />
 
 
