@@ -9,8 +9,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.controllers.LoginController;
-import com.utils.EnvironmentVariables;
-import com.services.web_connections.LoginWebConnectionServiceService;
 
 import java.util.concurrent.ExecutionException;
 
