@@ -22,7 +22,7 @@ public class SimpleWebConnectionService {
             port,
             path,
             resp = null;
-    protected final String STARTPATH = "RM/rest/";
+
     protected HttpURLConnection con = null;
     protected URL url = null;
 
@@ -30,14 +30,14 @@ public class SimpleWebConnectionService {
     public SimpleWebConnectionService(String ip, String port) {
         this.ip = ip;
         this.port = port;
-        path = "http://" + ip + ":" + port + "/"+STARTPATH;
+        path = "http://" + ip + ":" + port + "/"+EnvironmentVariables.STARTPATH;
 
     }
 
     public SimpleWebConnectionService() {
         this.ip = EnvironmentVariables.IP;
-        port = "8080";
-        path = "http://" + ip + ":" + port + "/"+STARTPATH;
+        port = EnvironmentVariables.PORT;
+        path = "http://" + ip + ":" + port + "/"+EnvironmentVariables.STARTPATH;
     }
 
     /**
