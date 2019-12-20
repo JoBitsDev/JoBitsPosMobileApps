@@ -1,6 +1,7 @@
 package com.utils.adapters;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,11 +29,11 @@ import java.util.List;
 public class AlmacenInsumoAdapter extends ArrayAdapter<InsumoAlmacenModel> implements Filterable {
     public final int c = Color.GREEN;
     List<InsumoAlmacenModel> objects, displayedObjects;
-    Activity context;
+    Context context;
     View.OnLongClickListener listener;
 
 
-    public AlmacenInsumoAdapter(Activity context, int resource, List<InsumoAlmacenModel> objects) {
+    public AlmacenInsumoAdapter(Context context, int resource, List<InsumoAlmacenModel> objects) {
         super(context, resource, objects);
         this.context = context;
         this.objects = objects;
@@ -40,11 +41,18 @@ public class AlmacenInsumoAdapter extends ArrayAdapter<InsumoAlmacenModel> imple
         Collections.sort(objects);
     }
 
+    public AlmacenInsumoAdapter(Context context, int resource, List<InsumoAlmacenModel> objects, View.OnLongClickListener listener) {
+        super(context, resource, objects);
+        this.context = context;
+        this.objects = objects;
+        displayedObjects = objects;
+        this.listener = listener;
+    }
     public View getView(final int position, View item, ViewGroup parent) {
 
         ViewHolder holder;
         if (item == null) {
-            LayoutInflater inflater = context.getLayoutInflater();
+            LayoutInflater inflater = LayoutInflater.from(context);
             item = inflater.inflate(R.layout.list_insumo_almacen, null);
 
             holder = new ViewHolder();
