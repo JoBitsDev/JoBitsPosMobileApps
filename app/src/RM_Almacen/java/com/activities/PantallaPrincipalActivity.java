@@ -40,7 +40,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     private Spinner spinnerFiltrar;
     private FilterAdapter filterAdapter;
     private String[] filtros = {"Seleccione", "Ruby", "Java", ".NET", "Python", "PHP", "JavaScript", "GO"};
-    ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +52,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         addListeners();
         setAdapters();
     }
+
 
     @Override
     void initVarialbes() {
@@ -65,6 +66,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
         radioButtonRebaja = (RadioButton) findViewById(R.id.radioButtonRebaja);
         salidaButton = (ImageButton) findViewById(R.id.salidaButton);
         entradaButton = (ImageButton) findViewById(R.id.entradaButton);
+        spinnerFiltrar = (Spinner) findViewById(R.id.filtrarBy);
+        filterAdapter = new FilterAdapter(this, android.R.layout.simple_spinner_dropdown_item, controller.getCocinasNames());
     }
 
     @Override
@@ -72,23 +75,50 @@ public class PantallaPrincipalActivity extends BaseActivity {
         searchText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 ((AlmacenInsumoAdapter) listView.getAdapter()).getFilter().filter(s.toString());
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        spinnerFiltrar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                onSpinnerFiltrarItemSelected(view, position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
         //TODO: faltan dos listener que estan directo en el xml
     }
 
+    private void onSpinnerFiltrarItemSelected(View view, int position) {
+        try {
+            if (position == 0) {
+                listView.setAdapter(fetchData());//select all
+            } else {
+                listView.setAdapter(new AlmacenInsumoAdapter(view.getContext(), R.id.listaInsumos, controller.filterBy(spinnerFiltrar.getSelectedItem().toString())));
+            }
+        } catch (Exception e) {
+            notificarError(e);
+        }
+    }
+
     @Override
     protected void setAdapters() {
         listView.setAdapter(fetchData());
+        spinnerFiltrar.setAdapter(filterAdapter.createAdapter());
     }
 
     @Override
@@ -372,67 +402,4 @@ public class PantallaPrincipalActivity extends BaseActivity {
         return controller.getCocinasNamesForIPV(insumoCod);
     }
 
-    @Override
-    void initVarialbes() {
-        listView = (ListView) findViewById(R.id.listaInsumos);
-        userText = (TextView) findViewById(R.id.textUser);
-        almacenText = (TextView) findViewById(R.id.textViewNombreAlmacen);
-        userText.setText(getBundle().getString(String.valueOf(R.string.user)));
-        controller = new PantallaPrincipalController(userText.getText().toString());
-        searchText = (EditText) findViewById(R.id.editText);
-        radioButtonSalida = (RadioButton) findViewById(R.id.radioButtonSalida);
-        radioButtonRebaja = (RadioButton) findViewById(R.id.radioButtonRebaja);
-        salidaButton = (ImageButton) findViewById(R.id.salidaButton);
-        entradaButton = (ImageButton) findViewById(R.id.entradaButton);
-        spinnerFiltrar = (Spinner) findViewById(R.id.filtrarBy);
-        filterAdapter = new FilterAdapter(this, android.R.layout.simple_spinner_dropdown_item, controller.getCocinasNames());
-    }
-
-    @Override
-    void addListeners() {
-
-        searchText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                ((AlmacenInsumoAdapter) listView.getAdapter()).getFilter().filter(s.toString());
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        spinnerFiltrar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position != 0) {
-                    listView.setAdapter(new AlmacenInsumoAdapter(findViewById(android.R.id.content).getContext(), R.id.listaInsumos, controller.filterBy(spinnerFiltrar.getSelectedItem().toString())));
-                }
-                else {
-                    listView.setAdapter(fetchData());
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        //TODO: faltan dos listener que estan directo en el xml
-    }
-
-    @Override
-    protected void setAdapters() {
-        listView.setAdapter(fetchData());
-
-        spinnerFiltrar.setAdapter(filterAdapter.createAdapter());
-    }
 }
