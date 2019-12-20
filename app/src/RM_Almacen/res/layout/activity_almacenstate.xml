@@ -26,23 +26,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Estado Actual del almacenModel"
+            android:text="Estado Actual del almacen"
             android:textColor="@color/color_Labels"
             android:textSize="@dimen/ListNames" />
 
 
-        <EditText
-            android:id="@+id/editText"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/alternativoparabotones"
-            android:ems="10"
-            android:gravity="right"
-            android:hint="@string/buscar"
-            android:inputType="textPersonName"
-            android:textColor="@color/color_Buttons"
-            android:textSize="@dimen/icondimension"
-            android:visibility="visible" />
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/filtrarBy"
+                android:layout_width="173dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="197dp"
+                android:layout_height="wrap_content"
+                android:background="@color/alternativoparabotones"
+                android:ems="10"
+                android:hint="@string/buscar"
+                android:inputType="textPersonName"
+                android:textColor="@color/color_Buttons"
+                android:textSize="@dimen/icondimension"
+                android:visibility="visible" />
+        </LinearLayout>
 
         <RadioGroup
             android:layout_width="wrap_content"
@@ -55,7 +66,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Tipo de Rebaja" />
+                android:text="Tipo de Rebaja"
+                android:visibility="gone"
+                tools:visibility="gone" />
 
             <RadioButton
                 android:id="@+id/radioButtonSalida"
@@ -63,7 +76,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:checked="true"
-                android:text="Salida" />
+                android:text="Salida"
+                android:visibility="gone"
+                tools:visibility="gone" />
 
             <RadioButton
                 android:id="@+id/radioButtonRebaja"
@@ -71,8 +86,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Rebaja"
-                android:visibility="invisible"
-                tools:visibility="invisible" />
+                android:visibility="gone"
+                tools:visibility="gone" />
 
 
         </RadioGroup>

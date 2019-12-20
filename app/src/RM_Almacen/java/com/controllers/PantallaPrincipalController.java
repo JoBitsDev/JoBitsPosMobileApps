@@ -2,6 +2,7 @@ package com.controllers;
 
 import com.services.models.InsumoAlmacenModel;
 import com.services.web_connections.AlmacenWebConnectionService;
+import com.services.web_connections.CocinaWebConnection;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -9,6 +10,7 @@ import java.util.concurrent.ExecutionException;
 public class PantallaPrincipalController extends BaseController {
 
     AlmacenWebConnectionService connection;
+    CocinaWebConnection cocinaWebConnection;
 
     public PantallaPrincipalController(String usuario) {
         connection = new AlmacenWebConnectionService(usuario, null);
@@ -40,5 +42,14 @@ public class PantallaPrincipalController extends BaseController {
 
     public String[] getCocinasNamesForIPV(String insumoCod) throws ExecutionException, InterruptedException {
         return connection.getCocinasNamesForIPV(insumoCod);
+    }
+
+    public String[] getCocinasNames() {
+        cocinaWebConnection = new CocinaWebConnection();
+        return cocinaWebConnection.getCocinasNames();
+    }
+
+    public  List<InsumoAlmacenModel> filterBy(String codPtoElaboracion){
+        return connection.filtrarBy(codPtoElaboracion);
     }
 }

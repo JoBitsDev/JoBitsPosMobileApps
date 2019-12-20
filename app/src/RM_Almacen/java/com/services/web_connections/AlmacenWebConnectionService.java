@@ -20,7 +20,8 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
             ESTADO_ALMACEN = "IMPRIMIR_ESTADO_ALMACEN",
             SALIDA = "SALIDA_",
             MERMA = "MERMAR",
-            LISTA_IPV = "IPVS";
+            LISTA_IPV = "IPVS",
+            FILTRAR_ = "FILTRAR_";
     String user, codAlmacen;
 
     public AlmacenWebConnectionService(String user, String codAlmacen) {
@@ -64,6 +65,8 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
         return connect(path + LISTA_IPV + "_" + codInsumo).split(",");
     }
 
+    public List<InsumoAlmacenModel> filtrarBy(String codPtoElaboracion) {
+        return new InsumoAlmacenXMLParser().fetch(path + FILTRAR_ + codPtoElaboracion);
     public boolean imprimirTicketCompra() throws ServerErrorException, NoConnectionException {
         return connect(path + TICKET_COMPRA).equals(EnvironmentVariables.PETITION_TRUE);
     }
@@ -72,4 +75,15 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
         return connect(path + ESTADO_ALMACEN).equals(EnvironmentVariables.PETITION_TRUE);
     }
 
+    public boolean imprimirEstadoAlmacen() {
+        try {
+            return connect(path + ESTADO_ALMACEN).equals("1");
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            return false;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return false;
+        }
+        }
 }
