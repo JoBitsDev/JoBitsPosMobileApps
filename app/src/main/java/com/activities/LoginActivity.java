@@ -4,13 +4,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.*;
 
 import com.controllers.LoginController;
 
-import java.util.concurrent.ExecutionException;
 
 public class LoginActivity extends BaseActivity {
 
@@ -54,16 +51,15 @@ public class LoginActivity extends BaseActivity {
         autenticar(v);
     }
 
-    private void autenticar(View view) {
+    private void autenticar(View v) {
         String username = user.getText().toString();
         String password = pass.getText().toString();
 
-        if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
+        if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
             loginResult.setTextColor(Color.RED);
             loginResult.setText(R.string.errorAlAutenticar);
         } else {
             try {
-
                 if (controller.loginAction(username, password)) {
                     loginResult.setTextColor(Color.GREEN);
                     loginResult.setText(R.string.autenticacionCorrecta);
@@ -71,16 +67,12 @@ public class LoginActivity extends BaseActivity {
                     Intent launch = new Intent(this, PantallaPrincipalActivity.class);
                     launch.putExtra(String.valueOf(R.string.user), username);
                     startActivity(launch);
-
                 } else {
                     loginResult.setTextColor(Color.RED);
                     loginResult.setText(R.string.errorAlAutenticar);
                 }
-
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                notificarError(e);
             }
 
         }

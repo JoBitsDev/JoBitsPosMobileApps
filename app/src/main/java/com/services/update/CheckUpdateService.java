@@ -26,7 +26,7 @@ public class CheckUpdateService {
 
 
 
-    public static boolean check(){
+    public static boolean check() throws Exception {
         SimpleWebConnectionService s = new SimpleWebConnectionService();
         try {
             serverVersionCode = Integer.parseInt(s.connect(versionPath));

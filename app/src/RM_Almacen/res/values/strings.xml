@@ -16,9 +16,6 @@
 
 
     <string name="cancelar">Cancelar</string>
-    <string name="exNoServerConn">No hay conexión con el servidor.
-        \nVerifique que esta conectado a la wi-fi del restaurante
-        \ny que la PC servidor se encuentra encendida y con el servidor funcionando</string>
     <string name="agregar">Agregar</string>
     <string name="saldo_insuficiente">No hay suficiente saldo para extraer</string>
     <string name="imprimir_estado_almacen">Imprimir estado ectual almacen</string>

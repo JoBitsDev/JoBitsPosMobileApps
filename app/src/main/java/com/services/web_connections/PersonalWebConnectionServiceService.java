@@ -15,23 +15,16 @@ public class PersonalWebConnectionServiceService extends SimpleWebConnectionServ
     String usuariosActivos = "MOSTRAR_PERSONAL_TRABAJANDO";
 
     public PersonalWebConnectionServiceService() {
-        super(EnvironmentVariables.IP, "8080");
+        super();
         path += P;
     }
 
-    public String [] getUsiariosActivos(){
-    String [] result = {};
-        try {
-            String ret = connect(path + usuariosActivos);
+    public String[] getUsiariosActivos() throws InterruptedException, ExecutionException {
+        String[] result = {};
+        String ret = connect(path + usuariosActivos);
 
-            if(ret != null)
-            result = ret.substring(0,ret.length()-1).split(",");
-
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        if (ret != null)
+            result = ret.substring(0, ret.length() - 1).split(",");
 
         return result;
     }

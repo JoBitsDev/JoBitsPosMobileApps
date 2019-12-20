@@ -19,6 +19,12 @@ public class EnvironmentVariables {
 
     public static int conversion = 24;
 
+    public static String STARTPATH = "RM/rest/";
+
+    public static String PETITION_TRUE = "1";
+    public static String PETITION_FALSE = "0";
+    public static String PETITION_ERROR = "-1";
+
     public static void changeIP(String ip) {
         IP = ip;
     }
