@@ -40,14 +40,6 @@ public class AlmacenInsumoAdapter extends ArrayAdapter<InsumoAlmacenModel> imple
         Collections.sort(objects);
     }
 
-    public AlmacenInsumoAdapter(Activity context, int resource, List<InsumoAlmacenModel> objects, View.OnLongClickListener listener) {
-        super(context, resource, objects);
-        this.context = context;
-        this.objects = objects;
-        displayedObjects = objects;
-        this.listener = listener;
-    }
-
     public View getView(final int position, View convertView, ViewGroup parent) {
 
         View item = convertView;
@@ -119,83 +111,6 @@ public class AlmacenInsumoAdapter extends ArrayAdapter<InsumoAlmacenModel> imple
        return displayedObjects.get(position);
     }
 
-    public boolean contains(InsumoAlmacenModel p) {
-        return displayedObjects.contains(p);
-    }
-
-    public void darEntrada(InsumoAlmacenModel p, AlmacenWebConnectionService o) {
-        boolean existe = false;
-//        ProductoVentaOrdenModel pv = null;
-//        int i = 0;
-//        for (; i< objects.size() && !existe ; i++){
-//            pv = objects.get(i);
-//           existe = pv.getProductoVentaModel().equals(p);
-//
-//        }
-//        if(existe){
-//            i--;
-//            pv.getProductoVentaModel().increaceAmount();
-//            objects.set(i,pv);
-//
-//        }
-//        else{
-//            ProductoVentaOrdenPKModel pk = new ProductoVentaOrdenPKModel(p.getPCod(),o.getCodOrden());
-//            pv = new ProductoVentaOrdenModel(pk);
-//            pv.setProductoVentaModel(p);
-//            pv.getProductoVentaModel().setCantidad(1);
-//            objects.add(pv);
-//        }
-//        notifyDataSetChanged();
-    }
-
-    public void darEntrada(InsumoAlmacenModel p, float ammount, AlmacenWebConnectionService o) {
-        boolean existe = false;
-//        ProductoVentaOrdenModel pv = null;
-//        int i = 0;
-//        for (; i< objects.size() && !existe ; i++){
-//            pv = objects.get(i);
-//            existe = pv.getProductoVentaModel().equals(p);
-//        }
-//        if(existe){
-//            i--;
-//            pv.getProductoVentaModel().setCantidad(pv.getProductoVentaModel().getCantidad()+ammount);
-//            objects.set(i,pv);
-//
-//        }
-//        else{
-//            ProductoVentaOrdenPKModel pk = new ProductoVentaOrdenPKModel(p.getPCod(),o.getCodOrden());
-//            pv = new ProductoVentaOrdenModel(pk);
-//            pv.setProductoVentaModel(p);
-//            pv.getProductoVentaModel().setCantidad(ammount);
-//            objects.add(pv);
-//        }
-//        notifyDataSetChanged();
-    }
-
-    public void rebajar(InsumoAlmacenModel p) {
-
-//        boolean existe = false;
-//        ProductoVentaOrdenModel pv = null;
-//        int i = 0;
-//        for (; i< objects.size() && !existe ; i++){
-//            pv = objects.get(i);
-//            existe = pv.getProductoVentaModel().getPCod().equals(p.getPCod());
-//        }
-//        if(existe){
-//            i--;
-//            if( pv.getProductoVentaModel().getCantidad()>1){
-//                pv.getProductoVentaModel().decreaseAmmount();
-//                objects.set(i,pv);
-//            }
-//            else{
-//                objects.remove(i);
-//            }
-//
-//            notifyDataSetChanged();
-//        }
-
-
-    }
 
     /**
      * <p>Returns a filter that can be used to constrain data with a filtering
