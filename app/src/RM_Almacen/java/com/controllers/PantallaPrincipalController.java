@@ -14,7 +14,7 @@ public class PantallaPrincipalController extends BaseController {
         connection = new AlmacenWebConnectionService(usuario, null);
     }
 
-    public boolean imprimirTicketCompra(){
+    public boolean imprimirTicketCompra() {
         return connection.imprimirTicketCompra();
     }
 

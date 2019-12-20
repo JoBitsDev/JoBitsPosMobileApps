@@ -69,7 +69,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
     }
 
     private boolean imprimirTicketEstado() {
-
         if (controller.checkConnection()) {
             try {
                 return controller.imprimirTicketCompra();
