@@ -30,18 +30,19 @@ public class SimpleWebConnectionService {
     public SimpleWebConnectionService(String ip, String port) {
         this.ip = ip;
         this.port = port;
-        path = "http://" + ip + ":" + port + "/"+STARTPATH;
+        path = "http://" + ip + ":" + port + "/" + STARTPATH;
 
     }
 
     public SimpleWebConnectionService() {
         this.ip = EnvironmentVariables.IP;
         port = "8080";
-        path = "http://" + ip + ":" + port + "/"+STARTPATH;
+        path = "http://" + ip + ":" + port + "/" + STARTPATH;
     }
 
     /**
      * este metodo devuelve la informacion de la consulta a la URL pasada por parametro
+     *
      * @param url la URL a consultar
      * @return la respuesta de la consulta
      * @throws ExecutionException
@@ -51,19 +52,13 @@ public class SimpleWebConnectionService {
         fetchData f = new fetchData();
         f.execute(url);
         return f.get();
-
     }
 
-
-
-
-    protected class fetchData extends AsyncTask<String , Void ,String >{
-
+    protected class fetchData extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... url) {
             try {
-
                 String ret = downloadUrl(url[0]);
                 return ret;
             } catch (IOException e) {
@@ -73,25 +68,21 @@ public class SimpleWebConnectionService {
 
         }
 
-
-
         private String downloadUrl(String urlString) throws IOException {
             url = new URL(urlString);
             con = (HttpURLConnection) url.openConnection();
             con.setDoInput(true);
             // Starts the query
-            if(con.getResponseCode()==HttpURLConnection.HTTP_OK) {
+            if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 BufferedReader input = new BufferedReader(
                         new InputStreamReader(con.getInputStream()),
                         8192);
                 resp = input.readLine();
                 input.close();
                 con.disconnect();
-            return resp;}
-            else{
-
+                return resp;
+            } else {
                 return null;
-
             }
         }
     }

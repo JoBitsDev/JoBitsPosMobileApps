@@ -32,6 +32,12 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        updateConnectionText();
+    }
+
+    @Override
     void initVarialbes() {
         controller = new MainController();
 
@@ -61,27 +67,28 @@ public class MainActivity extends BaseActivity {
     }
 
     private void onInitializeSesionButtOnClick(View v) {
-        if (!updateConnectionText()) {
-            super.showMessage(v.getContext().getResources().
-                    getText(R.string.exNoServerConn).toString());
-        } else {
+        if (updateConnectionText()) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        } else {
+            this.showMessage(v.getContext().getResources().
+                    getText(R.string.exNoServerConn).toString());
         }
     }
 
     private boolean updateConnectionText() {
-        try {
-            controller.checkConnection();
+
+        if (controller.checkConnection()) {
             connectionStatusText.setText(R.string.conexion_succesfull);
             connectionStatusText.setTextColor(Color.GREEN);
 
             return true;
-        } catch (Exception e) {
+        } else {
             connectionStatusText.setText(R.string.no_network);
             connectionStatusText.setTextColor(Color.RED);
+
+            return false;
         }
 
-        return false;
     }
 
     public void startService(View view) {

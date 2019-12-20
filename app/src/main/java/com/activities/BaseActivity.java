@@ -3,8 +3,12 @@ package com.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 /**
  * Created by Jorge on 17/11/18.
@@ -20,8 +24,7 @@ public abstract class BaseActivity extends Activity {
 
     abstract void addListeners();
 
-    protected void setAdapters(){
-
+    protected void setAdapters() {
     }
 
     public void showProgressDialog() {
@@ -33,7 +36,6 @@ public abstract class BaseActivity extends Activity {
 
         mProgressDialog.show();
     }
-
 
     public void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
@@ -59,5 +61,20 @@ public abstract class BaseActivity extends Activity {
         this.bundle = bundle;
     }
 
+    public void notificarNoConnection() {
+        View v = findViewById(android.R.id.content).getRootView();
+
+        Dialog dialog = new AlertDialog.Builder(this).setMessage(v.getContext().getResources().
+                getText(R.string.exNoServerConn).toString()).create();
+
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                navigateUpTo(new Intent(getApplicationContext(), MainActivity.class));
+            }
+        });
+
+        dialog.show();
+    }
 }
 

@@ -62,23 +62,28 @@ public class LoginActivity extends BaseActivity {
             loginResult.setTextColor(Color.RED);
             loginResult.setText(R.string.errorAlAutenticar);
         } else {
-            try {
-                if (controller.loginAction(username, password)) {
-                    loginResult.setTextColor(Color.GREEN);
-                    loginResult.setText(R.string.autenticacionCorrecta);
 
-                    Intent launch = new Intent(this, PantallaPrincipalActivity.class);
-                    launch.putExtra(String.valueOf(R.string.user), username);
-                    startActivity(launch);
 
-                } else {
-                    loginResult.setTextColor(Color.RED);
-                    loginResult.setText(R.string.errorAlAutenticar);
+            if (controller.checkConnection()) {
+
+                try {
+                    if (controller.loginAction(username, password)) {
+                        loginResult.setTextColor(Color.GREEN);
+                        loginResult.setText(R.string.autenticacionCorrecta);
+
+                        Intent launch = new Intent(this, PantallaPrincipalActivity.class);
+                        launch.putExtra(String.valueOf(R.string.user), username);
+                        startActivity(launch);
+
+                    } else {
+                        loginResult.setTextColor(Color.RED);
+                        loginResult.setText(R.string.errorAlAutenticar);
+                    }
+                } catch (Exception e) {//Nunca entra porque el error lo lanza cuando no hay coneccion por el if de antes
+                    super.notificarNoConnection();
                 }
-
-            } catch (Exception e) {
-                super.showMessage(v.getContext().getResources().
-                        getText(R.string.exNoServerConn).toString());
+            } else {
+                super.notificarNoConnection();
             }
 
         }

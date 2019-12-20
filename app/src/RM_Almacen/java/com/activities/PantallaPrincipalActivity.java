@@ -21,6 +21,8 @@ import com.controllers.PantallaPrincipalController;
 import com.services.models.InsumoAlmacenModel;
 import com.utils.adapters.AlmacenInsumoAdapter;
 
+import java.util.concurrent.ExecutionException;
+
 
 public class PantallaPrincipalActivity extends BaseActivity {
 
@@ -58,87 +60,118 @@ public class PantallaPrincipalActivity extends BaseActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_imprimirEstado:
-                return controller.imprimirEstadoActual();
+                return imprimirEstado();
             case R.id.action_ticket_compra:
-                return controller.imprimirTicketCompra();
+                return imprimirTicketEstado();
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    public void onEntradaClick(final View v) {
-        final InsumoAlmacenModel i = ((InsumoAlmacenModel) listView.getAdapter().getItem((Integer) v.getTag()));
-        final EditText input = new EditText(v.getContext());
-        final EditText amount = new EditText(v.getContext());
-        input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        input.setRawInputType(Configuration.KEYBOARD_12KEY);
-        amount.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        amount.setRawInputType(Configuration.KEYBOARD_12KEY);
-        new AlertDialog.Builder(v.getContext()).
-                setView(input).
-                setTitle("Entrada de InsumoModel").
-                setMessage("Introduzca la cantidad de " + i.getInsumoModel() + " a dar entrada").
-                setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                Float cantidad = Float.valueOf(0);
-                try {
-                    cantidad = Float.parseFloat(input.getText().toString()) * i.getInsumoModel().getCostoPorUnidad();
-                } catch (Exception e) {
-                    return;
-                }
-                amount.setText(cantidad.toString());
-                amount.selectAll();
-                new AlertDialog.Builder(v.getContext()).setView(amount).setTitle("Monto").
-                        setMessage("Introduzca el valor de la entrada ").setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        float cantidad = 0, monto = 0;
-                        try {
-                            cantidad = Float.parseFloat(input.getText().toString());
-                            monto = Float.parseFloat(amount.getText().toString());
-                        } catch (Exception e) {
-                            dialog.dismiss();
-                            return;
-                        }
-                        controller.darEntrada(i, cantidad, monto);
-
-                        listView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                listView.setAdapter(fetchData());
-                            }
-                        });
-                        dialog.dismiss();
-                    }
-                }).create().show();
-                dialog.dismiss();
-            }
-        }).
-                create().
-                show();
+    private boolean imprimirTicketEstado() {
+        try {
+            controller.imprimirTicketCompra();
+            return true;
+        } catch (Exception e) {
+            super.notificarNoConnection();
+        }
+        return false;
     }
 
-    public void onRebajarClick(View v) {
-        if (radioButtonSalida.isChecked()) {
-            onSalidaClick(v);
-        } else {
-            onRebajaClick(v);
+    private boolean imprimirEstado() {
+        try {
+            return controller.imprimirEstadoActual();
+        } catch (Exception e) {
+            super.notificarNoConnection();
+        }
+        return false;
+    }
+
+    public void onEntradaClick(final View v) {
+        try {
+            final InsumoAlmacenModel i = ((InsumoAlmacenModel) listView.getAdapter().getItem((Integer) v.getTag()));
+            final EditText input = new EditText(v.getContext());
+            final EditText amount = new EditText(v.getContext());
+            input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            input.setRawInputType(Configuration.KEYBOARD_12KEY);
+            amount.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            amount.setRawInputType(Configuration.KEYBOARD_12KEY);
+            new AlertDialog.Builder(v.getContext()).
+                    setView(input).
+                    setTitle("Entrada de InsumoModel").
+                    setMessage("Introduzca la cantidad de " + i.getInsumoModel() + " a dar entrada").
+                    setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    Float cantidad = Float.valueOf(0);
+                    try {
+                        cantidad = Float.parseFloat(input.getText().toString()) * i.getInsumoModel().getCostoPorUnidad();
+                    } catch (Exception e) {
+                        return;
+                    }
+                    amount.setText(cantidad.toString());
+                    amount.selectAll();
+                    new AlertDialog.Builder(v.getContext()).setView(amount).setTitle("Monto").
+                            setMessage("Introduzca el valor de la entrada ").setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            float cantidad = 0, monto = 0;
+                            try {
+                                cantidad = Float.parseFloat(input.getText().toString());
+                                monto = Float.parseFloat(amount.getText().toString());
+                            } catch (Exception e) {
+                                dialog.dismiss();
+                                return;
+                            }
+                            try {
+                                controller.darEntrada(i, cantidad, monto);
+                            } catch (Exception e) {
+                                notificarNoConnection();
+                            }
+
+                            listView.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    listView.setAdapter(fetchData());
+                                }
+                            });
+                            dialog.dismiss();
+                        }
+                    }).create().show();
+                    dialog.dismiss();
+                }
+            }).
+                    create().
+                    show();
+        } catch (Exception e) {
+            super.notificarNoConnection();
         }
     }
 
-    private void onSalidaClick(final View v) {
+    public void onRebajarClick(View v) {
+        try {
+            if (radioButtonSalida.isChecked()) {
+                onSalidaClick(v);
+            } else {
+                onRebajaClick(v);
+            }
+        } catch (Exception e) {
+            super.notificarNoConnection();
+        }
+    }
+
+    private void onSalidaClick(final View v) throws Exception {//try catch ya en el que lo llama
         final InsumoAlmacenModel i = ((InsumoAlmacenModel) listView.getAdapter().getItem((Integer) v.getTag()));
         final EditText input = new EditText(v.getContext());
         final String[] ipvs = getIPVData(i.getInsumoModel().getCodInsumo());
@@ -171,7 +204,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                             Toast.makeText(v.getContext(), R.string.saldo_insuficiente, Toast.LENGTH_LONG);
                                             dialog.dismiss();
                                         } else {
-                                            controller.darSalida(i, cantidad, ipvs[which]);
+                                            try {
+                                                controller.darSalida(i, cantidad, ipvs[which]);
+                                            } catch (Exception e) {
+                                                notificarNoConnection();
+                                            }
                                             listView.post(new Runnable() {
                                                 @Override
                                                 public void run() {
@@ -198,7 +235,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 show();
     }
 
-    private void onRebajaClick(final View v) {
+    private void onRebajaClick(final View v) {//try catch ya en el que lo llama
         final InsumoAlmacenModel i = ((InsumoAlmacenModel) listView.getAdapter().getItem((Integer) v.getTag()));
         final EditText input = new EditText(v.getContext());
         input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
@@ -239,7 +276,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                     Toast.makeText(v.getContext(), R.string.saldo_insuficiente, Toast.LENGTH_LONG);
                                     dialog.dismiss();
                                 } else {
-                                    controller.rebajar(i, cantidad, razon.getText().toString());
+                                    try {
+                                        controller.rebajar(i, cantidad, razon.getText().toString());
+                                    } catch (Exception e) {
+                                        notificarNoConnection();
+                                    }
                                     listView.post(new Runnable() {
                                         @Override
                                         public void run() {
@@ -262,10 +303,15 @@ public class PantallaPrincipalActivity extends BaseActivity {
     }
 
     private AlmacenInsumoAdapter fetchData() {
-        return new AlmacenInsumoAdapter(this, R.id.listaInsumos, controller.getPrimerAlmacen());
+        try {
+            return new AlmacenInsumoAdapter(this, R.id.listaInsumos, controller.getPrimerAlmacen());
+        } catch (Exception e) {
+            notificarNoConnection();
+        }
+        return null;
     }
 
-    private String[] getIPVData(String insumoCod) {
+    private String[] getIPVData(String insumoCod) throws Exception {//try catch ya en el que lo llama
         return controller.getCocinasNamesForIPV(insumoCod);
     }
 
@@ -289,18 +335,15 @@ public class PantallaPrincipalActivity extends BaseActivity {
         searchText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 ((AlmacenInsumoAdapter) listView.getAdapter()).getFilter().filter(s.toString());
-
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 

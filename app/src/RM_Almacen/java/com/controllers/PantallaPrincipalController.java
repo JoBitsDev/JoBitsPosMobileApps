@@ -4,6 +4,7 @@ import com.services.models.InsumoAlmacenModel;
 import com.services.web_connections.AlmacenWebConnectionService;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class PantallaPrincipalController extends BaseController {
 
@@ -13,34 +14,61 @@ public class PantallaPrincipalController extends BaseController {
         connection = new AlmacenWebConnectionService(usuario, null);
     }
 
-    public boolean imprimirTicketCompra() {
-
-        return connection.imprimirTicketCompra();
+    public boolean imprimirTicketCompra() throws Exception {
+        if (super.checkConnection()) {
+            connection.imprimirTicketCompra();
+            return true;
+        } else {
+            throw new Exception();
+        }
     }
 
-    public boolean imprimirEstadoActual() {
-
-        return connection.imprimirEstadoAlmacen();
+    public boolean imprimirEstadoActual() throws Exception {
+        if (super.checkConnection()) {
+            connection.imprimirEstadoAlmacen();
+            return true;
+        } else {
+            throw new Exception();
+        }
     }
 
-
-    public void darEntrada(InsumoAlmacenModel i, float cantidad, float monto) {
-        connection.darEntrada(i, cantidad, monto);
+    public void darEntrada(InsumoAlmacenModel i, float cantidad, float monto) throws Exception {
+        if (super.checkConnection()) {
+            connection.darEntrada(i, cantidad, monto);
+        } else {
+            throw new Exception();
+        }
     }
 
-    public void darSalida(InsumoAlmacenModel i, float cantidad, String ipv) {
-        connection.darSalida(i, cantidad, ipv);
+    public void darSalida(InsumoAlmacenModel i, float cantidad, String ipv) throws Exception {
+        if (super.checkConnection()) {
+            connection.darSalida(i, cantidad, ipv);
+        } else {
+            throw new Exception();
+        }
     }
 
-    public void rebajar(InsumoAlmacenModel i, float cantidad, String toString) {
-        connection.rebajar(i, cantidad, toString);
+    public void rebajar(InsumoAlmacenModel i, float cantidad, String toString) throws Exception {
+        if (super.checkConnection()) {
+            connection.rebajar(i, cantidad, toString);
+        } else {
+            throw new Exception();
+        }
     }
 
-    public List<InsumoAlmacenModel> getPrimerAlmacen() {
-        return connection.getPrimerAlmacen();
+    public List<InsumoAlmacenModel> getPrimerAlmacen() throws Exception {
+        if (super.checkConnection()) {
+            return connection.getPrimerAlmacen();
+        } else {
+            throw new Exception();
+        }
     }
 
-    public String[] getCocinasNamesForIPV(String insumoCod) {
-        return connection.getCocinasNamesForIPV(insumoCod);
+    public String[] getCocinasNamesForIPV(String insumoCod) throws Exception {
+        if (super.checkConnection()) {
+            return connection.getCocinasNamesForIPV(insumoCod);
+        } else {
+            throw new Exception();
+        }
     }
 }
