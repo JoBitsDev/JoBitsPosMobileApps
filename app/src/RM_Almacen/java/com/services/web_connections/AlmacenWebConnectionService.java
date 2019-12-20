@@ -3,6 +3,8 @@ package com.services.web_connections;
 import com.services.models.InsumoAlmacenModel;
 import com.services.parsers.InsumoAlmacenXMLParser;
 import com.utils.EnvironmentVariables;
+import com.utils.exception.NoConnectionException;
+import com.utils.exception.ServerErrorException;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -28,11 +30,11 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
         path += P;
     }
 
-    public List<InsumoAlmacenModel> getPrimerAlmacen() throws ExecutionException, InterruptedException {
+    public List<InsumoAlmacenModel> getPrimerAlmacen() throws ServerErrorException, NoConnectionException {
         return new InsumoAlmacenXMLParser().fetch(path);
     }
 
-    public String darEntrada(InsumoAlmacenModel i, float cantidad, float price) throws ExecutionException, InterruptedException {
+    public String darEntrada(InsumoAlmacenModel i, float cantidad, float price) throws ServerErrorException, NoConnectionException {
         return connect(path
                 + ENTRADA
                 + i.getInsumoAlmacenPKModel().getAlmacencodAlmacen()
@@ -40,7 +42,7 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
                 + cantidad + "_" + price);
     }
 
-    public String darSalida(InsumoAlmacenModel i, float cantidad, String codPtoElaboracion) throws ExecutionException, InterruptedException {
+    public String darSalida(InsumoAlmacenModel i, float cantidad, String codPtoElaboracion) throws ServerErrorException, NoConnectionException {
         return connect(path
                 + SALIDA
                 + i.getInsumoAlmacenPKModel().getAlmacencodAlmacen()
@@ -49,7 +51,7 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
                 + "_" + codPtoElaboracion);
     }
 
-    public String rebajar(InsumoAlmacenModel i, float cantidad, String razon) throws ExecutionException, InterruptedException {
+    public String rebajar(InsumoAlmacenModel i, float cantidad, String razon) throws ServerErrorException, NoConnectionException {
         return connect(path
                 + MERMA
                 + "_" + i.getInsumoAlmacenPKModel().getAlmacencodAlmacen()
@@ -58,15 +60,15 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
                 + "_" + razon);
     }
 
-    public String[] getCocinasNamesForIPV(String codInsumo) throws ExecutionException, InterruptedException {
+    public String[] getCocinasNamesForIPV(String codInsumo) throws ServerErrorException, NoConnectionException {
         return connect(path + LISTA_IPV + "_" + codInsumo).split(",");
     }
 
-    public boolean imprimirTicketCompra() throws ExecutionException, InterruptedException {
+    public boolean imprimirTicketCompra() throws ServerErrorException, NoConnectionException {
         return connect(path + TICKET_COMPRA).equals(EnvironmentVariables.PETITION_TRUE);
     }
 
-    public boolean imprimirEstadoAlmacen() throws ExecutionException, InterruptedException {
+    public boolean imprimirEstadoAlmacen() throws ServerErrorException, NoConnectionException {
         return connect(path + ESTADO_ALMACEN).equals(EnvironmentVariables.PETITION_TRUE);
     }
 

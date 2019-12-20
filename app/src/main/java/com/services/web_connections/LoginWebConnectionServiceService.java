@@ -1,5 +1,9 @@
 package com.services.web_connections;
 
+import com.utils.EnvironmentVariables;
+import com.utils.exception.NoConnectionException;
+import com.utils.exception.ServerErrorException;
+
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -16,8 +20,8 @@ public class LoginWebConnectionServiceService extends SimpleWebConnectionService
         this.pass = pass;
     }
 
-    public boolean authenticate() throws ExecutionException, InterruptedException {
-        return connect(path + "com.restmanager.personal/l_" + user + "_" + pass).equals("1");
+    public boolean authenticate() throws ServerErrorException, NoConnectionException {
+        return connect(path + "com.restmanager.personal/l_" + user + "_" + pass).equals(EnvironmentVariables.PETITION_TRUE);
     }
 
 

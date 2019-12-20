@@ -10,6 +10,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.utils.exception.NoConnectionException;
+import com.utils.exception.ServerErrorException;
+
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -71,9 +74,9 @@ public abstract class BaseActivity extends Activity {
         View v = findViewById(android.R.id.content).getRootView();
 
         String message = "Error to tiza";
-        if (e instanceof InterruptedException) {//no conection
+        if (e instanceof NoConnectionException) {//no conection
             message = noConnectionError;
-        } else if (e instanceof ExecutionException) {//error del server
+        } else if (e instanceof ServerErrorException) {//error del server
             message = serverError;
         } else {//error inesperado
             message = unespectedError;

@@ -3,7 +3,8 @@ package com.services.web_connections;
 import android.os.AsyncTask;
 
 import com.utils.EnvironmentVariables;
-import com.utils.exception.ExecutionExceptionImplementation;
+import com.utils.exception.NoConnectionException;
+import com.utils.exception.ServerErrorException;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -44,22 +45,30 @@ public class SimpleWebConnectionService {
      *
      * @param url la URL a consultar
      * @return la respuesta de la consulta
-     * @throws ExecutionException
-     * @throws InterruptedException
+     * @throws ServerErrorException
+     * @throws NoConnectionException
      */
-    public String connect(String url) throws ExecutionException, InterruptedException {
+    public String connect(String url) throws ServerErrorException, NoConnectionException {
         fetchData f = new fetchData();
         f.execute(url);
-        String res = f.get();
+        String res = null;
+
+        try {
+            res = f.get();
+        } catch (InterruptedException e) {//convierte las excepciones que manda a las que manejamos
+            throw new NoConnectionException();
+        } catch (ExecutionException e) {
+            throw new ServerErrorException();
+        }
+
         if (res == null) {
-            throw new ExecutionExceptionImplementation();
+            throw new ServerErrorException();
         } else if (res.matches(EnvironmentVariables.PETITION_ERROR)) {
-            throw new InterruptedException();
+            throw new NoConnectionException();
         } else {
             return res;
         }
     }
-
 
     protected class fetchData extends AsyncTask<String, Void, String> {
 
