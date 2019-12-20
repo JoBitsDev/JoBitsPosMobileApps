@@ -10,8 +10,6 @@ import android.widget.TextView;
 import com.controllers.MainController;
 import com.services.notifications.ReceiverNotificationService;
 
-import java.util.concurrent.ExecutionException;
-
 
 public class MainActivity extends BaseActivity {
 
@@ -71,7 +69,7 @@ public class MainActivity extends BaseActivity {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         } else {
             this.showMessage(v.getContext().getResources().
-                    getText(R.string.exNoServerConn).toString());
+                    getText(R.string.noConnectionError).toString());
         }
     }
 

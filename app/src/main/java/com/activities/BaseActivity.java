@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * Created by Jorge on 17/11/18.
  */
@@ -61,11 +63,23 @@ public abstract class BaseActivity extends Activity {
         this.bundle = bundle;
     }
 
-    public void notificarNoConnection() {
+    public void notificarError(Exception e) {
+        String noConnectionError = findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.noConnectionError).toString();
+        String serverError = findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.serverError).toString();
+        String unespectedError = findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.unespectedError).toString();
+
         View v = findViewById(android.R.id.content).getRootView();
 
-        Dialog dialog = new AlertDialog.Builder(this).setMessage(v.getContext().getResources().
-                getText(R.string.exNoServerConn).toString()).create();
+        String message = "Error to tiza";
+        if (e instanceof InterruptedException) {//no conection
+            message = noConnectionError;
+        } else if (e instanceof ExecutionException) {//error del server
+            message = serverError;
+        } else {//error inesperado
+            message = unespectedError;
+        }
+
+        Dialog dialog = new AlertDialog.Builder(this).setMessage(message).create();
 
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
@@ -76,5 +90,6 @@ public abstract class BaseActivity extends Activity {
 
         dialog.show();
     }
+
 }
 

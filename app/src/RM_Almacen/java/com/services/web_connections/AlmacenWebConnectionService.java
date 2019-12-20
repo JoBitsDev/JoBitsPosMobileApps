@@ -2,6 +2,7 @@ package com.services.web_connections;
 
 import com.services.models.InsumoAlmacenModel;
 import com.services.parsers.InsumoAlmacenXMLParser;
+import com.utils.EnvironmentVariables;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -20,7 +21,6 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
             LISTA_IPV = "IPVS";
     String user, codAlmacen;
 
-
     public AlmacenWebConnectionService(String user, String codAlmacen) {
         super();
         this.user = user;
@@ -28,8 +28,7 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
         path += P;
     }
 
-
-    public List<InsumoAlmacenModel> getPrimerAlmacen() {
+    public List<InsumoAlmacenModel> getPrimerAlmacen() throws ExecutionException, InterruptedException {
         return new InsumoAlmacenXMLParser().fetch(path);
     }
 
@@ -48,8 +47,6 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
                 + "_" + i.getInsumoAlmacenPKModel().getInsumocodInsumo()
                 + "_" + cantidad
                 + "_" + codPtoElaboracion);
-
-
     }
 
     public String rebajar(InsumoAlmacenModel i, float cantidad, String razon) throws ExecutionException, InterruptedException {
@@ -61,19 +58,16 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
                 + "_" + razon);
     }
 
-
     public String[] getCocinasNamesForIPV(String codInsumo) throws ExecutionException, InterruptedException {
-        String result = connect(path + LISTA_IPV + "_" + codInsumo);
-        return result == null ? new String[0] : result.split(",");
-
+        return connect(path + LISTA_IPV + "_" + codInsumo).split(",");
     }
 
     public boolean imprimirTicketCompra() throws ExecutionException, InterruptedException {
-        return connect(path + TICKET_COMPRA).equals("1");
+        return connect(path + TICKET_COMPRA).equals(EnvironmentVariables.PETITION_TRUE);
     }
 
     public boolean imprimirEstadoAlmacen() throws ExecutionException, InterruptedException {
-        return connect(path + ESTADO_ALMACEN).equals("1");
-
+        return connect(path + ESTADO_ALMACEN).equals(EnvironmentVariables.PETITION_TRUE);
     }
+
 }

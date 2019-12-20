@@ -40,9 +40,8 @@ public class AlmacenInsumoAdapter extends ArrayAdapter<InsumoAlmacenModel> imple
         Collections.sort(objects);
     }
 
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View item, ViewGroup parent) {
 
-        View item = convertView;
         ViewHolder holder;
         if (item == null) {
             LayoutInflater inflater = context.getLayoutInflater();
@@ -71,14 +70,14 @@ public class AlmacenInsumoAdapter extends ArrayAdapter<InsumoAlmacenModel> imple
                 + EnvironmentVariables.setDosLugaresDecimales(i.getInsumoModel().getCostoPorUnidad()));
 
         //escribiendo el stock
-        float diferencia =  i.getCantidad()-i.getInsumoModel().getStockEstimation();
+        float diferencia = i.getCantidad() - i.getInsumoModel().getStockEstimation();
         String text = "-";
         int color = Color.BLACK;
         if (diferencia >= 0) {
-            text = "+" + diferencia ;
+            text = "+" + diferencia;
             color = diferencia > i.getInsumoModel().getStockEstimation() * 0.5 ? Color.GREEN : Color.YELLOW;
         } else {
-            text =  ""+ diferencia ;
+            text = "" + diferencia;
             color = Color.RED;
         }
 
@@ -108,7 +107,7 @@ public class AlmacenInsumoAdapter extends ArrayAdapter<InsumoAlmacenModel> imple
 
     @Override
     public InsumoAlmacenModel getItem(int position) {
-       return displayedObjects.get(position);
+        return displayedObjects.get(position);
     }
 
 

@@ -17,8 +17,7 @@ public class LoginWebConnectionServiceService extends SimpleWebConnectionService
     }
 
     public boolean authenticate() throws ExecutionException, InterruptedException {
-        String r = connect(path + "com.restmanager.personal/l_" + user + "_" + pass);
-        return r.equals("1");
+        return connect(path + "com.restmanager.personal/l_" + user + "_" + pass).equals("1");
     }
 
 

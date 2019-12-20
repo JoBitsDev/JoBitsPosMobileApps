@@ -3,10 +3,9 @@ package com.services.web_connections;
 import android.os.AsyncTask;
 
 import com.utils.EnvironmentVariables;
+import com.utils.exception.ExecutionExceptionImplementation;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
@@ -30,14 +29,14 @@ public class SimpleWebConnectionService {
     public SimpleWebConnectionService(String ip, String port) {
         this.ip = ip;
         this.port = port;
-        path = "http://" + ip + ":" + port + "/"+EnvironmentVariables.STARTPATH;
+        path = "http://" + ip + ":" + port + "/" + EnvironmentVariables.STARTPATH;
 
     }
 
     public SimpleWebConnectionService() {
         this.ip = EnvironmentVariables.IP;
         port = EnvironmentVariables.PORT;
-        path = "http://" + ip + ":" + port + "/"+EnvironmentVariables.STARTPATH;
+        path = "http://" + ip + ":" + port + "/" + EnvironmentVariables.STARTPATH;
     }
 
     /**
@@ -51,8 +50,16 @@ public class SimpleWebConnectionService {
     public String connect(String url) throws ExecutionException, InterruptedException {
         fetchData f = new fetchData();
         f.execute(url);
-        return f.get();
+        String res = f.get();
+        if (res == null) {
+            throw new ExecutionExceptionImplementation();
+        } else if (res.matches(EnvironmentVariables.PETITION_ERROR)) {
+            throw new InterruptedException();
+        } else {
+            return res;
+        }
     }
+
 
     protected class fetchData extends AsyncTask<String, Void, String> {
 
@@ -63,7 +70,7 @@ public class SimpleWebConnectionService {
                 return ret;
             } catch (IOException e) {
                 e.printStackTrace();
-                return "0";
+                return "-1";
             }
 
         }
