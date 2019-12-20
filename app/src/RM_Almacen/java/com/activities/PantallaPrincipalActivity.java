@@ -69,22 +69,32 @@ public class PantallaPrincipalActivity extends BaseActivity {
     }
 
     private boolean imprimirTicketEstado() {
-        try {
-            controller.imprimirTicketCompra();
-            return true;
-        } catch (Exception e) {
-            super.notificarNoConnection();
+
+        if (controller.checkConnection()) {
+            try {
+                return controller.imprimirTicketCompra();
+            } catch (Exception e) {
+                showMessage("Error raro del servidor.");
+                return false;
+            }
+        } else {
+            notificarNoConnection();
+            return false;
         }
-        return false;
     }
 
     private boolean imprimirEstado() {
-        try {
-            return controller.imprimirEstadoActual();
-        } catch (Exception e) {
-            super.notificarNoConnection();
+        if (controller.checkConnection()) {
+            try {
+                return controller.imprimirEstadoActual();
+            } catch (Exception e) {
+                showMessage("Error raro del servidor.");
+                return false;
+            }
+        } else {
+            notificarNoConnection();
+            return false;
         }
-        return false;
     }
 
     public void onEntradaClick(final View v) {

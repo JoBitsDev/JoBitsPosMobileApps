@@ -76,7 +76,6 @@ public class MainActivity extends BaseActivity {
     }
 
     private boolean updateConnectionText() {
-
         if (controller.checkConnection()) {
             connectionStatusText.setText(R.string.conexion_succesfull);
             connectionStatusText.setTextColor(Color.GREEN);
@@ -88,7 +87,6 @@ public class MainActivity extends BaseActivity {
 
             return false;
         }
-
     }
 
     public void startService(View view) {

@@ -14,22 +14,12 @@ public class PantallaPrincipalController extends BaseController {
         connection = new AlmacenWebConnectionService(usuario, null);
     }
 
-    public boolean imprimirTicketCompra() throws Exception {
-        if (super.checkConnection()) {
-            connection.imprimirTicketCompra();
-            return true;
-        } else {
-            throw new Exception();
-        }
+    public boolean imprimirTicketCompra(){
+        return connection.imprimirTicketCompra();
     }
 
-    public boolean imprimirEstadoActual() throws Exception {
-        if (super.checkConnection()) {
-            connection.imprimirEstadoAlmacen();
-            return true;
-        } else {
-            throw new Exception();
-        }
+    public boolean imprimirEstadoActual() {
+        return connection.imprimirEstadoAlmacen();
     }
 
     public void darEntrada(InsumoAlmacenModel i, float cantidad, float monto) throws Exception {
