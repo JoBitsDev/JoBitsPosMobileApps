@@ -8,75 +8,113 @@ import android.widget.*;
 
 import com.controllers.LoginController;
 
-
+/**
+ * Capa: Activities
+ * Clase que controla el XML del login.
+ */
 public class LoginActivity extends BaseActivity {
 
+    /**
+     * Controller del LoginActivity para manejar las peticiones a la capa inferior.
+     */
     private LoginController controller;
 
+    //Varialbes de control
+
+    /**
+     * Label que indica el estado del logion, correcto o contrasenna incorreco.
+     */
     private TextView loginResult;
+
+    /**
+     * Boton para loguerse.
+     */
     private Button loginButton;
+
+    /**
+     * Campo de texto para escribir el usuario.
+     */
     private EditText user;
+
+    /**
+     * Campo de texto para escribir la contrasenna.
+     */
     private EditText pass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login);//xml asociado
 
-        initVarialbes();
-        addListeners();
+        initVarialbes();//inicializa las variables
+        addListeners();//agrega listeners
     }
 
     @Override
-    void initVarialbes() {
-        controller = new LoginController();
+    void initVarialbes() {//inicializa las variables
+        controller = new LoginController();//inicializa el controller
 
-        loginResult = (TextView) findViewById(R.id.loginResult);
-        loginButton = (Button) findViewById(R.id.loginButton);
-        user = (EditText) findViewById(R.id.user);
-        pass = (EditText) findViewById(R.id.pass);
+        loginResult = (TextView) findViewById(R.id.loginResult);//asigna el label a su variable
+        loginButton = (Button) findViewById(R.id.loginButton);//asigna el boton a su variable
+        user = (EditText) findViewById(R.id.user);//asigna el campo de texto de usuario a su variable
+        pass = (EditText) findViewById(R.id.pass);//asigna el campo de texto de contrasenna a su variable
     }
 
     @Override
-    void addListeners() {
-        loginButton.setOnClickListener(new View.OnClickListener() {
+    void addListeners() {//agrega listeners
+        loginButton.setOnClickListener(new View.OnClickListener() {//listener del boton
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) {//agrega la accion del click del boton
                 onLoginButtonOnClick(v);
             }
         });
     }
 
-    private void onLoginButtonOnClick(View v) {
-        autenticar(v);
+    /**
+     * Accion a ejecutar cuando se da click en el boton del login.
+     *
+     * @param v View de la aplicacion.
+     */
+    private void onLoginButtonOnClick(View v) {//accion del click del boton
+        autenticar(v);//llama a autenticar
     }
 
+    /**
+     * Acción a ejecutar cuando se da click en el boton login y se va a autenticar el usuario.
+     * @param v View de la aplicacion.
+     */
     private void autenticar(View v) {
-        String username = user.getText().toString();
-        String password = pass.getText().toString();
+        String username = user.getText().toString();//nombre de usuario del campo de texto
+        String password = pass.getText().toString();//contrasenna del campo de texto
 
-        if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
-            loginResult.setTextColor(Color.RED);
-            loginResult.setText(R.string.errorAlAutenticar);
+        if (username == null || username.isEmpty() || password == null || password.isEmpty()) {//si es null o esta vacio: Error
+            errorAlAutenticar();
         } else {
             try {
-                if (controller.loginAction(username, password)) {
+                if (controller.loginAction(username, password)) {//si se auntentica correctamente
                     loginResult.setTextColor(Color.GREEN);
                     loginResult.setText(R.string.autenticacionCorrecta);
 
+                    //cambio de activity
                     Intent launch = new Intent(this, PantallaPrincipalActivity.class);
                     launch.putExtra(String.valueOf(R.string.user), username);
                     startActivity(launch);
-                } else {
-                    loginResult.setTextColor(Color.RED);
-                    loginResult.setText(R.string.errorAlAutenticar);
+
+                } else {//si no es correcto lanza error
+                    errorAlAutenticar();
                 }
             } catch (Exception e) {
                 notificarError(e);
             }
-
         }
+    }
 
+    /**
+     * Cambia el estado del label a: error al autenticar.
+     */
+    private void errorAlAutenticar() {
+        loginResult.setTextColor(Color.RED);
+        loginResult.setText(R.string.errorAlAutenticar);
     }
 
 }
