@@ -11,6 +11,8 @@ import android.view.View;
  * Clase base abstracta para TODAS las activitys de la aplicación.
  * TODAS las activitys extienden de esta clase y proporciona metodos basicos para todas como
  * iniciar variables y agregar listeners.
+ *
+ * @extends Activity ya que es una activity
  */
 public abstract class BaseActivity extends Activity {
 

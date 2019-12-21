@@ -12,6 +12,8 @@ import com.services.notifications.ReceiverNotificationService;
 /**
  * Capa: Activities
  * Clase que controla el XML del Main.
+ *
+ * @extends BaseActivity ya que es una activity propia de la aplicacion.
  */
 public class MainActivity extends BaseActivity {
 

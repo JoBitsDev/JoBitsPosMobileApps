@@ -7,6 +7,8 @@ import com.services.web_connections.LoginWebConnectionServiceService;
 /**
  * Capa: Controllers
  * Clase controladora de LoginActivity, encargada de manejar sus peticiones con la capa inferior.
+ *
+ * @extends BaseController ya que es un controller plicacion.
  */
 public class LoginController extends BaseController {
 

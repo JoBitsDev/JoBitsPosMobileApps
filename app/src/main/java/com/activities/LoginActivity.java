@@ -11,6 +11,8 @@ import com.controllers.LoginController;
 /**
  * Capa: Activities
  * Clase que controla el XML del login.
+ *
+ * @extends BaseActivity ya que es una activity propia de la aplicacion.
  */
 public class LoginActivity extends BaseActivity {
 

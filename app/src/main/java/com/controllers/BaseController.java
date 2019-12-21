@@ -9,7 +9,7 @@ import com.utils.EnvironmentVariables;
  * Capa: Controllers
  * Clase base abstracta para TODAS los controllers de la aplicación.
  * TODOS los controllers extienden de esta clase y proporciona metodos basicos para todas como
- * chequear la coneccion con el servidor
+ * chequear la coneccion con el servidor.
  */
 public abstract class BaseController {
 
