@@ -1,26 +1,16 @@
 package com.activities;
 
-
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.app.*;
+import android.content.*;
+import com.utils.exception.*;
 import android.os.Bundle;
 import android.view.View;
 
-import com.utils.exception.NoConnectionException;
-import com.utils.exception.ServerErrorException;
-
-import java.util.concurrent.ExecutionException;
-
 /**
  * Capa: Activities
- * Clase abstracta basica para TODAS las activitys de la aplicación.
- * TODAS las activitys extienden de esta clase y proporciona metodos basicos para todos.
- * <p>
- * Created by Jorge on 17/11/18.
+ * Clase base abstracta para TODAS las activitys de la aplicación.
+ * TODAS las activitys extienden de esta clase y proporciona metodos basicos para todas como
+ * iniciar variables y agregar listeners.
  */
 public abstract class BaseActivity extends Activity {
 
@@ -30,7 +20,7 @@ public abstract class BaseActivity extends Activity {
     public ProgressDialog mProgressDialog;
 
     /**
-     * TODO: ver bien que es esto
+     * TODO: ver bien que es esto y para que se usa.
      */
     private Bundle bundle;
 
@@ -146,7 +136,7 @@ public abstract class BaseActivity extends Activity {
 
         //muestra  el popup
         dialog.show();
-        
+
     }
 
 }
