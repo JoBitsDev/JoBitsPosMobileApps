@@ -1,6 +1,7 @@
 package com.utils.adapters;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,11 +29,11 @@ import java.util.List;
 public class AlmacenInsumoAdapter extends ArrayAdapter<InsumoAlmacenModel> implements Filterable {
     public final int c = Color.GREEN;
     List<InsumoAlmacenModel> objects, displayedObjects;
-    Activity context;
+    Context context;
     View.OnLongClickListener listener;
 
 
-    public AlmacenInsumoAdapter(Activity context, int resource, List<InsumoAlmacenModel> objects) {
+    public AlmacenInsumoAdapter(Context context, int resource, List<InsumoAlmacenModel> objects) {
         super(context, resource, objects);
         this.context = context;
         this.objects = objects;
@@ -40,20 +41,18 @@ public class AlmacenInsumoAdapter extends ArrayAdapter<InsumoAlmacenModel> imple
         Collections.sort(objects);
     }
 
-    public AlmacenInsumoAdapter(Activity context, int resource, List<InsumoAlmacenModel> objects, View.OnLongClickListener listener) {
+    public AlmacenInsumoAdapter(Context context, int resource, List<InsumoAlmacenModel> objects, View.OnLongClickListener listener) {
         super(context, resource, objects);
         this.context = context;
         this.objects = objects;
         displayedObjects = objects;
         this.listener = listener;
     }
+    public View getView(final int position, View item, ViewGroup parent) {
 
-    public View getView(final int position, View convertView, ViewGroup parent) {
-
-        View item = convertView;
         ViewHolder holder;
         if (item == null) {
-            LayoutInflater inflater = context.getLayoutInflater();
+            LayoutInflater inflater = LayoutInflater.from(context);
             item = inflater.inflate(R.layout.list_insumo_almacen, null);
 
             holder = new ViewHolder();
@@ -79,14 +78,14 @@ public class AlmacenInsumoAdapter extends ArrayAdapter<InsumoAlmacenModel> imple
                 + EnvironmentVariables.setDosLugaresDecimales(i.getInsumoModel().getCostoPorUnidad()));
 
         //escribiendo el stock
-        float diferencia =  i.getCantidad()-i.getInsumoModel().getStockEstimation();
+        float diferencia = i.getCantidad() - i.getInsumoModel().getStockEstimation();
         String text = "-";
         int color = Color.BLACK;
         if (diferencia >= 0) {
-            text = "+" + diferencia ;
+            text = "+" + diferencia;
             color = diferencia > i.getInsumoModel().getStockEstimation() * 0.5 ? Color.GREEN : Color.YELLOW;
         } else {
-            text =  ""+ diferencia ;
+            text = "" + diferencia;
             color = Color.RED;
         }
 
@@ -116,86 +115,9 @@ public class AlmacenInsumoAdapter extends ArrayAdapter<InsumoAlmacenModel> imple
 
     @Override
     public InsumoAlmacenModel getItem(int position) {
-       return displayedObjects.get(position);
+        return displayedObjects.get(position);
     }
 
-    public boolean contains(InsumoAlmacenModel p) {
-        return displayedObjects.contains(p);
-    }
-
-    public void darEntrada(InsumoAlmacenModel p, AlmacenWebConnectionService o) {
-        boolean existe = false;
-//        ProductoVentaOrdenModel pv = null;
-//        int i = 0;
-//        for (; i< objects.size() && !existe ; i++){
-//            pv = objects.get(i);
-//           existe = pv.getProductoVentaModel().equals(p);
-//
-//        }
-//        if(existe){
-//            i--;
-//            pv.getProductoVentaModel().increaceAmount();
-//            objects.set(i,pv);
-//
-//        }
-//        else{
-//            ProductoVentaOrdenPKModel pk = new ProductoVentaOrdenPKModel(p.getPCod(),o.getCodOrden());
-//            pv = new ProductoVentaOrdenModel(pk);
-//            pv.setProductoVentaModel(p);
-//            pv.getProductoVentaModel().setCantidad(1);
-//            objects.add(pv);
-//        }
-//        notifyDataSetChanged();
-    }
-
-    public void darEntrada(InsumoAlmacenModel p, float ammount, AlmacenWebConnectionService o) {
-        boolean existe = false;
-//        ProductoVentaOrdenModel pv = null;
-//        int i = 0;
-//        for (; i< objects.size() && !existe ; i++){
-//            pv = objects.get(i);
-//            existe = pv.getProductoVentaModel().equals(p);
-//        }
-//        if(existe){
-//            i--;
-//            pv.getProductoVentaModel().setCantidad(pv.getProductoVentaModel().getCantidad()+ammount);
-//            objects.set(i,pv);
-//
-//        }
-//        else{
-//            ProductoVentaOrdenPKModel pk = new ProductoVentaOrdenPKModel(p.getPCod(),o.getCodOrden());
-//            pv = new ProductoVentaOrdenModel(pk);
-//            pv.setProductoVentaModel(p);
-//            pv.getProductoVentaModel().setCantidad(ammount);
-//            objects.add(pv);
-//        }
-//        notifyDataSetChanged();
-    }
-
-    public void rebajar(InsumoAlmacenModel p) {
-
-//        boolean existe = false;
-//        ProductoVentaOrdenModel pv = null;
-//        int i = 0;
-//        for (; i< objects.size() && !existe ; i++){
-//            pv = objects.get(i);
-//            existe = pv.getProductoVentaModel().getPCod().equals(p.getPCod());
-//        }
-//        if(existe){
-//            i--;
-//            if( pv.getProductoVentaModel().getCantidad()>1){
-//                pv.getProductoVentaModel().decreaseAmmount();
-//                objects.set(i,pv);
-//            }
-//            else{
-//                objects.remove(i);
-//            }
-//
-//            notifyDataSetChanged();
-//        }
-
-
-    }
 
     /**
      * <p>Returns a filter that can be used to constrain data with a filtering

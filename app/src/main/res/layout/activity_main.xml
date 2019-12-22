@@ -14,7 +14,7 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button"
+        android:layout_above="@+id/initializeSesionButton"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="25dp"
         android:gravity="center_horizontal"
@@ -24,7 +24,7 @@
         android:textSize="@dimen/titulo_Texto" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/initializeSesionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -47,20 +47,20 @@
         android:textSize="10sp" />
 
     <Button
-        android:id="@+id/buttonNotificacion"
+        android:id="@+id/notificationButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/version"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:enabled="true"
-        android:onClick="startService"
+        android:onClick="startNotificationService"
         android:text="Activar Notificaciones"
         android:textColor="@color/color_Buttons"
         android:textSize="@dimen/subtitulos" />
 
     <TextView
-        android:id="@+id/TextConnexion"
+        android:id="@+id/connectionStatusText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"

@@ -1,165 +1,141 @@
 package com.activities;
 
-import android.app.Activity;
+import android.widget.*;
+import android.os.Bundle;
+import android.view.View;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
-import com.utils.EnvironmentVariables;
+import com.controllers.MainController;
 import com.services.notifications.ReceiverNotificationService;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.concurrent.ExecutionException;
+/**
+ * Capa: Activities
+ * Clase que controla el XML del Main.
+ *
+ * @extends BaseActivity ya que es una activity propia de la aplicacion.
+ */
+public class MainActivity extends BaseActivity {
 
-import com.utils.exception.ExceptionHandler;
+    /**
+     * Controller del MainActivity para manejar las peticiones a la capa inferior.
+     */
+    private MainController controller;
 
+    //Varialbes de control
 
+    /**
+     * Label con el estado de la coneccion.
+     */
+    private TextView connectionStatusText;
 
-public class MainActivity extends Activity {
+    /**
+     * Boton para activar las notificaciones.
+     */
+    private Button notificationButton;
 
-
-    private final String URLCONN= "http://" + EnvironmentVariables.IP + ":8080/RM";
-
-    private TextView text;
-
-    private Button notif;
+    /**
+     * Boton para iniciar el flujo de la aplicacion. Boton comenzar.
+     */
+    private Button initializeSesionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);//xml asociado
 
+        initVarialbes();//inicializa las variables
+        addListeners();//agrega listeners
 
+        updateConnectionText();//actualiza el label de coneccion
+    }
 
-        setContentView(R.layout.activity_main);
+    @Override
+    protected void onResume() {//cuando se lanza un error y vira a esta la pantalla, actualiza el label de coneccion
+        super.onResume();
+        updateConnectionText();//actualiza el label de coneccion
+    }
 
-        text = ((TextView)(findViewById(R.id.TextConnexion)));
+    @Override
+    void initVarialbes() {//inicializa las variables
+        controller = new MainController();//inicializa el controller
 
-        updateConnLabel();
+        initializeSesionButton = (Button) findViewById(R.id.initializeSesionButton);//asigna el boton de iniciar a su variable
+        notificationButton = (Button) findViewById(R.id.notificationButton);//asigna el boton de notificacion a su variable
+        connectionStatusText = ((TextView) (findViewById(R.id.connectionStatusText)));//asigna el label a su variable
+    }
 
-        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+    @Override
+    void addListeners() {//agrega listeners
+        initializeSesionButton.setOnClickListener(new View.OnClickListener() {//agrega la accion del click del boton de iniciar
             @Override
-            public void onClick(View v) {
-                updateConnLabel();
-                if(text.getText().toString().equals(v.getContext().getResources().
-                        getText(R.string.no_network).toString()))
-                {
-                    ExceptionHandler.showMessageInAlert(
-                            new IOException(v.getContext().getResources().
-                                    getText(R.string.exNoServerConn).toString()),v.getContext());
-                }
-                else{
-                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            }}});
-
-
-
-
-    }
-
-
-    public void configuracionClick(View view){
-
-    }
-
-
-    private void updateConnLabel() {
-        if(checkConn()){
-            text.setText(R.string.conexion_succesfull);
-            text.setTextColor(Color.GREEN);
-
-
-        }else{
-            text.setText(R.string.no_network);
-            text.setTextColor(Color.RED);
-        }
-
-    }
-
-    private boolean checkConn() {
-        try {
-            check c =new check();
-            c.execute(URLCONN);
-            return c.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-     protected class check extends AsyncTask<String, Void, Boolean> {
-
-
-        @Override
-        protected Boolean doInBackground(String... uri) {
-            URL url = null;
-            try {
-                url = new URL(uri[0]);
-                HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                con.setDoInput(true);
-                // Starts the query
-                con.setConnectTimeout(400);
-                con.connect();
-                return true;
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-                return false;
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
+            public void onClick(View v) {//agrega la accion del click del boton
+                onInitializeSesionButtOnClick(v);
             }
-            }//TODO: arreglar esto que no pincha bien
+        });
 
+        notificationButton.setOnClickListener(new View.OnClickListener() {//agrega la accion del click del boton de notificacion
+            @Override
+            public void onClick(View v) {//agrega la accion del click del boton
+                onNotificationButtonOnClick(v);
+            }
+        });
     }
 
+    /**
+     * Accion a ejecutar cuando se da click en el boton de notificacion.
+     *
+     * @param v View de la aplicacion.
+     */
+    private void onNotificationButtonOnClick(View v) {
+        startNotificationService(v);//inicia el servicio de notificaciones
+    }
 
-    public void startService(View view){
-        notif = (Button)findViewById(R.id.buttonNotificacion);
-        if(notif.getText().equals("Activar Notificaciones")){
+    /**
+     * Accion a ejecutar cuando se da click en el boton de iniciar.
+     *
+     * @param v View de la aplicacion.
+     */
+    private void onInitializeSesionButtOnClick(View v) {
+        if (updateConnectionText()) {
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        } else {
+            this.showMessage(v.getContext().getResources().
+                    getText(R.string.noConnectionError).toString());
+        }
+    }
+
+    /**
+     * Actualiza el label de coneccion en dependencia de si hay o no coneccion con el servidor.
+     * @return true si hay coneccion con el servidor, false en cualquier otro caso.
+     */
+    private boolean updateConnectionText() {
+        if (controller.checkConnection()) {//hay coneccion con el servidor
+            connectionStatusText.setText(R.string.conexion_succesfull);
+            connectionStatusText.setTextColor(Color.GREEN);
+
+            return true;
+        } else {//NO hay coneccion con el servidor
+            connectionStatusText.setText(R.string.no_network);
+            connectionStatusText.setTextColor(Color.RED);
+
+            return false;
+        }
+    }
+
+    /**
+     * Inicia el servicio de notificaciones.
+     * @param v View de la aplicacion.
+     * TODO: ver bien si esto es logica o aqui, y ver la opcion del toggle button
+     */
+    public void startNotificationService(View v) {
+        if (notificationButton.getText().equals("Activar Notificaciones")) {//si esta activado, lo desactiva
             startService(new Intent(MainActivity.this, ReceiverNotificationService.class));
-            notif.setText("Desactivar Notificationes");
-
-        }
-        else{
+            notificationButton.setText("Desactivar Notificationes");
+        } else {//si esta desactivado, lo activa
             stopService(new Intent(MainActivity.this, ReceiverNotificationService.class));
-            notif.setText("Activar Notificationes");
-
+            notificationButton.setText("Activar Notificationes");
         }
-
     }
-
 
 }

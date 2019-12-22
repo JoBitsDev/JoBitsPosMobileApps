@@ -1,103 +1,122 @@
 package com.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.*;
 
-import com.utils.EnvironmentVariables;
-import com.services.web_connections.LoginWebConnectionServiceService;
+import com.controllers.LoginController;
 
-import java.util.concurrent.ExecutionException;
+/**
+ * Capa: Activities
+ * Clase que controla el XML del login.
+ *
+ * @extends BaseActivity ya que es una activity propia de la aplicacion.
+ */
+public class LoginActivity extends BaseActivity {
 
+    /**
+     * Controller del LoginActivity para manejar las peticiones a la capa inferior.
+     */
+    private LoginController controller;
 
+    //Varialbes de control
 
-public class LoginActivity extends Activity {
+    /**
+     * Label que indica el estado del logion, correcto o contrasenna incorreco.
+     */
+    private TextView loginResult;
 
+    /**
+     * Boton para loguerse.
+     */
+    private Button loginButton;
 
-    LoginActivity l;
-    TextView result;
+    /**
+     * Campo de texto para escribir el usuario.
+     */
+    private EditText user;
+
+    /**
+     * Campo de texto para escribir la contrasenna.
+     */
+    private EditText pass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login);//xml asociado
 
-    }
-
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login, menu);
-        return true;
+        initVarialbes();//inicializa las variables
+        addListeners();//agrega listeners
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    void initVarialbes() {//inicializa las variables
+        controller = new LoginController();//inicializa el controller
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        loginResult = (TextView) findViewById(R.id.loginResult);//asigna el label a su variable
+        loginButton = (Button) findViewById(R.id.loginButton);//asigna el boton a su variable
+        user = (EditText) findViewById(R.id.user);//asigna el campo de texto de usuario a su variable
+        pass = (EditText) findViewById(R.id.pass);//asigna el campo de texto de contrasenna a su variable
     }
 
-    public void autenticar(View view){
+    @Override
+    void addListeners() {//agrega listeners
+        loginButton.setOnClickListener(new View.OnClickListener() {//listener del boton
+            @Override
+            public void onClick(View v) {//agrega la accion del click del boton
+                onLoginButtonOnClick(v);
+            }
+        });
+    }
 
-        EditText user = (EditText) findViewById(R.id.user);
-        EditText pass = (EditText) findViewById(R.id.pass);
-        result = (TextView) findViewById(R.id.result);
-        String username = user.getText().toString();
-        String password = pass.getText().toString();
+    /**
+     * Accion a ejecutar cuando se da click en el boton del login.
+     *
+     * @param v View de la aplicacion.
+     */
+    private void onLoginButtonOnClick(View v) {//accion del click del boton
+        autenticar(v);//llama a autenticar
+    }
 
-        if(username == null || username.isEmpty() || password == null || password.isEmpty()){
-            result.setText(R.string.errorAlAutenticar);}
-        else {
-            l = this;
-            LoginWebConnectionServiceService login = new LoginWebConnectionServiceService(EnvironmentVariables.IP,"8080",username,password);
+    /**
+     * Acción a ejecutar cuando se da click en el boton login y se va a autenticar el usuario.
+     * @param v View de la aplicacion.
+     */
+    private void autenticar(View v) {
+        String username = user.getText().toString();//nombre de usuario del campo de texto
+        String password = pass.getText().toString();//contrasenna del campo de texto
 
+        if (username == null || username.isEmpty() || password == null || password.isEmpty()) {//si es null o esta vacio: Error
+            errorAlAutenticar();
+        } else {
             try {
-                if (login.authenticate()){
-                    result.setTextColor(Color.GREEN);
-                    result.setText(R.string.autenticacionCorrecta);
+                if (controller.loginAction(username, password)) {//si se auntentica correctamente
+                    loginResult.setTextColor(Color.GREEN);
+                    loginResult.setText(R.string.autenticacionCorrecta);
 
-                   Intent launch = new Intent(l, PantallaPrincipalActivity.class);
-                    launch.putExtra(String.valueOf(R.string.user),username);
+                    //cambio de activity
+                    Intent launch = new Intent(this, PantallaPrincipalActivity.class);
+                    launch.putExtra(String.valueOf(R.string.user), username);
                     startActivity(launch);
 
+                } else {//si no es correcto lanza error
+                    errorAlAutenticar();
                 }
-                else{
-
-                    result.setTextColor(Color.RED);
-                    result.setText(R.string.errorAlAutenticar);
-                }
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                notificarError(e);
             }
-
-
         }
-
-
-
-
     }
 
-    public void prueba (View view){
-
+    /**
+     * Cambia el estado del label a: error al autenticar.
+     */
+    private void errorAlAutenticar() {
+        loginResult.setTextColor(Color.RED);
+        loginResult.setText(R.string.errorAlAutenticar);
     }
+
 }
