@@ -1,19 +1,28 @@
 package com.controllers;
 
+import java.net.*;
+import java.io.IOException;
 import android.os.AsyncTask;
-
 import com.utils.EnvironmentVariables;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.concurrent.ExecutionException;
-
+/**
+ * Capa: Controllers
+ * Clase base abstracta para TODAS los controllers de la aplicación.
+ * TODOS los controllers extienden de esta clase y proporciona metodos basicos para todas como
+ * chequear la coneccion con el servidor.
+ */
 public abstract class BaseController {
 
+    /**
+     * URL con la coneccion al servidor.
+     */
     protected final String URLCONN = "http://" + EnvironmentVariables.IP + ":" + EnvironmentVariables.PORT + "/RM";
 
+    /**
+     * Chequea la coneccion con el servidor, hace un ping y verifica respuesta.
+     * En caso de CUALQUIER error con el servido lo maneja y da false.
+     * @return true si hay coneccion con el servidor, false de lo contrario.
+     */
     public boolean checkConnection(){
         try {
             Check c = new Check();
@@ -24,6 +33,9 @@ public abstract class BaseController {
         }
     }
 
+    /**
+     * Clase Asincronica para chequear la coneccion con el servidor.
+     */
     private class Check extends AsyncTask<String, Void, Boolean> {
 
         @Override
@@ -34,7 +46,7 @@ public abstract class BaseController {
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
                 con.setDoInput(true);
                 // Starts the query
-                con.setConnectTimeout(400);
+                con.setConnectTimeout(500);//tiempo de espera maximo de la coneccion
                 con.connect();
                 return true;
 

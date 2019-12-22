@@ -1,11 +1,11 @@
 package com.controllers;
 
-import android.os.AsyncTask;
-
-import java.io.IOException;
-import java.net.*;
-import java.util.concurrent.ExecutionException;
-
+/**
+ * Capa: Controllers
+ * Clase controladora de MainActivity, encargada de manejar sus peticiones con la capa inferior.
+ *
+ * @extends BaseController ya que es un controller plicacion.
+ */
 public class MainController extends BaseController {
 
 }

@@ -54,7 +54,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:enabled="true"
-        android:onClick="startService"
+        android:onClick="startNotificationService"
         android:text="Activar Notificaciones"
         android:textColor="@color/color_Buttons"
         android:textSize="@dimen/subtitulos" />
