@@ -1,14 +1,12 @@
 package com.services.web_connections;
 
+import com.utils.exception.*;
 import com.services.models.OrdenModel;
-import com.services.parsers.OrdenXMLParser;
 import com.utils.EnvironmentVariables;
+import com.services.parsers.OrdenXMLParser;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
+import java.util.*;
 
 /**
  * Created by Jorge on 24/9/17.
@@ -16,148 +14,80 @@ import java.util.concurrent.ExecutionException;
 
 public class OrdenWebConnectionService extends SimpleWebConnectionService {
 
-    private String codOrden,usuarioTrabajador,codMesa;
+    private String codOrden, usuarioTrabajador, codMesa;
     private ArrayList<String> codOrdenes = new ArrayList<String>();
     private final String P = "com.restmanager.orden/",
-    fetchNoOrden =  "fetch";
+            fetchNoOrden = "fetch";
     boolean deLaCasa = false;
 
 
-
-
     public OrdenWebConnectionService(String codOrden, String codMesa, String usuarioTrabajador) {
-        super(EnvironmentVariables.IP, "8080");
+        super(EnvironmentVariables.IP, EnvironmentVariables.PORT);
         this.codMesa = codMesa;
         this.codOrden = codOrden;
         this.usuarioTrabajador = usuarioTrabajador;
-        path+= P ;
+        path += P;
     }
 
 
-    public OrdenWebConnectionService(String codMesa, String usuarioTrabajador) throws ExecutionException, InterruptedException {
-        super(EnvironmentVariables.IP, "8080");
-        path+= P ;
+    public OrdenWebConnectionService(String codMesa, String usuarioTrabajador) {
+        super(EnvironmentVariables.IP, EnvironmentVariables.PORT);
+        path += P;
         this.codMesa = codMesa;
         this.usuarioTrabajador = usuarioTrabajador;
-
-
-
     }
 
-    public String fetchCodOrden() throws ExecutionException, InterruptedException {
-        return codOrden =connect(path + fetchNoOrden);
+    public String fetchCodOrden() throws ServerErrorException, NoConnectionException {
+        return codOrden = connect(path + fetchNoOrden);
     }
 
-    public List<String> fetchAllCodOrden() throws ExecutionException, InterruptedException {
-       return Arrays.asList(connect(path + "FINDALL_"+getCodMesa()).split(","));
+    public List<String> fetchAllCodOrden() throws ServerErrorException, NoConnectionException {
+        return Arrays.asList(connect(path + "FINDALL_" + getCodMesa()).split(","));
     }
 
 
-    public boolean initOrden(){
-        try {
-            fetchCodOrden();
-            return  connect(path+"CREATE_"+codMesa+"_"+usuarioTrabajador).equals("1");
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    public boolean initOrden() throws ServerErrorException, NoConnectionException {
+        fetchCodOrden();
+        return connect(path + "CREATE_" + codMesa + "_" + usuarioTrabajador).equals(EnvironmentVariables.PETITION_TRUE);
+    }
+
+    public boolean addProducto(String codProducto) throws ServerErrorException, NoConnectionException {
+        return connect(path + "ADD_" + codOrden + "_" + codProducto).equals(EnvironmentVariables.PETITION_TRUE);
+    }
+
+    public boolean addProducto(String codProducto, float cantidad) throws ServerErrorException, NoConnectionException {
+        return connect(path + "ADD_" + codOrden + "_" + codProducto + "_" + cantidad).equals(EnvironmentVariables.PETITION_TRUE);
+    }
+
+    public boolean removeProducto(String codProducto) throws ServerErrorException, NoConnectionException {
+        return connect(path + "REMOVE_" + codOrden + "_" + codProducto).equals(EnvironmentVariables.PETITION_TRUE);
+    }
+
+    public boolean removeAllProducts() throws ServerErrorException, NoConnectionException {
+        return connect(path + "REMOVEALL_" + codOrden).equals(EnvironmentVariables.PETITION_TRUE);
+    }
+
+    public boolean finishOrden(boolean deLaCasa) throws ServerErrorException, NoConnectionException {
+        this.deLaCasa = deLaCasa;
+        connect(path + "SETDELACASA_" + codOrden + "_" + deLaCasa);//TODO: este es lo que hay que llamar paraponerle de la casa en el servidor
+        return connect(path + "FINISH_" + codOrden).equals(EnvironmentVariables.PETITION_TRUE);
+    }
+
+    public String sendToKitchen() throws ServerErrorException, NoConnectionException {
+        return connect(path + "ENVIARCOCINA_" + codOrden);
+    }
+
+    public String findCodOrden() throws ServerErrorException, NoConnectionException {
+        codOrden = connect(path + "FIND_" + codMesa);
+        if (codOrden == null) {
+            throw new NullPointerException("Error 101");//TODO: serio?? la mesera ve error 101, sabe lo que es, de paso abre el IDE y lo corrige.
         }
-        return false;
+        return codOrden;
     }
 
-    public boolean addProducto(String codProducto){
-
-        try {
-            return  connect(path+"ADD_"+codOrden+"_"+codProducto).equals("1");
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return false;
-
+    public OrdenModel findOrden(String codOrden) {
+        return new OrdenXMLParser().fetch(path + codOrden).get(0);
     }
-    public boolean addProducto(String codProducto,float cantidad){
-
-        try {
-            return  connect(path+"ADD_"+codOrden+"_"+codProducto+"_"+cantidad).equals("1");
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return false;
-
-    }
-    public boolean removeProducto(String codProducto){
-        try {
-            return  connect(path+"REMOVE_"+codOrden+"_"+codProducto).equals("1");
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return false;
-
-    }
-
-    public boolean removeAllProducts(){
-        try {
-            return  connect(path+"REMOVEALL_"+codOrden).equals("1");
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return false;
-
-    }
-
-    public boolean finishOrden (boolean deLaCasa){
-        try {
-            this.deLaCasa = deLaCasa;
-                    connect(path+"SETDELACASA_"+codOrden+"_"+deLaCasa);
-            return  connect(path+"FINISH_"+codOrden).equals("1");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-
-    }
-
-    public String sendToKitchen(){
-        try {
-            return connect(path+"ENVIARCOCINA_"+codOrden);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return null;
-
-    }
-
-    public String findCodOrden() {
-        try {
-            codOrden = connect(path+"FIND_"+codMesa);
-            if(codOrden == null){
-                throw new NullPointerException("Error 101");
-            }
-           return codOrden;
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return null;
-
-    }
-
-    public OrdenModel findOrden(String codOrden){
-        return new OrdenXMLParser().fetch(path+codOrden).get(0);
-
-    }
-
 
     public String getCodOrden() {
         return codOrden;
@@ -183,121 +113,44 @@ public class OrdenWebConnectionService extends SimpleWebConnectionService {
         this.codMesa = codMesa;
     }
 
-
-    public String findCamareroUser() {
-        try{
-     return connect(path + "GETCAMARERO_"+codOrden);}
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
+    public String findCamareroUser() throws ServerErrorException, NoConnectionException {
+        return connect(path + "GETCAMARERO_" + codOrden);
     }
 
-    public String moverAMesa(String codMesa) {
-        try{
-            return connect(path + "MOVERAMESA_"+getCodOrden()+"_"+codMesa);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
-
+    public String moverAMesa(String codMesa) throws ServerErrorException, NoConnectionException {
+        return connect(path + "MOVERAMESA_" + getCodOrden() + "_" + codMesa);
     }
 
-    public String addNota(String pCod,String nota){
-        try {
-            return connect(path + "ADDNOTA_"+getCodOrden()+"_"+pCod+"_"+nota);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return null;
-
+    public String addNota(String pCod, String nota) throws ServerErrorException, NoConnectionException {
+        return connect(path + "ADDNOTA_" + getCodOrden() + "_" + pCod + "_" + nota);
     }
 
-    public String getNota(String pCod){
-        try {
-            String ret = connect(path + "GETNOTA_"+getCodOrden()+"_"+pCod);
-                   return ret.equals("0") ? "" : ret;
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return null;
-
+    public String getNota(String pCod) throws ServerErrorException, NoConnectionException {
+        String ret = connect(path + "GETNOTA_" + getCodOrden() + "_" + pCod);
+        return ret.equals(EnvironmentVariables.PETITION_FALSE) ? "" : ret;
     }
 
-    public String getComensal(String pCod) {
-        try {
-            return connect(path + "GETCOMENSAL_"+getCodOrden()+"_"+pCod);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public String getComensal(String pCod) throws ServerErrorException, NoConnectionException {
+        return connect(path + "GETCOMENSAL_" + getCodOrden() + "_" + pCod);
     }
 
-    public String addComensal(String pCod,String comensal) {
-        try {
-            return connect(path + "ADDCOMENSAL_"+getCodOrden()+"_"+pCod+"_"+comensal);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public String addComensal(String pCod, String comensal) throws ServerErrorException, NoConnectionException {
+        return connect(path + "ADDCOMENSAL_" + getCodOrden() + "_" + pCod + "_" + comensal);
     }
 
-    public String menuInfantil(int entrante, int plato_fuerte, int liquido, int postre, String menuinfantil_nota) {
-        try {
-            return connect(path + "MENUINFANTIL_"+getCodOrden()+"_"+entrante+"_"+plato_fuerte+"_"+postre+"_"+liquido+"_"+menuinfantil_nota);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-
+    public String menuInfantil(int entrante, int plato_fuerte, int liquido, int postre, String menuinfantil_nota) throws ServerErrorException, NoConnectionException {
+        return connect(path + "MENUINFANTIL_" + getCodOrden() + "_" + entrante + "_" + plato_fuerte + "_" + postre + "_" + liquido + "_" + menuinfantil_nota);
     }
 
-    public String cederAUsuario(String usuario) {
-        try {
-            return connect(path + "CEDERORDEN_"+getCodOrden()+"_"+ usuario);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public String cederAUsuario(String usuario) throws ServerErrorException, NoConnectionException {
+        return connect(path + "CEDERORDEN_" + getCodOrden() + "_" + usuario);
     }
 
-    public boolean isMine(){
-
-        try {
-            return connect(path + "ISMINE_"+getCodMesa()+"_"+getUsuarioTrabajador()).equals("1");
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return false;
-
+    public boolean isMine() throws ServerErrorException, NoConnectionException {
+        return connect(path + "ISMINE_" + getCodMesa() + "_" + getUsuarioTrabajador()).equals(EnvironmentVariables.PETITION_TRUE);
     }
 
-    public boolean validate() {
-        try {
-            return connect(path + "ISVALID_" + getCodOrden()).equals("1");
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return false;
+    public boolean validate() throws ServerErrorException, NoConnectionException {
+        return connect(path + "ISVALID_" + getCodOrden()).equals(EnvironmentVariables.PETITION_TRUE);
     }
 }
