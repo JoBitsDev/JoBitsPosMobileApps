@@ -24,6 +24,7 @@ import com.controllers.PantallaPrincipalController;
 import com.services.models.InsumoAlmacenModel;
 import com.utils.adapters.AlmacenInsumoAdapter;
 import com.utils.adapters.FilterAdapter;
+import com.utils.exception.ExceptionHandler;
 
 import java.util.concurrent.ExecutionException;
 
@@ -55,7 +56,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
 
     @Override
-    void initVarialbes() {
+    protected void initVarialbes() {
         listView = (ListView) findViewById(R.id.listaInsumos);
         userText = (TextView) findViewById(R.id.textUser);
         almacenText = (TextView) findViewById(R.id.textViewNombreAlmacen);
@@ -71,7 +72,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     }
 
     @Override
-    void addListeners() {
+    protected void addListeners() {
         searchText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -111,7 +112,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 listView.setAdapter(new AlmacenInsumoAdapter(view.getContext(), R.id.listaInsumos, controller.filterBy(spinnerFiltrar.getSelectedItem().toString())));
             }
         } catch (Exception e) {
-            notificarError(e);
+            ExceptionHandler.handleException(e, this);
         }
     }
 
@@ -151,10 +152,10 @@ public class PantallaPrincipalActivity extends BaseActivity {
             if (resp) {
                 showMessage("Imprimiendo...");
             } else {
-                notificarError(new Exception());
+                ExceptionHandler.handleException(new Exception("Error imprimiendo"), this);
             }
         } catch (Exception e) {
-            notificarError(e);
+            ExceptionHandler.handleException(e, this);
         }
         return resp;
     }
@@ -166,10 +167,10 @@ public class PantallaPrincipalActivity extends BaseActivity {
             if (resp) {
                 showMessage("Imprimiendo...");
             } else {
-                notificarError(new Exception());
+                ExceptionHandler.handleException(new Exception("Error imprimiendo"), this);
             }
         } catch (Exception e) {
-            notificarError(e);
+            ExceptionHandler.handleException(e, this);
         }
         return resp;
     }
@@ -177,12 +178,16 @@ public class PantallaPrincipalActivity extends BaseActivity {
     public void onEntradaClick(final View v) {
         try {
             final InsumoAlmacenModel insumoModel = ((InsumoAlmacenModel) listView.getAdapter().getItem((Integer) v.getTag()));
+
             final EditText input = new EditText(v.getContext());
-            final EditText amount = new EditText(v.getContext());
             input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
             input.setRawInputType(Configuration.KEYBOARD_12KEY);
+
+            final EditText amount = new EditText(v.getContext());
             amount.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
             amount.setRawInputType(Configuration.KEYBOARD_12KEY);
+
+            final BaseActivity act = this;
             new AlertDialog.Builder(v.getContext()).
                     setView(input).
                     setTitle("Entrada de InsumoModel").
@@ -200,7 +205,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                     try {
                         cantidad = Float.parseFloat(input.getText().toString()) * insumoModel.getInsumoModel().getCostoPorUnidad();
                     } catch (Exception e) {
-                        notificarError(e);
+                        ExceptionHandler.handleException(e, act);
                     }
                     amount.setText(cantidad.toString());
                     amount.selectAll();
@@ -220,7 +225,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
                                 controller.darEntrada(insumoModel, cantidad, monto);
                             } catch (Exception e) {
-                                notificarError(e);
+                                ExceptionHandler.handleException(e, act);
                             }
 
                             listView.post(new Runnable() {
@@ -238,7 +243,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                     create().
                     show();
         } catch (Exception e) {
-            notificarError(e);
+            ExceptionHandler.handleException(e, this);
         }
     }
 
@@ -250,17 +255,21 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 onRebajaClick(v);
             }
         } catch (Exception e) {
-            notificarError(e);
+            ExceptionHandler.handleException(e, this);
         }
     }
 
     private void onSalidaClick(final View v) throws ExecutionException, InterruptedException {
         try {
             final InsumoAlmacenModel i = ((InsumoAlmacenModel) listView.getAdapter().getItem((Integer) v.getTag()));
-            final EditText input = new EditText(v.getContext());
             final String[] ipvs = getIPVData(i.getInsumoModel().getCodInsumo());
+
+            final EditText input = new EditText(v.getContext());
             input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
             input.setRawInputType(Configuration.KEYBOARD_12KEY);
+
+            final BaseActivity act = this;
+
             new AlertDialog.Builder(v.getContext()).
                     setView(input).
                     setTitle("Salida a punto de elaboracion").
@@ -282,7 +291,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                             try {
                                                 cantidad = Float.parseFloat(input.getText().toString());
                                             } catch (Exception e) {
-                                                notificarError(e);
+                                                ExceptionHandler.handleException(e, act);
                                             }
                                             if (cantidad > i.getCantidad()) {
                                                 Toast.makeText(v.getContext(), R.string.saldo_insuficiente, Toast.LENGTH_LONG);
@@ -291,7 +300,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                                 try {
                                                     controller.darSalida(i, cantidad, ipvs[which]);
                                                 } catch (Exception e) {
-                                                    notificarError(e);
+                                                    ExceptionHandler.handleException(e, act);
                                                 }
                                                 listView.post(new Runnable() {
                                                     @Override
@@ -318,17 +327,21 @@ public class PantallaPrincipalActivity extends BaseActivity {
                     create().
                     show();
         } catch (Exception e) {
-            notificarError(e);
+            ExceptionHandler.handleException(e, this);
         }
     }
 
     private void onRebajaClick(final View v) {//try catch ya en el que lo llama
         final InsumoAlmacenModel insumoModel = ((InsumoAlmacenModel) listView.getAdapter().getItem((Integer) v.getTag()));
+
         final EditText input = new EditText(v.getContext());
         input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
         input.setRawInputType(Configuration.KEYBOARD_12KEY);
+
         final EditText razon = new EditText(v.getContext());
         razon.setInputType(InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE);
+
+        final BaseActivity act = this;
         new AlertDialog.Builder(v.getContext()).
                 setView(input).
                 setTitle("Merma").
@@ -366,7 +379,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                     try {
                                         controller.rebajar(insumoModel, cantidad, razon.getText().toString());
                                     } catch (Exception e) {
-                                        notificarError(e);
+                                        ExceptionHandler.handleException(e, act);
                                     }
                                     listView.post(new Runnable() {
                                         @Override
@@ -393,7 +406,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         try {
             return new AlmacenInsumoAdapter(this, R.id.listaInsumos, controller.getPrimerAlmacen());
         } catch (Exception e) {
-            notificarError(e);
+            ExceptionHandler.handleException(e, this);
             return null;
         }
     }
