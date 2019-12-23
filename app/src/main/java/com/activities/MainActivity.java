@@ -36,7 +36,7 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    void initVarialbes() {
+    protected void initVarialbes() {
         controller = new MainController();
 
         notificationButton = (Button) findViewById(R.id.notificationButton);
@@ -45,7 +45,7 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    void addListeners() {
+    protected void addListeners() {
         initializeSesionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

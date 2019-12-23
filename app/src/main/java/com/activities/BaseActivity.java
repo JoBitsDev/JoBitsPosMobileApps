@@ -25,9 +25,9 @@ public abstract class BaseActivity extends Activity {
 
     private Bundle bundle;
 
-    abstract void initVarialbes();
+    abstract protected void initVarialbes();
 
-    abstract void addListeners();
+    abstract protected void addListeners();
 
     protected void setAdapters() {
     }

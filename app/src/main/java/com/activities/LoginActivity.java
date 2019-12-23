@@ -28,7 +28,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     @Override
-    void initVarialbes() {
+    protected void initVarialbes() {
         controller = new LoginController();
 
         loginResult = (TextView) findViewById(R.id.loginResult);
@@ -38,7 +38,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     @Override
-    void addListeners() {
+    protected void addListeners() {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
