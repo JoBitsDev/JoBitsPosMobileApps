@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.*;
 
 import com.controllers.LoginController;
+import com.utils.exception.ExceptionHandler;
 
 
 public class LoginActivity extends BaseActivity {
@@ -72,7 +73,7 @@ public class LoginActivity extends BaseActivity {
                     loginResult.setText(R.string.errorAlAutenticar);
                 }
             } catch (Exception e) {
-                notificarError(e);
+                ExceptionHandler.handleException(e, this);
             }
 
         }

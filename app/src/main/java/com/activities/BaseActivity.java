@@ -66,7 +66,7 @@ public abstract class BaseActivity extends Activity {
         this.bundle = bundle;
     }
 
-    public void notificarError(Exception e) {
+    /*public void notificarError(Exception e) { Noficacion de error vieja, entes de procesarlo _todo con el ExceptionHandler.
         String noConnectionError = findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.noConnectionError).toString();
         String serverError = findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.serverError).toString();
         String unespectedError = findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.unespectedError).toString();
@@ -90,9 +90,8 @@ public abstract class BaseActivity extends Activity {
                 navigateUpTo(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
-
         dialog.show();
-    }
+    }*/
 
 }
 
