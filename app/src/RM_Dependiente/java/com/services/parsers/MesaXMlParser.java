@@ -19,9 +19,8 @@ public class MesaXMlParser extends AbstractXmlParser<MesaModel> {
             ESTADO = "estado";
 
     public MesaXMlParser() {
-    super("mesa","mesas");
+        super("mesa", "mesas");
     }
-
 
 
     // Parses the contents of an entry. If it encounters a title, summary, or link tag, hands them
@@ -38,16 +37,16 @@ public class MesaXMlParser extends AbstractXmlParser<MesaModel> {
             }
             String name = parser.getName();
             if (name.equals(CAPACIDAD_MAX)) {
-                capacidadMax = readString(parser,CAPACIDAD_MAX);
+                capacidadMax = readString(parser, CAPACIDAD_MAX);
             } else if (name.equals(COD_MESA)) {
-                codMesa = readString(parser,COD_MESA);
+                codMesa = readString(parser, COD_MESA);
             } else if (name.equals(ESTADO)) {
-                estado = readString(parser,ESTADO);
+                estado = readString(parser, ESTADO);
             } else {
                 skip(parser);
             }
         }
-        return new MesaModel(codMesa, estado , Integer.parseInt(capacidadMax));
+        return new MesaModel(codMesa, estado, Integer.parseInt(capacidadMax));
     }
 
     public MesaModel readEntry(XmlPullParser parser, String start) throws XmlPullParserException, IOException {
@@ -61,20 +60,17 @@ public class MesaXMlParser extends AbstractXmlParser<MesaModel> {
             }
             String name = parser.getName();
             if (name.equals(CAPACIDAD_MAX)) {
-                capacidadMax = readString(parser,CAPACIDAD_MAX);
+                capacidadMax = readString(parser, CAPACIDAD_MAX);
             } else if (name.equals(COD_MESA)) {
-                codMesa = readString(parser,COD_MESA);
+                codMesa = readString(parser, COD_MESA);
             } else if (name.equals(ESTADO)) {
-                estado = readString(parser,ESTADO);
+                estado = readString(parser, ESTADO);
             } else {
                 skip(parser);
             }
         }
-        return new MesaModel(codMesa, estado , Integer.parseInt(capacidadMax));
+        return new MesaModel(codMesa, estado, Integer.parseInt(capacidadMax));
     }
-
-
-
 
 
 }

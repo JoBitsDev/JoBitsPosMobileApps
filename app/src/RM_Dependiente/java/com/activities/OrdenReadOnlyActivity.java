@@ -20,7 +20,7 @@ import com.utils.EnvironmentVariables;
 import com.utils.adapters.MenuAdapter;
 import com.utils.adapters.ProductoVentaOrdenAdapter;
 import com.services.parsers.MesaXMlParser;
-import com.services.parsers.ProductoVordenXMLParser;
+import com.services.parsers.ProductoVentaOrdenXMLParser;
 import com.services.web_connections.PersonalWebConnectionServiceService;
 
 import java.util.ArrayList;
@@ -88,7 +88,7 @@ public class OrdenReadOnlyActivity extends BaseActivity {
 
             if(codOrden!=null){
             orden = new OrdenWebConnectionService(codOrden,mesa.getText().toString(),dependiente.getText().toString());
-            fillAct(new ProductoVordenXMLParser(codOrden).fetch(url3+codOrden));
+            fillAct(new ProductoVentaOrdenXMLParser(codOrden).fetch(url3+codOrden));
             }
             else{
             orden = new OrdenWebConnectionService(mesa.getText().toString(),dependiente.getText().toString());
@@ -165,12 +165,12 @@ public class OrdenReadOnlyActivity extends BaseActivity {
     private void initComponents() {
         productosVOrden = new ArrayList<ProductoVentaOrdenModel>();
 
-        mesa = (TextView) findViewById(R.id.labelmesaNo);
-        ordenNo = (TextView) findViewById(R.id.labelOrdenNo);
+        mesa = (TextView) findViewById(R.id.mesaNoLabel);
+        ordenNo = (TextView) findViewById(R.id.ordenNoLabel);
         fecha = (TextView) findViewById(R.id.labelFecha);
-        dependiente = (TextView) findViewById(R.id.labelDependiente);
-        totalPrincipal = (TextView) findViewById(R.id.labelTotal);
-        totalSecundaria = (TextView) findViewById(R.id.labelTotal2);
+        dependiente = (TextView) findViewById(R.id.dependienteLabel);
+        totalPrincipal = (TextView) findViewById(R.id.totalPrincipalLabel);
+        totalSecundaria = (TextView) findViewById(R.id.totalSecundariaLabel);
 
         listaOrden = (ListView) findViewById(R.id.listaOrden);
 
@@ -194,7 +194,7 @@ public class OrdenReadOnlyActivity extends BaseActivity {
 
 
         final String [] usuarios = new PersonalWebConnectionServiceService().
-                getUsiariosActivos();
+                getUsuariosActivos();
         Arrays.sort(usuarios);
 
 
@@ -381,7 +381,7 @@ public class OrdenReadOnlyActivity extends BaseActivity {
     }
 
     public void addProducto(){
-        //fillAct(new ProductoVentaOrdenXMLParser(orden.getCodOrden()).fetch(url3+orden.getCodOrden()));
+        //fillAct(new ProductoVentaOrdenXMLParser(orden.getCodOrden()).fetch(urlListProducts_+orden.getCodOrden()));
         ProductoVentaOrdenAdapter adapter = (ProductoVentaOrdenAdapter) listaOrden.getAdapter();
         if(lastClickedMenu != null){
             if(orden.addProducto(lastClickedMenu.getPCod())){
@@ -399,7 +399,7 @@ public class OrdenReadOnlyActivity extends BaseActivity {
 
     private void removeProducto() {
 
-        //fillAct(new ProductoVentaOrdenXMLParser(orden.getCodOrden()).fetch(url3+orden.getCodOrden()));
+        //fillAct(new ProductoVentaOrdenXMLParser(orden.getCodOrden()).fetch(urlListProducts_+orden.getCodOrden()));
         ProductoVentaOrdenAdapter adapter = (ProductoVentaOrdenAdapter) listaOrden.getAdapter();
 
         if(lastClickedOrden != null){

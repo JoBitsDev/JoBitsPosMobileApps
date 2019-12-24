@@ -67,7 +67,7 @@ runServer();
             while (true) {
                 try {
                     waitForConnection(); // wait for a connection
-                    getStreams(); // get input & output streams
+                    getStreams(); // getProductoVentaOrden input & output streams
                     processConnection(); // process connection
                 } // end try
                 catch (EOFException eofException) {
@@ -91,7 +91,7 @@ runServer();
 
     } // end method waitForConnection
 
-    // get streams to send and receive data
+    // getProductoVentaOrden streams to send and receive data
     private void getStreams() throws IOException {
         // set up output stream for objects
         output = new ObjectOutputStream(connection.getOutputStream());

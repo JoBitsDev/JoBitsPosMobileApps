@@ -43,7 +43,7 @@
     <string name="conexion_succesfull">La conexión con el servidor fue exitosa</string>
 
 
-    <string name="errorAlBorrar">el producto seleccionado ya ha sido borrado</string>
+    <string name="errorAlBorrar">El producto seleccionado ya ha sido borrado</string>
     <string name = "moverAMesaString">Mover a mesa</string>
     <string name="seleccioneLaMesaAMover">Seleccione la mesa destino</string>
     <string name="cancelar">Cancelar</string>

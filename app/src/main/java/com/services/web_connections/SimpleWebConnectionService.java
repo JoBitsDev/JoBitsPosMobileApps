@@ -3,9 +3,7 @@ package com.services.web_connections;
 import android.os.AsyncTask;
 
 import com.utils.EnvironmentVariables;
-import com.utils.exception.NoConnectionException;
-import com.utils.exception.ServerErrorException;
-
+import com.utils.exception.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;

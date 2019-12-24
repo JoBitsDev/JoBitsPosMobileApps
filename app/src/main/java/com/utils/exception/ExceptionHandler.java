@@ -90,7 +90,7 @@ public class ExceptionHandler {
         });
         builder.show();
 
-        Toast.makeText(c, e.getCause().getMessage(), TOAST_DURATION);//un pequenno toast con mas detalles
+        Toast.makeText(c, e.getCause().getMessage(), TOAST_DURATION).show();//un pequenno toast con mas detalles
     }
 
     /**
@@ -119,7 +119,7 @@ public class ExceptionHandler {
         });
         builder.show();
 
-        Toast.makeText(c, e.getCause().getMessage(), TOAST_DURATION);//un pequenno toast con mas detalles
+        Toast.makeText(c, e.getCause().getMessage(), TOAST_DURATION).show();//un pequenno toast con mas detalles
     }
 
     /**
@@ -148,6 +148,6 @@ public class ExceptionHandler {
         });
         builder.show();
 
-        Toast.makeText(c, e.getCause().getMessage(), TOAST_DURATION);//un pequenno toast con mas detalles
+        Toast.makeText(c, e.getCause().getMessage(), TOAST_DURATION).show();//un pequenno toast con mas detalles
     }
 }

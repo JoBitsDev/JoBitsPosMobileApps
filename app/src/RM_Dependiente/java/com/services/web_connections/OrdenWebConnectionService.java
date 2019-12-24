@@ -73,8 +73,8 @@ public class OrdenWebConnectionService extends SimpleWebConnectionService {
         return connect(path + "FINISH_" + codOrden).equals(EnvironmentVariables.PETITION_TRUE);
     }
 
-    public String sendToKitchen() throws ServerErrorException, NoConnectionException {
-        return connect(path + "ENVIARCOCINA_" + codOrden);
+    public boolean sendToKitchen() throws ServerErrorException, NoConnectionException {
+        return connect(path + "ENVIARCOCINA_" + codOrden).equals(EnvironmentVariables.PETITION_TRUE);
     }
 
     public String findCodOrden() throws ServerErrorException, NoConnectionException {
@@ -117,12 +117,12 @@ public class OrdenWebConnectionService extends SimpleWebConnectionService {
         return connect(path + "GETCAMARERO_" + codOrden);
     }
 
-    public String moverAMesa(String codMesa) throws ServerErrorException, NoConnectionException {
-        return connect(path + "MOVERAMESA_" + getCodOrden() + "_" + codMesa);
+    public boolean moverAMesa(String codMesa) throws ServerErrorException, NoConnectionException {
+        return connect(path + "MOVERAMESA_" + getCodOrden() + "_" + codMesa).equals(EnvironmentVariables.PETITION_TRUE);
     }
 
-    public String addNota(String pCod, String nota) throws ServerErrorException, NoConnectionException {
-        return connect(path + "ADDNOTA_" + getCodOrden() + "_" + pCod + "_" + nota);
+    public boolean addNota(String pCod, String nota) throws ServerErrorException, NoConnectionException {
+        return connect(path + "ADDNOTA_" + getCodOrden() + "_" + pCod + "_" + nota).equals(EnvironmentVariables.PETITION_TRUE);
     }
 
     public String getNota(String pCod) throws ServerErrorException, NoConnectionException {
@@ -134,16 +134,16 @@ public class OrdenWebConnectionService extends SimpleWebConnectionService {
         return connect(path + "GETCOMENSAL_" + getCodOrden() + "_" + pCod);
     }
 
-    public String addComensal(String pCod, String comensal) throws ServerErrorException, NoConnectionException {
-        return connect(path + "ADDCOMENSAL_" + getCodOrden() + "_" + pCod + "_" + comensal);
+    public boolean addComensal(String pCod, String comensal) throws ServerErrorException, NoConnectionException {
+        return connect(path + "ADDCOMENSAL_" + getCodOrden() + "_" + pCod + "_" + comensal).equals(EnvironmentVariables.PETITION_TRUE);
     }
 
     public String menuInfantil(int entrante, int plato_fuerte, int liquido, int postre, String menuinfantil_nota) throws ServerErrorException, NoConnectionException {
         return connect(path + "MENUINFANTIL_" + getCodOrden() + "_" + entrante + "_" + plato_fuerte + "_" + postre + "_" + liquido + "_" + menuinfantil_nota);
     }
 
-    public String cederAUsuario(String usuario) throws ServerErrorException, NoConnectionException {
-        return connect(path + "CEDERORDEN_" + getCodOrden() + "_" + usuario);
+    public boolean cederAUsuario(String usuario) throws ServerErrorException, NoConnectionException {
+        return connect(path + "CEDERORDEN_" + getCodOrden() + "_" + usuario).equals(EnvironmentVariables.PETITION_TRUE);
     }
 
     public boolean isMine() throws ServerErrorException, NoConnectionException {

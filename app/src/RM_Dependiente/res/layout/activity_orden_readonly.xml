@@ -43,7 +43,7 @@
                 android:textSize="@dimen/normal" />
 
             <TextView
-                android:id="@+id/labelOrdenNo"
+                android:id="@+id/ordenNoLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -55,10 +55,10 @@
 
 
             <TextView
-                android:id="@+id/labelmesaNo"
+                android:id="@+id/mesaNoLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/labelOrdenNo"
+                android:layout_below="@id/ordenNoLabel"
                 android:layout_marginLeft="15dp"
                 android:layout_toRightOf="@id/textView5"
                 android:text="####"
@@ -86,7 +86,7 @@
                 android:textColor="@color/color_Labels"
                 android:textSize="@dimen/normal"
                 android:layout_below="@+id/textviewfecha"
-                android:layout_toStartOf="@+id/labelDependiente" />
+                android:layout_toStartOf="@+id/dependienteLabel" />
 
             <TextView
                 android:id="@+id/labelFecha"
@@ -100,7 +100,7 @@
                 android:textSize="@dimen/normal" />
 
             <TextView
-                android:id="@+id/labelDependiente"
+                android:id="@+id/dependienteLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -160,7 +160,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/labelTotal"
+                    android:id="@+id/totalPrincipalLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -172,7 +172,7 @@
                     android:textSize="@dimen/normal" />
 
                 <TextView
-                    android:id="@+id/labelTotal2"
+                    android:id="@+id/totalSecundariaLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
