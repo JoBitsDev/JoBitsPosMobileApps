@@ -7,9 +7,8 @@ import android.text.*;
 import android.widget.*;
 import android.os.Bundle;
 
-import com.controllers.OrdenController;
 import com.services.models.*;
-import com.services.parsers.*;
+import com.controllers.OrdenController;
 
 import android.app.AlertDialog;
 
@@ -19,12 +18,10 @@ import com.utils.adapters.MenuAdapter;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 
-import com.utils.adapters.ProductoVentaOrdenAdapter;
-import com.services.web_connections.OrdenWebConnectionService;
-import com.services.web_connections.PersonalWebConnectionServiceService;
 import com.utils.exception.ExceptionHandler;
+import com.utils.adapters.ProductoVentaOrdenAdapter;
+import com.services.web_connections.PersonalWebConnectionServiceService;
 
-import static com.controllers.OrdenController.urlListProducts_;
 
 public class OrdenActivity extends BaseActivity {
 
@@ -51,141 +48,168 @@ public class OrdenActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_orden);
+        try {
+            setContentView(R.layout.activity_orden);
 
-        initVarialbes();
-        setAdapters();
-        addListeners();
+            initVarialbes();
+            setAdapters();
+            addListeners();
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     @Override
     protected void initVarialbes() {
-        controller = new OrdenController();
+        try {
+            controller = new OrdenController();
 
-        Bundle bundleExtra = getIntent().getExtras();
-        mesaNoLabel.setText(bundleExtra.getString("mesaNoLabel"));//set el No de la mesa
-        dependienteLabel.setText(bundleExtra.getString(String.valueOf(R.string.user)));//set el label con el dependiente
+            Bundle bundleExtra = getIntent().getExtras();
+            mesaNoLabel.setText(bundleExtra.getString("mesaNoLabel"));//set el No de la mesa
+            dependienteLabel.setText(bundleExtra.getString(String.valueOf(R.string.user)));//set el label con el dependiente
 
-        createOldOrden(bundleExtra);//crea la orden vieja
+            createOldOrden(bundleExtra);//crea la orden vieja
 
-        productosVOrden = new ArrayList<ProductoVentaOrdenModel>();
+            productosVOrden = new ArrayList<ProductoVentaOrdenModel>();
 
-        mesaNoLabel = (TextView) findViewById(R.id.mesaNoLabel);
-        ordenNoLabel = (TextView) findViewById(R.id.ordenNoLabel);
-        dependienteLabel = (TextView) findViewById(R.id.dependienteLabel);
-        totalPrincipalLabel = (TextView) findViewById(R.id.totalPrincipalLabel);
-        totalSecundariaLabel = (TextView) findViewById(R.id.totalSecundariaLabel);
+            mesaNoLabel = (TextView) findViewById(R.id.mesaNoLabel);
+            ordenNoLabel = (TextView) findViewById(R.id.ordenNoLabel);
+            dependienteLabel = (TextView) findViewById(R.id.dependienteLabel);
+            totalPrincipalLabel = (TextView) findViewById(R.id.totalPrincipalLabel);
+            totalSecundariaLabel = (TextView) findViewById(R.id.totalSecundariaLabel);
 
-        deLaCasaCheckBox = (CheckBox) findViewById(R.id.deLaCasaCheckBox);
+            deLaCasaCheckBox = (CheckBox) findViewById(R.id.deLaCasaCheckBox);
 
-        menuExpandableListView = (ExpandableListView) findViewById(R.id.menuExpandableListView);
-        listaOrden = (ListView) findViewById(R.id.listaOrden);
+            menuExpandableListView = (ExpandableListView) findViewById(R.id.menuExpandableListView);
+            listaOrden = (ListView) findViewById(R.id.listaOrden);
 
-        cerrarOrdenButton = (Button) findViewById(R.id.buttonCerrarOrden);
-        despacharACocinaButton = (Button) findViewById(R.id.buttondespacharCocina);
+            cerrarOrdenButton = (Button) findViewById(R.id.buttonCerrarOrden);
+            despacharACocinaButton = (Button) findViewById(R.id.buttondespacharCocina);
 
-        searchText = (EditText) findViewById(R.id.searchText);
+            searchText = (EditText) findViewById(R.id.searchText);
 
-        generarMenu(bundleExtra.getString("mesaNoLabel"));
+            generarMenu(bundleExtra.getString("mesaNoLabel"));
 
-        initTab();
+            initTab();
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     @Override
     protected void addListeners() {
-        if (cerrarOrdenButton != null) {//TODO: por que esta este if??
-            cerrarOrdenButton.setOnLongClickListener(new View.OnLongClickListener() {
+        try {
+            if (cerrarOrdenButton != null) {//TODO: por que esta este if??
+                cerrarOrdenButton.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        return onCerrarOrdenButtonLongClick();
+                    }
+                });
+            }
+
+            if (despacharACocinaButton != null) {//TODO: por que esta este if??
+                despacharACocinaButton.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        return onDespacharACocinaLongClock();
+                    }
+                });
+            }
+
+            menuExpandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
-                public boolean onLongClick(View v) {
-                    return onCerrarOrdenButtonLongClick();
+                public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
+                    return onMenuExpandableListViewItemLongClick(v, position);
                 }
             });
-        }
 
-        if (despacharACocinaButton != null) {//TODO: por que esta este if??
-            despacharACocinaButton.setOnLongClickListener(new View.OnLongClickListener() {
+            menuExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
                 @Override
-                public boolean onLongClick(View v) {
-                    return onDespacharACocinaLongClock();
+                public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                    return onMenuExpandableListViewChildClick(groupPosition, childPosition);
                 }
             });
-        }
 
-        menuExpandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
-                return onMenuExpandableListViewItemLongClick(v, position);
-            }
-        });
-
-        menuExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                return onMenuExpandableListViewChildClick(groupPosition, childPosition);
-            }
-        });
-
-        searchText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //metodo abstracto en el padre y necesita reimplementacion, pero no se usa aqui y se deja vacio
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!s.toString().isEmpty()) {
-                    listAdapter.getFilter().filter(s.toString());
+            searchText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    //metodo abstracto en el padre y necesita reimplementacion, pero no se usa aqui y se deja vacio
                 }
-            }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                //metodo abstracto en el padre y necesita reimplementacion, pero no se usa aqui y se deja vacio
-            }
-        });
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (!s.toString().isEmpty()) {
+                        listAdapter.getFilter().filter(s.toString());
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    //metodo abstracto en el padre y necesita reimplementacion, pero no se usa aqui y se deja vacio
+                }
+            });
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     private boolean onProductoVentaOrdenAdapterLongClick(final View v) {
-        final EditText input = new EditText(v.getContext());
-        input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        input.setRawInputType(Configuration.KEYBOARD_12KEY);
-        new AlertDialog.Builder(v.getContext()).
-                setView(input).
-                setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                addProducto(v, Float.parseFloat(input.getText().toString()));
-            }
-        }).create().show();
-        return true;
+        try {
+            final EditText input = new EditText(v.getContext());
+            input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            input.setRawInputType(Configuration.KEYBOARD_12KEY);
+            new AlertDialog.Builder(v.getContext()).
+                    setView(input).
+                    setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    addProducto(v, Float.parseFloat(input.getText().toString()));
+                }
+            }).create().show();
+            return true;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+            return false;
+        }
     }
 
     private boolean onMenuExpandableListViewChildClick(int groupPosition, int childPosition) {
-        lastClickedMenu = (ProductoVentaModel) listAdapter.getChild(groupPosition, childPosition);
-        addProducto();
-        searchText.setText("");
-        return true;
+        try {
+
+
+            lastClickedMenu = (ProductoVentaModel) listAdapter.getChild(groupPosition, childPosition);
+            addProducto();
+            searchText.setText("");
+            return true;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+            return false;
+        }
     }
 
     @Override
     protected void setAdapters() {
-        listAdapter = new MenuAdapter(this, secciones);
-        menuExpandableListView.setAdapter(listAdapter);
+        try {
+            listAdapter = new MenuAdapter(this, secciones);
+            menuExpandableListView.setAdapter(listAdapter);
 
-        //adapter de ProductoVentaOrden que antes de ponerlo lleva un listener
-        final ProductoVentaOrdenAdapter adapter = new ProductoVentaOrdenAdapter(this, R.id.listaOrden, productosVOrden, new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                return onProductoVentaOrdenAdapterLongClick(v);
-            }
-        });
-        listaOrden.setAdapter(adapter);
-
+            //adapter de ProductoVentaOrden que antes de ponerlo lleva un listener
+            final ProductoVentaOrdenAdapter adapter = new ProductoVentaOrdenAdapter(this, R.id.listaOrden, productosVOrden, new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return onProductoVentaOrdenAdapterLongClick(v);
+                }
+            });
+            listaOrden.setAdapter(adapter);
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     private void createOldOrden(Bundle bundleExtra) {
@@ -218,21 +242,25 @@ public class OrdenActivity extends BaseActivity {
     }
 
     private void initTab() {
-        TabHost host = (TabHost) findViewById(R.id.tabHost);
-        if (host != null) {//TODO: por que este if??
-            host.setup();
+        try {
+            TabHost host = (TabHost) findViewById(R.id.tabHost);
+            if (host != null) {//TODO: por que este if??
+                host.setup();
 
-            //Tab 1
-            TabHost.TabSpec spec = host.newTabSpec("Menu");
-            spec.setContent(R.id.menu);
-            spec.setIndicator("Menu");
-            host.addTab(spec);
+                //Tab 1
+                TabHost.TabSpec spec = host.newTabSpec("Menu");
+                spec.setContent(R.id.menu);
+                spec.setIndicator("Menu");
+                host.addTab(spec);
 
-            //Tab 2
-            spec = host.newTabSpec("Pedido");
-            spec.setContent(R.id.ordenModel);
-            spec.setIndicator("Pedido");
-            host.addTab(spec);
+                //Tab 2
+                spec = host.newTabSpec("Pedido");
+                spec.setContent(R.id.ordenModel);
+                spec.setIndicator("Pedido");
+                host.addTab(spec);
+            }
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
         }
     }
 
@@ -242,36 +270,41 @@ public class OrdenActivity extends BaseActivity {
     }
 
     private void fillAct(final List<ProductoVentaOrdenModel> orden) {
-        final ProductoVentaOrdenAdapter adapter = (ProductoVentaOrdenAdapter) listaOrden.getAdapter();
-        listaOrden.post(new Runnable() {
-            @Override
-            public void run() {
-                adapter.clear();
-                adapter.setObjects(orden);
-                updateCosto();
-            }
-        });
+        try {
+            final ProductoVentaOrdenAdapter adapter = (ProductoVentaOrdenAdapter) listaOrden.getAdapter();
+            listaOrden.post(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.clear();
+                    adapter.setObjects(orden);
+                    updateCosto();
+                }
+            });
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     private void generarMenu(String codMesa) {
-        secciones = controller.getSecciones();
-        productos = controller.getProductos(codMesa);
+        try {
+            secciones = controller.getSecciones();
+            productos = controller.getProductos(codMesa);
 
-        for (ProductoVentaModel x : productos) {
-            for (SeccionModel y : secciones) {
-                if (x.getSeccionnombreSeccion().equals(y.getNombreSeccion())) {
-                    y.addProducto(x);
-                    break;
+            for (ProductoVentaModel x : productos) {
+                for (SeccionModel y : secciones) {
+                    if (x.getSeccionnombreSeccion().equals(y.getNombreSeccion())) {
+                        y.addProducto(x);
+                        break;
+                    }
                 }
             }
-        }
 
-        for (Iterator<SeccionModel> it = secciones.iterator(); it.hasNext(); ) {//TODO: Revisar el for que asi es como mejor funciona
-            SeccionModel secc = it.next();
-            if (secc.getProductos().isEmpty()) {
-                it.remove();
+            for (Iterator<SeccionModel> it = secciones.iterator(); it.hasNext(); ) {//TODO: Revisar el for que asi es como mejor funciona
+                SeccionModel secc = it.next();
+                if (secc.getProductos().isEmpty()) {
+                    it.remove();
+                }
             }
-        }
         /*for (int i = 0; i < secciones.size(); ) {
             if (secciones.getProductoVentaOrden(i).getProductos().isEmpty()) {
                 secciones.remove(i);
@@ -279,52 +312,65 @@ public class OrdenActivity extends BaseActivity {
                 i++;
             }
         }*/
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menuExpandableListView; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_orden, menu);
-        return true;
+        try {
+            // Inflate the menuExpandableListView; this adds items to the action bar if it is present.
+            getMenuInflater().inflate(R.menu.menu_orden, menu);
+            return true;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+            return false;
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        try {
+            // Handle action bar item clicks here. The action bar will
+            // automatically handle clicks on the Home/Up button, so long
+            // as you specify a parent activity in AndroidManifest.xml.
+            int id = item.getItemId();
 
-        switch (id) {
-            case R.id.moverAMesa:
-                moverAMesa();
-                break;
-            case R.id.enviarCocina:
-                despacharACocina();
-                break;
-            case R.id.cerrarOrden:
-                cerrarOrden();
-                break;
-            case R.id.compartirPedido:
-                compartirPedido();
-                break;
-            case R.id.cederACamarero:
-                cederACamarero();
-                break;
-            case R.id.action_settings:
+            switch (id) {
+                case R.id.moverAMesa:
+                    moverAMesa();
+                    break;
+                case R.id.enviarCocina:
+                    despacharACocina();
+                    break;
+                case R.id.cerrarOrden:
+                    cerrarOrden();
+                    break;
+                case R.id.compartirPedido:
+                    compartirPedido();
+                    break;
+                case R.id.cederACamarero:
+                    cederACamarero();
+                    break;
+                case R.id.action_settings:
+                    return true;
+                default:
+                    super.onOptionsItemSelected(item);
+                    break;
+            }
+
+            //noinspection SimplifiableIfStatement
+            if (id == R.id.action_settings) {//TODO: wath??????? por que si esta el case puesto???
                 return true;
-            default:
-                super.onOptionsItemSelected(item);
-                break;
+            }
+            return super.onOptionsItemSelected(item);
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+            return false;
         }
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {//TODO: wath??????? por que si esta el case puesto???
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void cederACamarero() {
@@ -374,13 +420,21 @@ public class OrdenActivity extends BaseActivity {
     }
 
     public void onAddClick(View v) {
-        lastClickedMenu = ((ProductoVentaOrdenModel) listaOrden.getAdapter().getItem((Integer) v.getTag())).getProductoVentaModel();
-        addProducto();
+        try {
+            lastClickedMenu = ((ProductoVentaOrdenModel) listaOrden.getAdapter().getItem((Integer) v.getTag())).getProductoVentaModel();
+            addProducto();
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     public void onRemoveClick(View v) {//TODO: listener en el xml??
-        lastClickedOrden = ((ProductoVentaOrdenModel) listaOrden.getAdapter().getItem((Integer) v.getTag()));
-        removeProducto();
+        try {
+            lastClickedOrden = ((ProductoVentaOrdenModel) listaOrden.getAdapter().getItem((Integer) v.getTag()));
+            removeProducto();
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     public void onAdjuntoClick(View v) {//TODO: listener en el xml??
@@ -460,47 +514,55 @@ public class OrdenActivity extends BaseActivity {
     }
 
     public void moverAMesa() {//TODO: terminar esto
-        final BaseActivity act = this;
+        try {
+            final BaseActivity act = this;
 
-        final String[] mesas = controller.getMesas();
-        new AlertDialog.Builder(this).
-                setTitle(R.string.seleccioneLaMesaAMover).
-                setSingleChoiceItems(mesas, -1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            if (controller.moverAMesa(mesas[which])) {//TODO: ver bien esto, xq el finish()
-                                dialog.dismiss();
-                                finish();
-                                Toast.makeText(getApplicationContext(), "Movido a mesa", Toast.LENGTH_SHORT).show();//TODO: ver bien el texto
-                            } else {
-                                dialog.dismiss();
-                                Toast.makeText(getApplicationContext(), "No se pudo mover a mesa.", Toast.LENGTH_SHORT).show();
+            final String[] mesas = controller.getMesas();
+            new AlertDialog.Builder(this).
+                    setTitle(R.string.seleccioneLaMesaAMover).
+                    setSingleChoiceItems(mesas, -1, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            try {
+                                if (controller.moverAMesa(mesas[which])) {//TODO: ver bien esto, xq el finish()
+                                    dialog.dismiss();
+                                    finish();
+                                    Toast.makeText(getApplicationContext(), "Movido a mesa", Toast.LENGTH_SHORT).show();//TODO: ver bien el texto
+                                } else {
+                                    dialog.dismiss();
+                                    Toast.makeText(getApplicationContext(), "No se pudo mover a mesa.", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (Exception e) {
+                                ExceptionHandler.handleException(e, act);
                             }
-                        } catch (Exception e) {
-                            ExceptionHandler.handleException(e, act);
                         }
-                    }
-                }).
-                setNeutralButton(R.string.cancelar, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).create().show();
+                    }).
+                    setNeutralButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).create().show();
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     private void updateCosto() {
-        float tot = 0;
-        for (ProductoVentaOrdenModel x : productosVOrden) {
-            tot += x.getProductoVentaModel().getPrecioVenta() * x.getCantidad();
-        }
-        if (EnvironmentVariables.MONEDA_PRINCIPAL.equals(EnvironmentVariables.MONEDA_PRINCIPAL)) {
-            totalPrincipalLabel.setText(EnvironmentVariables.setDosLugaresDecimales(tot));
-            totalSecundariaLabel.setText(EnvironmentVariables.setDosLugaresDecimales(tot / EnvironmentVariables.conversion));
-        } else {
-            totalPrincipalLabel.setText(EnvironmentVariables.setDosLugaresDecimales(tot));
-            totalSecundariaLabel.setText(EnvironmentVariables.setDosLugaresDecimales(tot * EnvironmentVariables.conversion));
+        try {
+            float tot = 0;
+            for (ProductoVentaOrdenModel x : productosVOrden) {
+                tot += x.getProductoVentaModel().getPrecioVenta() * x.getCantidad();
+            }
+            if (EnvironmentVariables.MONEDA_PRINCIPAL.equals(EnvironmentVariables.MONEDA_PRINCIPAL)) {
+                totalPrincipalLabel.setText(EnvironmentVariables.setDosLugaresDecimales(tot));
+                totalSecundariaLabel.setText(EnvironmentVariables.setDosLugaresDecimales(tot / EnvironmentVariables.conversion));
+            } else {
+                totalPrincipalLabel.setText(EnvironmentVariables.setDosLugaresDecimales(tot));
+                totalSecundariaLabel.setText(EnvironmentVariables.setDosLugaresDecimales(tot * EnvironmentVariables.conversion));
+            }
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
         }
     }
 
@@ -542,8 +604,13 @@ public class OrdenActivity extends BaseActivity {
     }
 
     public boolean onMenuExpandableListViewItemLongClick(final View v, int position) {
-        addProductoFromMenu(v, position);
-        return true;
+        try {
+            addProductoFromMenu(v, position);
+            return true;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+            return false;
+        }
     }
 
     private void addProductoFromMenu(final View v, int position) {
@@ -622,8 +689,13 @@ public class OrdenActivity extends BaseActivity {
     }
 
     private boolean onCerrarOrdenButtonLongClick() {
-        cerrarOrden();
-        return true;
+        try {
+            cerrarOrden();
+            return true;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+            return false;
+        }
     }
 
     private void cerrarOrden() {
@@ -652,8 +724,13 @@ public class OrdenActivity extends BaseActivity {
     }
 
     private boolean onDespacharACocinaLongClock() {
-        despacharACocina();
-        return true;
+        try {
+            despacharACocina();
+            return true;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+            return false;
+        }
     }
 
     private void despacharACocina() {
