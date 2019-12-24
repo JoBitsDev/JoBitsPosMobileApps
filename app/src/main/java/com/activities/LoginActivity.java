@@ -22,45 +22,62 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
-        initVarialbes();
-        addListeners();
+        try {
+            setContentView(R.layout.activity_login);
+
+            initVarialbes();
+            addListeners();
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     @Override
     protected void initVarialbes() {
-        controller = new LoginController();
+        try {
+            controller = new LoginController();
 
-        loginResult = (TextView) findViewById(R.id.loginResult);
-        loginButton = (Button) findViewById(R.id.loginButton);
-        user = (EditText) findViewById(R.id.user);
-        pass = (EditText) findViewById(R.id.pass);
+            loginResult = (TextView) findViewById(R.id.loginResult);
+            loginButton = (Button) findViewById(R.id.loginButton);
+            user = (EditText) findViewById(R.id.user);
+            pass = (EditText) findViewById(R.id.pass);
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     @Override
     protected void addListeners() {
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onLoginButtonOnClick(v);
-            }
-        });
+        try {
+            loginButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onLoginButtonOnClick(v);
+                }
+            });
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     private void onLoginButtonOnClick(View v) {
-        autenticar(v);
+        try {
+            autenticar(v);
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     private void autenticar(View v) {
-        String username = user.getText().toString();
-        String password = pass.getText().toString();
+        try {
+            String username = user.getText().toString();
+            String password = pass.getText().toString();
 
-        if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
-            loginResult.setTextColor(Color.RED);
-            loginResult.setText(R.string.errorAlAutenticar);
-        } else {
-            try {
+            if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
+                loginResult.setTextColor(Color.RED);
+                loginResult.setText(R.string.errorAlAutenticar);
+            } else {
                 if (controller.loginAction(username, password)) {
                     loginResult.setTextColor(Color.GREEN);
                     loginResult.setText(R.string.autenticacionCorrecta);
@@ -72,10 +89,9 @@ public class LoginActivity extends BaseActivity {
                     loginResult.setTextColor(Color.RED);
                     loginResult.setText(R.string.errorAlAutenticar);
                 }
-            } catch (Exception e) {
-                ExceptionHandler.handleException(e, this);
             }
-
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
         }
 
     }

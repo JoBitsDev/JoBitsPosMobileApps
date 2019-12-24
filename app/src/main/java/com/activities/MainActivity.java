@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.controllers.MainController;
 import com.services.notifications.ReceiverNotificationService;
+import com.utils.exception.ExceptionHandler;
 
 
 public class MainActivity extends BaseActivity {
@@ -22,78 +23,110 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        initVarialbes();
-        addListeners();
 
-        updateConnectionText();
+        try {
+            setContentView(R.layout.activity_main);
+            initVarialbes();
+            addListeners();
+
+            updateConnectionText();
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     @Override
     protected void onResume() {
-        super.onResume();
-        updateConnectionText();
+        try {
+            super.onResume();
+            updateConnectionText();
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     @Override
     protected void initVarialbes() {
-        controller = new MainController();
+        try {
+            controller = new MainController();
 
-        notificationButton = (Button) findViewById(R.id.notificationButton);
-        initializeSesionButton = (Button) findViewById(R.id.initializeSesionButton);
-        connectionStatusText = ((TextView) (findViewById(R.id.connectionStatusText)));
+            notificationButton = (Button) findViewById(R.id.notificationButton);
+            initializeSesionButton = (Button) findViewById(R.id.initializeSesionButton);
+            connectionStatusText = ((TextView) (findViewById(R.id.connectionStatusText)));
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     @Override
     protected void addListeners() {
-        initializeSesionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onInitializeSesionButtOnClick(v);
-            }
-        });
-        notificationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onNotificationButtonOnClick(v);
-            }
-        });
+        try {
+            initializeSesionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onInitializeSesionButtOnClick(v);
+                }
+            });
+            notificationButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onNotificationButtonOnClick(v);
+                }
+            });
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     private void onNotificationButtonOnClick(View v) {
-        startService(v);
+        try {
+            startService(v);
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     private void onInitializeSesionButtOnClick(View v) {
-        if (updateConnectionText()) {
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-        } else {
-            this.showMessage(v.getContext().getResources().
-                    getText(R.string.noConnectionError).toString());
+        try {
+            if (updateConnectionText()) {
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            } else {
+                this.showMessage(v.getContext().getResources().
+                        getText(R.string.noConnectionError).toString());
+            }
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
         }
     }
 
     private boolean updateConnectionText() {
-        if (controller.checkConnection()) {
-            connectionStatusText.setText(R.string.conexion_succesfull);
-            connectionStatusText.setTextColor(Color.GREEN);
-
-            return true;
-        } else {
-            connectionStatusText.setText(R.string.no_network);
-            connectionStatusText.setTextColor(Color.RED);
-
+        try {
+            if (controller.checkConnection()) {
+                connectionStatusText.setText(R.string.conexion_succesfull);
+                connectionStatusText.setTextColor(Color.GREEN);
+                return true;
+            } else {
+                connectionStatusText.setText(R.string.no_network);
+                connectionStatusText.setTextColor(Color.RED);
+                return false;
+            }
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
             return false;
         }
     }
 
     public void startService(View view) {
-        if (notificationButton.getText().equals("Activar Notificaciones")) {
-            startService(new Intent(MainActivity.this, ReceiverNotificationService.class));
-            notificationButton.setText("Desactivar Notificationes");
-        } else {
-            stopService(new Intent(MainActivity.this, ReceiverNotificationService.class));
-            notificationButton.setText("Activar Notificationes");
+        try {
+            if (notificationButton.getText().equals("Activar Notificaciones")) {
+                startService(new Intent(MainActivity.this, ReceiverNotificationService.class));
+                notificationButton.setText("Desactivar Notificationes");
+            } else {
+                stopService(new Intent(MainActivity.this, ReceiverNotificationService.class));
+                notificationButton.setText("Activar Notificationes");
+            }
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
         }
     }
 

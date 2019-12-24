@@ -46,62 +46,75 @@ public class PantallaPrincipalActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_almacenstate);
-        setBundle(getIntent().getExtras());
 
-        initVarialbes();
-        addListeners();
-        setAdapters();
+        try {
+            setContentView(R.layout.activity_almacenstate);
+            setBundle(getIntent().getExtras());
+
+            initVarialbes();
+            addListeners();
+            setAdapters();
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
 
     @Override
     protected void initVarialbes() {
-        listView = (ListView) findViewById(R.id.listaInsumos);
-        userText = (TextView) findViewById(R.id.textUser);
-        almacenText = (TextView) findViewById(R.id.textViewNombreAlmacen);
-        userText.setText(getBundle().getString(String.valueOf(R.string.user)));
-        controller = new PantallaPrincipalController(userText.getText().toString());
-        searchText = (EditText) findViewById(R.id.editText);
-        radioButtonSalida = (RadioButton) findViewById(R.id.radioButtonSalida);
-        radioButtonRebaja = (RadioButton) findViewById(R.id.radioButtonRebaja);
-        salidaButton = (ImageButton) findViewById(R.id.salidaButton);
-        entradaButton = (ImageButton) findViewById(R.id.entradaButton);
-        spinnerFiltrar = (Spinner) findViewById(R.id.filtrarBy);
-        filterAdapter = new FilterAdapter(this, android.R.layout.simple_spinner_dropdown_item, controller.getCocinasNames());
+        try {
+            listView = (ListView) findViewById(R.id.listaInsumos);
+            userText = (TextView) findViewById(R.id.textUser);
+            almacenText = (TextView) findViewById(R.id.textViewNombreAlmacen);
+            userText.setText(getBundle().getString(String.valueOf(R.string.user)));
+            controller = new PantallaPrincipalController(userText.getText().toString());
+            searchText = (EditText) findViewById(R.id.editText);
+            radioButtonSalida = (RadioButton) findViewById(R.id.radioButtonSalida);
+            radioButtonRebaja = (RadioButton) findViewById(R.id.radioButtonRebaja);
+            salidaButton = (ImageButton) findViewById(R.id.salidaButton);
+            entradaButton = (ImageButton) findViewById(R.id.entradaButton);
+            spinnerFiltrar = (Spinner) findViewById(R.id.filtrarBy);
+            filterAdapter = new FilterAdapter(this, android.R.layout.simple_spinner_dropdown_item, controller.getCocinasNames());
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     @Override
     protected void addListeners() {
-        searchText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        try {
+            searchText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
+                }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                ((AlmacenInsumoAdapter) listView.getAdapter()).getFilter().filter(s.toString());
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    ((AlmacenInsumoAdapter) listView.getAdapter()).getFilter().filter(s.toString());
 
-            }
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
+                @Override
+                public void afterTextChanged(Editable s) {
 
-            }
-        });
+                }
+            });
 
-        spinnerFiltrar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                onSpinnerFiltrarItemSelected(view, position);
-            }
+            spinnerFiltrar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    onSpinnerFiltrarItemSelected(view, position);
+                }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-        //TODO: faltan dos listener que estan directo en el xml
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+            //TODO: faltan dos listener que estan directo en el xml
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     private void onSpinnerFiltrarItemSelected(View view, int position) {
@@ -118,61 +131,85 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
     @Override
     protected void setAdapters() {
-        listView.setAdapter(fetchData());
-        spinnerFiltrar.setAdapter(filterAdapter.createAdapter());
+        try {
+            listView.setAdapter(fetchData());
+            spinnerFiltrar.setAdapter(filterAdapter.createAdapter());
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_almacenstate, menu);
-        return true;
+        try {
+            // Inflate the menu; this adds items to the action bar if it is present.
+            getMenuInflater().inflate(R.menu.menu_almacenstate, menu);
+            return true;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+            return false;
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.action_imprimirEstado:
-                return imprimirEstadoAlmacen();
-            case R.id.action_ticket_compra:
-                return imprimirTicketEstado();
-            default:
-                return super.onOptionsItemSelected(item);
+        try {
+            // Handle action bar item clicks here. The action bar will
+            // automatically handle clicks on the Home/Up button, so long
+            // as you specify a parent activity in AndroidManifest.xml.
+            int id = item.getItemId();
+            switch (id) {
+                case R.id.action_imprimirEstado:
+                    return imprimirEstadoAlmacen();
+                case R.id.action_ticket_compra:
+                    return imprimirTicketEstado();
+                default:
+                    return super.onOptionsItemSelected(item);
+            }
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+            return false;
         }
     }
 
     private boolean imprimirTicketEstado() {
-        boolean resp = false;
         try {
-            resp = controller.imprimirTicketCompra();
-            if (resp) {
-                showMessage("Imprimiendo...");
-            } else {
-                ExceptionHandler.handleException(new Exception("Error imprimiendo"), this);
+            boolean resp = false;
+            try {
+                resp = controller.imprimirTicketCompra();
+                if (resp) {
+                    showMessage("Imprimiendo...");
+                } else {
+                    ExceptionHandler.handleException(new Exception("Error imprimiendo"), this);
+                }
+            } catch (Exception e) {
+                ExceptionHandler.handleException(e, this);
             }
+            return resp;
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
+            return false;
         }
-        return resp;
     }
 
     private boolean imprimirEstadoAlmacen() {
-        boolean resp = false;
         try {
-            resp = controller.imprimirEstadoActual();
-            if (resp) {
-                showMessage("Imprimiendo...");
-            } else {
-                ExceptionHandler.handleException(new Exception("Error imprimiendo"), this);
+            boolean resp = false;
+            try {
+                resp = controller.imprimirEstadoActual();
+                if (resp) {
+                    showMessage("Imprimiendo...");
+                } else {
+                    ExceptionHandler.handleException(new Exception("Error imprimiendo"), this);
+                }
+            } catch (Exception e) {
+                ExceptionHandler.handleException(e, this);
             }
+            return resp;
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
+            return false;
         }
-        return resp;
     }
 
     public void onEntradaClick(final View v) {
@@ -331,75 +368,77 @@ public class PantallaPrincipalActivity extends BaseActivity {
         }
     }
 
-    private void onRebajaClick(final View v) {//try catch ya en el que lo llama
-        final InsumoAlmacenModel insumoModel = ((InsumoAlmacenModel) listView.getAdapter().getItem((Integer) v.getTag()));
+    private void onRebajaClick(final View v) {
+        try {
+            final InsumoAlmacenModel insumoModel = ((InsumoAlmacenModel) listView.getAdapter().getItem((Integer) v.getTag()));
 
-        final EditText input = new EditText(v.getContext());
-        input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        input.setRawInputType(Configuration.KEYBOARD_12KEY);
+            final EditText input = new EditText(v.getContext());
+            input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            input.setRawInputType(Configuration.KEYBOARD_12KEY);
 
-        final EditText razon = new EditText(v.getContext());
-        razon.setInputType(InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE);
+            final EditText razon = new EditText(v.getContext());
+            razon.setInputType(InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE);
 
-        final BaseActivity act = this;
-        new AlertDialog.Builder(v.getContext()).
-                setView(input).
-                setTitle("Merma").
-                setMessage("Introduzca la cantidad de " + insumoModel.getInsumoModel() + " a rebajar").
-                setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).
-                setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        new AlertDialog.Builder(v.getContext()).
-                                setView(razon).
-                                setTitle("Razon de rebaja").
-                                setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
+            final BaseActivity act = this;
+            new AlertDialog.Builder(v.getContext()).
+                    setView(input).
+                    setTitle("Merma").
+                    setMessage("Introduzca la cantidad de " + insumoModel.getInsumoModel() + " a rebajar").
+                    setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).
+                    setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            new AlertDialog.Builder(v.getContext()).
+                                    setView(razon).
+                                    setTitle("Razon de rebaja").
+                                    setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).setPositiveButton("Mermar", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    float cantidad = 0;
+                                    try {
+                                        cantidad = Float.parseFloat(input.getText().toString());
+                                    } catch (Exception e) {
                                         dialog.dismiss();
                                     }
-                                }).setPositiveButton("Mermar", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                float cantidad = 0;
-                                try {
-                                    cantidad = Float.parseFloat(input.getText().toString());
-                                } catch (Exception e) {
-                                    dialog.dismiss();
-                                }
-                                if (cantidad > insumoModel.getCantidad()) {
-                                    Toast.makeText(v.getContext(), R.string.saldo_insuficiente, Toast.LENGTH_LONG);
-                                    dialog.dismiss();
-                                } else {
-                                    try {
-                                        controller.rebajar(insumoModel, cantidad, razon.getText().toString());
-                                    } catch (Exception e) {
-                                        ExceptionHandler.handleException(e, act);
-                                    }
-                                    listView.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            listView.setAdapter(fetchData());
+                                    if (cantidad > insumoModel.getCantidad()) {
+                                        Toast.makeText(v.getContext(), R.string.saldo_insuficiente, Toast.LENGTH_LONG);
+                                        dialog.dismiss();
+                                    } else {
+                                        try {
+                                            controller.rebajar(insumoModel, cantidad, razon.getText().toString());
+                                        } catch (Exception e) {
+                                            ExceptionHandler.handleException(e, act);
                                         }
-                                    });
-                                    dialog.dismiss();
+                                        listView.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                listView.setAdapter(fetchData());
+                                            }
+                                        });
+                                        dialog.dismiss();
+                                    }
                                 }
-                            }
 
-                        }).
-                                create().
-                                show();
+                            }).
+                                    create().
+                                    show();
 
-                        dialog.dismiss();
-                    }
-                }).
-                create().
-                show();
+                            dialog.dismiss();
+                        }
+                    }).create().show();
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     private AlmacenInsumoAdapter fetchData() {
@@ -411,8 +450,13 @@ public class PantallaPrincipalActivity extends BaseActivity {
         }
     }
 
-    private String[] getIPVData(String insumoCod) throws ExecutionException, InterruptedException {//el try el que lo llama
-        return controller.getCocinasNamesForIPV(insumoCod);
+    private String[] getIPVData(String insumoCod) {
+        try {
+            return controller.getCocinasNamesForIPV(insumoCod);
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+            return null;
+        }
     }
 
 }
