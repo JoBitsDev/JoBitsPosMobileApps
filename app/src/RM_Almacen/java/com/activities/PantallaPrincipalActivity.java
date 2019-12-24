@@ -40,7 +40,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     private PantallaPrincipalController controller;
     private Spinner spinnerFiltrar;
     private FilterAdapter filterAdapter;
-    private String[] filtros = {"Seleccione", "Ruby", "Java", ".NET", "Python", "PHP", "JavaScript", "GO"};
+    private String[] filtros = {"Seleccione", "Ruby", "Java", ".NET", "Python", "PHP", "JavaScript", "GO"};//TODO: WHAAAAAAAAAAAAAATTTTTTT??????
 
 
     @Override
