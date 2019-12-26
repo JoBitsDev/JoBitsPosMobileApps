@@ -16,7 +16,7 @@
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustNothing"></activity>
         <activity
-            android:name="com.activities.PantallaPrincipalActivity"
+            android:name="com.activities.MesasActivity"
             android:label="@string/title_activity_activity_principal"
             android:parentActivityName="com.activities.MainActivity">
             <meta-data

@@ -10,7 +10,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="com.activities.PantallaPrincipalActivity"
+            android:name="com.activities.MesasActivity"
             android:label="Almacen"
             android:parentActivityName="com.activities.LoginActivity">
             <meta-data
