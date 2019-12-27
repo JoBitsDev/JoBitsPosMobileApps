@@ -14,6 +14,11 @@ public class EnvironmentVariables {
             ESTADO_MESA_ESPERANDO_CONFIRMACION = "esperando confirmacion";
 
     /**
+     * Puerto para que la notificacion se conecte con el servidor.
+     */
+    public static final int SOCKET_PORT = 8888;
+
+    /**
      * Ip del servidor.
      */
     public static String IP = "192.168.173.1";
@@ -60,6 +65,7 @@ public class EnvironmentVariables {
 
     /**
      * Método para cambiar el IP de la coneccion.
+     *
      * @param ip para el que se va a cambiar.
      */
     public static void changeIP(String ip) {
@@ -68,6 +74,7 @@ public class EnvironmentVariables {
 
     /**
      * Redondea un valor a dos lugares despues de la coma.
+     *
      * @param valorARedondear que se quiere redondear.
      * @return el String con el valor redondeado a dos lugares.
      */

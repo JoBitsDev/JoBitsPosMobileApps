@@ -9,23 +9,53 @@ import android.os.IBinder;
 import android.provider.Settings;
 
 import com.activities.R;
+import com.utils.EnvironmentVariables;
 
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
+import java.io.*;
 import java.net.Socket;
+import java.net.ServerSocket;
 
-
+/**
+ * Capa: Services
+ * Servicio de notificaciones entre las aplicaciones.
+ *
+ * @extends Service ya que es un servicio.
+ */
 public class ReceiverNotificationService extends Service {
 
+    /**
+     * Socket con el servidor.
+     */
     private ServerSocket server; // server socket
+
+    /**
+     * Socket con el cliente.
+     */
     private Socket connection; // connection to client
+
+    /**
+     * Output stream to client.
+     */
     private ObjectOutputStream output; // output stream to client
+
+    /**
+     * Input stream from client.
+     */
     private ObjectInputStream input; // input stream from client
+
+    /**
+     * Counter of number of connections.
+     */
     private int counter = 1; // counter of number of connections
-    private String notificationTitle,notificationMessage,notificationDescription;
+
+    /**
+     * Mensajes qa mostrar.
+     */
+    private String notificationTitle, notificationMessage, notificationDescription;
+
+    /**
+     * Hilo del listener para comunicarse en paralelo.
+     */
     private Thread backgroundListener = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -38,32 +68,34 @@ public class ReceiverNotificationService extends Service {
     }
 
 
-
     @Override
     public IBinder onBind(Intent intent) {
-       return null;
+        return null;
     }
 
     @Override
     public void onCreate() {
-
         backgroundListener.start();
     }
 
     @Override
     public void onDestroy() {
-            backgroundListener.destroy();
-
-
+        backgroundListener.destroy();
     }
 
+    /**
+     * Inicia los sockets y sockets.
+     */
     private void startSocketAndListnen() {
-runServer();
+        runServer();
     }
 
+    /**
+     * Lo que se conecta con el socket del servidor.
+     */
     public void runServer() {
         try {
-            server = new ServerSocket(8888); // create ServerSocket
+            server = new ServerSocket(EnvironmentVariables.SOCKET_PORT); // create ServerSocket
             while (true) {
                 try {
                     waitForConnection(); // wait for a connection
@@ -73,10 +105,6 @@ runServer();
                 catch (EOFException eofException) {
                     //TODO: exception no atrapada
                 } // end catch
-                finally {
-                    //closeConnection(); // close connection
-                    // ++counter;
-                } // end finally
 
             }
         } catch (IOException ioException) {
@@ -84,14 +112,22 @@ runServer();
         } // end catch
     } // end method runServer
 
+
+    /**
+     * Espera por coneccion
+     *
+     * @throws IOException Si hay error
+     */
     private void waitForConnection() throws IOException {
-
         connection = server.accept();
-
-
     } // end method waitForConnection
 
-    // getProductoVentaOrden streams to send and receive data
+
+    /**
+     * Get streams to send and receive data
+     *
+     * @throws IOException Si hay error
+     */
     private void getStreams() throws IOException {
         // set up output stream for objects
         output = new ObjectOutputStream(connection.getOutputStream());
@@ -101,8 +137,13 @@ runServer();
 
     }
 
+    /**
+     * Procesa la coneccion con el server.
+     *
+     * @throws IOException Si hay error.
+     */
     private void processConnection() throws IOException {
-        String message = "" ;
+        String message = "";
         do {
             try {
                 message = (String) input.readObject();
@@ -112,12 +153,15 @@ runServer();
 
                 fireNotification();
             } catch (ClassNotFoundException e) {
-               // closeConnection();//TODO: excepcion not catched
+                // closeConnection();//TODO: excepcion not catched
             }
         } while (!message.equals("CLIENT>>> TERMINATE"));
 
     }
 
+    /**
+     * Cierra la coneccion con el servidor.
+     */
     private void closeConnection() {
         try {
             output.close();
@@ -129,7 +173,10 @@ runServer();
         }
     }
 
-    private void fireNotification(){
+    /**
+     * Crea las notificaciones.
+     */
+    private void fireNotification() {
 
         Notification builder = new Notification.Builder(this)
                 .setContentTitle(notificationTitle)
@@ -143,10 +190,7 @@ runServer();
                 .build();
         NotificationManager notificationManager = (NotificationManager)
                 getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify((int)Math.random()*100,builder);
-
-
-
+        notificationManager.notify((int) Math.random() * 100, builder);
     }
 
 }
