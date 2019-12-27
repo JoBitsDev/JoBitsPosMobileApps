@@ -1,31 +1,18 @@
 package com.activities;
 
-
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.view.*;
+import android.widget.*;
+import android.content.*;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextClock;
-import android.widget.TextView;
+import android.app.AlertDialog;
 
-import com.controllers.MesasController;
 import com.services.models.MesaModel;
-import com.services.web_connections.OrdenWebConnectionService;
 import com.utils.EnvironmentVariables;
-import com.services.web_connections.CartaWebConnectionService;
-import com.services.web_connections.MesaWebConnectionService;
+import com.controllers.MesasController;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import com.utils.exception.ExceptionHandler;
-import com.utils.exception.NoExistingException;
+import com.utils.exception.*;
 
 
 public class PantallaPrincipalActivity extends BaseActivity {
@@ -63,7 +50,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
         restNameLabel = (TextView) findViewById(R.id.textViewNombreRest);
         if (restNameLabel != null) {
-            restNameLabel.setText(new CartaWebConnectionService().getNombreRest());
+            restNameLabel.setText(controller.getNombreRest());
         }
 
         lista = (ListView) findViewById(R.id.listaMesas);
@@ -142,88 +129,77 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 }
                 data.putString("codOrden", cod_orden);
 
-                if (!user.equals(m.getEstado().split(" ")[1])) {
+                if (!controller.getUser().equals(m.getEstado().split(" ")[1])) {//si no es el usuario pide confirmacion
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setMessage("La mesa que quiere acceder " +
                             "la esta atendiendo otro camarero");
                     builder.setNegativeButton("No entrar", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onClick(DialogInterface dialog, int which) {//no entrar
                             dialog.dismiss();
                         }
                     });
                     builder.setPositiveButton("Entrar en modo solo lectura", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            readOnly = true;
-                            execIntent(data);
+                        public void onClick(DialogInterface dialog, int which) {//entrar en solo lectura
+                            entrarSoloLectura(data);
                         }
                     });
                     builder.show();
 
                 } else {
-                    execIntent(data);
+                    entrarSoloLectura(data);
                 }
-            } else {
-                execIntent(data);
+            } else {//es el usuario
+                entrarMiOrden(data);
             }
 
 
         } catch (Exception e) {
-            ExceptionHandler.showMessageInAlert(e, this);
+            ExceptionHandler.handleException(e, this);
         }
-
-
     }
 
     public void cambiarArea(View view) {
-
-        final String[] areas = new MesaWebConnectionService(user, null).getAreasName();
-        new AlertDialog.Builder(this).
-
-                setTitle(R.string.seleccionararea).
-
-                setSingleChoiceItems(areas, 1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        selectedArea = areas[which];
-                        dialog.dismiss();
-                        configurarTabla();
-                    }
-                }).
-
-                create().
-
-                show();
-
-
-    }
-
-    private void execIntent(Bundle data) {
-        Intent launch;
-        if (readOnly) {
-            launch = new Intent(this, OrdenReadOnlyActivity.class);
-            launch.putExtras(data);
-            startActivity(launch);
-        } else {
-            launch = new Intent(this, OrdenActivity.class);
-            launch.putExtras(data);
-            startActivity(launch);
+        try {
+            final String[] areas = controller.getAreas();
+            new AlertDialog.Builder(this).
+                    setTitle(R.string.seleccionararea).
+                    setSingleChoiceItems(areas, 1, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            selectedArea = areas[which];
+                            dialog.dismiss();
+                            configurarTabla();
+                        }
+                    }).create().show();
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
         }
     }
 
-
     public void configurarTabla() {
+        final BaseActivity act = this;
         showProgressDialog();
         lista.post(new Runnable() {
             @Override
             public void run() {
-                lista.setAdapter(getData(selectedArea));
+                lista.setAdapter(controller.getData(mesaModels, selectedArea, act));
                 hideProgressDialog();
             }
         });
-
     }
 
+    private void entrarSoloLectura(Bundle data) {
+        Intent launch = new Intent(this, OrdenReadOnlyActivity.class);
+        launch.putExtras(data);
+        startActivity(launch);
+    }
+
+    private void entrarMiOrden(Bundle data) {
+        Intent launch = new Intent(this, OrdenActivity.class);
+        launch.putExtras(data);
+        startActivity(launch);
+    }
 
 }

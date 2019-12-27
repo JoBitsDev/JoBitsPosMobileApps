@@ -11,6 +11,8 @@ import com.services.parsers.MesaXMlParser;
 import com.services.parsers.ProductoVentaOrdenXMLParser;
 import com.services.parsers.ProductoVentaXMlParser;
 import com.services.parsers.SeccionXMlParser;
+import com.services.web_connections.CartaWebConnectionService;
+import com.services.web_connections.MesaWebConnectionService;
 import com.services.web_connections.OrdenWebConnectionService;
 import com.utils.EnvironmentVariables;
 import com.utils.adapters.MesaAdapter;
@@ -31,7 +33,6 @@ public class MesasController extends BaseController {
 
     private static final String urlMesas = "http://" + EnvironmentVariables.IP + ":" + EnvironmentVariables.PORT + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.mesa";
     private String user;
-    private OrdenController ordenController = new OrdenController();
     private OrdenWebConnectionService ordenWCService = null;
 
     public String getUser() {
@@ -58,11 +59,18 @@ public class MesasController extends BaseController {
     }
 
     public void setCodOrden(String cod_orden) {
-        ordenController.setCodOrden(cod_orden);
+        ordenWCService.setCodOrden(cod_orden);
     }
 
-    public boolean validate() {
+    public boolean validate() throws ServerErrorException, NoConnectionException {
+        return ordenWCService.validate();
+    }
 
+    public String getNombreRest() {
+        return new CartaWebConnectionService().getNombreRest();
+    }
 
+    public String[] getAreas() throws ServerErrorException, NoConnectionException {
+        return new MesaWebConnectionService(user, null).getAreasName();
     }
 }
