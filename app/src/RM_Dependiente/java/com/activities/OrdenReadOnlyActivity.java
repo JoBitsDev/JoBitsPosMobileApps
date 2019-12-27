@@ -5,6 +5,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
+
 import com.services.models.ProductoVentaOrdenModel;
 import com.utils.adapters.ProductoVentaOrdenAdapter;
 import com.utils.adapters.ProductoVentaOrdenReadOnlyAdapter;
@@ -23,26 +24,10 @@ public class OrdenReadOnlyActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orden_readonly);
+
         initVarialbes();
         setAdapters();
         addListeners();
-    }
-
-    private void initTab() {
-        TabHost host = (TabHost) findViewById(R.id.tabHost);
-        if (host != null) {
-            host.setup();
-            //Tab 1
-            TabHost.TabSpec spec = host.newTabSpec("Menu");
-            spec.setContent(R.id.menu);
-            spec.setIndicator("Menu");
-            host.addTab(spec);
-            //Tab 2
-            spec = host.newTabSpec("Pedido");
-            spec.setContent(R.id.ordenModel);
-            spec.setIndicator("Pedido");
-            host.addTab(spec);
-        }
     }
 
     @Override
@@ -55,14 +40,14 @@ public class OrdenReadOnlyActivity extends BaseActivity {
         totalSecundaria = (TextView) findViewById(R.id.totalSecundariaLabel);
         listaOrden = (ListView) findViewById(R.id.listaOrdenReadOnly);
 
+
         Bundle bundleExtra = getIntent().getExtras();
-        mesa.setText(bundleExtra.getString("mesaNoLabel"));//set el No de la mesa
+        mesa.setText(bundleExtra.getString(String.valueOf(R.string.mesa)));//set el No de la mesa
         dependiente.setText(bundleExtra.getString(String.valueOf(R.string.user)));//set el label con el dependiente
+        ordenNo.setText(bundleExtra.getString(String.valueOf(R.string.cod_Orden)));//set el label de la orden
 
         productosVOrden = new ArrayList<ProductoVentaOrdenModel>();
-        readOnlyAdapter = new ProductoVentaOrdenReadOnlyAdapter(getApplicationContext(),R.id.listaOrdenReadOnly,productosVOrden);
-
-        initTab();
+        readOnlyAdapter = new ProductoVentaOrdenReadOnlyAdapter(getApplicationContext(), R.id.listaOrdenReadOnly, productosVOrden);
     }
 
     @Override

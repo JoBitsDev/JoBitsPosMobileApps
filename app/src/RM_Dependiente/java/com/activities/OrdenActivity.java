@@ -54,6 +54,9 @@ public class OrdenActivity extends BaseActivity {
             initVarialbes();
             setAdapters();
             addListeners();
+
+            Bundle bundleExtra = getIntent().getExtras();
+            createOldOrden(bundleExtra);//crea la orden vieja
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
@@ -86,12 +89,9 @@ public class OrdenActivity extends BaseActivity {
             dependienteLabel.setText(bundleExtra.getString(String.valueOf(R.string.user)));//set el label con el dependiente
             ordenNoLabel.setText(bundleExtra.getString(String.valueOf(R.string.cod_Orden)));//set el label de la orden
 
-            createOldOrden(bundleExtra);//crea la orden vieja
-
             productosVOrden = new ArrayList<ProductoVentaOrdenModel>();
 
-            generarMenu(bundleExtra.getString("mesaNoLabel"));
-
+            initMenu(bundleExtra.getString(String.valueOf(R.string.mesa)));
             initTab();
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
@@ -183,8 +183,6 @@ public class OrdenActivity extends BaseActivity {
 
     private boolean onMenuExpandableListViewChildClick(int groupPosition, int childPosition) {
         try {
-
-
             lastClickedMenu = (ProductoVentaModel) listAdapter.getChild(groupPosition, childPosition);
             addProducto();
             searchText.setText("");
@@ -222,11 +220,12 @@ public class OrdenActivity extends BaseActivity {
             if (old != null) {
                 codOrden = old.getController().getCodOrden();
             } else {
-                codOrden = bundleExtra.getString("codOrden");
+                codOrden = bundleExtra.getString(String.valueOf(R.string.cod_Orden));
             }
 
-            String mesa = mesaNoLabel.getText().toString();
-            String dependiente = dependienteLabel.getText().toString();
+            String mesa = bundleExtra.getString(String.valueOf(R.string.mesa));
+            String dependiente = bundleExtra.getString(String.valueOf(R.string.user));
+
             if (codOrden != null && mesa != null && dependiente != null) {
                 fillAct(controller.starService(codOrden, mesa, dependiente).getProductoVentaOrden(codOrden));
             } else {
@@ -287,7 +286,7 @@ public class OrdenActivity extends BaseActivity {
         }
     }
 
-    private void generarMenu(String codMesa) {
+    private void initMenu(String codMesa) {
         try {
             secciones = controller.getSecciones();
             productos = controller.getProductos(codMesa);

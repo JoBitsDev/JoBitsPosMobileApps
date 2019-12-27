@@ -167,7 +167,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                     builder.show();
 
                 } else {
-                    entrarSoloLectura(data);
+                    entrarMiOrden(data);
                 }
             } else {//es el usuario
                 entrarMiOrden(data);
