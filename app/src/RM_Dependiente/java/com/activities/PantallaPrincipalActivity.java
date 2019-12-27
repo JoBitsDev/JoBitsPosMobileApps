@@ -41,48 +41,60 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
     @Override
     protected void initVarialbes() {
-        controller = new MesasController();
-        String user = getIntent().getExtras().getString(String.valueOf(R.string.user));
-        controller.setUser(user);
+        try {
+            controller = new MesasController();
+            String user = getIntent().getExtras().getString(String.valueOf(R.string.user));
+            controller.setUser(user);
 
-        userLabel = ((TextView) findViewById(R.id.textviewusuario));
-        userLabel.setText(user);
+            userLabel = ((TextView) findViewById(R.id.textviewusuario));
+            userLabel.setText(user);
 
-        restNameLabel = (TextView) findViewById(R.id.textViewNombreRest);
-        if (restNameLabel != null) {
-            restNameLabel.setText(controller.getNombreRest());
+            restNameLabel = (TextView) findViewById(R.id.textViewNombreRest);
+            if (restNameLabel != null) {
+                restNameLabel.setText(controller.getNombreRest());
+            }
+
+            lista = (ListView) findViewById(R.id.listaMesas);
+            clockText = (TextClock) findViewById(R.id.textClock);
+
+            cambiarAreaButton = (Button) findViewById(R.id.cambiarArea);
+            pedidoDomicilioButton = (Button) findViewById(R.id.pedidoDomicilio);
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
         }
-
-        lista = (ListView) findViewById(R.id.listaMesas);
-        clockText = (TextClock) findViewById(R.id.textClock);
-
-        cambiarAreaButton = (Button) findViewById(R.id.cambiarArea);
-        pedidoDomicilioButton = (Button) findViewById(R.id.pedidoDomicilio);
     }
 
     @Override
     protected void addListeners() {
-        final BaseActivity act = this;
-        cambiarAreaButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cambiarArea(v);
-            }
-        });
-        lista.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                try {
-                    configurarTabla();
-                    lista.setAdapter(controller.getData(mesaModels, selectedArea, act));
-                    continuar(mesaModels.get(position));
-                    return true;
-                } catch (Exception e) {
-                    ExceptionHandler.handleException(e, act);
-                    return false;
+        try {
+            final BaseActivity act = this;
+            cambiarAreaButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        cambiarArea(v);
+                    } catch (Exception e) {
+                        ExceptionHandler.handleException(e, act);
+                    }
                 }
-            }
-        });
+            });
+            lista.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    try {
+                        configurarTabla();
+                        lista.setAdapter(controller.getData(mesaModels, selectedArea, act));
+                        continuar(mesaModels.get(position));
+                        return true;
+                    } catch (Exception e) {
+                        ExceptionHandler.handleException(e, act);
+                        return false;
+                    }
+                }
+            });
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     @Override
@@ -154,7 +166,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 entrarMiOrden(data);
             }
 
-
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
@@ -179,27 +190,39 @@ public class PantallaPrincipalActivity extends BaseActivity {
     }
 
     public void configurarTabla() {
-        final BaseActivity act = this;
-        showProgressDialog();
-        lista.post(new Runnable() {
-            @Override
-            public void run() {
-                lista.setAdapter(controller.getData(mesaModels, selectedArea, act));
-                hideProgressDialog();
-            }
-        });
+        try {
+            final BaseActivity act = this;
+            showProgressDialog();
+            lista.post(new Runnable() {
+                @Override
+                public void run() {
+                    lista.setAdapter(controller.getData(mesaModels, selectedArea, act));
+                    hideProgressDialog();
+                }
+            });
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     private void entrarSoloLectura(Bundle data) {
-        Intent launch = new Intent(this, OrdenReadOnlyActivity.class);
-        launch.putExtras(data);
-        startActivity(launch);
+        try {
+            Intent launch = new Intent(this, OrdenReadOnlyActivity.class);
+            launch.putExtras(data);
+            startActivity(launch);
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     private void entrarMiOrden(Bundle data) {
-        Intent launch = new Intent(this, OrdenActivity.class);
-        launch.putExtras(data);
-        startActivity(launch);
+        try {
+            Intent launch = new Intent(this, OrdenActivity.class);
+            launch.putExtras(data);
+            startActivity(launch);
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
 }
