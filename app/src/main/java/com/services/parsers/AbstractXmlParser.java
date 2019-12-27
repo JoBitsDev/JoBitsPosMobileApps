@@ -168,6 +168,10 @@ public abstract class AbstractXmlParser<T> {
         }
     }
 
+    /**
+     * Capa: Inner
+     * 
+     */
     protected class fetchData extends AsyncTask<String, Integer, List<T>> {
 
 
@@ -184,8 +188,6 @@ public abstract class AbstractXmlParser<T> {
                 e.printStackTrace();
                 return null;
             }
-
-
         }
 
 
