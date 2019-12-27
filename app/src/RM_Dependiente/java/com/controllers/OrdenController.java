@@ -22,7 +22,7 @@ import java.util.List;
  * Capa: Controllers
  * Clase controladora de OrdenActivity, encargada de manejar sus peticiones con la capa inferior.
  *
- * @extends BaseController ya que es un controller plicacion.
+ * @extends BaseController ya que es un controller aplicacion.
  */
 public class OrdenController extends BaseController {
 
