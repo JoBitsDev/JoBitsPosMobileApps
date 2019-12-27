@@ -14,7 +14,7 @@ public class NoExistingException extends Exception {
     }
 
     public void showMessageInToast(){
-        Toast.makeText(context,getMessage(),Toast.LENGTH_LONG);
+        Toast.makeText(context,getMessage(),Toast.LENGTH_LONG).show();
 
     }
 

@@ -19,7 +19,7 @@ public class PersonalWebConnectionServiceService extends SimpleWebConnectionServ
         path += P;
     }
 
-    public String[] getUsiariosActivos() throws InterruptedException, ExecutionException {
+    public String[] getUsuariosActivos() throws InterruptedException, ExecutionException {
         String[] result = {};
         String ret = connect(path + usuariosActivos);
 

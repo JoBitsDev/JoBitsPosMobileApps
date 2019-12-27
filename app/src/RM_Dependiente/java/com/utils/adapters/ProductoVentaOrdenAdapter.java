@@ -134,7 +134,7 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         notifyDataSetChanged();
     }
 
-    public void increase(ProductoVentaModel p, float ammount, OrdenWebConnectionService o) {
+    public void increase(ProductoVentaModel p, OrdenWebConnectionService o, float ammount) {
         boolean existe = false;
         ProductoVentaOrdenModel pv = null;
         int i = 0;
