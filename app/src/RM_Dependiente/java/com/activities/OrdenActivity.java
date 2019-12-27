@@ -62,16 +62,6 @@ public class OrdenActivity extends BaseActivity {
     @Override
     protected void initVarialbes() {
         try {
-            controller = new OrdenController();
-
-            Bundle bundleExtra = getIntent().getExtras();
-            mesaNoLabel.setText(bundleExtra.getString("mesaNoLabel"));//set el No de la mesa
-            dependienteLabel.setText(bundleExtra.getString(String.valueOf(R.string.user)));//set el label con el dependiente
-
-            createOldOrden(bundleExtra);//crea la orden vieja
-
-            productosVOrden = new ArrayList<ProductoVentaOrdenModel>();
-
             mesaNoLabel = (TextView) findViewById(R.id.mesaNoLabel);
             ordenNoLabel = (TextView) findViewById(R.id.ordenNoLabel);
             dependienteLabel = (TextView) findViewById(R.id.dependienteLabel);
@@ -87,6 +77,18 @@ public class OrdenActivity extends BaseActivity {
             despacharACocinaButton = (Button) findViewById(R.id.buttondespacharCocina);
 
             searchText = (EditText) findViewById(R.id.searchText);
+
+
+            controller = new OrdenController();
+
+            Bundle bundleExtra = getIntent().getExtras();
+            mesaNoLabel.setText(bundleExtra.getString(String.valueOf(R.string.mesa)));//set el No de la mesa
+            dependienteLabel.setText(bundleExtra.getString(String.valueOf(R.string.user)));//set el label con el dependiente
+            ordenNoLabel.setText(bundleExtra.getString(String.valueOf(R.string.cod_Orden)));//set el label de la orden
+
+            createOldOrden(bundleExtra);//crea la orden vieja
+
+            productosVOrden = new ArrayList<ProductoVentaOrdenModel>();
 
             generarMenu(bundleExtra.getString("mesaNoLabel"));
 

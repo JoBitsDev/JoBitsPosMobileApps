@@ -121,7 +121,7 @@
 
 
             <ListView
-                android:id="@+id/listaOrden"
+                android:id="@+id/listaOrdenReadOnly"
                 android:layout_width="wrap_content"
                 android:layout_height="456dp"
                 android:layout_gravity="center"

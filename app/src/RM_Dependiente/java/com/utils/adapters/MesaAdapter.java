@@ -15,8 +15,6 @@ import com.utils.EnvironmentVariables;
 import java.util.List;
 
 
-
-
 /**
  * Created by Jorge on 2/7/17.
  */
@@ -35,59 +33,50 @@ public class MesaAdapter extends ArrayAdapter<MesaModel> {
 
     }
 
+    public MesaModel getMesa(int pos) {
+        return objects.get(pos);
+    }
 
 
-    public View getView(int position, View convertView, ViewGroup parent){
+    public View getView(int position, View convertView, ViewGroup parent) {
 
         View item = convertView;
         ViewHolder holder;
-        if(item == null)
-        {
+        if (item == null) {
             LayoutInflater inflater = context.getLayoutInflater();
             item = inflater.inflate(R.layout.list_row, null);
 
             holder = new ViewHolder();
-            holder.codMesa = (TextView)item.findViewById(R.id.boxTitulo);
-            holder.estadoMesa = (TextView)item.findViewById(R.id.boxSubtitulo);
+            holder.codMesa = (TextView) item.findViewById(R.id.boxTitulo);
+            holder.estadoMesa = (TextView) item.findViewById(R.id.boxSubtitulo);
             item.setTag(holder);
 
 
-
-
-
-
-
+        } else {
+            holder = (ViewHolder) item.getTag();
         }
-
-        else {
-            holder = (ViewHolder)item.getTag();
-        }
-
 
 
         String est = objects.get(position).getEstado();
         int c;
-        if(est.compareToIgnoreCase(EnvironmentVariables.ESTADO_MESA_VACIA) == 0){
+        if (est.compareToIgnoreCase(EnvironmentVariables.ESTADO_MESA_VACIA) == 0) {
             c = Color.GREEN;
 
-        }
-        else{
+        } else {
 
-            if(est.equals(EnvironmentVariables.ESTADO_MESA_ESPERANDO_CONFIRMACION)){
+            if (est.equals(EnvironmentVariables.ESTADO_MESA_ESPERANDO_CONFIRMACION)) {
                 c = Color.BLUE;
 
-            }
-            else{
+            } else {
 
-            boolean mine = est.split(" ")[1].equals(usuario);
+                boolean mine = est.split(" ")[1].equals(usuario);
 
 
-            if(mine){
-                c = Color.RED;
-            }
-            else{
-                c = Color.YELLOW;
-            }
+                if (mine) {
+                    c = Color.RED;
+                } else {
+                    c = Color.YELLOW;
+                }
             }
 
         }
@@ -97,16 +86,16 @@ public class MesaAdapter extends ArrayAdapter<MesaModel> {
         holder.estadoMesa.setText(objects.get(position).getEstado());
 
 
+        return (item);
 
-        return(item);
 
-
-}
+    }
 
 
     static class ViewHolder {
         TextView codMesa;
-        TextView estadoMesa; }
-
+        TextView estadoMesa;
     }
+
+}
 
