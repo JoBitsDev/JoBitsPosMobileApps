@@ -43,7 +43,8 @@ public class MesasController extends BaseController {
         this.user = user;
     }
 
-    public MesaAdapter getData(List<MesaModel> mesaModels, String selectedArea, Activity act) {
+    public MesaAdapter getData(String selectedArea, Activity act) {
+        List<MesaModel> mesaModels;
         if (selectedArea != null) {
             mesaModels = new MesaXMlParser().fetch(urlMesas + "/AREA_" + selectedArea);
         } else {

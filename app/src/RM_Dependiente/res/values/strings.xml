@@ -18,6 +18,8 @@
     <string name="title_activity_fullscreen_principal">FullscreenPrincipal</string>
     <string name="title_activity_activity_principal">Selección de mesas</string>
     <string name="connection_error">Error en la conexión</string>
+    <string name="mesa">Mesa</string>
+    <string name="cod_Orden">cod_Orden</string>
     <string name="user">User_Name</string>
     <string name="Error">Error</string>
     <string name="mesaOcupadaError">La mesa está ocupada</string>

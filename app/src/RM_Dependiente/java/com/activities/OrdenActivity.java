@@ -54,6 +54,9 @@ public class OrdenActivity extends BaseActivity {
             initVarialbes();
             setAdapters();
             addListeners();
+
+            Bundle bundleExtra = getIntent().getExtras();
+            createOldOrden(bundleExtra);//crea la orden vieja
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
@@ -62,16 +65,6 @@ public class OrdenActivity extends BaseActivity {
     @Override
     protected void initVarialbes() {
         try {
-            controller = new OrdenController();
-
-            Bundle bundleExtra = getIntent().getExtras();
-            mesaNoLabel.setText(bundleExtra.getString("mesaNoLabel"));//set el No de la mesa
-            dependienteLabel.setText(bundleExtra.getString(String.valueOf(R.string.user)));//set el label con el dependiente
-
-            createOldOrden(bundleExtra);//crea la orden vieja
-
-            productosVOrden = new ArrayList<ProductoVentaOrdenModel>();
-
             mesaNoLabel = (TextView) findViewById(R.id.mesaNoLabel);
             ordenNoLabel = (TextView) findViewById(R.id.ordenNoLabel);
             dependienteLabel = (TextView) findViewById(R.id.dependienteLabel);
@@ -88,8 +81,17 @@ public class OrdenActivity extends BaseActivity {
 
             searchText = (EditText) findViewById(R.id.searchText);
 
-            generarMenu(bundleExtra.getString("mesaNoLabel"));
 
+            controller = new OrdenController();
+
+            Bundle bundleExtra = getIntent().getExtras();
+            mesaNoLabel.setText(bundleExtra.getString(String.valueOf(R.string.mesa)));//set el No de la mesa
+            dependienteLabel.setText(bundleExtra.getString(String.valueOf(R.string.user)));//set el label con el dependiente
+            ordenNoLabel.setText(bundleExtra.getString(String.valueOf(R.string.cod_Orden)));//set el label de la orden
+
+            productosVOrden = new ArrayList<ProductoVentaOrdenModel>();
+
+            initMenu(bundleExtra.getString(String.valueOf(R.string.mesa)));
             initTab();
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
@@ -181,8 +183,6 @@ public class OrdenActivity extends BaseActivity {
 
     private boolean onMenuExpandableListViewChildClick(int groupPosition, int childPosition) {
         try {
-
-
             lastClickedMenu = (ProductoVentaModel) listAdapter.getChild(groupPosition, childPosition);
             addProducto();
             searchText.setText("");
@@ -220,11 +220,12 @@ public class OrdenActivity extends BaseActivity {
             if (old != null) {
                 codOrden = old.getController().getCodOrden();
             } else {
-                codOrden = bundleExtra.getString("codOrden");
+                codOrden = bundleExtra.getString(String.valueOf(R.string.cod_Orden));
             }
 
-            String mesa = mesaNoLabel.getText().toString();
-            String dependiente = dependienteLabel.getText().toString();
+            String mesa = bundleExtra.getString(String.valueOf(R.string.mesa));
+            String dependiente = bundleExtra.getString(String.valueOf(R.string.user));
+
             if (codOrden != null && mesa != null && dependiente != null) {
                 fillAct(controller.starService(codOrden, mesa, dependiente).getProductoVentaOrden(codOrden));
             } else {
@@ -285,7 +286,7 @@ public class OrdenActivity extends BaseActivity {
         }
     }
 
-    private void generarMenu(String codMesa) {
+    private void initMenu(String codMesa) {
         try {
             secciones = controller.getSecciones();
             productos = controller.getProductos(codMesa);

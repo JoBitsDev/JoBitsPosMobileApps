@@ -18,9 +18,8 @@
 
 
         <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/textView4"
@@ -67,35 +66,12 @@
                 android:textSize="@dimen/normal" />
 
             <TextView
-                android:id="@+id/textviewfecha"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/labelFecha"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/color_Labels"
-                android:textSize="@dimen/normal"
-                android:layout_alignParentTop="true"
-                android:layout_alignEnd="@+id/textView3" />
-
-            <TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/dependienteLabel"
                 android:text="@string/labelDependiente"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/color_Labels"
-                android:textSize="@dimen/normal"
-                android:layout_below="@+id/textviewfecha"
-                android:layout_toStartOf="@+id/dependienteLabel" />
-
-            <TextView
-                android:id="@+id/labelFecha"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginLeft="15dp"
-                android:text="####"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/color_Labels"
                 android:textSize="@dimen/normal" />
 
@@ -104,7 +80,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_below="@id/labelFecha"
                 android:layout_marginLeft="15dp"
                 android:text="####"
                 android:textAppearance="?android:attr/textAppearanceMedium"
@@ -121,11 +96,12 @@
 
 
             <ListView
-                android:id="@+id/listaOrden"
-                android:layout_width="wrap_content"
-                android:layout_height="456dp"
+                android:id="@+id/listaOrdenReadOnly"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:choiceMode="singleChoice"
+                android:clickable="false"
                 android:listSelector="@color/selector_listas"
                 android:scrollingCache="true"
                 android:smoothScrollbar="true" />
