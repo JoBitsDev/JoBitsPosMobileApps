@@ -36,7 +36,13 @@ public class PantallaPrincipalActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pantalla_principal);
 
-        configurarTabla();
+        try {
+            initVarialbes();
+            addListeners();
+            configurarTabla();
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     @Override
