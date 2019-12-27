@@ -1,23 +1,43 @@
 package com.activities;
 
-import android.content.Intent;
-import android.graphics.Color;
+import android.widget.*;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.content.Intent;
+import android.graphics.Color;
 
 import com.controllers.MainController;
 import com.services.notifications.ReceiverNotificationService;
 import com.utils.exception.ExceptionHandler;
 
-
+/**
+ * Capa: Activities
+ * Clase que controla el XML del Main.
+ *
+ * @extends BaseActivity ya que es una activity propia de la aplicacion.
+ */
 public class MainActivity extends BaseActivity {
 
+    /**
+     * Controller del MainActivity para manejar las peticiones a la capa inferior.
+     */
     private MainController controller;
 
+    //Varialbes de control
+
+    /**
+     * Label con el estado de la coneccion.
+     */
     private TextView connectionStatusText;
+
+    /**
+     * Boton para activar las notificaciones.
+     */
     private Button notificationButton;
+
+    /**
+     * Boton para iniciar el flujo de la aplicacion. Boton comenzar.
+     */
     private Button initializeSesionButton;
 
     @Override
@@ -78,6 +98,11 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Accion a ejecutar cuando se da click en el boton de notificacion.
+     *
+     * @param v View de la aplicacion.
+     */
     private void onNotificationButtonOnClick(View v) {
         try {
             startService(v);
@@ -86,6 +111,11 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Accion a ejecutar cuando se da click en el boton de iniciar.
+     *
+     * @param v View de la aplicacion.
+     */
     private void onInitializeSesionButtOnClick(View v) {
         try {
             if (updateConnectionText()) {
@@ -99,6 +129,10 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Actualiza el label de coneccion en dependencia de si hay o no coneccion con el servidor.
+     * @return true si hay coneccion con el servidor, false en cualquier otro caso.
+     */
     private boolean updateConnectionText() {
         try {
             if (controller.checkConnection()) {

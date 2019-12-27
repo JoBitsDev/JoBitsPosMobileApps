@@ -21,8 +21,8 @@ android {
         }
         RM_Almacen {
             applicationId 'firstdream.rm.almacen'
-            versionCode 5
-            versionName '1.0.2'
+            versionCode 6
+            versionName '1.1.0'
         }
         RM_Cocina {
             applicationId 'firstdream.rm.cocina'
