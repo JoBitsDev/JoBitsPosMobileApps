@@ -7,10 +7,9 @@ package com.services.models;
 
 
 /**
- *
  * @author Jorge
  */
-public class MesaModel implements Comparable<MesaModel>{
+public class MesaModel implements Comparable<MesaModel> {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,7 +19,6 @@ public class MesaModel implements Comparable<MesaModel>{
     private Integer capacidadMax;
     private Double ubicacion;
     private Boolean estallena;
-
 
 
     public MesaModel() {
@@ -97,7 +95,7 @@ public class MesaModel implements Comparable<MesaModel>{
         }
         MesaModel other = (MesaModel) object;
         if ((this.codMesa == null && other.codMesa != null) || (this.codMesa != null &&
-                    !this.codMesa.equals(other.codMesa))) {
+                !this.codMesa.equals(other.codMesa))) {
             return false;
         }
         return true;
@@ -110,7 +108,6 @@ public class MesaModel implements Comparable<MesaModel>{
 
     @Override
     public int compareTo(MesaModel another) {
-
         int o1 = Integer.parseInt(getCodMesa().split("-")[1]);
         int o2 = Integer.parseInt(another.getCodMesa().split("-")[1]);
 

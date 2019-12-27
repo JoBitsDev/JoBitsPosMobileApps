@@ -9,80 +9,99 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextClock;
 import android.widget.TextView;
 
+import com.controllers.MesasController;
 import com.services.models.MesaModel;
 import com.services.web_connections.OrdenWebConnectionService;
-import com.utils.adapters.MesaAdapter;
-import com.services.parsers.MesaXMlParser;
 import com.utils.EnvironmentVariables;
 import com.services.web_connections.CartaWebConnectionService;
 import com.services.web_connections.MesaWebConnectionService;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
 import com.utils.exception.ExceptionHandler;
 import com.utils.exception.NoExistingException;
 
 
 public class PantallaPrincipalActivity extends BaseActivity {
 
-    String urlMesas = "http://" + EnvironmentVariables.IP + ":8080/RM/rest/com.restmanager.mesa",
+    private MesasController controller;
 
-    user;
-    TextClock clock;
-    TextView labelRestName;
-    ListView lista;
-    List<MesaModel> mesaModels = new ArrayList<MesaModel>();
-    PantallaPrincipalActivity l;
-    private boolean readOnly = false;
+    private TextClock clockText;
+    private TextView restNameLabel;
+    private TextView userLabel;
+
+    private ListView lista;
+
+    private Button cambiarAreaButton;//TODO: Esto no manda a barra, sino cambia de area
+    private Button pedidoDomicilioButton;
+    private Button RButton;
+    private List<MesaModel> mesaModels = new ArrayList<MesaModel>();
     private String selectedArea = null;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pantalla_principal);
 
-        labelRestName = (TextView) findViewById(R.id.textViewNombreRest);
+        configurarTabla();
+    }
 
-        if (labelRestName != null) {
-            labelRestName.setText(new CartaWebConnectionService().getNombreRest());
+    @Override
+    protected void initVarialbes() {
+        controller = new MesasController();
+        String user = getIntent().getExtras().getString(String.valueOf(R.string.user));
+        controller.setUser(user);
+
+        userLabel = ((TextView) findViewById(R.id.textviewusuario));
+        userLabel.setText(user);
+
+        restNameLabel = (TextView) findViewById(R.id.textViewNombreRest);
+        if (restNameLabel != null) {
+            restNameLabel.setText(new CartaWebConnectionService().getNombreRest());
         }
-        l = this;
 
         lista = (ListView) findViewById(R.id.listaMesas);
-        user = getIntent().getExtras().getString(String.valueOf(R.string.user));
-        clock = (TextClock) findViewById(R.id.textClock);
-        ((TextView) findViewById(R.id.textviewusuario)).setText(user);
-        configurarTabla();
-        lista.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        clockText = (TextClock) findViewById(R.id.textClock);
 
-                configurarTabla();
-                lista.setAdapter(getData());
-                continuar(mesaModels.get(position));
-                return true;
-            }
-        });
-        findViewById(R.id.button5).setOnClickListener(new View.OnClickListener() {
+        cambiarAreaButton = (Button) findViewById(R.id.cambiarArea);
+        pedidoDomicilioButton = (Button) findViewById(R.id.pedidoDomicilio);
+    }
+
+    @Override
+    protected void addListeners() {
+        final BaseActivity act = this;
+        cambiarAreaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 cambiarArea(v);
             }
         });
-
+        lista.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    configurarTabla();
+                    lista.setAdapter(controller.getData(mesaModels, selectedArea, act));
+                    continuar(mesaModels.get(position));
+                    return true;
+                } catch (Exception e) {
+                    ExceptionHandler.handleException(e, act);
+                    return false;
+                }
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         configurarTabla();
-
     }
 
     @Override
@@ -110,17 +129,16 @@ public class PantallaPrincipalActivity extends BaseActivity {
     private void continuar(MesaModel m) {
         try {
 
-            OrdenWebConnectionService orden;
             final Bundle data = new Bundle();
-            data.putString(String.valueOf(R.string.user), user);
+            data.putString(String.valueOf(R.string.user), controller.getUser());
             data.putString("mesa", m.getCodMesa());
 
-            orden = new OrdenWebConnectionService(m.getCodMesa(), user);
+            controller.starService(m.getCodMesa());
             if (!m.getEstado().equals(EnvironmentVariables.ESTADO_MESA_VACIA)) {
                 String cod_orden = m.getEstado().split(" ")[0];
-                orden.setCodOrden(cod_orden);
-                if(!orden.validate()){
-                    throw new NoExistingException("La orden a acceder ya no se encuentra abierta",this);
+                controller.setCodOrden(cod_orden);
+                if (!controller.validate()) {
+                    throw new NoExistingException("La orden a acceder ya no se encuentra abierta", this);
                 }
                 data.putString("codOrden", cod_orden);
 
@@ -160,28 +178,27 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
     public void cambiarArea(View view) {
 
-
-    final String[] areas = new MesaWebConnectionService(user, null).getAreasName();
+        final String[] areas = new MesaWebConnectionService(user, null).getAreasName();
         new AlertDialog.Builder(this).
 
-    setTitle(R.string.seleccionararea).
+                setTitle(R.string.seleccionararea).
 
-    setSingleChoiceItems(areas, 1,new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick (DialogInterface dialog,int which){
-            selectedArea = areas[which];
-            dialog.dismiss();
-            configurarTabla();
-        }
-    }).
+                setSingleChoiceItems(areas, 1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        selectedArea = areas[which];
+                        dialog.dismiss();
+                        configurarTabla();
+                    }
+                }).
 
-    create().
+                create().
 
-    show();
+                show();
 
 
+    }
 
-}
     private void execIntent(Bundle data) {
         Intent launch;
         if (readOnly) {
@@ -196,33 +213,17 @@ public class PantallaPrincipalActivity extends BaseActivity {
     }
 
 
-    public void configurarTabla(){
+    public void configurarTabla() {
         showProgressDialog();
         lista.post(new Runnable() {
             @Override
             public void run() {
-            lista.setAdapter(getData());
+                lista.setAdapter(getData(selectedArea));
                 hideProgressDialog();
             }
         });
 
-
-
     }
-
-    private MesaAdapter getData(){
-        if(selectedArea != null){
-            mesaModels = new MesaXMlParser().fetch(urlMesas + "/AREA_"+ selectedArea);
-        }else{
-        mesaModels = new MesaXMlParser().fetch(urlMesas);
-        }
-        Collections.sort(mesaModels);
-        MesaAdapter adaptador = new MesaAdapter(l,R.id.listaMesas, mesaModels,user);
-        return adaptador;
-
-    }
-
-
 
 
 }

@@ -82,7 +82,7 @@ public class LoginActivity extends BaseActivity {
                     loginResult.setTextColor(Color.GREEN);
                     loginResult.setText(R.string.autenticacionCorrecta);
 
-                    Intent launch = new Intent(this, MesasActivity.class);
+                    Intent launch = new Intent(this, PantallaPrincipalActivity.class);
                     launch.putExtra(String.valueOf(R.string.user), username);
                     startActivity(launch);
                 } else {

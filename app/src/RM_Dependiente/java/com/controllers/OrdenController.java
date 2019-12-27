@@ -138,4 +138,8 @@ public class OrdenController extends BaseController {
     public boolean addNota(ProductoVentaModel productoVentaModel, String nota) throws ServerErrorException, NoConnectionException {
         return ordenWCService.addNota(productoVentaModel.getPCod(), nota);
     }
+
+    public void setCodOrden(String codOrden) {
+        ordenWCService.setCodOrden(codOrden);
+    }
 }

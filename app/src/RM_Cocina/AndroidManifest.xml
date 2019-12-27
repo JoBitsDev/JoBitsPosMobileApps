@@ -10,7 +10,7 @@
         >
 
         <activity
-            android:name="com.activities.MesasActivity"
+            android:name="com.activities.PantallaPrincipalActivity"
             android:label="@string/title_activity_activity_principal"
             android:parentActivityName="com.activities.MainActivity" >
             <meta-data
