@@ -20,7 +20,6 @@ import android.content.res.Configuration;
 
 import com.utils.exception.ExceptionHandler;
 import com.utils.adapters.ProductoVentaOrdenAdapter;
-import com.services.web_connections.PersonalWebConnectionServiceService;
 
 
 public class OrdenActivity extends BaseActivity {

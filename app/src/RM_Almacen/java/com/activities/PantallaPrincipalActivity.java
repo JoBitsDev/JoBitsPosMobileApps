@@ -104,7 +104,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             spinnerFiltrar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    onSpinnerFiltrarItemSelected(view, position);
+                    onSpinnerFiltrarItemSelected(view);
                 }
 
                 @Override
