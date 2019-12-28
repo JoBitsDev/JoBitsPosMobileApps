@@ -1,47 +1,67 @@
 package com.activities;
 
+import android.text.*;
+import android.view.*;
+import android.widget.*;
+import android.os.Bundle;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.InputType;
-import android.text.TextWatcher;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.controllers.PantallaPrincipalController;
-import com.services.models.InsumoAlmacenModel;
-import com.utils.adapters.AlmacenInsumoAdapter;
-import com.utils.adapters.FilterAdapter;
+import com.utils.adapters.*;
 import com.utils.exception.ExceptionHandler;
+import com.services.models.InsumoAlmacenModel;
+import com.controllers.PantallaPrincipalController;
 
-import java.util.concurrent.ExecutionException;
-
-
+/**
+ * Capa: Activities
+ * Clase que controla el XML de la pantalla principal del Almacen.
+ *
+ * @extends BaseActivity ya que es una activity propia de la aplicacion.
+ */
 public class PantallaPrincipalActivity extends BaseActivity {
 
+    /**
+     * Controller del {@link PantallaPrincipalActivity} para manejar las peticiones a la capa inferior.
+     */
+    private PantallaPrincipalController controller;
+
+    /**
+     * Lista que muestra los productos en el almacen.
+     */
     private ListView listView;
+
+    /**
+     * Textos con el usuario y el almacen
+     */
     private TextView userText, almacenText;
+
+    /**
+     * Cuadro de texto de busqueda.
+     */
     private EditText searchText;
-    private RadioButton radioButtonSalida, radioButtonRebaja;
+
+    /**
+     * Radio Button para darle salida a producto.
+     */
+    private RadioButton radioButtonSalida;
+
+    /**
+     * NO SE USAN
+     */
+    private RadioButton radioButtonRebaja;
     private ImageButton salidaButton;
     private ImageButton entradaButton;
-    private PantallaPrincipalController controller;
-    private Spinner spinnerFiltrar;
-    private FilterAdapter filterAdapter;
-    private String[] filtros = {"Seleccione", "Ruby", "Java", ".NET", "Python", "PHP", "JavaScript", "GO"};//TODO: WHAAAAAAAAAAAAAATTTTTTT??????
 
+    /**
+     * Spinner para filtrar por cocina.
+     */
+    private Spinner spinnerFiltrar;
+
+    /**
+     * Adapter para el filtro.
+     */
+    private FilterAdapter filterAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +71,9 @@ public class PantallaPrincipalActivity extends BaseActivity {
             setContentView(R.layout.activity_almacenstate);
             setBundle(getIntent().getExtras());
 
-            initVarialbes();
-            addListeners();
-            setAdapters();
+            initVarialbes();//inicializa las  variables
+            addListeners();//agrega los listener
+            setAdapters();//agrega los adapters
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
@@ -117,10 +137,15 @@ public class PantallaPrincipalActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Accion a llamar cuando se selecciona una cocina en el spinner de filtrar
+     *
+     * @param view View de la aplicacion.
+     */
     private void onSpinnerFiltrarItemSelected(View view) {
         try {
-            if (spinnerFiltrar.getSelectedItemPosition()== 0) {
-                listView.setAdapter(fetchData());//select all
+            if (spinnerFiltrar.getSelectedItemPosition() == 0) {
+                listView.setAdapter(controller.getAdapter(this, R.id.listaInsumos));
             } else {
                 listView.setAdapter(new AlmacenInsumoAdapter(view.getContext(), R.id.listaInsumos, controller.filterBy(spinnerFiltrar.getSelectedItem().toString())));
             }
@@ -132,7 +157,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     @Override
     protected void setAdapters() {
         try {
-            listView.setAdapter(fetchData());
+            listView.setAdapter(controller.getAdapter(this, R.id.listaInsumos));
             spinnerFiltrar.setAdapter(filterAdapter.createAdapter());
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
@@ -162,7 +187,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 case R.id.action_imprimirEstado:
                     return imprimirEstadoAlmacen();
                 case R.id.action_ticket_compra:
-                    return imprimirTicketEstado();
+                    return imprimirTicketCompra();
                 default:
                     return super.onOptionsItemSelected(item);
             }
@@ -172,13 +197,18 @@ public class PantallaPrincipalActivity extends BaseActivity {
         }
     }
 
-    private boolean imprimirTicketEstado() {
+    /**
+     * Manda a imprimir el ticket de compra.
+     *
+     * @return true si se puede imprimir el ticket, false de lo contrario.
+     */
+    private boolean imprimirTicketCompra() {
         try {
             boolean resp = false;
             try {
                 resp = controller.imprimirTicketCompra();
                 if (resp) {
-                    showMessage("Imprimiendo...");
+                    Toast.makeText(getApplicationContext(), "Imprimiendo...", Toast.LENGTH_SHORT);
                 } else {
                     ExceptionHandler.handleException(new Exception("Error imprimiendo"), this);
                 }
@@ -192,6 +222,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Manda a imprimir el estado del almacen.
+     *
+     * @return true si se puede imprimir el ticket, false de lo contrario.
+     */
     private boolean imprimirEstadoAlmacen() {
         try {
             boolean resp = false;
@@ -212,6 +247,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Accion a llamar cuando se le da entrada a un producto.
+     *
+     * @param v View de la aplicacion.
+     */
     public void onEntradaClick(final View v) {
         try {
             final InsumoAlmacenModel insumoModel = ((InsumoAlmacenModel) listView.getAdapter().getItem((Integer) v.getTag()));
@@ -284,7 +324,12 @@ public class PantallaPrincipalActivity extends BaseActivity {
         }
     }
 
-    public void onRebajarClick(View v) {
+    /**
+     * Accion a llamar cuando se le dar rebaja a un producto o salida dependiendo del estado del combo box.
+     *
+     * @param v View de la aplicacion.
+     */
+    public void onSalidaRebajaClick(View v) {
         try {
             if (radioButtonSalida.isChecked()) {
                 onSalidaClick(v);
@@ -296,7 +341,12 @@ public class PantallaPrincipalActivity extends BaseActivity {
         }
     }
 
-    private void onSalidaClick(final View v) throws ExecutionException, InterruptedException {
+    /**
+     * Accion a llamar cuando se le da salida a un producto.
+     *
+     * @param v View de la aplicacion.
+     */
+    private void onSalidaClick(final View v) {
         try {
             final InsumoAlmacenModel i = ((InsumoAlmacenModel) listView.getAdapter().getItem((Integer) v.getTag()));
             final String[] ipvs = getIPVData(i.getInsumoModel().getCodInsumo());
@@ -342,32 +392,33 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                                 listView.post(new Runnable() {
                                                     @Override
                                                     public void run() {
-                                                       onSpinnerFiltrarItemSelected(listView);
+                                                        onSpinnerFiltrarItemSelected(listView);
                                                     }
                                                 });
                                                 dialog.dismiss();
                                             }
                                         }
-                                    }).
-                                    setTitle("Destino").
+                                    }).setTitle("Destino").
                                     setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             dialog.dismiss();
                                         }
                                     }).
-                                    create().
-                                    show();
+                                    create().show();
                             dialog.dismiss();
                         }
-                    }).
-                    create().
-                    show();
+                    }).create().show();
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
     }
 
+    /**
+     * Accion a llamar cuando se va a rebajar un producto.
+     *
+     * @param v View de la aplicacion.
+     */
     private void onRebajaClick(final View v) {
         try {
             final InsumoAlmacenModel insumoModel = ((InsumoAlmacenModel) listView.getAdapter().getItem((Integer) v.getTag()));
@@ -422,7 +473,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                         listView.post(new Runnable() {
                                             @Override
                                             public void run() {
-                                                listView.setAdapter(fetchData());
+                                                try {
+                                                    listView.setAdapter(controller.getAdapter(act, R.id.listaInsumos));
+                                                } catch (Exception e) {
+                                                    ExceptionHandler.handleException(e, act);
+                                                }
                                             }
                                         });
                                         dialog.dismiss();
@@ -441,15 +496,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
         }
     }
 
-    private AlmacenInsumoAdapter fetchData() {
-        try {
-            return new AlmacenInsumoAdapter(this, R.id.listaInsumos, controller.getPrimerAlmacen());
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
-            return null;
-        }
-    }
-
+    /**
+     * Obtiene la informacion de los IPVs segun un insumo.
+     * @param insumoCod Codigo del insumo.
+     * @return arreglo de String con los IPVs.
+     */
     private String[] getIPVData(String insumoCod) {
         try {
             return controller.getCocinasNamesForIPV(insumoCod);
