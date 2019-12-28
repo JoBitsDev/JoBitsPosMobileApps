@@ -231,7 +231,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         try {
             boolean resp = false;
             try {
-                resp = controller.imprimirEstadoActual();
+                resp = controller.imprimirEstadoActualAlmacen();
                 if (resp) {
                     showMessage("Imprimiendo...");
                 } else {

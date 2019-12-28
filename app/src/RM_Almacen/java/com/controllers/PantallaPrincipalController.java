@@ -25,6 +25,7 @@ public class PantallaPrincipalController extends BaseController {
 
     /**
      * Constructor de la clase.
+     *
      * @param usuario para conocer el que hace las operaciones.
      */
     public PantallaPrincipalController(String usuario) {
@@ -33,8 +34,9 @@ public class PantallaPrincipalController extends BaseController {
 
     /**
      * Manda a imprimir el ticket de compra.
+     *
      * @return true si lo imprime, false cualquier otro caso.
-     * @throws ServerErrorException si hay error en el servidor.
+     * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public boolean imprimirTicketCompra() throws ExecutionException, InterruptedException {
@@ -43,20 +45,22 @@ public class PantallaPrincipalController extends BaseController {
 
     /**
      * Manda a imprimir el estado actual del almacen.
+     *
      * @return true si lo imprime, false cualquier otro caso.
-     * @throws ServerErrorException si hay error en el servidor.
+     * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public boolean imprimirEstadoActual() throws ExecutionException, InterruptedException {
-        return almacenWCService.imprimirEstadoAlmacen();
+    public boolean imprimirEstadoActualAlmacen() throws ExecutionException, InterruptedException {
+        return almacenWCService.imprimirEstadoActualAlmacen();
     }
 
     /**
      * Da entrada a un producto en el almacen.
-     * @param i Modelo del insumo.
+     *
+     * @param i        Modelo del insumo.
      * @param cantidad Cantidad a ingresar.
-     * @param monto Monto de lo que cuesta esa cantidad.
-     * @throws ServerErrorException si hay error en el servidor.
+     * @param monto    Monto de lo que cuesta esa cantidad.
+     * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public void darEntrada(InsumoAlmacenModel i, float cantidad, float monto) throws ExecutionException, InterruptedException {
@@ -65,22 +69,24 @@ public class PantallaPrincipalController extends BaseController {
 
     /**
      * Sa salida a un producto del almacen.
-     * @param i Modelo del insumo.
-     * @param cantidad Cantidad a dar salida.
-     * @param ipv IPV.
-     * @throws ServerErrorException si hay error en el servidor.
+     *
+     * @param i                 Modelo del insumo.
+     * @param cantidad          Cantidad a dar salida.
+     * @param codPtoElaboracion punto de elaboracion.
+     * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public void darSalida(InsumoAlmacenModel i, float cantidad, String ipv) throws ExecutionException, InterruptedException {
-        almacenWCService.darSalida(i, cantidad, ipv);
+    public void darSalida(InsumoAlmacenModel i, float cantidad, String codPtoElaboracion) throws ExecutionException, InterruptedException {
+        almacenWCService.darSalida(i, cantidad, codPtoElaboracion);
     }
 
     /**
      * Da rebaja como Merma a un producto del almacen.
-     * @param i Modelo del insumo.
+     *
+     * @param i        Modelo del insumo.
      * @param cantidad Cantidad a dar salida.
-     * @param razon Razon.
-     * @throws ServerErrorException si hay error en el servidor.
+     * @param razon    Razon.
+     * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public void rebajar(InsumoAlmacenModel i, float cantidad, String razon) throws ExecutionException, InterruptedException {
@@ -89,8 +95,9 @@ public class PantallaPrincipalController extends BaseController {
 
     /**
      * TODO: ni idea.
+     *
      * @return Lista de los insumos.
-     * @throws ServerErrorException si hay error en el servidor.
+     * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public List<InsumoAlmacenModel> getPrimerAlmacen() throws ExecutionException, InterruptedException {
@@ -99,43 +106,47 @@ public class PantallaPrincipalController extends BaseController {
 
     /**
      * Obtiene los nombres de las cocinas por IPV.
-     * @param insumoCod Codigo del insumo.
+     *
+     * @param codInsumo Codigo del insumo.
      * @return Nombre de las cocinas.
-     * @throws ServerErrorException si hay error en el servidor.
+     * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public String[] getCocinasNamesForIPV(String insumoCod) throws ExecutionException, InterruptedException {
-        return almacenWCService.getCocinasNamesForIPV(insumoCod);
+    public String[] getCocinasNamesForIPV(String codInsumo) throws ExecutionException, InterruptedException {
+        return almacenWCService.getCocinasNamesForIPV(codInsumo);
     }
 
     /**
      * Obtiene los nombres de todas las cocinas.
+     *
      * @return Un arreglo de String con los nombres de todas las cocinas.
-     * @throws ServerErrorException si hay error en el servidor.
+     * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public String[] getCocinasNames()  throws ExecutionException, InterruptedException {
+    public String[] getCocinasNames() throws ExecutionException, InterruptedException {
         return new CocinaWebConnection().getCocinasNames();
     }
 
     /**
      * Filtra los insumos por el codigo del punto de elaboracion.
+     *
      * @param codPtoElaboracion Codigo del punto de elaboracion.
      * @return Lista con los insumos filtrados.
      */
     public List<InsumoAlmacenModel> filterBy(String codPtoElaboracion) {
-        return almacenWCService.filtrarBy(codPtoElaboracion);
+        return almacenWCService.filterBy(codPtoElaboracion);
     }
 
     /**
      * Obtiene el adapter para los insumos del almacen.
-     * @param c Base activity donde se muestra el adapter
+     *
+     * @param c            Base activity donde se muestra el adapter
      * @param listaInsumos codigo del R.id de la lista de insumos.
      * @return El adapter para los insumos del almacen.
-     * @throws ServerErrorException si hay error en el servidor.
+     * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public AlmacenInsumoAdapter getAdapter(BaseActivity c, int listaInsumos) throws ExecutionException, InterruptedException {
-            return new AlmacenInsumoAdapter(c.getApplicationContext(), listaInsumos, getPrimerAlmacen());
+        return new AlmacenInsumoAdapter(c.getApplicationContext(), listaInsumos, getPrimerAlmacen());
     }
 }
