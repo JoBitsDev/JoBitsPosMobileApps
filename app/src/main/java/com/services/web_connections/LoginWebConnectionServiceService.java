@@ -32,7 +32,7 @@ public class LoginWebConnectionServiceService extends SimpleWebConnectionService
      * @param pass contrasenna del usuario.
      */
     public LoginWebConnectionServiceService(String user, String pass) {
-        super(EnvironmentVariables.IP, EnvironmentVariables.PORT);
+        super();
         this.user = user;
         this.pass = pass;
     }

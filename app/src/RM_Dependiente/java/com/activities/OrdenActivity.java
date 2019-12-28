@@ -375,9 +375,7 @@ public class OrdenActivity extends BaseActivity {
 
     private void cederACamarero() {
         try {
-            final String[] usuarios = new PersonalWebConnectionServiceService().
-                    getUsuariosActivos();
-            Arrays.sort(usuarios);//TODO: que el server lo devuelva ordenado
+            final String[] usuarios = controller.getUsuariosActivos();
 
             if (usuarios.length > 0) {//hay usuarios
                 final BaseActivity act = this;
