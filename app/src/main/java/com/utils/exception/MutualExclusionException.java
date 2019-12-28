@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.widget.Toast;
 
 /**
+ * NO SE USA
  * Created by Jorge on 26/2/18.
  */
 
