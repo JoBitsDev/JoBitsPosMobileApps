@@ -43,7 +43,8 @@ public class SimpleWebConnectionService {
 
     /**
      * Constructor que solicita ip y puerto para en caso de que se quiera conectar a otro lugar.
-     * @param ip del servidor donde se hacen las peticiones.
+     *
+     * @param ip   del servidor donde se hacen las peticiones.
      * @param port del servidor donde se hacen las peticiones.
      */
     public SimpleWebConnectionService(String ip, String port) {
@@ -67,7 +68,7 @@ public class SimpleWebConnectionService {
      *
      * @param url a consultar
      * @return Respuesta de la consulta
-     * @throws ServerErrorException si hay error en el servidor.
+     * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public String connect(String url) throws ServerErrorException, NoConnectionException {
@@ -95,6 +96,7 @@ public class SimpleWebConnectionService {
     /**
      * Capa: Interna
      * Clase que sealiza Asyncronicamente la peticion al servidor.
+     *
      * @extends AsyncTask<String, Void, String> ya que es una tarea asincrona.
      */
     protected class fetchData extends AsyncTask<String, Void, String> {

@@ -14,16 +14,16 @@ public class MutualExclusionException extends Exception {
 
     private Context context;
 
-    public MutualExclusionException(String detailMessage,Context context) {
+    public MutualExclusionException(String detailMessage, Context context) {
         super(detailMessage);
         this.context = context;
     }
 
-    public void showMessageInToast(){
-        Toast.makeText(context,getMessage(),Toast.LENGTH_LONG).show();
+    public void showMessageInToast() {
+        Toast.makeText(context, getMessage(), Toast.LENGTH_LONG).show();
     }
 
-    public void showMessageInAlert(){
+    public void showMessageInAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(getMessage());
         builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {

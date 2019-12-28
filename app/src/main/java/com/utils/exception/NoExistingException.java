@@ -16,12 +16,12 @@ public class NoExistingException extends Exception {
         this.context = context;
     }
 
-    public void showMessageInToast(){
-        Toast.makeText(context,getMessage(),Toast.LENGTH_LONG).show();
+    public void showMessageInToast() {
+        Toast.makeText(context, getMessage(), Toast.LENGTH_LONG).show();
 
     }
 
-    public void showMessageInAlert(){
+    public void showMessageInAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(getMessage());
         builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {

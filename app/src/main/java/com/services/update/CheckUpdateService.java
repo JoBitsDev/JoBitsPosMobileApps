@@ -80,6 +80,7 @@ public class CheckUpdateService {
 
     /**
      * Obtiene el nombre de la version actual de la aplicacion.
+     *
      * @return el nombre de la version actual.
      */
     public static String getVersionName() {
@@ -96,6 +97,7 @@ public class CheckUpdateService {
 
     /**
      * Obtiene el codigo de la version actual de la aplicacion.
+     *
      * @return el codigo de la version actual.
      */
     public static int getVersionCode() {
@@ -112,6 +114,7 @@ public class CheckUpdateService {
 
     /**
      * Pone el contexto.
+     *
      * @param c Contexto a poner
      */
     public static void setContext(Context c) {
@@ -120,6 +123,7 @@ public class CheckUpdateService {
 
     /**
      * Si hay actualizacion o no.
+     *
      * @return true si hay actualizacion disponible, false de lo contrario.
      */
     public static boolean isAvailableUpdate() {

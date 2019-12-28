@@ -2,7 +2,9 @@ package com.controllers;
 
 import java.net.*;
 import java.io.IOException;
+
 import android.os.AsyncTask;
+
 import com.utils.EnvironmentVariables;
 
 /**
@@ -21,9 +23,10 @@ public abstract class BaseController {
     /**
      * Chequea la coneccion con el servidor, hace un ping y verifica respuesta.
      * En caso de CUALQUIER error con el servido lo maneja y da false.
+     *
      * @return true si hay coneccion con el servidor, false de lo contrario.
      */
-    public boolean checkConnection(){
+    public boolean checkConnection() {
         try {
             Check c = new Check();
             c.execute(URLCONN);

@@ -32,8 +32,9 @@ public class PersonalWebConnectionServiceService extends SimpleWebConnectionServ
 
     /**
      * Obtiene los usuarios activos en ese momento para poder ceder orden.
+     *
      * @return Un arreglo de Strign con los usuarios activos.
-     * @throws ServerErrorException si hay error en el servidor.
+     * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public String[] getUsuariosActivos() throws InterruptedException, ExecutionException {

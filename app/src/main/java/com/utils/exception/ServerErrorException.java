@@ -8,6 +8,7 @@ import java.util.concurrent.ExecutionException;
  * En realidad la que se lanza es {@link ExecutionException } pero se castea a esta para tener
  * un mejor control sobre la excepcion en caso que se necesite. Ademas que ExecutionException
  * no permite instanciacion directa.
+ *
  * @extends ExecutionException.
  */
 public class ServerErrorException extends ExecutionException {

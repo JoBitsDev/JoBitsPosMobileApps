@@ -28,6 +28,7 @@ public class LoginWebConnectionServiceService extends SimpleWebConnectionService
 
     /**
      * Constructor del servicio, recive el usuario y la contrasenna de los que se van a logear.
+     *
      * @param user usuario a autenticar.
      * @param pass contrasenna del usuario.
      */
@@ -39,8 +40,9 @@ public class LoginWebConnectionServiceService extends SimpleWebConnectionService
 
     /**
      * Autentica al usuario.
+     *
      * @return true si el usuario se auntentica correctamente, false de lo contrario.
-     * @throws ServerErrorException si hay error en el servidor.
+     * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public boolean authenticate() throws ServerErrorException, NoConnectionException {

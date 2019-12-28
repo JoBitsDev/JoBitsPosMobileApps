@@ -84,6 +84,7 @@ public class LoginActivity extends BaseActivity {
 
     /**
      * Acción a ejecutar cuando se da click en el boton login y se va a autenticar el usuario.
+     *
      * @param v View de la aplicacion.
      */
     private void autenticar(View v) {

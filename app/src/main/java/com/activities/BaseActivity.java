@@ -2,7 +2,9 @@ package com.activities;
 
 import android.app.*;
 import android.content.*;
+
 import com.utils.exception.*;
+
 import android.os.Bundle;
 import android.view.View;
 
@@ -78,6 +80,7 @@ public abstract class BaseActivity extends Activity {
 
     /**
      * Muestra un PopUp basico con un mensaje.
+     *
      * @param message a mostrar en el PopUp.
      */
     public void showMessage(String message) {
@@ -86,6 +89,7 @@ public abstract class BaseActivity extends Activity {
 
     /**
      * Devuelve el bundle.
+     *
      * @return el bundle.
      */
     public Bundle getBundle() {
@@ -94,6 +98,7 @@ public abstract class BaseActivity extends Activity {
 
     /**
      * Sobreescribe el bundle actual por el especifico
+     *
      * @param bundle a sobreescribir
      */
     public void setBundle(Bundle bundle) {
