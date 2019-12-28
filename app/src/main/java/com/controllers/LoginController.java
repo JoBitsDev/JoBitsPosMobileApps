@@ -1,7 +1,6 @@
 package com.controllers;
 
 import com.utils.exception.*;
-import com.utils.EnvironmentVariables;
 import com.services.web_connections.LoginWebConnectionServiceService;
 
 /**
