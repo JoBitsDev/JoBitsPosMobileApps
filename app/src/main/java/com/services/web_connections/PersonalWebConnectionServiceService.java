@@ -1,7 +1,6 @@
 package com.services.web_connections;
 
-import com.utils.exception.NoConnectionException;
-import com.utils.exception.ServerErrorException;
+import com.utils.exception.*;
 
 import java.util.concurrent.ExecutionException;
 
