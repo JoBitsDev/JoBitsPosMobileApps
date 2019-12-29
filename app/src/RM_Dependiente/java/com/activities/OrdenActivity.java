@@ -13,36 +13,33 @@ import com.controllers.OrdenController;
 import android.app.AlertDialog;
 
 import com.utils.EnvironmentVariables;
-import com.utils.adapters.MenuAdapter;
 
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 
+import com.utils.adapters.MenuAdapterThis;
+import com.utils.adapters.MenuPrincipalAdapter;
 import com.utils.exception.ExceptionHandler;
 import com.utils.adapters.ProductoVentaOrdenAdapter;
 import com.services.web_connections.PersonalWebConnectionServiceService;
 
-
 public class OrdenActivity extends BaseActivity {
 
     private OrdenController controller;
-
     private Button cerrarOrdenButton, despacharACocinaButton;
     private TextView mesaNoLabel, ordenNoLabel, dependienteLabel, totalPrincipalLabel, totalSecundariaLabel;
     private EditText searchText;
-    private ExpandableListView menuExpandableListView;
+    private ListView menuProductosListView, menuSeccionListView;
     private ListView listaOrden;
     private CheckBox deLaCasaCheckBox;
-    private Spinner s;
-
     private List<SeccionModel> secciones;
     private List<ProductoVentaModel> productos;
     private List<ProductoVentaOrdenModel> productosVOrden;
-
     private ProductoVentaModel lastClickedMenu = null;
     private ProductoVentaOrdenModel lastClickedOrden = null;
-
-    private MenuAdapter listAdapter;
+    private MenuPrincipalAdapter menuPrincipalAdapter;
+    private MenuAdapterThis menuAdapter;
+    private List<ProductoVentaModel> productosSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,26 +67,21 @@ public class OrdenActivity extends BaseActivity {
             dependienteLabel = (TextView) findViewById(R.id.dependienteLabel);
             totalPrincipalLabel = (TextView) findViewById(R.id.totalPrincipalLabel);
             totalSecundariaLabel = (TextView) findViewById(R.id.totalSecundariaLabel);
-
             deLaCasaCheckBox = (CheckBox) findViewById(R.id.deLaCasaCheckBox);
-
-            menuExpandableListView = (ExpandableListView) findViewById(R.id.menuExpandableListView);
+            menuProductosListView = (ListView) findViewById(R.id.menuListView);
+            menuSeccionListView = (ListView) findViewById(R.id.menuPrincipalListView);
             listaOrden = (ListView) findViewById(R.id.listaOrden);
-
             cerrarOrdenButton = (Button) findViewById(R.id.buttonCerrarOrden);
             despacharACocinaButton = (Button) findViewById(R.id.buttondespacharCocina);
-
             searchText = (EditText) findViewById(R.id.searchText);
-
-
             controller = new OrdenController();
 
             Bundle bundleExtra = getIntent().getExtras();
             mesaNoLabel.setText(bundleExtra.getString(String.valueOf(R.string.mesa)));//set el No de la mesa
             dependienteLabel.setText(bundleExtra.getString(String.valueOf(R.string.user)));//set el label con el dependiente
             ordenNoLabel.setText(bundleExtra.getString(String.valueOf(R.string.cod_Orden)));//set el label de la orden
-
             productosVOrden = new ArrayList<ProductoVentaOrdenModel>();
+            productosSelected = new ArrayList<ProductoVentaModel>();
 
             initMenu(bundleExtra.getString(String.valueOf(R.string.mesa)));
             initTab();
@@ -119,19 +111,24 @@ public class OrdenActivity extends BaseActivity {
                 });
             }
 
-            menuExpandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            menuSeccionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
-                    return onMenuExpandableListViewItemLongClick(v, position);
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    productosSelected = secciones.get(position).getProductos();
+                    if (!productosSelected.isEmpty()) {
+                        menuAdapter = new MenuAdapterThis(getApplicationContext(), android.R.layout.simple_list_item_1, productosSelected);
+                        menuProductosListView.setAdapter(menuAdapter);
+                    }
                 }
             });
 
-            menuExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            menuProductosListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
-                public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                    return onMenuExpandableListViewChildClick(groupPosition, childPosition);
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    return onMenuListViewClick(position);
                 }
             });
+
 
             searchText.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -142,7 +139,7 @@ public class OrdenActivity extends BaseActivity {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     if (!s.toString().isEmpty()) {
-                        listAdapter.getFilter().filter(s.toString());
+                        menuAdapter.getFilter().filter(s.toString());
                     }
                 }
 
@@ -181,9 +178,9 @@ public class OrdenActivity extends BaseActivity {
         }
     }
 
-    private boolean onMenuExpandableListViewChildClick(int groupPosition, int childPosition) {
+    private boolean onMenuListViewClick(int position) {
         try {
-            lastClickedMenu = (ProductoVentaModel) listAdapter.getChild(groupPosition, childPosition);
+            lastClickedMenu = menuAdapter.getItem(position);
             addProducto();
             searchText.setText("");
             return true;
@@ -196,8 +193,8 @@ public class OrdenActivity extends BaseActivity {
     @Override
     protected void setAdapters() {
         try {
-            listAdapter = new MenuAdapter(this, secciones);
-            menuExpandableListView.setAdapter(listAdapter);
+            menuPrincipalAdapter = new MenuPrincipalAdapter(this, android.R.layout.simple_list_item_1, secciones);
+            menuSeccionListView.setAdapter(menuPrincipalAdapter);
 
             //adapter de ProductoVentaOrden que antes de ponerlo lleva un listener
             final ProductoVentaOrdenAdapter adapter = new ProductoVentaOrdenAdapter(this, R.id.listaOrden, productosVOrden, new View.OnLongClickListener() {
@@ -248,16 +245,17 @@ public class OrdenActivity extends BaseActivity {
             if (host != null) {//TODO: por que este if??
                 host.setup();
 
-                //Tab 1
-                TabHost.TabSpec spec = host.newTabSpec("Menu");
-                spec.setContent(R.id.menu);
-                spec.setIndicator("Menu");
-                host.addTab(spec);
+                TabHost.TabSpec spec = host.newTabSpec("Pedido");
 
                 //Tab 2
-                spec = host.newTabSpec("Pedido");
                 spec.setContent(R.id.ordenModel);
                 spec.setIndicator("Pedido");
+                host.addTab(spec);
+
+                //Tab 1
+                spec = host.newTabSpec("Menu");
+                spec.setContent(R.id.menu);
+                spec.setIndicator("Menu");
                 host.addTab(spec);
             }
         } catch (Exception e) {
@@ -322,7 +320,7 @@ public class OrdenActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         try {
-            // Inflate the menuExpandableListView; this adds items to the action bar if it is present.
+            // Inflate the menuProductosListView; this adds items to the action bar if it is present.
             getMenuInflater().inflate(R.menu.menu_orden, menu);
             return true;
         } catch (Exception e) {
@@ -603,69 +601,6 @@ public class OrdenActivity extends BaseActivity {
             ExceptionHandler.handleException(e, this);
         }
     }
-
-    public boolean onMenuExpandableListViewItemLongClick(final View v, int position) {
-        try {
-            addProductoFromMenu(v, position);
-            return true;
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
-            return false;
-        }
-    }
-
-    private void addProductoFromMenu(final View v, int position) {
-        try {
-            long packedPosition = menuExpandableListView.getExpandableListPosition(position);
-
-            if (ExpandableListView.getPackedPositionType(packedPosition) ==
-                    ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-
-                // getProductoVentaOrden item ID's
-                int groupPosition = ExpandableListView.getPackedPositionGroup(packedPosition);
-                int childPosition = ExpandableListView.getPackedPositionChild(packedPosition);
-
-                lastClickedMenu = (ProductoVentaModel) listAdapter.getChild(groupPosition, childPosition);
-
-                final EditText input = new EditText(v.getContext());
-                input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                input.setRawInputType(Configuration.KEYBOARD_12KEY);
-
-                final BaseActivity act = this;
-                new AlertDialog.Builder(v.getContext()).
-                        setView(input).
-                        setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            if (lastClickedMenu != null) {
-                                float cant = Float.parseFloat(input.getText().toString());
-                                if (controller.addProducto(lastClickedMenu, cant)) {
-                                    controller.addProducto(lastClickedMenu, cant);
-                                    updateCosto();
-                                    Toast.makeText(v.getContext(), lastClickedMenu.getNombre() + " agregado al pedido.", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(v.getContext(), R.string.errorAlAutenticar, Toast.LENGTH_SHORT).show();//TODO: como que error al autenticar??
-                                }
-                            } else {
-                                Toast.makeText(v.getContext(), R.string.noItemSeleccionado, Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (Exception e) {
-                            ExceptionHandler.handleException(e, act);
-                        }
-                    }
-                }).create().show();
-            }
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
-        }
-    }
-
 
     private void removeProducto() {
         try {

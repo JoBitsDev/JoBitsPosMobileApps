@@ -60,7 +60,6 @@ public class ProductoVentaOrdenReadOnlyAdapter extends ArrayAdapter<ProductoVent
         TextView nombreProducto,
                 precioVenta,
                 cantidad;
-        ImageButton add, remove, adjunto, comensal;
     }
 }
 
