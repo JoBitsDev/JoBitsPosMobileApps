@@ -1,36 +1,32 @@
 package com.services.web_connections;
 
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
+import com.utils.exception.NoConnectionException;
+import com.utils.exception.ServerErrorException;
 
 /**
- * Created by Jorge on 19/1/19.
+ * Capa: Services.
+ * Copia de la CocinaWebConnection original para pedir los nombres de las cocinas.
+ * @extens SimpleWebConnectionService ya que es un servicio.
  */
 
 public class CocinaWebConnection extends SimpleWebConnectionService {
 
-
-    private ArrayList<String> codOrdenes = new ArrayList<String>();
     private final String P = "com.restmanager.cocina/",
-            fetchNames =  "NAMES";
+            fetchNames = "NAMES";
 
     public CocinaWebConnection() {
         super();
     }
 
-
-    public String[] getCocinasNames(){
-        try {
-            return connect(path + P + fetchNames).split(",");
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    return new String[0];
+    /**
+     * Obtiene los nombres de todas las cocinas.
+     *
+     * @return Un arreglo de String con los nombres de todas las cocinas.
+     * @throws ServerErrorException  si hay error en el servidor.
+     * @throws NoConnectionException si no hay coneccion con el servidor.
+     */
+    public String[] getCocinasNames() throws ServerErrorException, NoConnectionException {
+        return connect(path + P + fetchNames).split(",");
     }
 
 

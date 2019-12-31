@@ -136,8 +136,9 @@ public abstract class AbstractXmlParser<T> {
 
     /**
      * Lee el string del parser segun el TAG.
+     *
      * @param parser XmlPullParser con el XML.
-     * @param TAG segun el cual parsear.
+     * @param TAG    segun el cual parsear.
      * @return String con la respuesta.
      * @throws IOException            Si hay error en la lectura.
      * @throws XmlPullParserException Si hay error en el parseo.
@@ -151,6 +152,7 @@ public abstract class AbstractXmlParser<T> {
 
     /**
      * Fetch general, este es el que se manda a ejecutar cada vez.
+     *
      * @param url URL a consultar
      * @return List<T> con la lista de los objetos parseados.
      */
@@ -170,7 +172,6 @@ public abstract class AbstractXmlParser<T> {
 
     /**
      * Capa: Inner
-     * 
      */
     protected class fetchData extends AsyncTask<String, Integer, List<T>> {
 

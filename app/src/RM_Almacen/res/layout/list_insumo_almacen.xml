@@ -47,7 +47,7 @@
             android:layout_gravity="fill"
             android:layout_marginLeft="5dp"
             android:background="@null"
-            android:onClick="onRebajarClick"
+            android:onClick="onSalidaRebajaClick"
             android:scaleType="fitCenter"
             android:src="@drawable/salida"
             tools:layout_width="40dp" />

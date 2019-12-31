@@ -131,6 +131,7 @@ public class MainActivity extends BaseActivity {
 
     /**
      * Actualiza el label de coneccion en dependencia de si hay o no coneccion con el servidor.
+     *
      * @return true si hay coneccion con el servidor, false en cualquier otro caso.
      */
     private boolean updateConnectionText() {

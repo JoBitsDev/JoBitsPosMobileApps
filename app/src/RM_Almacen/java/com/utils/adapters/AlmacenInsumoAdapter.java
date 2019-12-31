@@ -24,13 +24,15 @@ import java.util.List;
 
 
 /**
- * Created by Jorge on 12/7/17.
+ * Capa: Services
+ * Adapter de los insumos del almacen.
  */
 public class AlmacenInsumoAdapter extends ArrayAdapter<InsumoAlmacenModel> implements Filterable {
+
     public final int c = Color.GREEN;
-    List<InsumoAlmacenModel> objects, displayedObjects;
-    Context context;
-    View.OnLongClickListener listener;
+    private List<InsumoAlmacenModel> objects, displayedObjects;
+    private Context context;
+    private View.OnLongClickListener listener;
 
 
     public AlmacenInsumoAdapter(Context context, int resource, List<InsumoAlmacenModel> objects) {
@@ -41,33 +43,33 @@ public class AlmacenInsumoAdapter extends ArrayAdapter<InsumoAlmacenModel> imple
         Collections.sort(objects);
     }
 
-    public AlmacenInsumoAdapter(Context context, int resource, List<InsumoAlmacenModel> objects, View.OnLongClickListener listener) {
-        super(context, resource, objects);
-        this.context = context;
-        this.objects = objects;
-        displayedObjects = objects;
-        this.listener = listener;
-    }
-    public View getView(final int position, View item, ViewGroup parent) {
+    /**
+     * Devuelve la vista del adapter.
+     * @param position del elemento.
+     * @param v View de la aplicacion.
+     * @param parent Padre que lo llama
+     * @return el View del adapter.
+     */
+    public View getView(final int position, View v, ViewGroup parent) {
 
         ViewHolder holder;
-        if (item == null) {
+        if (v == null) {
             LayoutInflater inflater = LayoutInflater.from(context);
-            item = inflater.inflate(R.layout.list_insumo_almacen, null);
+            v = inflater.inflate(R.layout.list_insumo_almacen, null);
 
             holder = new ViewHolder();
-            holder.nombreInsumo = (TextView) item.findViewById(R.id.textNombre);
-            holder.precioMedio = (TextView) item.findViewById(R.id.editPrecioPromedio);
-            holder.cantidad = (TextView) item.findViewById(R.id.textCantidad);
-            holder.entrada = (ImageButton) item.findViewById(R.id.entradaButton);
-            holder.salida = (ImageButton) item.findViewById(R.id.salidaButton);
-            holder.stock = (TextView) item.findViewById(R.id.editTextStock);
-            holder.um = (TextView) item.findViewById(R.id.textUM);
+            holder.nombreInsumo = (TextView) v.findViewById(R.id.textNombre);
+            holder.precioMedio = (TextView) v.findViewById(R.id.editPrecioPromedio);
+            holder.cantidad = (TextView) v.findViewById(R.id.textCantidad);
+            holder.entrada = (ImageButton) v.findViewById(R.id.entradaButton);
+            holder.salida = (ImageButton) v.findViewById(R.id.salidaButton);
+            holder.stock = (TextView) v.findViewById(R.id.editTextStock);
+            holder.um = (TextView) v.findViewById(R.id.textUM);
 
             setLongClick(holder.entrada);
-            item.setTag(holder);
+            v.setTag(holder);
         } else {
-            holder = (ViewHolder) item.getTag();
+            holder = (ViewHolder) v.getTag();
         }
         InsumoAlmacenModel i = getPosition(position);
 
@@ -95,7 +97,7 @@ public class AlmacenInsumoAdapter extends ArrayAdapter<InsumoAlmacenModel> imple
         holder.salida.setTag(position);
 
 
-        return (item);
+        return (v);
 
 
     }
@@ -105,10 +107,21 @@ public class AlmacenInsumoAdapter extends ArrayAdapter<InsumoAlmacenModel> imple
         return displayedObjects.size();
     }
 
+    /**
+     * Accion cuando se hace el toque largo.
+     *
+     * @param view View de la aplicaicon.
+     */
     public void setLongClick(View view) {
         view.setOnLongClickListener(listener);
     }
 
+    /**
+     * Devuelve el insumo en una posicion.
+     *
+     * @param position
+     * @return
+     */
     public InsumoAlmacenModel getPosition(int position) {
         return displayedObjects.get(position);
     }

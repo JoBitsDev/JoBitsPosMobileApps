@@ -10,13 +10,16 @@ import com.services.parsers.ProductoVentaXMlParser;
 import com.services.parsers.ProductoVentaOrdenXMLParser;
 import com.services.parsers.SeccionXMlParser;
 import com.services.web_connections.OrdenWebConnectionService;
+import com.services.web_connections.PersonalWebConnectionServiceService;
 import com.utils.EnvironmentVariables;
 import com.utils.adapters.ProductoVentaOrdenAdapter;
 import com.utils.exception.NoConnectionException;
 import com.utils.exception.ServerErrorException;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Capa: Controllers
@@ -141,5 +144,11 @@ public class OrdenController extends BaseController {
 
     public void setCodOrden(String codOrden) {
         ordenWCService.setCodOrden(codOrden);
+    }
+
+    public String[] getUsuariosActivos() throws ExecutionException, InterruptedException {
+        String [] usuarios = new PersonalWebConnectionServiceService().getUsuariosActivos();
+        Arrays.sort(usuarios);//TODO: que el server lo devuelva ordenado
+        return usuarios;
     }
 }
