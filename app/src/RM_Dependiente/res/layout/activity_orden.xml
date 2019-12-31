@@ -1,137 +1,30 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.activities.PantallaPrincipalActivity"
     android:background="@color/color_Fondo"
-    >
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.activities.PantallaPrincipalActivity">
 
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
         android:weightSum="10">
 
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:text="@string/laberOrderNo"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/color_Labels"
-                android:textSize="@dimen/normal" />
-
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/textView4"
-                android:text="@string/labelMesaNo"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/color_Labels"
-                android:textSize="@dimen/normal" />
-
-            <TextView
-                android:id="@+id/ordenNoLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_toRightOf="@id/textView4"
-                android:text="####"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/color_Labels"
-                android:textSize="@dimen/normal" />
-
-
-            <TextView
-                android:id="@+id/mesaNoLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ordenNoLabel"
-                android:layout_marginLeft="15dp"
-                android:layout_toRightOf="@id/textView5"
-                android:text="####"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/color_Labels"
-                android:textSize="@dimen/normal" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/labelDependiente"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/color_Labels"
-                android:textSize="@dimen/normal"
-                android:layout_below="@+id/textView5" />
-
-            <TextView
-                android:id="@+id/dependienteLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/textView3"
-                android:layout_below="@+id/mesaNoLabel"
-                android:layout_marginLeft="15dp"
-                android:text="####"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/color_Labels"
-                android:textSize="@dimen/normal" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/buttondespacharCocina"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:hapticFeedbackEnabled="true"
-                android:text="@string/botonEnviarCocina" />
-
-            <Button
-                android:id="@+id/buttonLimpiar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/botonLimpiar"
-                android:visibility="invisible"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true" />
-
-            <Button
-                android:id="@+id/buttonCerrarOrden"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:hapticFeedbackEnabled="true"
-                android:text="@string/botonCerrarOrden" />
-
-        </RelativeLayout>
-
         <TabHost
-            android:id = "@+id/tabHost"
+            android:id="@+id/tabHost"
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
             android:layout_weight="7">
 
@@ -152,6 +45,199 @@
                     android:layout_height="match_parent">
 
                     <LinearLayout
+                        android:id="@+id/ordenModel"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/textView4"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:text="@string/laberOrderNo"
+                                android:textAppearance="?android:attr/textAppearanceLarge"
+                                android:textColor="@color/color_Labels"
+                                android:textSize="@dimen/normal" />
+
+                            <TextView
+                                android:id="@+id/textView5"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/textView4"
+                                android:text="@string/labelMesaNo"
+                                android:textAppearance="?android:attr/textAppearanceLarge"
+                                android:textColor="@color/color_Labels"
+                                android:textSize="@dimen/normal" />
+
+                            <TextView
+                                android:id="@+id/ordenNoLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="15dp"
+                                android:layout_toRightOf="@id/textView4"
+                                android:text="####"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="@color/color_Labels"
+                                android:textSize="@dimen/normal" />
+
+
+                            <TextView
+                                android:id="@+id/mesaNoLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/ordenNoLabel"
+                                android:layout_marginLeft="15dp"
+                                android:layout_toRightOf="@id/textView5"
+                                android:text="####"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="@color/color_Labels"
+                                android:textSize="@dimen/normal" />
+
+                            <TextView
+                                android:id="@+id/textView3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/textView5"
+                                android:text="@string/labelDependiente"
+                                android:textAppearance="?android:attr/textAppearanceLarge"
+                                android:textColor="@color/color_Labels"
+                                android:textSize="@dimen/normal" />
+
+                            <TextView
+                                android:id="@+id/dependienteLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/mesaNoLabel"
+                                android:layout_marginLeft="15dp"
+                                android:layout_toRightOf="@+id/textView3"
+                                android:text="####"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="@color/color_Labels"
+                                android:textSize="@dimen/normal" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/buttondespacharCocina"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentTop="true"
+                                android:hapticFeedbackEnabled="true"
+                                android:text="@string/botonEnviarCocina" />
+
+                            <Button
+                                android:id="@+id/buttonLimpiar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_centerHorizontal="true"
+                                android:text="@string/botonLimpiar"
+                                android:visibility="invisible" />
+
+                            <Button
+                                android:id="@+id/buttonCerrarOrden"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:hapticFeedbackEnabled="true"
+                                android:text="@string/botonCerrarOrden" />
+
+                        </RelativeLayout>
+
+                        <ListView
+                            android:id="@+id/listaOrden"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="8"
+                            android:choiceMode="singleChoice"
+                            android:listSelector="@color/selector_listas"
+                            android:scrollingCache="true"
+                            android:smoothScrollbar="true" />
+
+                        <RelativeLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1">
+
+                            <CheckBox
+                                android:id="@+id/deLaCasaCheckBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+
+                                android:text="@string/botonDeLaCasa"
+                                android:textColor="@color/color_Labels"
+                                android:textSize="@dimen/normal" />
+
+
+                            <TextView
+                                android:id="@+id/textView6"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentBottom="true"
+                                android:layout_marginEnd="19dp"
+                                android:layout_marginRight="15dp"
+                                android:layout_toStartOf="@+id/layouttotales"
+                                android:gravity="center"
+                                android:text="@string/labelTotal"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="@color/color_Labels"
+                                android:textSize="@dimen/normal" />
+
+
+                            <LinearLayout
+                                android:id="@+id/layouttotales"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentEnd="true"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/totalPrincipalLabel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+
+                                    android:gravity="center"
+                                    android:maxLines="1"
+                                    android:text="0.00 C.U.C"
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textColor="#0bff00"
+                                    android:textSize="@dimen/normal" />
+
+                                <TextView
+                                    android:id="@+id/totalSecundariaLabel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:text="0.00 C.U.C"
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:textColor="#0bff00"
+                                    android:textSize="@dimen/normal" />
+
+                            </LinearLayout>
+
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:id="@+id/menu"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -159,48 +245,45 @@
 
                         <EditText
                             android:id="@+id/searchText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_alignParentBottom="true"
-                            android:layout_alignParentEnd="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="78dp"
                             android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentBottom="true"
                             android:layout_weight="1"
                             android:ems="10"
                             android:hint="Buscar..."
                             android:inputType="textNoSuggestions|textFilter" />
 
-                        <ExpandableListView
-                            android:id="@+id/menuExpandableListView"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="8"
-                            android:layout_gravity="center"
-                            android:choiceMode="singleChoice"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:listSelector="@color/selector_listas"
-                            android:scrollingCache="true"
-                            android:smoothScrollbar="true" />
-
-
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ordenModel"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <ListView
-                            android:id="@+id/listaOrden"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:choiceMode="singleChoice"
-                            android:listSelector="@color/selector_listas"
-                            android:scrollingCache="true"
-                            android:smoothScrollbar="true" />
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <ListView
+                                android:id="@+id/menuPrincipalListView"
+                                android:layout_width="147dp"
+                                android:layout_height="match_parent"
+                                android:choiceMode="singleChoice"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:listSelector="@color/selector_listas"
+                                android:scrollingCache="true"
+                                android:smoothScrollbar="true" />
+
+                            <ListView
+                                android:id="@+id/menuListView"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:choiceMode="singleChoice"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:listSelector="@color/selector_listas"
+                                android:scrollingCache="true"
+                                android:smoothScrollbar="true" />
+                        </LinearLayout>
+
 
                     </LinearLayout>
 
@@ -208,75 +291,6 @@
                 </FrameLayout>
             </LinearLayout>
         </TabHost>
-
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-            <CheckBox
-                android:id="@+id/deLaCasaCheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-
-                android:text="@string/botonDeLaCasa"
-                android:textColor="@color/color_Labels"
-                android:textSize="@dimen/normal" />
-
-
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginEnd="19dp"
-                android:layout_marginRight="15dp"
-                android:layout_toStartOf="@+id/layouttotales"
-                android:gravity="center"
-                android:text="@string/labelTotal"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/color_Labels"
-                android:textSize="@dimen/normal" />
-
-
-            <LinearLayout
-                android:id="@+id/layouttotales"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/totalPrincipalLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:text="0.00 C.U.C"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="#0bff00"
-                    android:textSize="@dimen/normal" />
-
-                <TextView
-                    android:id="@+id/totalSecundariaLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="0.00 C.U.C"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="#0bff00"
-                    android:textSize="@dimen/normal" />
-
-            </LinearLayout>
-
-
-        </RelativeLayout>
 
     </LinearLayout>
 

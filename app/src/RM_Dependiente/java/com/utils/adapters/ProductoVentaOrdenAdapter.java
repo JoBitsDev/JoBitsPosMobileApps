@@ -18,7 +18,6 @@ import com.services.web_connections.OrdenWebConnectionService;
 import java.util.List;
 
 
-
 /**
  * Created by Jorge on 12/7/17.
  */
@@ -26,9 +25,7 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
     public final int c = Color.GREEN;
     List<ProductoVentaOrdenModel> objects;
     Activity context;
-    View.OnLongClickListener listener;
     boolean read_only = false;
-
 
     public ProductoVentaOrdenAdapter(Activity context, int resource, List<ProductoVentaOrdenModel> objects) {
         super(context, resource, objects);
@@ -36,48 +33,32 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         this.objects = objects;
     }
 
-    public ProductoVentaOrdenAdapter(Activity context, int resource, List<ProductoVentaOrdenModel> objects, boolean readOnly) {
-        super(context, resource, objects);
-        this.context = context;
-        this.objects = objects;
-        this.read_only = readOnly;
-    }
-
-    public ProductoVentaOrdenAdapter(Activity context, int resource, List<ProductoVentaOrdenModel> objects, View.OnLongClickListener listener) {
-        super(context, resource, objects);
-        this.context = context;
-        this.objects = objects;
-        this.listener = listener;
-    }
-
-    public View getView(final int position, View convertView, ViewGroup parent){
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         View item = convertView;
         ViewHolder holder;
-        if(item == null)
-        {
+        if (item == null) {
             LayoutInflater inflater = context.getLayoutInflater();
             item = inflater.inflate(R.layout.list_orden, null);
 
             holder = new ViewHolder();
-            holder.nombreProducto = (TextView)item.findViewById(R.id.textNombre);
-            holder.precioVenta = (TextView)item.findViewById(R.id.textPrecio);
-            holder.cantidad= (TextView)item.findViewById(R.id.textCantidad);
+            holder.nombreProducto = (TextView) item.findViewById(R.id.textNombre);
+            holder.precioVenta = (TextView) item.findViewById(R.id.textPrecio);
+            holder.cantidad = (TextView) item.findViewById(R.id.textCantidad);
             holder.adjunto = (ImageButton) item.findViewById(R.id.adjuntoButton);
             holder.add = (ImageButton) item.findViewById(R.id.addButton);
             holder.remove = (ImageButton) item.findViewById(R.id.removeButton);
             holder.comensal = (ImageButton) item.findViewById(R.id.comensalButton);
-            setLongClick(holder.add);
+
             item.setTag(holder);
-        }
-        else {
-            holder = (ViewHolder)item.getTag();
+        } else {
+            holder = (ViewHolder) item.getTag();
         }
 
         holder.precioVenta.setTextColor(c);
         holder.nombreProducto.setText(objects.get(position).getProductoVentaModel().getNombre());
         holder.precioVenta.setText(String.valueOf(
-                objects.get(position).getProductoVentaModel().getPrecioVenta()*
+                objects.get(position).getProductoVentaModel().getPrecioVenta() *
                         objects.get(position).getCantidad()));
         holder.cantidad.setText(String.valueOf(objects.get(position).getCantidad()));
         holder.adjunto.setTag(position);
@@ -85,24 +66,15 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         holder.remove.setTag(position);
         holder.comensal.setTag(position);
 
-        if(read_only){
+        if (read_only) {
             holder.add.setVisibility(View.INVISIBLE);
             holder.remove.setVisibility(View.INVISIBLE);
             holder.comensal.setVisibility(View.INVISIBLE);
             holder.adjunto.setVisibility(View.INVISIBLE);
         }
 
-
-
-        return(item);
-
-
+        return (item);
     }
-
-    public void setLongClick(View view){
-        view.setOnLongClickListener(listener);
-    }
-
 
     public boolean contains(ProductoVentaModel p) {
         return objects.contains(p);
@@ -112,23 +84,21 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         boolean existe = false;
         ProductoVentaOrdenModel pv = null;
         int i = 0;
-        for (; i< objects.size() && !existe ; i++){
+        for (; i < objects.size() && !existe; i++) {
             pv = objects.get(i);
-           existe = pv.getProductoVentaModel().equals(p);
+            existe = pv.getProductoVentaModel().equals(p);
 
         }
-        if(existe){
+        if (existe) {
             i--;
             pv.setCantidad(pv.getCantidad() + 1);
-            objects.set(i,pv);
-
-        }
-        else{
-            ProductovOrdenPKModel pk = new ProductovOrdenPKModel(p.getPCod(),o.getCodOrden());
+            objects.set(i, pv);
+        } else {
+            ProductovOrdenPKModel pk = new ProductovOrdenPKModel(p.getPCod(), o.getCodOrden());
             pv = new ProductoVentaOrdenModel(pk);
             pv.setProductoVentaModel(p);
             pv.setCantidad(1);
-            pv.setEnviadosACocina((float)0);
+            pv.setEnviadosACocina((float) 0);
             objects.add(pv);
         }
         notifyDataSetChanged();
@@ -138,22 +108,21 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         boolean existe = false;
         ProductoVentaOrdenModel pv = null;
         int i = 0;
-        for (; i< objects.size() && !existe ; i++){
+        for (; i < objects.size() && !existe; i++) {
             pv = objects.get(i);
             existe = pv.getProductoVentaModel().equals(p);
         }
-        if(existe){
+        if (existe) {
             i--;
-            pv.setCantidad(pv.getCantidad()+ammount);
-            objects.set(i,pv);
+            pv.setCantidad(pv.getCantidad() + ammount);
+            objects.set(i, pv);
 
-        }
-        else{
-            ProductovOrdenPKModel pk = new ProductovOrdenPKModel(p.getPCod(),o.getCodOrden());
+        } else {
+            ProductovOrdenPKModel pk = new ProductovOrdenPKModel(p.getPCod(), o.getCodOrden());
             pv = new ProductoVentaOrdenModel(pk);
             pv.setProductoVentaModel(p);
             pv.setCantidad(ammount);
-            pv.setEnviadosACocina((float)0);
+            pv.setEnviadosACocina((float) 0);
             objects.add(pv);
         }
         notifyDataSetChanged();
@@ -164,17 +133,16 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         boolean existe = false;
         ProductoVentaOrdenModel pv = null;
         int i = 0;
-        for (; i< objects.size() && !existe ; i++){
+        for (; i < objects.size() && !existe; i++) {
             pv = objects.get(i);
             existe = pv.getProductoVentaModel().getPCod().equals(p.getPCod());
         }
-        if(existe){
+        if (existe) {
             i--;
-            if( pv.getCantidad()>1){
-                pv.setCantidad(pv.getCantidad()-1);
-                objects.set(i,pv);
-            }
-            else{
+            if (pv.getCantidad() > 1) {
+                pv.setCantidad(pv.getCantidad() - 1);
+                objects.set(i, pv);
+            } else {
                 objects.remove(i);
             }
 
@@ -206,11 +174,10 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
 
     static class ViewHolder {
         TextView nombreProducto,
-                 precioVenta,
-                 cantidad;
-        ImageButton add,remove,adjunto,comensal;
+                precioVenta,
+                cantidad;
+        ImageButton add, remove, adjunto, comensal;
     }
-
 
 
 }
