@@ -114,11 +114,7 @@ public class OrdenActivity extends BaseActivity {
             menuSeccionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    productosSelected = secciones.get(position).getProductos();
-                    if (!productosSelected.isEmpty()) {
-                        menuAdapter = new MenuAdapterThis(getApplicationContext(), android.R.layout.simple_list_item_1, productosSelected);
-                        menuProductosListView.setAdapter(menuAdapter);
-                    }
+                    onMenuSeccionListViewItemClick(position);
                 }
             });
 
@@ -150,6 +146,14 @@ public class OrdenActivity extends BaseActivity {
             });
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
+        }
+    }
+
+    private void onMenuSeccionListViewItemClick(int position) {
+        productosSelected = secciones.get(position).getProductos();
+        if (!productosSelected.isEmpty()) {
+            menuAdapter = new MenuAdapterThis(getApplicationContext(), android.R.layout.simple_list_item_1, productosSelected);
+            menuProductosListView.setAdapter(menuAdapter);
         }
     }
 
