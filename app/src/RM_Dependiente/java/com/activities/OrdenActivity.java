@@ -29,17 +29,22 @@ public class OrdenActivity extends BaseActivity {
     private Button cerrarOrdenButton, despacharACocinaButton;
     private TextView mesaNoLabel, ordenNoLabel, dependienteLabel, totalPrincipalLabel, totalSecundariaLabel;
     private EditText searchText;
+
     private ListView menuProductosListView, menuSeccionListView;
+
     private ListView listaOrden;
     private CheckBox deLaCasaCheckBox;
+
     private List<SeccionModel> secciones;
     private List<ProductoVentaModel> productos;
-    private List<ProductoVentaOrdenModel> productosVOrden;
+    private List<ProductoVentaOrdenModel> productosVentaOrden;
+    private List<ProductoVentaModel> productosSelected;
+
     private ProductoVentaModel lastClickedMenu = null;
     private ProductoVentaOrdenModel lastClickedOrden = null;
+
     private MenuPrincipalAdapter menuPrincipalAdapter;
     private MenuAdapterThis menuAdapter;
-    private List<ProductoVentaModel> productosSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +85,7 @@ public class OrdenActivity extends BaseActivity {
             mesaNoLabel.setText(bundleExtra.getString(String.valueOf(R.string.mesa)));//set el No de la mesa
             dependienteLabel.setText(bundleExtra.getString(String.valueOf(R.string.user)));//set el label con el dependiente
             ordenNoLabel.setText(bundleExtra.getString(String.valueOf(R.string.cod_Orden)));//set el label de la orden
-            productosVOrden = new ArrayList<ProductoVentaOrdenModel>();
+            productosVentaOrden = new ArrayList<ProductoVentaOrdenModel>();
             productosSelected = new ArrayList<ProductoVentaModel>();
 
             initMenu(bundleExtra.getString(String.valueOf(R.string.mesa)));
@@ -114,18 +119,22 @@ public class OrdenActivity extends BaseActivity {
             menuSeccionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    productosSelected = secciones.get(position).getProductos();
-                    if (!productosSelected.isEmpty()) {
-                        menuAdapter = new MenuAdapterThis(getApplicationContext(), android.R.layout.simple_list_item_1, productosSelected);
-                        menuProductosListView.setAdapter(menuAdapter);
-                    }
+                    onMenuSeccionListViewItemClick(position);
                 }
             });
+
 
             menuProductosListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    return onMenuListViewClick(position);
+                    return onMenuProductosListViewLongClick(view, position);
+                }
+            });
+
+            menuProductosListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    onMenuProductosListViewClick(position);
                 }
             });
 
@@ -153,8 +162,17 @@ public class OrdenActivity extends BaseActivity {
         }
     }
 
-    private boolean onProductoVentaOrdenAdapterLongClick(final View v) {
+    private void onMenuSeccionListViewItemClick(int position) {
+        productosSelected = secciones.get(position).getProductos();
+        if (!productosSelected.isEmpty()) {
+            menuAdapter = new MenuAdapterThis(getApplicationContext(), android.R.layout.simple_list_item_1, productosSelected);
+            menuProductosListView.setAdapter(menuAdapter);
+        }
+    }
+
+    private boolean onMenuProductosListViewLongClick(final View v, int position) {
         try {
+            lastClickedMenu = menuAdapter.getItem(position);
             final EditText input = new EditText(v.getContext());
             input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
             input.setRawInputType(Configuration.KEYBOARD_12KEY);
@@ -168,7 +186,7 @@ public class OrdenActivity extends BaseActivity {
                     }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    addProducto(v, Float.parseFloat(input.getText().toString()));
+                    addProductoVarios(Float.parseFloat(input.getText().toString()));
                 }
             }).create().show();
             return true;
@@ -178,10 +196,10 @@ public class OrdenActivity extends BaseActivity {
         }
     }
 
-    private boolean onMenuListViewClick(int position) {
+    private boolean onMenuProductosListViewClick(int position) {
         try {
             lastClickedMenu = menuAdapter.getItem(position);
-            addProducto();
+            addProductoUnoSolo();
             searchText.setText("");
             return true;
         } catch (Exception e) {
@@ -196,14 +214,7 @@ public class OrdenActivity extends BaseActivity {
             menuPrincipalAdapter = new MenuPrincipalAdapter(this, android.R.layout.simple_list_item_1, secciones);
             menuSeccionListView.setAdapter(menuPrincipalAdapter);
 
-            //adapter de ProductoVentaOrden que antes de ponerlo lleva un listener
-            final ProductoVentaOrdenAdapter adapter = new ProductoVentaOrdenAdapter(this, R.id.listaOrden, productosVOrden, new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    return onProductoVentaOrdenAdapterLongClick(v);
-                }
-            });
-            listaOrden.setAdapter(adapter);
+            listaOrden.setAdapter(new ProductoVentaOrdenAdapter(this, R.id.listaOrden, productosVentaOrden));
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
@@ -421,7 +432,7 @@ public class OrdenActivity extends BaseActivity {
     public void onAddClick(View v) {
         try {
             lastClickedMenu = ((ProductoVentaOrdenModel) listaOrden.getAdapter().getItem((Integer) v.getTag())).getProductoVentaModel();
-            addProducto();
+            addProductoUnoSolo();
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
@@ -550,7 +561,7 @@ public class OrdenActivity extends BaseActivity {
     private void updateCosto() {
         try {
             float tot = 0;
-            for (ProductoVentaOrdenModel x : productosVOrden) {
+            for (ProductoVentaOrdenModel x : productosVentaOrden) {
                 tot += x.getProductoVentaModel().getPrecioVenta() * x.getCantidad();
             }
             if (EnvironmentVariables.MONEDA_PRINCIPAL.equals(EnvironmentVariables.MONEDA_PRINCIPAL)) {
@@ -565,7 +576,7 @@ public class OrdenActivity extends BaseActivity {
         }
     }
 
-    public void addProducto() {
+    public void addProductoUnoSolo() {
         try {
             if (lastClickedMenu != null) {
                 if (controller.addProducto(lastClickedMenu)) {
@@ -583,9 +594,8 @@ public class OrdenActivity extends BaseActivity {
         }
     }
 
-    public void addProducto(View v, float cantidad) {
+    public void addProductoVarios(float cantidad) {
         try {
-            lastClickedMenu = ((ProductoVentaOrdenModel) listaOrden.getAdapter().getItem((Integer) v.getTag())).getProductoVentaModel();
             if (lastClickedMenu != null) {
                 if (controller.addProducto(lastClickedMenu, cantidad)) {
                     controller.addProducto(lastClickedMenu, cantidad);
