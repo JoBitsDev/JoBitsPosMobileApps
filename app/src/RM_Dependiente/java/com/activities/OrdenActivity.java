@@ -25,6 +25,7 @@ import com.utils.adapters.ProductoVentaOrdenAdapter;
 public class OrdenActivity extends BaseActivity {
 
     private OrdenController controller;
+
     private Button cerrarOrdenButton, despacharACocinaButton;
     private TextView mesaNoLabel, ordenNoLabel, dependienteLabel, totalPrincipalLabel, totalSecundariaLabel;
     private EditText searchText;
@@ -156,6 +157,22 @@ public class OrdenActivity extends BaseActivity {
                     //metodo abstracto en el padre y necesita reimplementacion, pero no se usa aqui y se deja vacio
                 }
             });
+
+            deLaCasaCheckBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onDeLaCasaCheckBoxClick();
+                }
+            });
+
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
+    }
+
+    private void onDeLaCasaCheckBoxClick() {
+        try {
+            controller.setDeLaCasa(deLaCasaCheckBox.isChecked());
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
