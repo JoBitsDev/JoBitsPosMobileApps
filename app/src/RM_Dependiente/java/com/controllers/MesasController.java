@@ -50,7 +50,6 @@ public class MesasController extends BaseController {
         } else {
             mesaModels = new MesaXMlParser().fetch(urlMesas);
         }
-        Collections.sort(mesaModels);
         MesaAdapter adaptador = new MesaAdapter(act, R.id.listaMesas, mesaModels, user);
         return adaptador;
     }
