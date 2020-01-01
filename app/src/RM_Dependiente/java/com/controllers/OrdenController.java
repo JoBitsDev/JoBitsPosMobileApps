@@ -147,8 +147,12 @@ public class OrdenController extends BaseController {
     }
 
     public String[] getUsuariosActivos() throws ExecutionException, InterruptedException {
-        String [] usuarios = new PersonalWebConnectionServiceService().getUsuariosActivos();
+        String[] usuarios = new PersonalWebConnectionServiceService().getUsuariosActivos();
         Arrays.sort(usuarios);//TODO: que el server lo devuelva ordenado
         return usuarios;
+    }
+
+    public boolean setDeLaCasa(boolean resp) throws ServerErrorException, NoConnectionException {
+        return ordenWCService.setDeLaCasa(resp);
     }
 }
