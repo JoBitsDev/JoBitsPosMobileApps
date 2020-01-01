@@ -10,8 +10,6 @@ import com.services.models.MesaModel;
 import com.utils.EnvironmentVariables;
 import com.controllers.MesasController;
 
-import java.util.*;
-
 import com.utils.adapters.MesaAdapter;
 import com.utils.exception.*;
 
@@ -24,7 +22,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     private TextView restNameLabel;
     private TextView userLabel;
 
-    private ListView lista;
+    private ListView listaMesas;
 
     private Button cambiarAreaButton;//TODO: Esto no manda a barra, sino cambia de area
     private Button pedidoDomicilioButton;
@@ -60,7 +58,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 restNameLabel.setText(controller.getNombreRest());
             }
 
-            lista = (ListView) findViewById(R.id.listaMesas);
+            listaMesas = (ListView) findViewById(R.id.listaMesas);
             clockText = (TextClock) findViewById(R.id.textClock);
 
             cambiarAreaButton = (Button) findViewById(R.id.cambiarArea);
@@ -73,34 +71,33 @@ public class PantallaPrincipalActivity extends BaseActivity {
     @Override
     protected void addListeners() {
         try {
-            final BaseActivity act = this;
             cambiarAreaButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    try {
-                        cambiarArea(v);
-                    } catch (Exception e) {
-                        ExceptionHandler.handleException(e, act);
-                    }
+                    onCambiarAreaButtonClick(v);
                 }
             });
-            lista.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            listaMesas.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    try {
-                        configurarTabla();
-                        MesaAdapter adapter = controller.getData(selectedArea, act);
-                        lista.setAdapter(adapter);
-                        continuar(adapter.getMesa(position));
-                        return true;
-                    } catch (Exception e) {
-                        ExceptionHandler.handleException(e, act);
-                        return false;
-                    }
+                    return onListaMesasItemLongClick(position);
                 }
             });
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
+        }
+    }
+
+    private boolean onListaMesasItemLongClick(int position) {
+        try {
+            configurarTabla();
+            MesaAdapter adapter = controller.getData(selectedArea, this);
+            listaMesas.setAdapter(adapter);
+            continuar(adapter.getMesa(position));
+            return true;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+            return false;
         }
     }
 
@@ -178,7 +175,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         }
     }
 
-    public void cambiarArea(View view) {
+    public void onCambiarAreaButtonClick(View view) {//Cambia de area
         try {
             final String[] areas = controller.getAreas();
             new AlertDialog.Builder(this).
@@ -200,11 +197,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
         try {
             final BaseActivity act = this;
             showProgressDialog();
-            lista.post(new Runnable() {
+            listaMesas.post(new Runnable() {
                 @Override
                 public void run() {
                     MesaAdapter adapter = controller.getData(selectedArea, act);
-                    lista.setAdapter(adapter);
+                    listaMesas.setAdapter(adapter);
                     hideProgressDialog();
                 }
             });
