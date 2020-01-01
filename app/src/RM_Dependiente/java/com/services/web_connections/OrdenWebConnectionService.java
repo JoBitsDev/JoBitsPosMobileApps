@@ -69,8 +69,12 @@ public class OrdenWebConnectionService extends SimpleWebConnectionService {
 
     public boolean finishOrden(boolean deLaCasa) throws ServerErrorException, NoConnectionException {
         this.deLaCasa = deLaCasa;
-        connect(path + "SETDELACASA_" + codOrden + "_" + deLaCasa);//TODO: este es lo que hay que llamar paraponerle de la casa en el servidor
+        setDeLaCasa(deLaCasa);
         return connect(path + "FINISH_" + codOrden).equals(EnvironmentVariables.PETITION_TRUE);
+    }
+
+    public boolean setDeLaCasa(boolean resp) throws ServerErrorException, NoConnectionException {
+        return connect(path + "SETDELACASA_" + codOrden + "_" + deLaCasa).equals(EnvironmentVariables.PETITION_TRUE);
     }
 
     public boolean sendToKitchen() throws ServerErrorException, NoConnectionException {
