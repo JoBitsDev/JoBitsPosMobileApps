@@ -90,6 +90,7 @@ public class OrdenActivity extends BaseActivity {
 
             initMenu(bundleExtra.getString(String.valueOf(R.string.mesa)));
             initTab();
+            deLaCasaCheckBox.setSelected(controller.isDeLaCasa());
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }

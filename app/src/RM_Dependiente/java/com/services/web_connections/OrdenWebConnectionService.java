@@ -74,6 +74,7 @@ public class OrdenWebConnectionService extends SimpleWebConnectionService {
     }
 
     public boolean setDeLaCasa(boolean resp) throws ServerErrorException, NoConnectionException {
+        deLaCasa = resp;
         return connect(path + "SETDELACASA_" + codOrden + "_" + deLaCasa).equals(EnvironmentVariables.PETITION_TRUE);
     }
 
@@ -91,6 +92,10 @@ public class OrdenWebConnectionService extends SimpleWebConnectionService {
 
     public OrdenModel findOrden(String codOrden) {
         return new OrdenXMLParser().fetch(path + codOrden).get(0);
+    }
+
+    public boolean isDeLaCasa() {
+        return deLaCasa;
     }
 
     public String getCodOrden() {

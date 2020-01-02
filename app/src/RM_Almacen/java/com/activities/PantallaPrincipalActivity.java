@@ -204,16 +204,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
      */
     private boolean imprimirTicketCompra() {
         try {
-            boolean resp = false;
-            try {
-                resp = controller.imprimirTicketCompra();
-                if (resp) {
-                    Toast.makeText(getApplicationContext(), "Imprimiendo...", Toast.LENGTH_SHORT);
-                } else {
-                    ExceptionHandler.handleException(new Exception("Error imprimiendo"), this);
-                }
-            } catch (Exception e) {
-                ExceptionHandler.handleException(e, this);
+            boolean resp = controller.imprimirTicketCompra();
+            if (resp) {
+                Toast.makeText(getApplicationContext(), "Imprimiendo...", Toast.LENGTH_SHORT);
+            } else {
+                ExceptionHandler.handleException(new Exception("Error imprimiendo"), this);
             }
             return resp;
         } catch (Exception e) {
@@ -229,17 +224,12 @@ public class PantallaPrincipalActivity extends BaseActivity {
      */
     private boolean imprimirEstadoAlmacen() {
         try {
-            boolean resp = false;
-            try {
-                resp = controller.imprimirEstadoActualAlmacen();
+            boolean resp  = controller.imprimirEstadoActualAlmacen();
                 if (resp) {
                     showMessage("Imprimiendo...");
                 } else {
                     ExceptionHandler.handleException(new Exception("Error imprimiendo"), this);
                 }
-            } catch (Exception e) {
-                ExceptionHandler.handleException(e, this);
-            }
             return resp;
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
@@ -498,6 +488,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
     /**
      * Obtiene la informacion de los IPVs segun un insumo.
+     *
      * @param insumoCod Codigo del insumo.
      * @return arreglo de String con los IPVs.
      */
