@@ -155,4 +155,8 @@ public class OrdenController extends BaseController {
     public boolean setDeLaCasa(boolean resp) throws ServerErrorException, NoConnectionException {
         return ordenWCService.setDeLaCasa(resp);
     }
+
+    public boolean isDeLaCasa(){
+        return ordenWCService.isDeLaCasa();
+    }
 }

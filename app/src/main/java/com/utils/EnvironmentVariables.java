@@ -21,9 +21,9 @@ public class EnvironmentVariables {
     /**
      * Ip del servidor.
      */
-    public static String IP = "10.0.2.2";
+    public static String IP = "192.168.173.1";
 
-            //"192.168.173.1";
+            //"192.168.173.1";//10.0.2.2
 
     /**
      * Puerto para la coneccion.
