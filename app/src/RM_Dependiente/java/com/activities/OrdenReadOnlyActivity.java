@@ -55,13 +55,12 @@ public class OrdenReadOnlyActivity extends BaseActivity {
 
     @Override
     protected void addListeners() {
-
+        listaOrden.setClickable(false);
     }
 
     @Override
     protected void setAdapters() {
-        final ProductoVentaOrdenReadOnlyAdapter readOnlyAdapter = new ProductoVentaOrdenReadOnlyAdapter(this, R.id.listaOrdenReadOnly, productosVOrden);
-        listaOrden.setAdapter(readOnlyAdapter);
+        listaOrden.setAdapter(new ProductoVentaOrdenReadOnlyAdapter(this, R.id.listaOrdenReadOnly, productosVOrden));
     }
 
     private void updateCosto() {
