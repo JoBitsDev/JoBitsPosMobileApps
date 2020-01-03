@@ -114,14 +114,14 @@ public class OrdenController extends BaseController {
     }
 
     public void increasePoducto(ProductoVentaModel lastClickedMenu, ProductoVentaOrdenAdapter adapter) {
-        adapter.increase(lastClickedMenu, ordenWCService);
+        adapter.increase(lastClickedMenu, ordenWCService);//TODO capas mezcladas actulizando el adaptdor desde el controlador
     }
 
     public boolean addProducto(ProductoVentaModel lastClickedMenu, float cantidad) throws ServerErrorException, NoConnectionException {
-        return ordenWCService.addProducto(lastClickedMenu.getPCod(), cantidad);
+        return ordenWCService.addProducto(lastClickedMenu.getPCod(), cantidad);//TODO capas mezcladas actulizando el adaptdor desde el controlador
     }
 
-    public void increasePoducto(ProductoVentaModel lastClickedMenu, ProductoVentaOrdenAdapter adapter, int cantidad) {
+    public void increasePoducto(ProductoVentaModel lastClickedMenu, ProductoVentaOrdenAdapter adapter, float cantidad) {
         adapter.increase(lastClickedMenu, ordenWCService, cantidad);
     }
 
