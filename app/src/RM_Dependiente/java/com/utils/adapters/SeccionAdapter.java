@@ -17,12 +17,22 @@ import com.services.models.SeccionModel;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Capa: Adapter
+ * Clase adapter del menu de secciones, encargada de manejar la vista de la lista.
+ *
+ * @extends de ArrayAdapter para poder implementar un nuevo adapter basado en el modelo SeccionModel.
+ * @implements Filterable para poder filtrar las listas segun lo desee el usuario
+ */
+
 public class SeccionAdapter extends ArrayAdapter<SeccionModel> implements Filterable {
 
     public final int c = Color.GREEN;
     private Context context;
     private List<SeccionModel> secciones;
     private List<SeccionModel> displayedSecciones;
+
+    /**Constructor*/
 
     public SeccionAdapter(Context context, int textViewResourceId, List<SeccionModel> secciones) {
         super(context, textViewResourceId, secciones);
@@ -31,16 +41,21 @@ public class SeccionAdapter extends ArrayAdapter<SeccionModel> implements Filter
         this.displayedSecciones = secciones;
     }
 
+    /**Metodo que devuelve la cantidad de secciones que hay en la lista*/
 
     @Override
     public int getCount() {
         return this.displayedSecciones.size();
     }
 
+    /**Metodo que devuelve el item seleccionado en la lista*/
+
     @Override
     public SeccionModel getItem(int position) {
         return this.displayedSecciones.get(position);
     }
+
+    /**Metodo que devuelve la posicion en la lista de un item selecconado*/
 
     public int getPosition(SeccionModel seccion) {
         int pos = -1;
@@ -53,6 +68,8 @@ public class SeccionAdapter extends ArrayAdapter<SeccionModel> implements Filter
         }
         return pos;
     }
+
+    /** Metodo que establece la vista a adaptar en la lista*/
 
     public View getView(final int position, View convertView, ViewGroup parent) {
 

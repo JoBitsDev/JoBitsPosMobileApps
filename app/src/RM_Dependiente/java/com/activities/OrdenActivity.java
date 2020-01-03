@@ -39,7 +39,6 @@ public class OrdenActivity extends BaseActivity {
     private ProductoVentaOrdenModel lastClickedOrden = null;
     private SeccionAdapter seccionAdapter;
     private MenuAdapterThis menuAdapter;
-   // private List<ProductoVentaModel> productosSelected;
     private SeccionModel seccionSelected;
     private TabHost host;
 
@@ -88,7 +87,6 @@ public class OrdenActivity extends BaseActivity {
             dependienteLabel.setText(bundleExtra.getString(String.valueOf(R.string.user)));//set el label con el dependiente
             ordenNoLabel.setText(bundleExtra.getString(String.valueOf(R.string.cod_Orden)));//set el label de la orden
             productosVentaOrden = new ArrayList<ProductoVentaOrdenModel>();
-          //  productosSelected = new ArrayList<ProductoVentaModel>();
             menuAdapter = new MenuAdapterThis(this, R.layout.list_menu, new ArrayList<ProductoVentaModel>());
 
             initMenu(bundleExtra.getString(String.valueOf(R.string.mesa)));

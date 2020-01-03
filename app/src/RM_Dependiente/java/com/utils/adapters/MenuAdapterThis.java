@@ -16,11 +16,20 @@ import com.utils.EnvironmentVariables;
 
 import java.util.List;
 
+/**
+ * Capa: Adapter
+ * Clase adapter del menu de productos, encargada de manejar la vista de la lista.
+ *
+ * @extends de ArrayAdapter para poder implementar un nuevo adapter basado en el modelo ProductoVentaModel.
+ */
+
 public class MenuAdapterThis extends ArrayAdapter<ProductoVentaModel> {
 
     public final int c = Color.GREEN;
     private Context context;
     private List<ProductoVentaModel> secciones;
+
+    /**Constructor*/
 
     public MenuAdapterThis(Context context, int textViewResourceId, List<ProductoVentaModel> secciones) {
         super(context, textViewResourceId, secciones);
@@ -28,6 +37,7 @@ public class MenuAdapterThis extends ArrayAdapter<ProductoVentaModel> {
         this.secciones = secciones;
     }
 
+    /** Metodo que establece la vista a adaptar en la lista*/
     public View getView(final int position, View convertView, ViewGroup parent) {
 
         View item = convertView;
@@ -48,6 +58,8 @@ public class MenuAdapterThis extends ArrayAdapter<ProductoVentaModel> {
         holder.precioVenta.setText(secciones.get(position).getPrecioVenta() + " " + EnvironmentVariables.MONEDA_PRINCIPAL);
         return (item);
     }
+
+    /**El holder que contiene los textView que seran mdificados*/
 
     static class ViewHolder {
         TextView nombreProducto,
