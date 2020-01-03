@@ -137,7 +137,7 @@ public class ProductoVentaModel implements Serializable,Comparable<ProductoVenta
 
     @Override
     public int compareTo(ProductoVentaModel another) {
-        return nombre.compareTo(another.nombre);
+        return nombre.compareToIgnoreCase(another.nombre);
     }
 
     public void increaceAmount() {
