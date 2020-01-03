@@ -59,9 +59,14 @@ public class OrdenActivity extends BaseActivity {
 
             Bundle bundleExtra = getIntent().getExtras();
             createOldOrden(bundleExtra);//crea la orden vieja
+            actDeLaCasa();
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
+    }
+
+    private void actDeLaCasa() {
+        deLaCasaCheckBox.setChecked(controller.isDeLaCasa());
     }
 
     @Override
@@ -90,7 +95,6 @@ public class OrdenActivity extends BaseActivity {
 
             initMenu(bundleExtra.getString(String.valueOf(R.string.mesa)));
             initTab();
-            deLaCasaCheckBox.setSelected(controller.isDeLaCasa());
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
