@@ -86,8 +86,10 @@ public class SeccionAdapter extends ArrayAdapter<SeccionModel> implements Filter
         } else {
             holder = (MenuAdapterThis.ViewHolder) item.getTag();
         }
-        //String nombre = displayedSecciones.get(position).getNombreSeccion();
-        String nombre = displayedSecciones.get(position).getNombreSeccion().replace(" ", "\n");
+        String nombre = displayedSecciones.get(position).getNombreSeccion();
+       // String nombre = displayedSecciones.get(position).getNombreSeccion().replace(" ", "\n");
+        holder.nombreProducto.setBackgroundColor(Color.parseColor("#0C5153"));
+        holder.nombreProducto.setTextColor(Color.WHITE);
         holder.nombreProducto.setText(nombre);
         holder.precioVenta.setVisibility(View.GONE);
         return (item);

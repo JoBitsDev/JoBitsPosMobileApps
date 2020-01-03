@@ -8,8 +8,9 @@
         android:id="@+id/textViewNombre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
         android:text="Nombre"
-        android:textSize="24sp" />
+        android:textSize="36sp" />
 
     <TextView
         android:id="@+id/textViewPrecio"
@@ -17,6 +18,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="Precio"
-        android:textSize="18sp" />
+        android:textSize="24sp" />
 
 </LinearLayout>
