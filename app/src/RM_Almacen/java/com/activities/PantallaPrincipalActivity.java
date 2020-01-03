@@ -147,7 +147,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             if (spinnerFiltrar.getSelectedItemPosition() == 0) {
                 listView.setAdapter(controller.getAdapter(this, R.id.listaInsumos));
             } else {
-                listView.setAdapter(new AlmacenInsumoAdapter(view.getContext(), R.id.listaInsumos, controller.filterBy(spinnerFiltrar.getSelectedItem().toString())));
+                listView.setAdapter(controller.getAdapter(this, R.id.listaInsumos, spinnerFiltrar.getSelectedItem().toString()));
             }
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
@@ -224,12 +224,12 @@ public class PantallaPrincipalActivity extends BaseActivity {
      */
     private boolean imprimirEstadoAlmacen() {
         try {
-            boolean resp  = controller.imprimirEstadoActualAlmacen();
-                if (resp) {
-                    showMessage("Imprimiendo...");
-                } else {
-                    ExceptionHandler.handleException(new Exception("Error imprimiendo"), this);
-                }
+            boolean resp = controller.imprimirEstadoActualAlmacen();
+            if (resp) {
+                showMessage("Imprimiendo...");
+            } else {
+                ExceptionHandler.handleException(new Exception("Error imprimiendo"), this);
+            }
             return resp;
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
