@@ -1,11 +1,15 @@
 package com.utils.exception;
 
-import android.content.*;
-import android.view.View;
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.view.View;
 import android.widget.Toast;
 
-import com.activities.*;
+import com.activities.BaseActivity;
+import com.activities.MainActivity;
+import com.activities.R;
 
 /**
  * Capa: Utils.
@@ -77,20 +81,7 @@ public class ExceptionHandler {
         //mensaje explicando que pasa
         String noConnectionErrorMessage = v.findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.noConnectionError).toString();
 
-        //popup a mostrar
-        AlertDialog.Builder builder = new AlertDialog.Builder(c);
-        builder.setMessage(noConnectionErrorMessage);
-        builder.setTitle(ExceptionHandler.POPUP_TITLE);
-        builder.setNeutralButton(ExceptionHandler.POPUP_BUTTON_TEXT, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {//comportamiento al clickear el boton
-                dialog.dismiss();
-                activity.navigateUpTo(new Intent(c, MainActivity.class));
-            }
-        });
-        builder.show();
-
-        Toast.makeText(c, e.getCause().getMessage(), TOAST_DURATION).show();//un pequenno toast con mas detalles
+        createDialog(noConnectionErrorMessage, c, activity);
     }
 
     /**
@@ -106,20 +97,7 @@ public class ExceptionHandler {
         //mensaje explicando que pasa
         String serverErrorMessage = v.findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.serverError).toString();
 
-        //popup a mostrar
-        AlertDialog.Builder builder = new AlertDialog.Builder(c);
-        builder.setMessage(serverErrorMessage);
-        builder.setTitle(ExceptionHandler.POPUP_TITLE);
-        builder.setNeutralButton(ExceptionHandler.POPUP_BUTTON_TEXT, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {//comportamiento al clickear el boton
-                dialog.dismiss();
-                activity.navigateUpTo(new Intent(c, MainActivity.class));
-            }
-        });
-        builder.show();
-
-        Toast.makeText(c, e.getCause().getMessage(), TOAST_DURATION).show();//un pequenno toast con mas detalles
+        createDialog(serverErrorMessage, c, activity);
     }
 
     /**
@@ -135,19 +113,31 @@ public class ExceptionHandler {
         //mensaje explicando que pasa
         String unespectedError = v.findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.unespectedError).toString();
 
+        createDialog(unespectedError, c, activity);
+
+    }
+
+    /**
+     * Metodo para crear el dialogo que se va a mostrar con el error
+     * @param message el mensaje que va a contener el dialogo
+     * @param c el contexto en el que se va a mostrar el dialogo
+     * @param a la actividad para subir a la actividad superior
+     */
+    private static void createDialog(String message, final Context c, final BaseActivity a) {
         //popup a mostrar
-        AlertDialog.Builder builder = new AlertDialog.Builder(c);
-        builder.setMessage(unespectedError);
+        AlertDialog.Builder builder = new AlertDialog.Builder(a);
+        builder.setMessage(message);
         builder.setTitle(ExceptionHandler.POPUP_TITLE);
+
         builder.setNeutralButton(ExceptionHandler.POPUP_BUTTON_TEXT, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {//comportamiento al clickear el boton
                 dialog.dismiss();
-                activity.navigateUpTo(new Intent(c, MainActivity.class));
+                a.navigateUpTo(new Intent(c, MainActivity.class));
             }
         });
-        builder.show();
+        builder.create().show();
 
-        Toast.makeText(c, e.getCause().getMessage(), TOAST_DURATION).show();//un pequenno toast con mas detalles
+        //Toast.makeText(c, e.getCause().getMessage(), TOAST_DURATION).show();//un pequenno toast con mas detalles
     }
 }
