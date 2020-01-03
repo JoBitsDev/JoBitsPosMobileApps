@@ -10,13 +10,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+
 import com.activities.R;
 import com.services.models.SeccionModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SeccionAdapter extends ArrayAdapter <SeccionModel> implements Filterable {
+public class SeccionAdapter extends ArrayAdapter<SeccionModel> implements Filterable {
 
     public final int c = Color.GREEN;
     private Context context;
@@ -41,6 +42,18 @@ public class SeccionAdapter extends ArrayAdapter <SeccionModel> implements Filte
         return this.displayedSecciones.get(position);
     }
 
+    public int getPosition(SeccionModel seccion) {
+        int pos = -1;
+        if (seccion != null) {
+            for (int i = 0; i < displayedSecciones.size(); i++) {
+                if (displayedSecciones.get(i).getNombreSeccion().equalsIgnoreCase(seccion.getNombreSeccion())) {
+                    pos = i;
+                }
+            }
+        }
+        return pos;
+    }
+
     public View getView(final int position, View convertView, ViewGroup parent) {
 
         View item = convertView;
@@ -57,7 +70,7 @@ public class SeccionAdapter extends ArrayAdapter <SeccionModel> implements Filte
             holder = (MenuAdapterThis.ViewHolder) item.getTag();
         }
         //String nombre = displayedSecciones.get(position).getNombreSeccion();
-        String nombre = displayedSecciones.get(position).getNombreSeccion().replace(" ","\n");
+        String nombre = displayedSecciones.get(position).getNombreSeccion().replace(" ", "\n");
         holder.nombreProducto.setText(nombre);
         holder.precioVenta.setVisibility(View.GONE);
         return (item);
@@ -82,7 +95,7 @@ public class SeccionAdapter extends ArrayAdapter <SeccionModel> implements Filte
 
             @SuppressWarnings("unchecked")
             @Override
-            protected void publishResults(CharSequence constraint,FilterResults results) {
+            protected void publishResults(CharSequence constraint, FilterResults results) {
 
                 displayedSecciones = (List<SeccionModel>) results.values; // has the filtered values
                 notifyDataSetChanged();  // notifies the data with new filtered values
@@ -114,19 +127,19 @@ public class SeccionAdapter extends ArrayAdapter <SeccionModel> implements Filte
                         boolean contain = false;
                         SeccionModel aux = new SeccionModel(secciones.get(i).getNombreSeccion(),
                                 secciones.get(i).getCartacodCarta());
-                        for (int j = 0;j<secciones.get(i).getProductos().size();j++){
+                        for (int j = 0; j < secciones.get(i).getProductos().size(); j++) {
                             String data = secciones.get(i).getProductos().get(j).getNombre();
                             if (data.toLowerCase().contains(constraint.toString())) {
-                                if(!contain){
+                                if (!contain) {
                                     aux.addProducto(secciones.get(i).getProductos().get(j));
                                     filteredArrList.add(aux);
                                     contain = true;
-                                }
-                                else{
+                                } else {
                                     aux.addProducto(secciones.get(i).getProductos().get(j));
                                 }
                             }
-                        }}
+                        }
+                    }
                     // set the Filtered result to return
                     results.count = filteredArrList.size();
                     results.values = filteredArrList;
