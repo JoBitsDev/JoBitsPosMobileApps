@@ -1,16 +1,13 @@
 package com.activities;
 
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.controllers.OrdenController;
 import com.services.models.ProductoVentaOrdenModel;
 import com.utils.EnvironmentVariables;
-import com.utils.adapters.ProductoVentaOrdenAdapter;
 import com.utils.adapters.ProductoVentaOrdenReadOnlyAdapter;
 import com.utils.exception.ExceptionHandler;
 
@@ -57,8 +54,10 @@ public class OrdenReadOnlyActivity extends BaseActivity {
         deLaCasaCheckBox.setEnabled(false);
 
         Bundle bundleExtra = getIntent().getExtras();
+
         mesa.setText(bundleExtra.getString(String.valueOf(R.string.mesa)));//set el No de la mesa
         dependiente.setText(bundleExtra.getString(String.valueOf(R.string.user)));//set el label con el dependiente
+
         ordenNo.setText(bundleExtra.getString(String.valueOf(R.string.cod_Orden)));//set el label de la orden
 
         controller.starService(bundleExtra.getString(String.valueOf(R.string.cod_Orden)),bundleExtra.getString(String.valueOf(R.string.mesa)), bundleExtra.getString(String.valueOf(R.string.user)));
@@ -68,7 +67,7 @@ public class OrdenReadOnlyActivity extends BaseActivity {
 
     @Override
     protected void addListeners() {
-        listaOrden.setClickable(false);
+        listaOrden.setFocusable(false);
     }
 
     @Override
@@ -83,11 +82,11 @@ public class OrdenReadOnlyActivity extends BaseActivity {
                 tot += x.getProductoVentaModel().getPrecioVenta() * x.getCantidad();
             }
             if (EnvironmentVariables.MONEDA_PRINCIPAL.equals(EnvironmentVariables.MONEDA_PRINCIPAL)) {
-                totalPrincipal.setText(EnvironmentVariables.setDosLugaresDecimales(tot));
-                totalSecundaria.setText(EnvironmentVariables.setDosLugaresDecimales(tot / EnvironmentVariables.conversion));
+                totalPrincipal.setText(EnvironmentVariables.setDosLugaresDecimales(tot)+EnvironmentVariables.MONEDA_PRINCIPAL);
+                totalSecundaria.setText(EnvironmentVariables.setDosLugaresDecimales(tot / EnvironmentVariables.conversion)+EnvironmentVariables.MONEDA_SECUNDARIA);
             } else {
-                totalPrincipal.setText(EnvironmentVariables.setDosLugaresDecimales(tot));
-                totalSecundaria.setText(EnvironmentVariables.setDosLugaresDecimales(tot * EnvironmentVariables.conversion));
+                totalPrincipal.setText(EnvironmentVariables.setDosLugaresDecimales(tot)+EnvironmentVariables.MONEDA_PRINCIPAL);
+                totalSecundaria.setText(EnvironmentVariables.setDosLugaresDecimales(tot * EnvironmentVariables.conversion)+EnvironmentVariables.MONEDA_SECUNDARIA);
             }
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
