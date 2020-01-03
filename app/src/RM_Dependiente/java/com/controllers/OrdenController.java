@@ -156,7 +156,7 @@ public class OrdenController extends BaseController {
         return ordenWCService.setDeLaCasa(resp);
     }
 
-    public boolean isDeLaCasa(){
+    public boolean isDeLaCasa() {
         return ordenWCService.isDeLaCasa();
     }
 }

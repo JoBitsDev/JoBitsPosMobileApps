@@ -112,9 +112,11 @@ public class MesaModel implements Comparable<MesaModel> {
 
     @Override
     public int compareTo(MesaModel another) {
-
+        int o1 = Integer.parseInt(getCodMesa().split("-")[1]);
+        int o2 = Integer.parseInt(another.getCodMesa().split("-")[1]);
+        return o1 - o2;
         //los primero if son para verificar si las mesas tienen orden
-        if (getEstado().compareToIgnoreCase(EnvironmentVariables.ESTADO_MESA_VACIA) == 0) {
+        /*if (getEstado().compareToIgnoreCase(EnvironmentVariables.ESTADO_MESA_VACIA) == 0) {
             return -1;//si esta no tiene orden va a ser < que la otra
         } else if (another.getEstado().compareToIgnoreCase(EnvironmentVariables.ESTADO_MESA_VACIA) == 0) {
             return 1;//si esta no tiene orden va a ser > que la otra
@@ -136,6 +138,6 @@ public class MesaModel implements Comparable<MesaModel> {
                 return compPorOrden;
             }
 
-        }
+        }*/
     }
 }

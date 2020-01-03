@@ -23,18 +23,22 @@ public class OrdenWebConnectionService extends SimpleWebConnectionService {
 
     public OrdenWebConnectionService(String codOrden, String codMesa, String usuarioTrabajador) {
         super(EnvironmentVariables.IP, EnvironmentVariables.PORT);
+        this.path += P;
+
         this.codMesa = codMesa;
         this.codOrden = codOrden;
         this.usuarioTrabajador = usuarioTrabajador;
-        path += P;
+        this.deLaCasa = findOrden(codOrden).getDeLaCasa();
     }
 
 
     public OrdenWebConnectionService(String codMesa, String usuarioTrabajador) {
         super(EnvironmentVariables.IP, EnvironmentVariables.PORT);
-        path += P;
+        this.path += P;
+
         this.codMesa = codMesa;
         this.usuarioTrabajador = usuarioTrabajador;
+        this.deLaCasa = false;
     }
 
     public String fetchCodOrden() throws ServerErrorException, NoConnectionException {
@@ -44,7 +48,6 @@ public class OrdenWebConnectionService extends SimpleWebConnectionService {
     public List<String> fetchAllCodOrden() throws ServerErrorException, NoConnectionException {
         return Arrays.asList(connect(path + "FINDALL_" + getCodMesa()).split(","));
     }
-
 
     public boolean initOrden() throws ServerErrorException, NoConnectionException {
         fetchCodOrden();

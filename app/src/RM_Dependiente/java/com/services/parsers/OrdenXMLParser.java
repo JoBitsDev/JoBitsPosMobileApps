@@ -18,9 +18,7 @@ public class OrdenXMLParser extends AbstractXmlParser<OrdenModel> {
     private final String
             CODORDEN = "codOrden",
             DELACASA = "deLaCasa",
-            TAGMESA = "mesacodMesa",
-            TAGPERSONAL = "personalusuario",
-            TAGVENTA = "ventafecha";
+            TAGMESA = "mesacodMesa";
 
 
     public OrdenXMLParser() {
