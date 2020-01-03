@@ -19,6 +19,7 @@
     <string name="title_activity_activity_principal">Selección de mesas</string>
     <string name="connection_error">Error en la conexión</string>
     <string name="mesa">Mesa</string>
+    <string name="orden">Orden</string>
     <string name="cod_Orden">cod_Orden</string>
     <string name="user">User_Name</string>
     <string name="Error">Error</string>
@@ -26,6 +27,7 @@
     <string name="errorAlAutenticar">Nombre de usuario o contraseña incorrecta</string>
     <string name="autenticacionCorrecta">Autenticación correcta</string>
     <string name="estadoMesas">Estado de las mesas</string>
+
 
     <string name="laberOrderNo">Orden No:</string>
     <string name="labelMesaNo">Mesa No:</string>
