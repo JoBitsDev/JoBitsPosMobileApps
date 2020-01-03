@@ -103,7 +103,7 @@ public class OrdenActivity extends BaseActivity {
             ordenNoLabel.setText(bundleExtra.getString(String.valueOf(R.string.cod_Orden)));//set el label de la orden
             productosVentaOrden = new ArrayList<ProductoVentaOrdenModel>();
             menuAdapter = new MenuAdapterThis(this, R.layout.list_menu, new ArrayList<ProductoVentaModel>());
-            productoVentaOrdenAdapter =new ProductoVentaOrdenAdapter(this , R.id.listaOrden, productosVentaOrden);
+            productoVentaOrdenAdapter = new ProductoVentaOrdenAdapter(this, R.id.listaOrden, productosVentaOrden);
 
             initMenu(bundleExtra.getString(String.valueOf(R.string.mesa)));
             initTab();
@@ -173,7 +173,7 @@ public class OrdenActivity extends BaseActivity {
                 public void onClick(View v) {
                     searchText.setText("");
                     seccionAdapter.getFilter().filter("");
-                    menuAdapter= new MenuAdapterThis(getApplicationContext(), R.layout.list_menu, new ArrayList<ProductoVentaModel>());
+                    menuAdapter = new MenuAdapterThis(getApplicationContext(), R.layout.list_menu, new ArrayList<ProductoVentaModel>());
                     menuProductosListView.setAdapter(menuAdapter);
                 }
             });
@@ -208,13 +208,12 @@ public class OrdenActivity extends BaseActivity {
             });
 
 
-
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
     }
 
-    private boolean onTabChangeTouchEvent(MotionEvent event){
+    private boolean onTabChangeTouchEvent(MotionEvent event) {
         float currentX = 0;
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -222,7 +221,7 @@ public class OrdenActivity extends BaseActivity {
                 break;
             case MotionEvent.ACTION_UP:
                 currentX = event.getX();
-                boolean dirRight = lastX > currentX;
+                boolean dirRight = Math.abs( lastX - currentX) > 200;
                 switchTab(dirRight);
                 break;
         }
@@ -231,14 +230,16 @@ public class OrdenActivity extends BaseActivity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-       return  onTabChangeTouchEvent(event);
+        return onTabChangeTouchEvent(event);
     }
 
-    private boolean switchTab(boolean dirRight) {
-        if (dirRight) {
-            host.setCurrentTab(1);
-        } else {
-            host.setCurrentTab(0);
+    private boolean switchTab(boolean change) {
+        if (change) {
+            if (host.getCurrentTab() == 1) {
+                host.setCurrentTab(0);
+            } else {
+                host.setCurrentTab(1);
+            }
         }
         return false;
     }
@@ -348,7 +349,7 @@ public class OrdenActivity extends BaseActivity {
             listaOrden.setAdapter(new ProductoVentaOrdenAdapter(this, R.id.listaOrden, productosVentaOrden, new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    return onMenuOrdenListViewLongClick(v,(Integer) v.getTag());
+                    return onMenuOrdenListViewLongClick(v, (Integer) v.getTag());
                 }
             }));
         } catch (Exception e) {
