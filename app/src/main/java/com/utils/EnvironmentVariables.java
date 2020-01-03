@@ -81,7 +81,7 @@ public class EnvironmentVariables {
      * @return el String con el valor redondeado a dos lugares.
      */
     public static String setDosLugaresDecimales(float valorARedondear) {
-        return Math.round(valorARedondear * Math.pow(10, 2)) / Math.pow(10, 2) + MONEDA_PRINCIPAL;
+        return Math.round(valorARedondear * Math.pow(10, 2)) / Math.pow(10, 2)+"";
     }
 
 }
