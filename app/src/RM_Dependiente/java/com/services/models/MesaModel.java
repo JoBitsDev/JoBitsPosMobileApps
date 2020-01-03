@@ -140,4 +140,8 @@ public class MesaModel implements Comparable<MesaModel> {
 
         }*/
     }
+
+    public String getUsuario() {
+        return getEstado() == null ? "null" : getEstado().split(" ")[1];
+    }
 }

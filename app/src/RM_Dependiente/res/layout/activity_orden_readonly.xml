@@ -102,7 +102,7 @@
                 android:layout_gravity="center"
                 android:choiceMode="singleChoice"
                 android:clickable="false"
-                android:listSelector="@color/selector_listas"
+                android:listSelector="@color/color_Fondo"
                 android:scrollingCache="true"
                 android:smoothScrollbar="true" />
         </FrameLayout>
