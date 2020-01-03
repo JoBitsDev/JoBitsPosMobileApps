@@ -115,30 +115,6 @@ public class MesaModel implements Comparable<MesaModel> {
         int o1 = Integer.parseInt(getCodMesa().split("-")[1]);
         int o2 = Integer.parseInt(another.getCodMesa().split("-")[1]);
         return o1 - o2;
-        //los primero if son para verificar si las mesas tienen orden
-        /*if (getEstado().compareToIgnoreCase(EnvironmentVariables.ESTADO_MESA_VACIA) == 0) {
-            return -1;//si esta no tiene orden va a ser < que la otra
-        } else if (another.getEstado().compareToIgnoreCase(EnvironmentVariables.ESTADO_MESA_VACIA) == 0) {
-            return 1;//si esta no tiene orden va a ser > que la otra
-        } else if (getEstado().equals(EnvironmentVariables.ESTADO_MESA_ESPERANDO_CONFIRMACION)) {
-            return -1;//si esta no tiene orden va a ser < que la otra
-        } else if (another.getEstado().equals(EnvironmentVariables.ESTADO_MESA_ESPERANDO_CONFIRMACION)) {
-            return 1;//si esta no tiene orden va a ser > que la otra
-        } else {//si las dos tienen orden ver las ordenes
-
-            int orden1 = Integer.parseInt(this.getEstado().split(" ")[0].split("-")[1]);
-            int orden2 = Integer.parseInt(another.getEstado().split(" ")[0].split("-")[1]);
-            int compPorOrden = orden1 - orden2;
-
-            if (compPorOrden == 0) {//tienen la misma orden, compara por mesas, imposible que pase pero para si por si acaso
-                int o1 = Integer.parseInt(getCodMesa().split("-")[1]);
-                int o2 = Integer.parseInt(another.getCodMesa().split("-")[1]);
-                return o1 - o2;
-            } else {
-                return compPorOrden;
-            }
-
-        }*/
     }
 
     public String getUsuario() {
