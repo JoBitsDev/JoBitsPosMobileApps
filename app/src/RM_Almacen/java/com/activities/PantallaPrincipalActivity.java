@@ -244,7 +244,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
      */
     public void onEntradaClick(final View v) {
         try {
-            final InsumoAlmacenModel insumoModel = ((InsumoAlmacenModel) listView.getAdapter().getItem((Integer) v.getTag()));
+            int pos = (Integer) v.getTag();
+            final InsumoAlmacenModel insumoModel = ((InsumoAlmacenModel) listView.getAdapter().getItem(pos));
 
             final EditText input = new EditText(v.getContext());
             input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
@@ -306,9 +307,9 @@ public class PantallaPrincipalActivity extends BaseActivity {
                     }).create().show();
                     dialog.dismiss();
                 }
-            }).
-                    create().
-                    show();
+            }).create().show();
+
+            listView.smoothScrollToPosition(pos);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
@@ -338,7 +339,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
      */
     private void onSalidaClick(final View v) {
         try {
-            final InsumoAlmacenModel i = ((InsumoAlmacenModel) listView.getAdapter().getItem((Integer) v.getTag()));
+            int pos = (Integer) v.getTag();
+            final InsumoAlmacenModel i = ((InsumoAlmacenModel) listView.getAdapter().getItem(pos));
             final String[] ipvs = getIPVData(i.getInsumoModel().getCodInsumo());
 
             final EditText input = new EditText(v.getContext());
@@ -399,6 +401,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
                             dialog.dismiss();
                         }
                     }).create().show();
+
+            listView.smoothScrollToPosition(pos);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
@@ -411,7 +415,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
      */
     private void onRebajaClick(final View v) {
         try {
-            final InsumoAlmacenModel insumoModel = ((InsumoAlmacenModel) listView.getAdapter().getItem((Integer) v.getTag()));
+            int pos = (Integer) v.getTag();
+            final InsumoAlmacenModel insumoModel = ((InsumoAlmacenModel) listView.getAdapter().getItem(pos));
 
             final EditText input = new EditText(v.getContext());
             input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
@@ -474,13 +479,13 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                     }
                                 }
 
-                            }).
-                                    create().
-                                    show();
+                            }).create().show();
 
                             dialog.dismiss();
                         }
                     }).create().show();
+
+            listView.smoothScrollToPosition(pos);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
