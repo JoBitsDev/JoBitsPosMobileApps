@@ -18,7 +18,7 @@ public class InsumoAlmacenPKXMLParser extends AbstractXmlParser<InsumoAlmacenPKM
             COD_INSUMO = "insumocodInsumo";
 
     public InsumoAlmacenPKXMLParser() {
-        super("insumoAlmacenPKModel", "insumoAlmacenPKs");
+        super("insumoAlmacenPK", "insumoAlmacenPKs");
 
     }
 
