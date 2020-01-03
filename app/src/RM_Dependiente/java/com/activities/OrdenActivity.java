@@ -53,6 +53,7 @@ public class OrdenActivity extends BaseActivity {
     private SeccionAdapter seccionAdapter;
     private MenuAdapterThis menuAdapter;
     private SeccionModel seccionSelected;
+    private ProductoVentaOrdenAdapter productoVentaOrdenAdapter;
     private TabHost host;
     private float lastX;
 
@@ -102,6 +103,7 @@ public class OrdenActivity extends BaseActivity {
             ordenNoLabel.setText(bundleExtra.getString(String.valueOf(R.string.cod_Orden)));//set el label de la orden
             productosVentaOrden = new ArrayList<ProductoVentaOrdenModel>();
             menuAdapter = new MenuAdapterThis(this, R.layout.list_menu, new ArrayList<ProductoVentaModel>());
+            productoVentaOrdenAdapter =new ProductoVentaOrdenAdapter(this , R.id.listaOrden, productosVentaOrden);
 
             initMenu(bundleExtra.getString(String.valueOf(R.string.mesa)));
             initTab();
@@ -290,7 +292,33 @@ public class OrdenActivity extends BaseActivity {
                     }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    addProductoVarios(Float.parseFloat(input.getText().toString()), position);
+                    addProductoVarios(Float.parseFloat(input.getText().toString()), lastClickedMenu);
+                }
+            }).create().show();
+            return true;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+            return false;
+        }
+    }
+
+    private boolean onMenuOrdenListViewLongClick(final View v, final int position) {
+        try {
+            lastClickedMenu = productoVentaOrdenAdapter.getItem(position).getProductoVentaModel();
+            final EditText input = new EditText(v.getContext());
+            input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            input.setRawInputType(Configuration.KEYBOARD_12KEY);
+            new AlertDialog.Builder(v.getContext()).
+                    setView(input).
+                    setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    addProductoVarios(Float.parseFloat(input.getText().toString()), lastClickedMenu);
                 }
             }).create().show();
             return true;
@@ -317,7 +345,12 @@ public class OrdenActivity extends BaseActivity {
             seccionAdapter = new SeccionAdapter(this, android.R.layout.simple_list_item_1, secciones);
             menuSeccionListView.setAdapter(seccionAdapter);
 
-            listaOrden.setAdapter(new ProductoVentaOrdenAdapter(this, R.id.listaOrden, productosVentaOrden));
+            listaOrden.setAdapter(new ProductoVentaOrdenAdapter(this, R.id.listaOrden, productosVentaOrden, new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return onMenuOrdenListViewLongClick(v,(Integer) v.getTag());
+                }
+            }));
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
@@ -696,8 +729,8 @@ public class OrdenActivity extends BaseActivity {
         }
     }
 
-    public void addProductoVarios(float cantidad, int position) {
-        lastClickedMenu = menuAdapter.getItem(position);
+    public void addProductoVarios(float cantidad, ProductoVentaModel productoVentaModel) {
+        lastClickedMenu = productoVentaModel;
         try {
             if (lastClickedMenu != null) {
                 if (controller.addProducto(lastClickedMenu, cantidad)) {

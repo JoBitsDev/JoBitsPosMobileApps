@@ -26,11 +26,19 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
     List<ProductoVentaOrdenModel> objects;
     Activity context;
     boolean read_only = false;
+    private View.OnLongClickListener listener;
 
     public ProductoVentaOrdenAdapter(Activity context, int resource, List<ProductoVentaOrdenModel> objects) {
         super(context, resource, objects);
         this.context = context;
         this.objects = objects;
+    }
+
+    public ProductoVentaOrdenAdapter(Activity context, int resource, List<ProductoVentaOrdenModel> objects, View.OnLongClickListener listener) {
+        super(context, resource, objects);
+        this.context = context;
+        this.objects = objects;
+        this.listener = listener;
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -49,6 +57,7 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
             holder.add = (ImageButton) item.findViewById(R.id.addButton);
             holder.remove = (ImageButton) item.findViewById(R.id.removeButton);
             holder.comensal = (ImageButton) item.findViewById(R.id.comensalButton);
+            holder.add.setOnLongClickListener(listener);
 
             item.setTag(holder);
         } else {
