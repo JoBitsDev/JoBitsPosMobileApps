@@ -144,12 +144,25 @@ public class OrdenActivity extends BaseActivity {
                     return onMenuProductosListViewLongClick(view, position);
                 }
             });
-            menuProductosListView.setmo
 
             menuProductosListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     onMenuListViewClick(position);
+                }
+            });
+
+            listaOrden.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return onTabChangeTouchEvent(event);
+                }
+            });
+
+            menuProductosListView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return onTabChangeTouchEvent(event);
                 }
             });
 
@@ -199,8 +212,7 @@ public class OrdenActivity extends BaseActivity {
         }
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    private boolean onTabChangeTouchEvent(MotionEvent event){
         float currentX = 0;
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -211,10 +223,13 @@ public class OrdenActivity extends BaseActivity {
                 boolean dirRight = lastX > currentX;
                 switchTab(dirRight);
                 break;
-
         }
         return false;
+    }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+       return  onTabChangeTouchEvent(event);
     }
 
     private boolean switchTab(boolean dirRight) {
