@@ -158,7 +158,8 @@ public class OrdenActivity extends BaseActivity {
                 public void onClick(View v) {
                     searchText.setText("");
                     seccionAdapter.getFilter().filter("");
-                    menuAdapter.clear();
+                    menuAdapter= new MenuAdapterThis(getApplicationContext(), R.layout.list_menu, new ArrayList<ProductoVentaModel>());
+                    menuProductosListView.setAdapter(menuAdapter);
                 }
             });
 
