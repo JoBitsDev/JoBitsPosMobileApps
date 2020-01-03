@@ -133,7 +133,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         try {
 
             final Bundle data = new Bundle();
-            data.putString(String.valueOf(R.string.user), controller.getUser());
+            data.putString(String.valueOf(R.string.user), m.getUsuario());
             data.putString(String.valueOf(R.string.mesa), m.getCodMesa());
 
             controller.starService(m.getCodMesa());
