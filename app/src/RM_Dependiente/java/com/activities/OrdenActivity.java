@@ -1,27 +1,40 @@
 package com.activities;
 
-import java.util.*;
-
-import android.view.*;
-import android.text.*;
-import android.widget.*;
-import android.os.Bundle;
-
-import com.services.models.*;
-import com.controllers.OrdenController;
-
 import android.app.AlertDialog;
-
-import com.utils.EnvironmentVariables;
-
 import android.content.DialogInterface;
 import android.content.res.Configuration;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TabHost;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.controllers.OrdenController;
+import com.services.models.ProductoVentaModel;
+import com.services.models.ProductoVentaOrdenModel;
+import com.services.models.SeccionModel;
+import com.utils.EnvironmentVariables;
 import com.utils.adapters.MenuAdapterThis;
+import com.utils.adapters.ProductoVentaOrdenAdapter;
 import com.utils.adapters.SeccionAdapter;
 import com.utils.exception.ExceptionHandler;
-import com.utils.adapters.ProductoVentaOrdenAdapter;
 import com.utils.exception.ServerErrorException;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class OrdenActivity extends BaseActivity {
 
@@ -41,6 +54,7 @@ public class OrdenActivity extends BaseActivity {
     private MenuAdapterThis menuAdapter;
     private SeccionModel seccionSelected;
     private TabHost host;
+    private float lastX;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +144,7 @@ public class OrdenActivity extends BaseActivity {
                     return onMenuProductosListViewLongClick(view, position);
                 }
             });
+            menuProductosListView.setmo
 
             menuProductosListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -176,10 +191,40 @@ public class OrdenActivity extends BaseActivity {
                 }
             });
 
+
+
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        float currentX = 0;
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                lastX = event.getX();
+                break;
+            case MotionEvent.ACTION_UP:
+                currentX = event.getX();
+                boolean dirRight = lastX > currentX;
+                switchTab(dirRight);
+                break;
+
+        }
+        return false;
+
+    }
+
+    private boolean switchTab(boolean dirRight) {
+        if (dirRight) {
+            host.setCurrentTab(1);
+        } else {
+            host.setCurrentTab(0);
+        }
+        return false;
+    }
+
 
     private void onDeLaCasaCheckBoxClick() {
         try {
