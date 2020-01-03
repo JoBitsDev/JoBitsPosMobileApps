@@ -113,6 +113,16 @@
             android:layout_height="0dp"
             android:layout_weight="0.41">
 
+            <CheckBox
+                android:id="@+id/deLaCasaCheckBoxReadOnly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+
+                android:text="@string/botonDeLaCasa"
+                android:textColor="@color/color_Labels"
+                android:textSize="@dimen/normal" />
 
             <TextView
                 android:id="@+id/textView6"
