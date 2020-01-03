@@ -138,6 +138,14 @@ public class OrdenActivity extends BaseActivity {
                 }
             });
 
+            searchText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    searchText.setText("");
+                    seccionAdapter.getFilter().filter("");
+                    menuAdapter.clear();
+                }
+            });
 
             searchText.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -149,8 +157,7 @@ public class OrdenActivity extends BaseActivity {
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     if (!s.toString().isEmpty()) {
                         seccionAdapter.getFilter().filter(s.toString());
-                    }
-                    else{
+                    } else {
                         seccionAdapter.getFilter().filter("");
                     }
                     onSeccionClick(seccionAdapter.getPosition(seccionSelected));
@@ -186,8 +193,8 @@ public class OrdenActivity extends BaseActivity {
 
 
     private void onSeccionClick(int position) {
-        if(position>=0) {
-            seccionSelected=seccionAdapter.getItem(position);
+        if (position >= 0) {
+            seccionSelected = seccionAdapter.getItem(position);
             List<ProductoVentaModel> productosSelected;
             productosSelected = seccionSelected.getProductos();
             if (!productosSelected.isEmpty()) {
@@ -222,7 +229,7 @@ public class OrdenActivity extends BaseActivity {
                     }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    addProductoVarios(Float.parseFloat(input.getText().toString()),position);
+                    addProductoVarios(Float.parseFloat(input.getText().toString()), position);
                 }
             }).create().show();
             return true;
@@ -628,12 +635,12 @@ public class OrdenActivity extends BaseActivity {
         }
     }
 
-    public void addProductoVarios(float cantidad,int position) {
+    public void addProductoVarios(float cantidad, int position) {
         lastClickedMenu = menuAdapter.getItem(position);
         try {
             if (lastClickedMenu != null) {
                 if (controller.addProducto(lastClickedMenu, cantidad)) {
-                    controller.increasePoducto(lastClickedMenu, (ProductoVentaOrdenAdapter) listaOrden.getAdapter(),cantidad);
+                    controller.increasePoducto(lastClickedMenu, (ProductoVentaOrdenAdapter) listaOrden.getAdapter(), cantidad);
                     updateCosto();
                     Toast.makeText(this, lastClickedMenu.getNombre() + " agregado al pedido.", Toast.LENGTH_SHORT).show();
                 } else {
