@@ -244,7 +244,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
      */
     public void onEntradaClick(final View v) {
         try {
-            int pos = (Integer) v.getTag();
+            final int pos = (Integer) v.getTag();
             final InsumoAlmacenModel insumoModel = ((InsumoAlmacenModel) listView.getAdapter().getItem(pos));
 
             final EditText input = new EditText(v.getContext());
@@ -296,12 +296,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                 ExceptionHandler.handleException(e, act);
                             }
 
-                            listView.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    onSpinnerFiltrarItemSelected(listView);
-                                }
-                            });
+                            updateListView();
+
                             dialog.dismiss();
                         }
                     }).create().show();
@@ -309,10 +305,29 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 }
             }).create().show();
 
-            listView.smoothScrollToPosition(pos);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
+    }
+
+    private void updateListView() {
+        final BaseActivity act = this;
+        listView.post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    int index = listView.getFirstVisiblePosition();
+                    View v = listView.getChildAt(0);
+                    int top = v.getTop();
+
+                    listView.setAdapter(controller.getAdapter(act, R.id.listaInsumos));
+
+                    listView.setSelectionFromTop(index, top);
+                } catch (Exception e) {
+                    ExceptionHandler.handleException(e, act);
+                }
+            }
+        });
     }
 
     /**
@@ -381,17 +396,14 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                                 } catch (Exception e) {
                                                     ExceptionHandler.handleException(e, act);
                                                 }
-                                                listView.post(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        onSpinnerFiltrarItemSelected(listView);
-                                                    }
-                                                });
+
+                                                updateListView();
+
                                                 dialog.dismiss();
                                             }
                                         }
-                                    }).setTitle("Destino").
-                                    setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                    }).setTitle("Destino")
+                                    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             dialog.dismiss();
@@ -402,7 +414,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
                         }
                     }).create().show();
 
-            listView.smoothScrollToPosition(pos);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
@@ -465,16 +476,9 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                         } catch (Exception e) {
                                             ExceptionHandler.handleException(e, act);
                                         }
-                                        listView.post(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                try {
-                                                    listView.setAdapter(controller.getAdapter(act, R.id.listaInsumos));
-                                                } catch (Exception e) {
-                                                    ExceptionHandler.handleException(e, act);
-                                                }
-                                            }
-                                        });
+
+                                        updateListView();
+
                                         dialog.dismiss();
                                     }
                                 }
@@ -485,7 +489,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
                         }
                     }).create().show();
 
-            listView.smoothScrollToPosition(pos);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
