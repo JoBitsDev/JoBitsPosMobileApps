@@ -149,23 +149,27 @@ public class PantallaPrincipalActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void continuar(MesaModel m) {
+    private void continuar(MesaModel m) throws NoExistingException{
         try {
 
             final Bundle data = new Bundle();
-            data.putString(String.valueOf(R.string.user), m.getUsuario());
             data.putString(String.valueOf(R.string.mesa), m.getCodMesa());
 
             controller.starService(m.getCodMesa());
+
             if (!m.getEstado().equals(EnvironmentVariables.ESTADO_MESA_VACIA)) {
+
                 String cod_orden = m.getEstado().split(" ")[0];
+                data.putString(String.valueOf(R.string.user), m.getUsuario());
+
                 controller.setCodOrden(cod_orden);
+
                 if (!controller.validate()) {
                     throw new NoExistingException("La orden a acceder ya no se encuentra abierta", this);
                 }
                 data.putString(String.valueOf(R.string.cod_Orden), cod_orden);
 
-                if (!controller.getUser().equals(m.getEstado().split(" ")[1])) {//si no es el usuario pide confirmacion
+                if (!controller.getUser().equals(m.getUsuario())) {//si no es el usuario pide confirmacion
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setMessage("La mesa que quiere acceder " +
                             "la esta atendiendo otro camarero");
@@ -184,9 +188,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
                     builder.show();
 
                 } else {
+                    data.putString(String.valueOf(R.string.user), controller.getUser());
                     entrarMiOrden(data);
                 }
             } else {//es el usuario
+                data.putString(String.valueOf(R.string.user), controller.getUser());
                 entrarMiOrden(data);
             }
 
