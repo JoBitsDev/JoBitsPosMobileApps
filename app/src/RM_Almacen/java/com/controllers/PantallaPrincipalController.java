@@ -1,5 +1,7 @@
 package com.controllers;
 
+import android.content.Context;
+
 import com.activities.BaseActivity;
 import com.services.web_connections.*;
 import com.services.models.InsumoAlmacenModel;
@@ -146,7 +148,11 @@ public class PantallaPrincipalController extends BaseController {
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public AlmacenInsumoAdapter getAdapter(BaseActivity c, int listaInsumos) throws ExecutionException, InterruptedException {
-        return new AlmacenInsumoAdapter(c.getApplicationContext(), listaInsumos, getPrimerAlmacen());
+    public AlmacenInsumoAdapter getAdapter(Context c, int listaInsumos) throws ExecutionException, InterruptedException {
+        return new AlmacenInsumoAdapter(c, listaInsumos, getPrimerAlmacen());
+    }
+
+    public AlmacenInsumoAdapter getAdapter(Context c, int listaInsumos,String filtros) throws ExecutionException, InterruptedException {
+        return new AlmacenInsumoAdapter(c, listaInsumos, filterBy(filtros));
     }
 }
