@@ -74,6 +74,41 @@ public class MesaAdapter extends ArrayAdapter<MesaModel> {
         return (item);
     }
 
+    public MesaAdapter orderBy(String orden) {
+        if (orden.matches(String.valueOf(R.string.orden))) {
+            orderByOrden();
+        } else if (orden.matches(String.valueOf(R.string.mesa))) {
+            orderByMesas();
+        }
+        return this;
+    }
+
+    private void orderByMesas() {
+        Collections.sort(objects);
+    }
+
+    private void orderByOrden() {
+        Collections.sort(objects, new Comparator<MesaModel>() {
+            @Override
+            public int compare(MesaModel first, MesaModel second) {
+                //los primero if son para verificar si las mesas tienen orden
+                if (first.getEstado().compareToIgnoreCase(EnvironmentVariables.ESTADO_MESA_VACIA) == 0) {
+                    return 1;//si esta no tiene orden va a ser > que la otra, PAL FINAL
+                } else if (second.getEstado().compareToIgnoreCase(EnvironmentVariables.ESTADO_MESA_VACIA) == 0) {
+                    return -1;//si esta no tiene orden va a ser < que la otra,
+                } else if (first.getEstado().equals(EnvironmentVariables.ESTADO_MESA_ESPERANDO_CONFIRMACION)) {
+                    return 1;//si esta no tiene orden va a ser < que la otra
+                } else if (second.getEstado().equals(EnvironmentVariables.ESTADO_MESA_ESPERANDO_CONFIRMACION)) {
+                    return -1;//si esta no tiene orden va a ser > que la otra
+                } else {//si las dos tienen orden ver las ordenes
+                    int orden1 = Integer.parseInt(first.getEstado().split(" ")[0].split("-")[1]);
+                    int orden2 = Integer.parseInt(second.getEstado().split(" ")[0].split("-")[1]);
+                    return orden1 - orden2;
+                }
+            }
+        });
+    }
+
     static class ViewHolder {
         TextView codMesa;
         TextView estadoMesa;

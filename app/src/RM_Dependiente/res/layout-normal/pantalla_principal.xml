@@ -21,15 +21,28 @@
             android:layout_height="0dp"
             android:layout_weight="3">
 
-            <TextClock
-                android:id="@+id/textClock"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="center_vertical"
-                android:textColor="@color/color_Labels"
-                android:textSize="@dimen/subtitulos" />
+                android:orientation="horizontal">
 
+                <TextView
+                    android:id="@+id/textviewusuario"
+                    android:layout_width="206dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/user"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/color_Labels"
+                    android:textSize="@dimen/subtitulos" />
+
+                <Switch
+                    android:id="@+id/switchOrden"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textOff="@string/mesa"
+                    android:textOn="@string/orden" />
+            </LinearLayout>
 
 
             <TextView
@@ -42,17 +55,6 @@
                 android:textSize="@dimen/subtitulos"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true" />
-
-            <TextView
-                android:id="@+id/textviewusuario"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:text="@string/user"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/color_Labels"
-                android:textSize="@dimen/subtitulos" />
 
         </RelativeLayout>
 
