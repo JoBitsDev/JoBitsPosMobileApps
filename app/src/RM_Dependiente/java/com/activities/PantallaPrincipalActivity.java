@@ -24,6 +24,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
     private ListView listaMesas;
 
+    private Switch switchOrden;
+
     private Button cambiarAreaButton;//TODO: Esto no manda a barra, sino cambia de area
     private Button pedidoDomicilioButton;
     private Button RButton;
@@ -63,6 +65,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
             cambiarAreaButton = (Button) findViewById(R.id.cambiarArea);
             pedidoDomicilioButton = (Button) findViewById(R.id.pedidoDomicilio);
+
+            switchOrden = (Switch) findViewById(R.id.switchOrden);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
@@ -77,10 +81,18 @@ public class PantallaPrincipalActivity extends BaseActivity {
                     onCambiarAreaButtonClick(v);
                 }
             });
+
             listaMesas.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                     return onListaMesasItemLongClick(position);
+                }
+            });
+
+            switchOrden.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onSwitchOrdenClick();
                 }
             });
         } catch (Exception e) {
@@ -88,12 +100,20 @@ public class PantallaPrincipalActivity extends BaseActivity {
         }
     }
 
+    private void onSwitchOrdenClick() {//cambiar orden
+        /*
+        //no llama al servidor
+        String orden = switchOrden.isChecked() ? String.valueOf(R.string.orden) : String.valueOf(R.string.mesa);
+        MesaAdapter ad = ((MesaAdapter) listaMesas.getAdapter()).orderBy(orden);
+        listaMesas.setAdapter(ad);*/
+
+        configurarTabla();//llama al servidor
+    }
+
     private boolean onListaMesasItemLongClick(int position) {
         try {
             configurarTabla();
-            MesaAdapter adapter = controller.getData(selectedArea, this);
-            listaMesas.setAdapter(adapter);
-            continuar(adapter.getMesa(position));
+            continuar(((MesaAdapter) listaMesas.getAdapter()).getMesa(position));
             return true;
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
@@ -129,23 +149,27 @@ public class PantallaPrincipalActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void continuar(MesaModel m) {
+    private void continuar(MesaModel m) throws NoExistingException{
         try {
 
             final Bundle data = new Bundle();
-            data.putString(String.valueOf(R.string.user), m.getUsuario());
             data.putString(String.valueOf(R.string.mesa), m.getCodMesa());
 
             controller.starService(m.getCodMesa());
+
             if (!m.getEstado().equals(EnvironmentVariables.ESTADO_MESA_VACIA)) {
+
                 String cod_orden = m.getEstado().split(" ")[0];
+                data.putString(String.valueOf(R.string.user), m.getUsuario());
+
                 controller.setCodOrden(cod_orden);
+
                 if (!controller.validate()) {
                     throw new NoExistingException("La orden a acceder ya no se encuentra abierta", this);
                 }
                 data.putString(String.valueOf(R.string.cod_Orden), cod_orden);
 
-                if (!controller.getUser().equals(m.getEstado().split(" ")[1])) {//si no es el usuario pide confirmacion
+                if (!controller.getUser().equals(m.getUsuario())) {//si no es el usuario pide confirmacion
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setMessage("La mesa que quiere acceder " +
                             "la esta atendiendo otro camarero");
@@ -164,9 +188,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
                     builder.show();
 
                 } else {
+                    data.putString(String.valueOf(R.string.user), controller.getUser());
                     entrarMiOrden(data);
                 }
             } else {//es el usuario
+                data.putString(String.valueOf(R.string.user), controller.getUser());
                 entrarMiOrden(data);
             }
 
@@ -201,6 +227,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 @Override
                 public void run() {
                     MesaAdapter adapter = controller.getData(selectedArea, act);
+                    String orden = switchOrden.isChecked() ? String.valueOf(R.string.orden) : String.valueOf(R.string.mesa);
+                    adapter.orderBy(orden);
                     listaMesas.setAdapter(adapter);
                     hideProgressDialog();
                 }

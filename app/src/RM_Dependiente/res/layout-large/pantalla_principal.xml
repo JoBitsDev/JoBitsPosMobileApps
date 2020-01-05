@@ -20,6 +20,18 @@
             android:layout_height="0dp"
             android:layout_weight="5">
 
+            <Switch
+                android:id="@+id/switchOrden"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textviewusuario"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:textOff="@string/mesa"
+                android:textOn="@string/orden" />
+
             <TextClock
                 android:id="@+id/textClock"
                 android:layout_width="wrap_content"
@@ -55,29 +67,31 @@
                 android:id="@+id/textviewusuario"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/imageButton"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="3dp"
+                android:layout_marginBottom="14dp"
                 android:text="@string/user"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/color_Labels"
-                android:layout_alignBottom="@+id/imageButton"
-                android:layout_alignParentEnd="true" />
+                android:textColor="@color/color_Labels" />
 
             <ImageButton
                 android:id="@+id/imageButton"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
                 android:background="@color/color_Fondo"
                 android:scaleType="fitXY"
-                android:src="@drawable/empty_user"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true" />
+                android:src="@drawable/empty_user" />
 
         </RelativeLayout>
 
         <ListView
+            android:id="@+id/listaMesas"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="20"
-            android:id="@+id/listaMesas"
             android:choiceMode="singleChoice" />
 
         <LinearLayout

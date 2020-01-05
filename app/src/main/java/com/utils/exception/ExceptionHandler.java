@@ -52,6 +52,8 @@ public class ExceptionHandler {
             handleNoConnectionException((NoConnectionException) e, activity);
         } else if (e instanceof ServerErrorException) {//error del server
             handleServerErrorException((ServerErrorException) e, activity);
+        } else if (e instanceof NoExistingException) {
+            handleNoExistingException((Exception) e, activity);
         } else {//error inesperado
             handleUnknownException((Exception) e, activity);
         }
@@ -66,6 +68,24 @@ public class ExceptionHandler {
         });
 
         dialog.show();*/
+    }
+
+    private static void handleNoExistingException(Exception e, BaseActivity activity) {
+        final Context c = activity.getApplicationContext();
+        final View v = activity.findViewById(android.R.id.content).getRootView();
+
+        //popup a mostrar
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setMessage(e.getMessage());
+        builder.setTitle(ExceptionHandler.POPUP_TITLE);
+
+        builder.setNeutralButton(ExceptionHandler.POPUP_BUTTON_TEXT, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {//comportamiento al clickear el boton
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
     }
 
     /**
@@ -119,9 +139,10 @@ public class ExceptionHandler {
 
     /**
      * Metodo para crear el dialogo que se va a mostrar con el error
+     *
      * @param message el mensaje que va a contener el dialogo
-     * @param c el contexto en el que se va a mostrar el dialogo
-     * @param a la actividad para subir a la actividad superior
+     * @param c       el contexto en el que se va a mostrar el dialogo
+     * @param a       la actividad para subir a la actividad superior
      */
     private static void createDialog(String message, final Context c, final BaseActivity a) {
         //popup a mostrar
