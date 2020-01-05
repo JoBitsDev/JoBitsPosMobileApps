@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.*;
 
 import com.controllers.LoginController;
+import com.utils.exception.ExceptionHandler;
 
 /**
  * Capa: Activities
@@ -83,17 +84,19 @@ public class LoginActivity extends BaseActivity {
 
     /**
      * Acción a ejecutar cuando se da click en el boton login y se va a autenticar el usuario.
+     *
      * @param v View de la aplicacion.
      */
     private void autenticar(View v) {
-        String username = user.getText().toString();//nombre de usuario del campo de texto
-        String password = pass.getText().toString();//contrasenna del campo de texto
+        try {
+            String username = user.getText().toString();
+            String password = pass.getText().toString();
 
-        if (username == null || username.isEmpty() || password == null || password.isEmpty()) {//si es null o esta vacio: Error
-            errorAlAutenticar();
-        } else {
-            try {
-                if (controller.loginAction(username, password)) {//si se auntentica correctamente
+            if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
+                loginResult.setTextColor(Color.RED);
+                loginResult.setText(R.string.errorAlAutenticar);
+            } else {
+                if (controller.loginAction(username, password)) {
                     loginResult.setTextColor(Color.GREEN);
                     loginResult.setText(R.string.autenticacionCorrecta);
 
@@ -105,9 +108,9 @@ public class LoginActivity extends BaseActivity {
                 } else {//si no es correcto lanza error
                     errorAlAutenticar();
                 }
-            } catch (Exception e) {
-                notificarError(e);
             }
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
         }
     }
 

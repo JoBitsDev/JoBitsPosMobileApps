@@ -8,6 +8,7 @@ import android.graphics.Color;
 
 import com.controllers.MainController;
 import com.services.notifications.ReceiverNotificationService;
+import com.utils.exception.ExceptionHandler;
 
 /**
  * Capa: Activities
@@ -42,44 +43,59 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);//xml asociado
 
-        initVarialbes();//inicializa las variables
-        addListeners();//agrega listeners
+        try {
+            setContentView(R.layout.activity_main);
+            initVarialbes();
+            addListeners();
 
-        updateConnectionText();//actualiza el label de coneccion
+            updateConnectionText();
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     @Override
-    protected void onResume() {//cuando se lanza un error y vira a esta la pantalla, actualiza el label de coneccion
-        super.onResume();
-        updateConnectionText();//actualiza el label de coneccion
+    protected void onResume() {
+        try {
+            super.onResume();
+            updateConnectionText();
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     @Override
-    void initVarialbes() {//inicializa las variables
-        controller = new MainController();//inicializa el controller
+    protected void initVarialbes() {
+        try {
+            controller = new MainController();
 
-        initializeSesionButton = (Button) findViewById(R.id.initializeSesionButton);//asigna el boton de iniciar a su variable
-        notificationButton = (Button) findViewById(R.id.notificationButton);//asigna el boton de notificacion a su variable
-        connectionStatusText = ((TextView) (findViewById(R.id.connectionStatusText)));//asigna el label a su variable
+            notificationButton = (Button) findViewById(R.id.notificationButton);
+            initializeSesionButton = (Button) findViewById(R.id.initializeSesionButton);
+            connectionStatusText = ((TextView) (findViewById(R.id.connectionStatusText)));
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     @Override
-    void addListeners() {//agrega listeners
-        initializeSesionButton.setOnClickListener(new View.OnClickListener() {//agrega la accion del click del boton de iniciar
-            @Override
-            public void onClick(View v) {//agrega la accion del click del boton
-                onInitializeSesionButtOnClick(v);
-            }
-        });
-
-        notificationButton.setOnClickListener(new View.OnClickListener() {//agrega la accion del click del boton de notificacion
-            @Override
-            public void onClick(View v) {//agrega la accion del click del boton
-                onNotificationButtonOnClick(v);
-            }
-        });
+    protected void addListeners() {
+        try {
+            initializeSesionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onInitializeSesionButtOnClick(v);
+                }
+            });
+            notificationButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onNotificationButtonOnClick(v);
+                }
+            });
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     /**
@@ -88,7 +104,11 @@ public class MainActivity extends BaseActivity {
      * @param v View de la aplicacion.
      */
     private void onNotificationButtonOnClick(View v) {
-        startNotificationService(v);//inicia el servicio de notificaciones
+        try {
+            startService(v);
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     /**
@@ -97,44 +117,51 @@ public class MainActivity extends BaseActivity {
      * @param v View de la aplicacion.
      */
     private void onInitializeSesionButtOnClick(View v) {
-        if (updateConnectionText()) {
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-        } else {
-            this.showMessage(v.getContext().getResources().
-                    getText(R.string.noConnectionError).toString());
+        try {
+            if (updateConnectionText()) {
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            } else {
+                this.showMessage(v.getContext().getResources().
+                        getText(R.string.noConnectionError).toString());
+            }
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
         }
     }
 
     /**
      * Actualiza el label de coneccion en dependencia de si hay o no coneccion con el servidor.
+     *
      * @return true si hay coneccion con el servidor, false en cualquier otro caso.
      */
     private boolean updateConnectionText() {
-        if (controller.checkConnection()) {//hay coneccion con el servidor
-            connectionStatusText.setText(R.string.conexion_succesfull);
-            connectionStatusText.setTextColor(Color.GREEN);
-
-            return true;
-        } else {//NO hay coneccion con el servidor
-            connectionStatusText.setText(R.string.no_network);
-            connectionStatusText.setTextColor(Color.RED);
-
+        try {
+            if (controller.checkConnection()) {
+                connectionStatusText.setText(R.string.conexion_succesfull);
+                connectionStatusText.setTextColor(Color.GREEN);
+                return true;
+            } else {
+                connectionStatusText.setText(R.string.no_network);
+                connectionStatusText.setTextColor(Color.RED);
+                return false;
+            }
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
             return false;
         }
     }
 
-    /**
-     * Inicia el servicio de notificaciones.
-     * @param v View de la aplicacion.
-     * TODO: ver bien si esto es logica o aqui, y ver la opcion del toggle button
-     */
-    public void startNotificationService(View v) {
-        if (notificationButton.getText().equals("Activar Notificaciones")) {//si esta activado, lo desactiva
-            startService(new Intent(MainActivity.this, ReceiverNotificationService.class));
-            notificationButton.setText("Desactivar Notificationes");
-        } else {//si esta desactivado, lo activa
-            stopService(new Intent(MainActivity.this, ReceiverNotificationService.class));
-            notificationButton.setText("Activar Notificationes");
+    public void startService(View view) {
+        try {
+            if (notificationButton.getText().equals("Activar Notificaciones")) {
+                startService(new Intent(MainActivity.this, ReceiverNotificationService.class));
+                notificationButton.setText("Desactivar Notificationes");
+            } else {
+                stopService(new Intent(MainActivity.this, ReceiverNotificationService.class));
+                notificationButton.setText("Activar Notificationes");
+            }
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
         }
     }
 

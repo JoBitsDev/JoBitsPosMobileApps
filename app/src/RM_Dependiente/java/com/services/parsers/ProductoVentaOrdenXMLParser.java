@@ -14,7 +14,7 @@ import java.io.IOException;
  * Created by Jorge on 27/9/17.
  */
 
-public class ProductoVordenXMLParser extends AbstractXmlParser<ProductoVentaOrdenModel> {
+public class ProductoVentaOrdenXMLParser extends AbstractXmlParser<ProductoVentaOrdenModel> {
 
     private final String
             CANTIDAD = "cantidad",
@@ -25,7 +25,7 @@ public class ProductoVordenXMLParser extends AbstractXmlParser<ProductoVentaOrde
 
     String id;
 
-    public ProductoVordenXMLParser(String id) {
+    public ProductoVentaOrdenXMLParser(String id) {
         super("productovOrden", "productovOrdens");
         this.id = id;
     }

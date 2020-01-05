@@ -14,9 +14,16 @@ public class EnvironmentVariables {
             ESTADO_MESA_ESPERANDO_CONFIRMACION = "esperando confirmacion";
 
     /**
+     * Puerto para que la notificacion se conecte con el servidor.
+     */
+    public static final int SOCKET_PORT = 8888;
+
+    /**
      * Ip del servidor.
      */
     public static String IP = "192.168.173.1";
+
+            //"192.168.173.1";//10.0.2.2
 
     /**
      * Puerto para la coneccion.
@@ -60,6 +67,7 @@ public class EnvironmentVariables {
 
     /**
      * Método para cambiar el IP de la coneccion.
+     *
      * @param ip para el que se va a cambiar.
      */
     public static void changeIP(String ip) {
@@ -68,11 +76,12 @@ public class EnvironmentVariables {
 
     /**
      * Redondea un valor a dos lugares despues de la coma.
+     *
      * @param valorARedondear que se quiere redondear.
      * @return el String con el valor redondeado a dos lugares.
      */
     public static String setDosLugaresDecimales(float valorARedondear) {
-        return Math.round(valorARedondear * Math.pow(10, 2)) / Math.pow(10, 2) + MONEDA_PRINCIPAL;
+        return Math.round(valorARedondear * Math.pow(10, 2)) / Math.pow(10, 2)+"";
     }
 
 }

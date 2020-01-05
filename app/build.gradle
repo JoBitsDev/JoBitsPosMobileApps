@@ -5,7 +5,7 @@ android {
     defaultConfig {
         minSdkVersion 17
         targetSdkVersion 17
-        applicationId 'firstdream.rm'
+        applicationId 'jobits.pos'
     }
     buildTypes {
         release {
@@ -15,19 +15,19 @@ android {
     }
     productFlavors {
         RM_Dependiente {
-            applicationId 'firstdream.rm.dpte'
-            versionCode 15
-            versionName '1.2.4.1'
+            applicationId 'jobits.pos.dpte'
+            versionCode 16
+            versionName '1.3.0.0'
         }
         RM_Almacen {
-            applicationId 'firstdream.rm.almacen'
-            versionCode 6
-            versionName '1.1.0'
+            applicationId 'jobits.pos.almacen'
+            versionCode 7
+            versionName '1.1.1'
         }
         RM_Cocina {
-            applicationId 'firstdream.rm.cocina'
-            versionCode 5
-            versionName '1.0.2'
+            applicationId 'jobits.pos.cocina'
+            versionCode 6
+            versionName '1.0.3'
         }
     }
 }

@@ -2,38 +2,61 @@ package com.services.web_connections;
 
 import android.os.AsyncTask;
 
-import com.utils.EnvironmentVariables;
-import com.utils.exception.NoConnectionException;
-import com.utils.exception.ServerErrorException;
-
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.URL;
+
+import com.utils.exception.*;
+
+import java.net.HttpURLConnection;
+
+import com.utils.EnvironmentVariables;
+
 import java.util.concurrent.ExecutionException;
 
-
 /**
- * Created by Jorge on 24/9/17.
+ * Capa: Services
+ * Clase base para TODOS los servicios de la aplicación.
+ * TODAS las activitys extienden de esta clase y proporciona metodos basicos para todas
+ * como conectarse o los fetch.
  */
 
 public class SimpleWebConnectionService {
+
+    /**
+     * Partes de la URL de las consultas.
+     */
     protected String
             ip,
             port,
             path,
             resp = null;
 
+    /**
+     * Coneccion.
+     */
     protected HttpURLConnection con = null;
+
+    /**
+     * URL.
+     */
     protected URL url = null;
 
-
+    /**
+     * Constructor que solicita ip y puerto para en caso de que se quiera conectar a otro lugar.
+     *
+     * @param ip   del servidor donde se hacen las peticiones.
+     * @param port del servidor donde se hacen las peticiones.
+     */
     public SimpleWebConnectionService(String ip, String port) {
         this.ip = ip;
         this.port = port;
         path = "http://" + ip + ":" + port + "/" + EnvironmentVariables.STARTPATH;
-
     }
 
+    /**
+     * Constructor por defecto. Carga el IP y el Puerto de la configuracion por defecto de las
+     * variables de entorno.
+     */
     public SimpleWebConnectionService() {
         this.ip = EnvironmentVariables.IP;
         port = EnvironmentVariables.PORT;
@@ -41,12 +64,12 @@ public class SimpleWebConnectionService {
     }
 
     /**
-     * este metodo devuelve la informacion de la consulta a la URL pasada por parametro
+     * Devuelve la informacion de la consulta a la URL pasada por parametro.
      *
-     * @param url la URL a consultar
-     * @return la respuesta de la consulta
-     * @throws ServerErrorException
-     * @throws NoConnectionException
+     * @param url a consultar
+     * @return Respuesta de la consulta
+     * @throws ServerErrorException  si hay error en el servidor.
+     * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public String connect(String url) throws ServerErrorException, NoConnectionException {
         fetchData f = new fetchData();
@@ -70,6 +93,12 @@ public class SimpleWebConnectionService {
         }
     }
 
+    /**
+     * Capa: Interna
+     * Clase que sealiza Asyncronicamente la peticion al servidor.
+     *
+     * @extends AsyncTask<String, Void, String> ya que es una tarea asincrona.
+     */
     protected class fetchData extends AsyncTask<String, Void, String> {
 
         @Override
@@ -79,7 +108,7 @@ public class SimpleWebConnectionService {
                 return ret;
             } catch (IOException e) {
                 e.printStackTrace();
-                return "-1";
+                return EnvironmentVariables.PETITION_ERROR;
             }
 
         }
@@ -102,7 +131,6 @@ public class SimpleWebConnectionService {
             }
         }
     }
-
 
 }
 

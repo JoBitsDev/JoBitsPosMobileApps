@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.widget.Toast;
 
+/**
+ * NO SE USA
+ */
 public class NoExistingException extends Exception {
     private Context context;
 
@@ -13,12 +16,12 @@ public class NoExistingException extends Exception {
         this.context = context;
     }
 
-    public void showMessageInToast(){
-        Toast.makeText(context,getMessage(),Toast.LENGTH_LONG);
+    public void showMessageInToast() {
+        Toast.makeText(context, getMessage(), Toast.LENGTH_LONG).show();
 
     }
 
-    public void showMessageInAlert(){
+    public void showMessageInAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(getMessage());
         builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {

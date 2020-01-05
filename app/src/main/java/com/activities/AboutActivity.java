@@ -14,12 +14,12 @@ import android.view.MenuItem;
 public class AboutActivity extends BaseActivity {
 
     @Override
-    void initVarialbes() {
+    protected void initVarialbes() {
 
     }
 
     @Override
-    void addListeners() {
+    protected void addListeners() {
 
     }
 

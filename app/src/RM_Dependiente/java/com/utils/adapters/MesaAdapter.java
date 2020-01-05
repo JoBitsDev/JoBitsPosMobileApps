@@ -2,19 +2,14 @@ package com.utils.adapters;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+import android.view.*;
+import android.widget.*;
 
 import com.activities.R;
 import com.services.models.MesaModel;
 import com.utils.EnvironmentVariables;
 
-import java.util.List;
-
-
+import java.util.*;
 
 
 /**
@@ -31,82 +26,93 @@ public class MesaAdapter extends ArrayAdapter<MesaModel> {
         super(context, textViewResourceId, objects);
         this.context = context;
         this.objects = objects;
+        Collections.sort(objects);
         this.usuario = usuario;
+    }
 
+    public MesaModel getMesa(int pos) {
+        return objects.get(pos);
     }
 
 
-
-    public View getView(int position, View convertView, ViewGroup parent){
-
+    public View getView(int position, View convertView, ViewGroup parent) {
         View item = convertView;
         ViewHolder holder;
-        if(item == null)
-        {
+        if (item == null) {
             LayoutInflater inflater = context.getLayoutInflater();
             item = inflater.inflate(R.layout.list_row, null);
 
             holder = new ViewHolder();
-            holder.codMesa = (TextView)item.findViewById(R.id.boxTitulo);
-            holder.estadoMesa = (TextView)item.findViewById(R.id.boxSubtitulo);
+            holder.codMesa = (TextView) item.findViewById(R.id.boxTitulo);
+            holder.estadoMesa = (TextView) item.findViewById(R.id.boxSubtitulo);
             item.setTag(holder);
-
-
-
-
-
-
-
+        } else {
+            holder = (ViewHolder) item.getTag();
         }
-
-        else {
-            holder = (ViewHolder)item.getTag();
-        }
-
-
 
         String est = objects.get(position).getEstado();
         int c;
-        if(est.compareToIgnoreCase(EnvironmentVariables.ESTADO_MESA_VACIA) == 0){
+        if (est.compareToIgnoreCase(EnvironmentVariables.ESTADO_MESA_VACIA) == 0) {
             c = Color.GREEN;
-
-        }
-        else{
-
-            if(est.equals(EnvironmentVariables.ESTADO_MESA_ESPERANDO_CONFIRMACION)){
+        } else {
+            if (est.equals(EnvironmentVariables.ESTADO_MESA_ESPERANDO_CONFIRMACION)) {
                 c = Color.BLUE;
-
+            } else {
+                boolean mine = est.split(" ")[1].equals(usuario);
+                if (mine) {
+                    c = Color.RED;
+                } else {
+                    c = Color.YELLOW;
+                }
             }
-            else{
-
-            boolean mine = est.split(" ")[1].equals(usuario);
-
-
-            if(mine){
-                c = Color.RED;
-            }
-            else{
-                c = Color.YELLOW;
-            }
-            }
-
         }
         holder.estadoMesa.setTextColor(c);
         holder.codMesa.setTextColor(c);
         holder.codMesa.setText(objects.get(position).getCodMesa());
         holder.estadoMesa.setText(objects.get(position).getEstado());
 
+        return (item);
+    }
 
+    public MesaAdapter orderBy(String orden) {
+        if (orden.matches(String.valueOf(R.string.orden))) {
+            orderByOrden();
+        } else if (orden.matches(String.valueOf(R.string.mesa))) {
+            orderByMesas();
+        }
+        return this;
+    }
 
-        return(item);
+    private void orderByMesas() {
+        Collections.sort(objects);
+    }
 
-
-}
-
+    private void orderByOrden() {
+        Collections.sort(objects, new Comparator<MesaModel>() {
+            @Override
+            public int compare(MesaModel first, MesaModel second) {
+                //los primero if son para verificar si las mesas tienen orden
+                if (first.getEstado().compareToIgnoreCase(EnvironmentVariables.ESTADO_MESA_VACIA) == 0) {
+                    return 1;//si esta no tiene orden va a ser > que la otra, PAL FINAL
+                } else if (second.getEstado().compareToIgnoreCase(EnvironmentVariables.ESTADO_MESA_VACIA) == 0) {
+                    return -1;//si esta no tiene orden va a ser < que la otra,
+                } else if (first.getEstado().equals(EnvironmentVariables.ESTADO_MESA_ESPERANDO_CONFIRMACION)) {
+                    return 1;//si esta no tiene orden va a ser < que la otra
+                } else if (second.getEstado().equals(EnvironmentVariables.ESTADO_MESA_ESPERANDO_CONFIRMACION)) {
+                    return -1;//si esta no tiene orden va a ser > que la otra
+                } else {//si las dos tienen orden ver las ordenes
+                    int orden1 = Integer.parseInt(first.getEstado().split(" ")[0].split("-")[1]);
+                    int orden2 = Integer.parseInt(second.getEstado().split(" ")[0].split("-")[1]);
+                    return orden1 - orden2;
+                }
+            }
+        });
+    }
 
     static class ViewHolder {
         TextView codMesa;
-        TextView estadoMesa; }
-
+        TextView estadoMesa;
     }
+
+}
 

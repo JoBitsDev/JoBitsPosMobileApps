@@ -2,7 +2,9 @@ package com.activities;
 
 import android.app.*;
 import android.content.*;
+
 import com.utils.exception.*;
+
 import android.os.Bundle;
 import android.view.View;
 
@@ -78,6 +80,7 @@ public abstract class BaseActivity extends Activity {
 
     /**
      * Muestra un PopUp basico con un mensaje.
+     *
      * @param message a mostrar en el PopUp.
      */
     public void showMessage(String message) {
@@ -86,6 +89,7 @@ public abstract class BaseActivity extends Activity {
 
     /**
      * Devuelve el bundle.
+     *
      * @return el bundle.
      */
     public Bundle getBundle() {
@@ -94,20 +98,14 @@ public abstract class BaseActivity extends Activity {
 
     /**
      * Sobreescribe el bundle actual por el especifico
+     *
      * @param bundle a sobreescribir
      */
     public void setBundle(Bundle bundle) {
         this.bundle = bundle;
     }
 
-    /**
-     * Notifica un error en la aplicacion. En dependencia del tipo de error, se procesa y ejecuta
-     * un comportamiento especifico.
-     * Este es el metodo para el control de excepciones.
-     * @param e Excepcion recivida a manejar.
-     */
-    public void notificarError(Exception e) {
-        //Mensaje a enviar cuando no hay coneccion con el servidor
+    /*public void notificarError(Exception e) { Noficacion de error vieja, entes de procesarlo _todo con el ExceptionHandler.
         String noConnectionError = findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.noConnectionError).toString();
         //Mensaje a enviar cuando hay un error en el servidor
         String serverError = findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.serverError).toString();
@@ -135,11 +133,8 @@ public abstract class BaseActivity extends Activity {
                 navigateUpTo(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
-
-        //muestra  el popup
         dialog.show();
-
-    }
+    }*/
 
 }
 

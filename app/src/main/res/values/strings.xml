@@ -3,11 +3,11 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_login">Auntenticar</string>
+    <string name="title_activity_login">Autenticar</string>
 
     <string name="title_activity_about">Sobre</string>
 
-    <string name="user">User_Name</string>
+    <string name="user">Nombre de usuario</string>
     <string name="errorAlAutenticar">Nombre de usuario o contraseña incorrecta</string>
     <string name="autenticacionCorrecta">Autenticación correcta</string>
 
@@ -17,11 +17,11 @@
 
     <string name="cancelar">Cancelar</string>
     <string name="noConnectionError">No hay conexión con el servidor.
-        \nVerifique que esta conectado a la wi-fi del restaurante
-        \ny que la PC servidor se encuentra encendida y con el servidor funcionando</string>
+        \nVerifique que esta conectado a la wi-fi
+        \ny que la PC servidor se encuentra encendida y con el servicio funcionando</string>
     <string name="serverError">A ocurrido un error procesando la petición al servidor.\n
-        Inténtelo de nuevo.</string>
+        Si el error persiste reinicie el servidor.</string>
     <string name="unespectedError">Uppppsssss algo no funciona :(\n
-        Inténtelo de nuevo más tarde.</string>
+        Si el error persiste contacte con soporte técnico.</string>
 
 </resources>
