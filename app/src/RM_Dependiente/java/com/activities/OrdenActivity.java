@@ -1,50 +1,61 @@
 package com.activities;
 
-import java.util.*;
-
-import android.view.*;
-import android.text.*;
-import android.widget.*;
-import android.os.Bundle;
-
-import com.services.models.*;
-import com.controllers.OrdenController;
-
 import android.app.AlertDialog;
-
-import com.utils.EnvironmentVariables;
-
 import android.content.DialogInterface;
 import android.content.res.Configuration;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TabHost;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.controllers.OrdenController;
+import com.services.models.ProductoVentaModel;
+import com.services.models.ProductoVentaOrdenModel;
+import com.services.models.SeccionModel;
+import com.utils.EnvironmentVariables;
 import com.utils.adapters.MenuAdapterThis;
-import com.utils.adapters.MenuPrincipalAdapter;
-import com.utils.exception.ExceptionHandler;
 import com.utils.adapters.ProductoVentaOrdenAdapter;
+import com.utils.adapters.SeccionAdapter;
+import com.utils.exception.ExceptionHandler;
+import com.utils.exception.ServerErrorException;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class OrdenActivity extends BaseActivity {
 
     private OrdenController controller;
-
     private Button cerrarOrdenButton, despacharACocinaButton;
     private TextView mesaNoLabel, ordenNoLabel, dependienteLabel, totalPrincipalLabel, totalSecundariaLabel;
     private EditText searchText;
-
     private ListView menuProductosListView, menuSeccionListView;
-
     private ListView listaOrden;
     private CheckBox deLaCasaCheckBox;
-
     private List<SeccionModel> secciones;
     private List<ProductoVentaModel> productos;
     private List<ProductoVentaOrdenModel> productosVentaOrden;
-    private List<ProductoVentaModel> productosSelected;
-
     private ProductoVentaModel lastClickedMenu = null;
     private ProductoVentaOrdenModel lastClickedOrden = null;
-
-    private MenuPrincipalAdapter menuPrincipalAdapter;
+    private SeccionAdapter seccionAdapter;
     private MenuAdapterThis menuAdapter;
+    private SeccionModel seccionSelected;
+    private ProductoVentaOrdenAdapter productoVentaOrdenAdapter;
+    private TabHost host;
+    private float lastX;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +102,8 @@ public class OrdenActivity extends BaseActivity {
             dependienteLabel.setText(bundleExtra.getString(String.valueOf(R.string.user)));//set el label con el dependiente
             ordenNoLabel.setText(bundleExtra.getString(String.valueOf(R.string.cod_Orden)));//set el label de la orden
             productosVentaOrden = new ArrayList<ProductoVentaOrdenModel>();
-            productosSelected = new ArrayList<ProductoVentaModel>();
+            menuAdapter = new MenuAdapterThis(this, R.layout.list_menu, new ArrayList<ProductoVentaModel>());
+            productoVentaOrdenAdapter = new ProductoVentaOrdenAdapter(this, R.id.listaOrden, productosVentaOrden);
 
             initMenu(bundleExtra.getString(String.valueOf(R.string.mesa)));
             initTab();
@@ -124,10 +136,9 @@ public class OrdenActivity extends BaseActivity {
             menuSeccionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    onMenuSeccionListViewItemClick(position);
+                    onSeccionClick(position);
                 }
             });
-
 
             menuProductosListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
@@ -139,10 +150,33 @@ public class OrdenActivity extends BaseActivity {
             menuProductosListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    onMenuProductosListViewClick(position);
+                    onMenuListViewClick(position);
                 }
             });
 
+            listaOrden.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return onTabChangeTouchEvent(event);
+                }
+            });
+
+            menuProductosListView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return onTabChangeTouchEvent(event);
+                }
+            });
+
+            searchText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    searchText.setText("");
+                    seccionAdapter.getFilter().filter("");
+                    menuAdapter = new MenuAdapterThis(getApplicationContext(), R.layout.list_menu, new ArrayList<ProductoVentaModel>());
+                    menuProductosListView.setAdapter(menuAdapter);
+                }
+            });
 
             searchText.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -153,8 +187,11 @@ public class OrdenActivity extends BaseActivity {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     if (!s.toString().isEmpty()) {
-                        menuAdapter.getFilter().filter(s.toString());
+                        seccionAdapter.getFilter().filter(s.toString());
+                    } else {
+                        seccionAdapter.getFilter().filter("");
                     }
+                    onSeccionClick(seccionAdapter.getPosition(seccionSelected));
                 }
 
                 @Override
@@ -170,28 +207,77 @@ public class OrdenActivity extends BaseActivity {
                 }
             });
 
+
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
     }
+
+    private boolean onTabChangeTouchEvent(MotionEvent event) {
+        float currentX = 0;
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                lastX = event.getX();
+                break;
+            case MotionEvent.ACTION_UP:
+                currentX = event.getX();
+                boolean dirRight = Math.abs( lastX - currentX) > 200;
+                switchTab(dirRight);
+                break;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return onTabChangeTouchEvent(event);
+    }
+
+    private boolean switchTab(boolean change) {
+        if (change) {
+            if (host.getCurrentTab() == 1) {
+                host.setCurrentTab(0);
+            } else {
+                host.setCurrentTab(1);
+            }
+        }
+        return false;
+    }
+
 
     private void onDeLaCasaCheckBoxClick() {
         try {
             controller.setDeLaCasa(deLaCasaCheckBox.isChecked());
+        } catch (ServerErrorException e) {
+            e.printStackTrace();
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
     }
 
-    private void onMenuSeccionListViewItemClick(int position) {
-        productosSelected = secciones.get(position).getProductos();
-        if (!productosSelected.isEmpty()) {
-            menuAdapter = new MenuAdapterThis(getApplicationContext(), android.R.layout.simple_list_item_1, productosSelected);
-            menuProductosListView.setAdapter(menuAdapter);
+
+    private void onSeccionClick(int position) {
+        if (position >= 0) {
+            seccionSelected = seccionAdapter.getItem(position);
+            List<ProductoVentaModel> productosSelected;
+            productosSelected = seccionSelected.getProductos();
+            if (!productosSelected.isEmpty()) {
+                menuAdapter = new MenuAdapterThis(this, R.layout.list_menu, productosSelected);
+                menuProductosListView.setAdapter(menuAdapter);
+            }
         }
     }
 
-    private boolean onMenuProductosListViewLongClick(final View v, int position) {
+    private boolean onProductoVentaOrdenAdapterLongClick(final View v) {
+        try {
+            return controller.setDeLaCasa(deLaCasaCheckBox.isChecked());
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+            return false;
+        }
+    }
+
+    private boolean onMenuProductosListViewLongClick(final View v, final int position) {
         try {
             lastClickedMenu = menuAdapter.getItem(position);
             final EditText input = new EditText(v.getContext());
@@ -207,7 +293,7 @@ public class OrdenActivity extends BaseActivity {
                     }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    addProductoVarios(Float.parseFloat(input.getText().toString()));
+                    addProductoVarios(Float.parseFloat(input.getText().toString()), lastClickedMenu);
                 }
             }).create().show();
             return true;
@@ -217,11 +303,36 @@ public class OrdenActivity extends BaseActivity {
         }
     }
 
-    private boolean onMenuProductosListViewClick(int position) {
+    private boolean onMenuOrdenListViewLongClick(final View v, final int position) {
+        try {
+            lastClickedMenu = productoVentaOrdenAdapter.getItem(position).getProductoVentaModel();
+            final EditText input = new EditText(v.getContext());
+            input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            input.setRawInputType(Configuration.KEYBOARD_12KEY);
+            new AlertDialog.Builder(v.getContext()).
+                    setView(input).
+                    setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    addProductoVarios(Float.parseFloat(input.getText().toString()), lastClickedMenu);
+                }
+            }).create().show();
+            return true;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+            return false;
+        }
+    }
+
+    private boolean onMenuListViewClick(int position) {
         try {
             lastClickedMenu = menuAdapter.getItem(position);
             addProductoUnoSolo();
-            searchText.setText("");
             return true;
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
@@ -232,10 +343,15 @@ public class OrdenActivity extends BaseActivity {
     @Override
     protected void setAdapters() {
         try {
-            menuPrincipalAdapter = new MenuPrincipalAdapter(this, android.R.layout.simple_list_item_1, secciones);
-            menuSeccionListView.setAdapter(menuPrincipalAdapter);
+            seccionAdapter = new SeccionAdapter(this, android.R.layout.simple_list_item_1, secciones);
+            menuSeccionListView.setAdapter(seccionAdapter);
 
-            listaOrden.setAdapter(new ProductoVentaOrdenAdapter(this, R.id.listaOrden, productosVentaOrden));
+            listaOrden.setAdapter(new ProductoVentaOrdenAdapter(this, R.id.listaOrden, productosVentaOrden, new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return onMenuOrdenListViewLongClick(v, (Integer) v.getTag());
+                }
+            }));
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
@@ -273,11 +389,12 @@ public class OrdenActivity extends BaseActivity {
 
     private void initTab() {
         try {
-            TabHost host = (TabHost) findViewById(R.id.tabHost);
+            host = (TabHost) findViewById(R.id.tabHost);
             if (host != null) {//TODO: por que este if??
                 host.setup();
 
                 TabHost.TabSpec spec = host.newTabSpec("Pedido");
+
 
                 //Tab 2
                 spec.setContent(R.id.ordenModel);
@@ -613,11 +730,12 @@ public class OrdenActivity extends BaseActivity {
         }
     }
 
-    public void addProductoVarios(float cantidad) {
+    public void addProductoVarios(float cantidad, ProductoVentaModel productoVentaModel) {
+        lastClickedMenu = productoVentaModel;
         try {
             if (lastClickedMenu != null) {
                 if (controller.addProducto(lastClickedMenu, cantidad)) {
-                    controller.addProducto(lastClickedMenu, cantidad);
+                    controller.increasePoducto(lastClickedMenu, (ProductoVentaOrdenAdapter) listaOrden.getAdapter(), cantidad);
                     updateCosto();
                     Toast.makeText(this, lastClickedMenu.getNombre() + " agregado al pedido.", Toast.LENGTH_SHORT).show();
                 } else {
