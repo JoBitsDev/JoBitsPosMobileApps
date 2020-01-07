@@ -296,7 +296,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                 ExceptionHandler.handleException(e, act);
                             }
 
-                            updateListView();
+                            updateListView(v);
 
                             dialog.dismiss();
                         }
@@ -310,7 +310,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         }
     }
 
-    private void updateListView() {
+    private void updateListView(View v) {
         final BaseActivity act = this;
         listView.post(new Runnable() {
             @Override
@@ -320,7 +320,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
                     View v = listView.getChildAt(0);
                     int top = v.getTop();
 
-                    listView.setAdapter(controller.getAdapter(act, R.id.listaInsumos));
+                    onSpinnerFiltrarItemSelected(v);
+                    //listView.setAdapter(controller.getAdapter(act, R.id.listaInsumos));
 
                     listView.setSelectionFromTop(index, top);
                 } catch (Exception e) {
@@ -397,7 +398,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                                     ExceptionHandler.handleException(e, act);
                                                 }
 
-                                                updateListView();
+                                                updateListView(v);
 
                                                 dialog.dismiss();
                                             }
@@ -477,7 +478,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                             ExceptionHandler.handleException(e, act);
                                         }
 
-                                        updateListView();
+                                        updateListView(v);
 
                                         dialog.dismiss();
                                     }
