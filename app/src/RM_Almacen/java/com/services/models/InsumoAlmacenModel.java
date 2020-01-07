@@ -7,14 +7,12 @@ public class InsumoAlmacenModel implements Comparable<InsumoAlmacenModel>{
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     private Float cantidad;
     private Float valorMonetario;
-    private AlmacenModel almacenModel;
     private InsumoModel insumoModel;
 
     public InsumoAlmacenModel(InsumoAlmacenPKModel insumoAlmacenPKModel, Float cantidad, Float valorMonetario, AlmacenModel almacenModel, InsumoModel insumoModel) {
         this.insumoAlmacenPKModel = insumoAlmacenPKModel;
         this.cantidad = cantidad;
         this.valorMonetario = valorMonetario;
-        this.almacenModel = almacenModel;
         this.insumoModel = insumoModel;
     }
 
@@ -57,12 +55,8 @@ public class InsumoAlmacenModel implements Comparable<InsumoAlmacenModel>{
         this.valorMonetario = valorMonetario;
     }
 
-    public AlmacenModel getAlmacenModel() {
-        return almacenModel;
-    }
-
-    public void setAlmacenModel(AlmacenModel almacenModel) {
-        this.almacenModel = almacenModel;
+    public String getCodAlmacen() {
+        return insumoAlmacenPKModel.getAlmacencodAlmacen();
     }
 
     public InsumoModel getInsumoModel() {
@@ -95,7 +89,7 @@ public class InsumoAlmacenModel implements Comparable<InsumoAlmacenModel>{
 
     @Override
     public String toString() {
-        return "(" + almacenModel +") " + insumoModel;
+        return "(" + getCodAlmacen() +") " + insumoModel;
     }
 
     /**

@@ -147,7 +147,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             if (spinnerFiltrar.getSelectedItemPosition() == 0) {
                 listView.setAdapter(controller.getAdapter(this, R.id.listaInsumos));
             } else {
-                listView.setAdapter(new AlmacenInsumoAdapter(view.getContext(), R.id.listaInsumos, controller.filterBy(spinnerFiltrar.getSelectedItem().toString())));
+                listView.setAdapter(controller.getAdapter(this, R.id.listaInsumos, spinnerFiltrar.getSelectedItem().toString()));
             }
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
@@ -224,12 +224,12 @@ public class PantallaPrincipalActivity extends BaseActivity {
      */
     private boolean imprimirEstadoAlmacen() {
         try {
-            boolean resp  = controller.imprimirEstadoActualAlmacen();
-                if (resp) {
-                    showMessage("Imprimiendo...");
-                } else {
-                    ExceptionHandler.handleException(new Exception("Error imprimiendo"), this);
-                }
+            boolean resp = controller.imprimirEstadoActualAlmacen();
+            if (resp) {
+                showMessage("Imprimiendo...");
+            } else {
+                ExceptionHandler.handleException(new Exception("Error imprimiendo"), this);
+            }
             return resp;
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
@@ -244,7 +244,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
      */
     public void onEntradaClick(final View v) {
         try {
-            final InsumoAlmacenModel insumoModel = ((InsumoAlmacenModel) listView.getAdapter().getItem((Integer) v.getTag()));
+            final int pos = (Integer) v.getTag();
+            final InsumoAlmacenModel insumoModel = ((InsumoAlmacenModel) listView.getAdapter().getItem(pos));
 
             final EditText input = new EditText(v.getContext());
             input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
@@ -295,23 +296,39 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                 ExceptionHandler.handleException(e, act);
                             }
 
-                            listView.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    onSpinnerFiltrarItemSelected(listView);
-                                }
-                            });
+                            updateListView(v);
+
                             dialog.dismiss();
                         }
                     }).create().show();
                     dialog.dismiss();
                 }
-            }).
-                    create().
-                    show();
+            }).create().show();
+
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
+    }
+
+    private void updateListView(View v) {
+        final BaseActivity act = this;
+        listView.post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    int index = listView.getFirstVisiblePosition();
+                    View v = listView.getChildAt(0);
+                    int top = v.getTop();
+
+                    onSpinnerFiltrarItemSelected(v);
+                    //listView.setAdapter(controller.getAdapter(act, R.id.listaInsumos));
+
+                    listView.setSelectionFromTop(index, top);
+                } catch (Exception e) {
+                    ExceptionHandler.handleException(e, act);
+                }
+            }
+        });
     }
 
     /**
@@ -338,7 +355,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
      */
     private void onSalidaClick(final View v) {
         try {
-            final InsumoAlmacenModel i = ((InsumoAlmacenModel) listView.getAdapter().getItem((Integer) v.getTag()));
+            int pos = (Integer) v.getTag();
+            final InsumoAlmacenModel i = ((InsumoAlmacenModel) listView.getAdapter().getItem(pos));
             final String[] ipvs = getIPVData(i.getInsumoModel().getCodInsumo());
 
             final EditText input = new EditText(v.getContext());
@@ -379,17 +397,14 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                                 } catch (Exception e) {
                                                     ExceptionHandler.handleException(e, act);
                                                 }
-                                                listView.post(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        onSpinnerFiltrarItemSelected(listView);
-                                                    }
-                                                });
+
+                                                updateListView(v);
+
                                                 dialog.dismiss();
                                             }
                                         }
-                                    }).setTitle("Destino").
-                                    setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                    }).setTitle("Destino")
+                                    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             dialog.dismiss();
@@ -399,6 +414,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                             dialog.dismiss();
                         }
                     }).create().show();
+
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
@@ -411,7 +427,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
      */
     private void onRebajaClick(final View v) {
         try {
-            final InsumoAlmacenModel insumoModel = ((InsumoAlmacenModel) listView.getAdapter().getItem((Integer) v.getTag()));
+            int pos = (Integer) v.getTag();
+            final InsumoAlmacenModel insumoModel = ((InsumoAlmacenModel) listView.getAdapter().getItem(pos));
 
             final EditText input = new EditText(v.getContext());
             input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
@@ -460,27 +477,19 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                         } catch (Exception e) {
                                             ExceptionHandler.handleException(e, act);
                                         }
-                                        listView.post(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                try {
-                                                    listView.setAdapter(controller.getAdapter(act, R.id.listaInsumos));
-                                                } catch (Exception e) {
-                                                    ExceptionHandler.handleException(e, act);
-                                                }
-                                            }
-                                        });
+
+                                        updateListView(v);
+
                                         dialog.dismiss();
                                     }
                                 }
 
-                            }).
-                                    create().
-                                    show();
+                            }).create().show();
 
                             dialog.dismiss();
                         }
                     }).create().show();
+
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }

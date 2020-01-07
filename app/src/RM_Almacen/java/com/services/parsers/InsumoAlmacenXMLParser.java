@@ -20,7 +20,7 @@ public class InsumoAlmacenXMLParser extends AbstractXmlParser<InsumoAlmacenModel
             VALOR_MON = "valorMonetario",
             ALMACEN = "almacen",
             INSUMO = "insumo",
-            INSUMO_ALMACEN_PK = "insumoAlmacenPKModel";
+            INSUMO_ALMACEN_PK = "insumoAlmacenPK";
 
     public InsumoAlmacenXMLParser() {
         super("insumoAlmacen", "insumoAlmacens");

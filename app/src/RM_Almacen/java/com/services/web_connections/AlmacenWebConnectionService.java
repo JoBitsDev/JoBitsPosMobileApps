@@ -79,7 +79,7 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
     public String darEntrada(InsumoAlmacenModel i, float cantidad, float monto) throws ServerErrorException, NoConnectionException {
         return connect(path
                 + ENTRADA
-                + i.getInsumoAlmacenPKModel().getAlmacencodAlmacen()
+                + i.getCodAlmacen()
                 + "_" + i.getInsumoAlmacenPKModel().getInsumocodInsumo() + "_"
                 + cantidad + "_" + monto);
     }
@@ -96,7 +96,7 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
     public String darSalida(InsumoAlmacenModel i, float cantidad, String codPtoElaboracion) throws ServerErrorException, NoConnectionException {
         return connect(path
                 + SALIDA
-                + i.getInsumoAlmacenPKModel().getAlmacencodAlmacen()
+                + i.getCodAlmacen()
                 + "_" + i.getInsumoAlmacenPKModel().getInsumocodInsumo()
                 + "_" + cantidad
                 + "_" + codPtoElaboracion);
