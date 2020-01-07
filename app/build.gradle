@@ -29,6 +29,11 @@ android {
             versionCode 6
             versionName '1.0.3'
         }
+        JoBits_POS_Manager {
+            applicationId 'jobits.pos.manager'
+            versionCode 1
+            versionName '0.1'
+        }
     }
 }
 
