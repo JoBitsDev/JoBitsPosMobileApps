@@ -214,18 +214,23 @@ public class OrdenActivity extends BaseActivity {
     }
 
     private boolean onTabChangeTouchEvent(MotionEvent event) {
-        float currentX = 0;
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                lastX = event.getX();
-                break;
-            case MotionEvent.ACTION_UP:
-                currentX = event.getX();
-                boolean dirRight = Math.abs( lastX - currentX) > 200;
-                switchTab(dirRight);
-                break;
+        try {
+            float currentX = 0;
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    lastX = event.getX();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    currentX = event.getX();
+                    boolean dirRight = Math.abs(lastX - currentX) > 200;
+                    switchTab(dirRight);
+                    break;
+            }
+            return true;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+            return false;
         }
-        return false;
     }
 
     @Override
@@ -234,22 +239,25 @@ public class OrdenActivity extends BaseActivity {
     }
 
     private boolean switchTab(boolean change) {
-        if (change) {
-            if (host.getCurrentTab() == 1) {
-                host.setCurrentTab(0);
-            } else {
-                host.setCurrentTab(1);
+        try {
+            if (change) {
+                if (host.getCurrentTab() == 1) {
+                    host.setCurrentTab(0);
+                } else {
+                    host.setCurrentTab(1);
+                }
             }
+            return true;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+            return false;
         }
-        return false;
     }
 
 
     private void onDeLaCasaCheckBoxClick() {
         try {
             controller.setDeLaCasa(deLaCasaCheckBox.isChecked());
-        } catch (ServerErrorException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
@@ -257,23 +265,17 @@ public class OrdenActivity extends BaseActivity {
 
 
     private void onSeccionClick(int position) {
-        if (position >= 0) {
-            seccionSelected = seccionAdapter.getItem(position);
-            List<ProductoVentaModel> productosSelected;
-            productosSelected = seccionSelected.getProductos();
-            if (!productosSelected.isEmpty()) {
-                menuAdapter = new MenuAdapterThis(this, R.layout.list_menu, productosSelected);
-                menuProductosListView.setAdapter(menuAdapter);
-            }
-        }
-    }
-
-    private boolean onProductoVentaOrdenAdapterLongClick(final View v) {
         try {
-            return controller.setDeLaCasa(deLaCasaCheckBox.isChecked());
+            if (position >= 0) {
+                seccionSelected = seccionAdapter.getItem(position);
+                List<ProductoVentaModel> productosSelected = seccionSelected.getProductos();
+                if (!productosSelected.isEmpty()) {
+                    menuAdapter = new MenuAdapterThis(this, R.layout.list_menu, productosSelected);
+                    menuProductosListView.setAdapter(menuAdapter);
+                }
+            }
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
-            return false;
         }
     }
 
@@ -453,13 +455,7 @@ public class OrdenActivity extends BaseActivity {
                     it.remove();
                 }
             }
-        /*for (int i = 0; i < secciones.size(); ) {
-            if (secciones.getProductoVentaOrden(i).getProductos().isEmpty()) {
-                secciones.remove(i);
-            } else {
-                i++;
-            }
-        }*/
+
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
