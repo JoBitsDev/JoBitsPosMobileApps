@@ -9,6 +9,8 @@ import android.graphics.Color;
 import com.controllers.MainController;
 import com.services.notifications.ReceiverNotificationService;
 import com.utils.exception.ExceptionHandler;
+import com.utils.loading.LoadingHandler;
+import com.utils.loading.LoadingProcess;
 
 /**
  * Capa: Activities
@@ -136,7 +138,15 @@ public class MainActivity extends BaseActivity {
      */
     private boolean updateConnectionText() {
         try {
-            if (controller.checkConnection()) {
+
+            boolean resp = new LoadingHandler<Boolean>(this, new LoadingProcess<Boolean>() {
+                @Override
+                public Boolean process() {
+                    return controller.checkConnection();
+                }
+            }).get();
+
+            if (resp) {
                 connectionStatusText.setText(R.string.conexion_succesfull);
                 connectionStatusText.setTextColor(Color.GREEN);
                 return true;
