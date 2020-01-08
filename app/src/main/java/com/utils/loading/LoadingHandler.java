@@ -90,8 +90,7 @@ public class LoadingHandler<T> extends AsyncTask<Void, Void, T> {
 
     /**
      * Cuando termina esconde el Cargando.
-     *
-     * @param v Parametro requerido en el extends.
+     * @param t Lo que devuelve el #doInBackground
      */
     @Override
     protected void onPostExecute(T t) {
