@@ -222,7 +222,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     public void configurarTabla() {
         try {
             final BaseActivity act = this;
-            showProgressDialog();
+            //showProgressDialog();
             listaMesas.post(new Runnable() {
                 @Override
                 public void run() {
@@ -230,7 +230,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                     String orden = switchOrden.isChecked() ? String.valueOf(R.string.orden) : String.valueOf(R.string.mesa);
                     adapter.orderBy(orden);
                     listaMesas.setAdapter(adapter);
-                    hideProgressDialog();
+                    //hideProgressDialog();
                 }
             });
         } catch (Exception e) {
