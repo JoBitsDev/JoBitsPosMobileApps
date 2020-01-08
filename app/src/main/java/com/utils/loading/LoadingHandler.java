@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import com.activities.BaseActivity;
 import com.utils.exception.ExceptionHandler;
 
-public class LoadingHandler extends AsyncTask<Void, Void, Void> {
+public class LoadingHandler<T> extends AsyncTask<Void, Void, T> {
 
     /**
      * Progress Dialog para el cargando.
@@ -79,13 +79,13 @@ public class LoadingHandler extends AsyncTask<Void, Void, Void> {
      * @return Void Parametro requerido en el extends.
      */
     @Override
-    protected Void doInBackground(Void... voids) {
+    protected T doInBackground(Void... voids) {
         try {
-            process.process();
+            return (T) process.process();
         } catch (Exception e) {
             this.exc = e;
+            return null;
         }
-        return null;
     }
 
     /**
@@ -94,8 +94,10 @@ public class LoadingHandler extends AsyncTask<Void, Void, Void> {
      * @param v Parametro requerido en el extends.
      */
     @Override
-    protected void onPostExecute(Void v) {
+    protected void onPostExecute(T t) {
         this.hideProgressDialog();
-        ExceptionHandler.handleException(exc,activity);
+        if (exc != null) {//si hubo excepcion la manejo
+            ExceptionHandler.handleException(exc, activity);
+        }
     }
 }
