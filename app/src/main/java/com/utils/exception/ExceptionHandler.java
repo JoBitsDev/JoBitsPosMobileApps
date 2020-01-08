@@ -54,9 +54,14 @@ public class ExceptionHandler {
             handleServerErrorException((ServerErrorException) e, activity);
         } else if (e instanceof NoExistingException) {
             handleNoExistingException((Exception) e, activity);
+        } else if (e instanceof DayClosedException) {//error de dia cerrado
+            handleDayClosedException((DayClosedException) e, activity);
         } else {//error inesperado
             handleUnknownException((Exception) e, activity);
         }
+    }
+
+
         /*Viejo, sin boton ni nada
         Dialog dialog = new AlertDialog.Builder(c).setMessage(message).create();
 
@@ -68,7 +73,6 @@ public class ExceptionHandler {
         });
 
         dialog.show();*/
-    }
 
     private static void handleNoExistingException(Exception e, BaseActivity activity) {
         final Context c = activity.getApplicationContext();
@@ -161,4 +165,29 @@ public class ExceptionHandler {
 
         //Toast.makeText(c, e.getCause().getMessage(), TOAST_DURATION).show();//un pequenno toast con mas detalles
     }
+
+    /**
+     * Excepcion para manejar cuando la venta esta cerrada solo en el favour del dependiente
+     * @param e el tipo de excepcion debe ser {@link DayClosedException }
+     * @param activity el activity desde donde se lanza la excepcion
+     */
+    private static void handleDayClosedException(DayClosedException e, BaseActivity activity) {
+
+        final Context c = activity.getApplicationContext();
+        final View v = activity.findViewById(android.R.id.content).getRootView();
+
+        //popup a mostrar
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setMessage(e.getMessage());
+        builder.setTitle(ExceptionHandler.POPUP_TITLE);
+
+        builder.setNeutralButton(ExceptionHandler.POPUP_BUTTON_TEXT, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {//comportamiento al clickear el boton
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
 }
