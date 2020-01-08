@@ -1,0 +1,101 @@
+package com.utils.loading;
+
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
+
+import com.activities.BaseActivity;
+import com.utils.exception.ExceptionHandler;
+
+public class LoadingHandler extends AsyncTask<Void, Void, Void> {
+
+    /**
+     * Progress Dialog para el cargando.
+     */
+    private ProgressDialog mProgressDialog = null;
+
+    /**
+     * Activity sobre el que se va a mostrar el dialog.
+     */
+    private BaseActivity activity;
+
+    /**
+     * Proceso que se va a ejecutar en background mientras sale el cargando.
+     */
+    private LoadingProcess process;
+
+    /**
+     * Excepcion que se puede lanzar en caso que algo salga mal en #doInBackground()
+     */
+    private Exception exc = null;
+
+    /**
+     * Crea el Hnadler, solo se encarga de ejecutar la secuencia.
+     *
+     * @param activity Activity sobre el que se va a mostrar el dialog.
+     * @param process  Proceso que se va a ejecutar en background mientras sale el cargando.
+     */
+    public LoadingHandler(BaseActivity activity, LoadingProcess process) {
+        this.activity = activity;
+        this.process = process;
+        this.execute();//start the secuence
+    }
+
+    /**
+     * Muestra el progress dialog activo, cargando indefinidamente.
+     * Termina cuando termina el proceso.
+     */
+    public void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(activity);
+            mProgressDialog.setMessage("Cargando ...");
+            mProgressDialog.setIndeterminate(true);
+        }
+
+        mProgressDialog.show();
+    }
+
+    /**
+     * Esconde el progress dialog.
+     */
+    public void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
+    }
+
+    /**
+     * Antes de ejecutar muestra el Cargando.
+     */
+    @Override
+    protected void onPreExecute() {
+        this.showProgressDialog();
+    }
+
+    /**
+     * Ejecuta la accion process del proceso en el background.
+     *
+     * @param voids Parametro requerido en el extends.
+     * @return Void Parametro requerido en el extends.
+     */
+    @Override
+    protected Void doInBackground(Void... voids) {
+        try {
+            process.process();
+        } catch (Exception e) {
+            this.exc = e;
+        }
+        return null;
+    }
+
+    /**
+     * Cuando termina esconde el Cargando.
+     *
+     * @param v Parametro requerido en el extends.
+     */
+    @Override
+    protected void onPostExecute(Void v) {
+        this.hideProgressDialog();
+        ExceptionHandler.handleException(exc,activity);
+    }
+}
