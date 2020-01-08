@@ -377,7 +377,7 @@ public class OrdenActivity extends BaseActivity {
             } else {
                 controller.starService(mesa, dependiente);
                 if (!controller.initOrden()) {
-                    throw new DayClosedException(String.valueOf(R.string.dayClosedError),this);
+                    throw new DayClosedException(getResources().getString(R.string.dayClosedError),this);
 
                 }
             }
