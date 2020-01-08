@@ -1,5 +1,6 @@
 package com.services.web_connections;
 
+import com.activities.R;
 import com.utils.EnvironmentVariables;
 import com.utils.exception.NoConnectionException;
 import com.utils.exception.ServerErrorException;
@@ -46,7 +47,21 @@ public class LoginWebConnectionServiceService extends SimpleWebConnectionService
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public boolean authenticate() throws ServerErrorException, NoConnectionException {
-        return connect(path + "com.restmanager.personal/l_" + user + "_" + pass).equals(EnvironmentVariables.PETITION_TRUE);
+        return connect(path + "com.restmanager.personal/l_" + user + "_" + pass + "_" + getAccessLevel()).equals(EnvironmentVariables.PETITION_TRUE);
     }
 
+    private int getAccessLevel() {
+        String name = String.valueOf(R.string.app_name);
+        if (name.equals("RM Cocina")) {
+            return 1;
+        } else if (name.equals("RM Dpte")) {
+            return 2;
+        } else if (name.equals("RM Almacen")) {
+            return 3;
+        } else if (name.equals("RM Estadisticas")) {
+            return 4;
+        } else {
+            return 0;
+        }
+    }
 }
