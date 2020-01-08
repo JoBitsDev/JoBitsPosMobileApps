@@ -30,6 +30,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     private Button pedidoDomicilioButton;
     private Button RButton;
     private String selectedArea = null;
+    private int selectedAreaWich = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,10 +207,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
             final String[] areas = controller.getAreas();
             new AlertDialog.Builder(this).
                     setTitle(R.string.seleccionararea).
-                    setSingleChoiceItems(areas, 1, new DialogInterface.OnClickListener() {
+                    setSingleChoiceItems(areas, selectedAreaWich, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            selectedArea = areas[which];
+                            selectedAreaWich = which;
+                            selectedArea = areas[selectedAreaWich];
                             dialog.dismiss();
                             configurarTabla();
                         }
@@ -222,7 +224,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
     public void configurarTabla() {
         try {
             final BaseActivity act = this;
-            showProgressDialog();
             listaMesas.post(new Runnable() {
                 @Override
                 public void run() {
@@ -230,7 +231,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
                     String orden = switchOrden.isChecked() ? String.valueOf(R.string.orden) : String.valueOf(R.string.mesa);
                     adapter.orderBy(orden);
                     listaMesas.setAdapter(adapter);
-                    hideProgressDialog();
                 }
             });
         } catch (Exception e) {

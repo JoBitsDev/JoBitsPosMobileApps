@@ -29,6 +29,7 @@ import com.utils.EnvironmentVariables;
 import com.utils.adapters.MenuAdapterThis;
 import com.utils.adapters.ProductoVentaOrdenAdapter;
 import com.utils.adapters.SeccionAdapter;
+import com.utils.exception.DayClosedException;
 import com.utils.exception.ExceptionHandler;
 import com.utils.exception.ServerErrorException;
 
@@ -376,8 +377,7 @@ public class OrdenActivity extends BaseActivity {
             } else {
                 controller.starService(mesa, dependiente);
                 if (!controller.initOrden()) {
-                    throw new NullPointerException("La cajera debe comenzar el dia\n" +
-                            "de trabajo para acceder a las ordenes");
+                    throw new DayClosedException(getResources().getString(R.string.dayClosedError),this);
 
                 }
             }
