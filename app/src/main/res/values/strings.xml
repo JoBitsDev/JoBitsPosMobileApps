@@ -24,4 +24,7 @@
     <string name="unespectedError">Uppppsssss algo no funciona :(\n
         Si el error persiste contacte con soporte técnico.</string>
 
+    <string name="dayClosedError">La caja debe comenzar el dia \n
+        de trabajo para acceder a las ordenes</string>
+
 </resources>
