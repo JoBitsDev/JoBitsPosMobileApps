@@ -9,4 +9,8 @@
 
     <!-- Backward-compatible version of ?android:attr/buttonBarButtonStyle -->
 
+    <style name="SplashTheme" parent="android:Theme.DeviceDefault.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
+
 </resources>
