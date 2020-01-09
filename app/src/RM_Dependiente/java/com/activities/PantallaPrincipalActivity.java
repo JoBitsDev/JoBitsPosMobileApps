@@ -30,7 +30,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     private Button pedidoDomicilioButton;
     private Button RButton;
     private String selectedArea = null;
-    private int selectedAreaWich = 1;
+    private int selectedAreaWich = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +121,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             return false;
         }
     }
-
+    
     @Override
     protected void onResume() {
         super.onResume();
@@ -150,7 +150,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void continuar(MesaModel m) throws NoExistingException{
+    private void continuar(MesaModel m) throws NoExistingException {
         try {
 
             final Bundle data = new Bundle();
