@@ -18,7 +18,8 @@
         <activity
             android:name="com.activities.PantallaPrincipalActivity"
             android:label="@string/title_activity_activity_principal"
-            android:parentActivityName="com.activities.MainActivity">
+            android:parentActivityName="com.activities.MainActivity"
+            android:configChanges="screenSize|orientation">//TODO: Que no llame de nuevo al OnCreate cuando se vire la pantalla
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.activities.MainActivity" />
