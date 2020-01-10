@@ -73,11 +73,10 @@ public class SimpleWebConnectionService {
      */
     public String connect(String url) throws ServerErrorException, NoConnectionException {
         fetchData f = new fetchData();
-        f.execute(url);
         String res = null;
 
         try {
-            res = f.get();
+            res = f.execute(url);
         } catch (InterruptedException e) {//convierte las excepciones que manda a las que manejamos
             throw new NoConnectionException();
         } catch (ExecutionException e) {
@@ -99,12 +98,11 @@ public class SimpleWebConnectionService {
      *
      * @extends AsyncTask<String, Void, String> ya que es una tarea asincrona.
      */
-    protected class fetchData extends AsyncTask<String, Void, String> {
+    protected class fetchData {
 
-        @Override
-        protected String doInBackground(String... url) {
+        protected String execute(String url) throws InterruptedException, ExecutionException {
             try {
-                String ret = downloadUrl(url[0]);
+                String ret = downloadUrl(url);
                 return ret;
             } catch (IOException e) {
                 e.printStackTrace();

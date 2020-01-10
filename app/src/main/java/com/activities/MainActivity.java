@@ -138,14 +138,16 @@ public class MainActivity extends BaseActivity {
      */
     private boolean updateConnectionText() {
         try {
+            return true;
 
-            boolean resp = new LoadingHandler<Boolean>(this, new LoadingProcess<Boolean>() {
+            /*boolean resp = new LoadingHandler<Boolean>(this, new LoadingProcess<Boolean>() {
                 @Override
                 public Boolean process() {
-                    return controller.checkConnection();
+                    return true;
+                    //return controller.checkConnection();
                 }
             }).get();
-
+            /*
             if (resp) {
                 connectionStatusText.setText(R.string.conexion_succesfull);
                 connectionStatusText.setTextColor(Color.GREEN);
@@ -154,7 +156,7 @@ public class MainActivity extends BaseActivity {
                 connectionStatusText.setText(R.string.no_network);
                 connectionStatusText.setTextColor(Color.RED);
                 return false;
-            }
+            }*/
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
             return false;

@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import com.activities.BaseActivity;
 import com.utils.exception.ExceptionHandler;
 
+import javax.xml.transform.Result;
+
 public class LoadingHandler<T> extends AsyncTask<Void, Void, T> {
 
     /**
@@ -17,6 +19,10 @@ public class LoadingHandler<T> extends AsyncTask<Void, Void, T> {
      * Activity sobre el que se va a mostrar el dialog.
      */
     private BaseActivity activity;
+
+    private T result = null;
+
+    private T neutro;
 
     /**
      * Proceso que se va a ejecutar en background mientras sale el cargando.
@@ -34,10 +40,11 @@ public class LoadingHandler<T> extends AsyncTask<Void, Void, T> {
      * @param activity Activity sobre el que se va a mostrar el dialog.
      * @param process  Proceso que se va a ejecutar en background mientras sale el cargando.
      */
-    public LoadingHandler(BaseActivity activity, LoadingProcess process) {
+    public LoadingHandler(BaseActivity activity, T neutro, LoadingProcess process) {
         this.activity = activity;
         this.process = process;
-        this.execute();//start the secuence
+        this.neutro = neutro;
+        execute();
     }
 
     /**
@@ -81,15 +88,18 @@ public class LoadingHandler<T> extends AsyncTask<Void, Void, T> {
     @Override
     protected T doInBackground(Void... voids) {
         try {
-            return (T) process.process();
+            result = (T) process.process();
+            return result;
         } catch (Exception e) {
             this.exc = e;
-            return null;
+            this.result = null;
+            return result;
         }
     }
 
     /**
      * Cuando termina esconde el Cargando.
+     *
      * @param t Lo que devuelve el #doInBackground
      */
     @Override
@@ -98,5 +108,12 @@ public class LoadingHandler<T> extends AsyncTask<Void, Void, T> {
         if (exc != null) {//si hubo excepcion la manejo
             ExceptionHandler.handleException(exc, activity);
         }
+    }
+
+    public T value() {
+        if (result == null) {
+            return neutro;
+        }
+        return result;
     }
 }

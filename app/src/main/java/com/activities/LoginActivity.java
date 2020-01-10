@@ -116,13 +116,13 @@ public class LoginActivity extends BaseActivity {
                 loginResult.setTextColor(Color.RED);
                 loginResult.setText(R.string.errorAlAutenticar);
             } else {
-                boolean resp = new LoadingHandler<Boolean>(this, new LoadingProcess<Boolean>() {
+                boolean resp = new LoadingHandler<Boolean>(this, false, new LoadingProcess<Boolean>() {
                     @Override
-                    public Boolean process() throws Exception{
-                        throw new NoConnectionException();
-                        //return controller.loginAction(username, password);
+                    public Boolean process() throws Exception {
+                        //throw new NoConnectionException();
+                        return controller.loginAction(username, password);
                     }
-                }).get();
+                }).value();
 
                 if (resp) {
                     loginResult.setTextColor(Color.GREEN);
