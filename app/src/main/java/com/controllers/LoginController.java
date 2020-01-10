@@ -20,8 +20,8 @@ public class LoginController extends BaseController {
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public boolean loginAction(String username, String password) throws ServerErrorException, NoConnectionException {
-        LoginWebConnectionServiceService login = new LoginWebConnectionServiceService(username, password);
+    public boolean loginAction(String username, String password, String access) throws ServerErrorException, NoConnectionException {
+        LoginWebConnectionServiceService login = new LoginWebConnectionServiceService(username, password, access);
         return login.authenticate();
     }
 }
