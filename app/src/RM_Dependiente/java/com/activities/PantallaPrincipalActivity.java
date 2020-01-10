@@ -18,7 +18,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
     private MesasController controller;
 
-    private TextClock clockText;
     private TextView restNameLabel;
     private TextView userLabel;
 
@@ -62,7 +61,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
             }
 
             listaMesas = (ListView) findViewById(R.id.listaMesas);
-            clockText = (TextClock) findViewById(R.id.textClock);
 
             cambiarAreaButton = (Button) findViewById(R.id.cambiarArea);
             pedidoDomicilioButton = (Button) findViewById(R.id.pedidoDomicilio);
@@ -121,7 +119,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             return false;
         }
     }
-    
+
     @Override
     protected void onResume() {
         super.onResume();
