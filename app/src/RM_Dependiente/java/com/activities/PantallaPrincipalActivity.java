@@ -18,7 +18,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
     private MesasController controller;
 
-    private TextClock clockText;
     private TextView restNameLabel;
     private TextView userLabel;
 
@@ -30,7 +29,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     private Button pedidoDomicilioButton;
     private Button RButton;
     private String selectedArea = null;
-    private int selectedAreaWich = 1;
+    private int selectedAreaWich = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +61,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
             }
 
             listaMesas = (ListView) findViewById(R.id.listaMesas);
-            clockText = (TextClock) findViewById(R.id.textClock);
 
             cambiarAreaButton = (Button) findViewById(R.id.cambiarArea);
             pedidoDomicilioButton = (Button) findViewById(R.id.pedidoDomicilio);
@@ -150,7 +148,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void continuar(MesaModel m) throws NoExistingException{
+    private void continuar(MesaModel m) throws NoExistingException {
         try {
 
             final Bundle data = new Bundle();

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">RM Almacen</string>
 
-
+    <string name="access_level">2</string>
 
     <string name="cancelar">Cancelar</string>
     <string name="agregar">Agregar</string>

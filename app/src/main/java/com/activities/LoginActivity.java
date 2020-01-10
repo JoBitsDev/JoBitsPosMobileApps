@@ -108,8 +108,9 @@ public class LoginActivity extends BaseActivity {
      */
     private void autenticar(View v) {
         try {
-            final String username = user.getText().toString();
-            final String password = pass.getText().toString();
+            String username = user.getText().toString();
+            String password = pass.getText().toString();
+            String access = getResources().getString(R.string.access_level);
 
             if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
                 loginResult.setTextColor(Color.RED);
