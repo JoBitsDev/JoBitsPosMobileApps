@@ -1,5 +1,8 @@
 package com.services.web_connections;
 
+import android.content.res.Resources;
+
+import com.activities.R;
 import com.utils.EnvironmentVariables;
 import com.utils.exception.NoConnectionException;
 import com.utils.exception.ServerErrorException;
@@ -27,15 +30,22 @@ public class LoginWebConnectionServiceService extends SimpleWebConnectionService
     private String pass;
 
     /**
+     * Nivel de acceso de la aplicacion
+     */
+    private String access;
+
+    /**
      * Constructor del servicio, recive el usuario y la contrasenna de los que se van a logear.
      *
      * @param user usuario a autenticar.
      * @param pass contrasenna del usuario.
+     * @param access nivel de acceso de la aplicacion
      */
-    public LoginWebConnectionServiceService(String user, String pass) {
+    public LoginWebConnectionServiceService(String user, String pass, String access) {
         super();
         this.user = user;
         this.pass = pass;
+        this.access = access;
     }
 
     /**
@@ -46,7 +56,7 @@ public class LoginWebConnectionServiceService extends SimpleWebConnectionService
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public boolean authenticate() throws ServerErrorException, NoConnectionException {
-        return connect(path + "com.restmanager.personal/l_" + user + "_" + pass).equals(EnvironmentVariables.PETITION_TRUE);
+        return connect(path + "com.restmanager.personal/l_" + user + "_" + pass + "_" + access).equals(EnvironmentVariables.PETITION_TRUE);
     }
 
 }

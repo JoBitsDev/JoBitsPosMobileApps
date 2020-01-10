@@ -4,6 +4,6 @@
     <string name="app_name">JoBits POS \n Manager</string>
 
     <string name="version">Version 0.1</string>
-
+    <string name="access_level">3</string>
 
 </resources>
