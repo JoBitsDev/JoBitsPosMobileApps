@@ -46,7 +46,7 @@ public class ExceptionHandler {
      * @param activity Donde se lanzo la excepcion para poder notificar al usuario.
      */
     public static void handleException(Exception e, BaseActivity activity) {
-        StackTraceElement element = e.getStackTrace()[0];
+        e.printStackTrace();
 
         if (e instanceof NoConnectionException) {//no conection
             handleNoConnectionException((NoConnectionException) e, activity);
