@@ -91,12 +91,13 @@ public class LoginActivity extends BaseActivity {
         try {
             String username = user.getText().toString();
             String password = pass.getText().toString();
+            String access = getResources().getString(R.string.access_level);
 
             if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
                 loginResult.setTextColor(Color.RED);
                 loginResult.setText(R.string.errorAlAutenticar);
             } else {
-                if (controller.loginAction(username, password)) {
+                if (controller.loginAction(username, password, access)) {
                     loginResult.setTextColor(Color.GREEN);
                     loginResult.setText(R.string.autenticacionCorrecta);
 
