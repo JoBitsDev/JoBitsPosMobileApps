@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="295dp"
+        android:layout_height="wrap_content"
+        android:background="#5EDB62"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewVentaNeta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Venta Neta"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/editTextVentaNeta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="right"
+            android:hint="0.0 CUC"
+            android:inputType="numberSigned"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textViewTotal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/editTextTotal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="right"
+            android:hint="0.0 CUC"
+            android:inputType="numberSigned"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textViewAutorizos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Autorizos"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/editTextAutorizos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="right"
+            android:hint="0.0 CUC"
+            android:inputType="numberSigned"
+            android:textSize="30sp" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="?android:attr/listDivider" />
+
+    <LinearLayout
+        android:layout_width="295dp"
+        android:layout_height="wrap_content"
+        android:background="#DF5F58"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewInsumos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Insumos"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/editTextInsumos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="right"
+            android:hint="0.0 CUC"
+            android:inputType="numberSigned"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textViewSalario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Salarios"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/editTextSalarios"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="right"
+            android:hint="0.0 CUC"
+            android:inputType="numberSigned"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textViewOtros"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Otros"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/editTextOtros"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="right"
+            android:hint="0.0 CUC"
+            android:inputType="numberSigned"
+            android:textSize="30sp" />
+    </LinearLayout>
+</LinearLayout>

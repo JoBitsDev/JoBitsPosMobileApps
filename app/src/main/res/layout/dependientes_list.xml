@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="295dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Usuario"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/editTextUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="right"
+            android:hint="Usuario"
+            android:inputType="text"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textViewOrden"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Órdenes Atendidas"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/editTextOrden"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="right"
+            android:hint="Órden"
+            android:inputType="text"
+            android:textSize="30sp" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="?android:attr/listDivider" />
+
+    <LinearLayout
+        android:layout_width="295dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textMonto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Monto"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/editTextMonto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="right"
+            android:hint="0.0 CUC"
+            android:inputType="numberSigned"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textViewPago"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pago por Venta"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/editTextPago"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="right"
+            android:hint="0.0 CUC"
+            android:inputType="numberSigned"
+            android:textSize="30sp" />
+
+    </LinearLayout>
+</LinearLayout>
