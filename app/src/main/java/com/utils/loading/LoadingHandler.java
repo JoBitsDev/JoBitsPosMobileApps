@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import com.activities.BaseActivity;
 import com.utils.exception.ExceptionHandler;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.xml.transform.Result;
 
 public class LoadingHandler<T> extends AsyncTask<Void, Void, T> {
@@ -111,9 +113,15 @@ public class LoadingHandler<T> extends AsyncTask<Void, Void, T> {
     }
 
     public T value() {
-        if (result == null) {
-            return neutro;
+        try {
+            T act = this.get(3, TimeUnit.SECONDS);
+            if (act == null) {
+                return neutro;
+            } else {
+                return act;
+            }
+        } catch (Exception e) {
         }
-        return result;
+        return neutro;
     }
 }
