@@ -1,5 +1,8 @@
 package com.activities;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.widget.*;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +12,7 @@ import android.graphics.Color;
 import com.controllers.MainController;
 import com.services.notifications.ReceiverNotificationService;
 import com.utils.exception.ExceptionHandler;
+import com.utils.exception.NoConnectionException;
 import com.utils.loading.LoadingHandler;
 import com.utils.loading.LoadingProcess;
 
@@ -119,13 +123,27 @@ public class MainActivity extends BaseActivity {
      * @param v View de la aplicacion.
      */
     private void onInitializeSesionButtOnClick(View v) {
+
         try {
-            if (updateConnectionText()) {
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            } else {
-                this.showMessage(v.getContext().getResources().
-                        getText(R.string.noConnectionError).toString());
-            }
+            final BaseActivity act = this;
+
+            new LoadingHandler<Boolean>(this, new LoadingProcess<Boolean>() {
+                @Override
+                public Boolean process() {
+                    return controller.checkConnection();
+                }
+
+                @Override
+                public void post(Boolean value) {
+                    if (value) {
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                    } else {
+                        act.showMessage(act.getApplication().getApplicationContext().getResources().
+                                getText(R.string.noConnectionError).toString());
+                    }
+                }
+            });
+
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
@@ -133,34 +151,25 @@ public class MainActivity extends BaseActivity {
 
     /**
      * Actualiza el label de coneccion en dependencia de si hay o no coneccion con el servidor.
-     *
-     * @return true si hay coneccion con el servidor, false en cualquier otro caso.
      */
-    private boolean updateConnectionText() {
-        try {
-            return true;
+    private void updateConnectionText() {
+        new LoadingHandler<Boolean>(this, new LoadingProcess<Boolean>() {
+            @Override
+            public Boolean process() {
+                return controller.checkConnection();
+            }
 
-            /*boolean resp = new LoadingHandler<Boolean>(this, new LoadingProcess<Boolean>() {
-                @Override
-                public Boolean process() {
-                    return true;
-                    //return controller.checkConnection();
+            @Override
+            public void post(Boolean value) {
+                if (value) {
+                    connectionStatusText.setText(R.string.conexion_succesfull);
+                    connectionStatusText.setTextColor(Color.GREEN);
+                } else {
+                    connectionStatusText.setText(R.string.no_network);
+                    connectionStatusText.setTextColor(Color.RED);
                 }
-            }).get();
-            /*
-            if (resp) {
-                connectionStatusText.setText(R.string.conexion_succesfull);
-                connectionStatusText.setTextColor(Color.GREEN);
-                return true;
-            } else {
-                connectionStatusText.setText(R.string.no_network);
-                connectionStatusText.setTextColor(Color.RED);
-                return false;
-            }*/
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
-            return false;
-        }
+            }
+        });
     }
 
     public void startService(View view) {
