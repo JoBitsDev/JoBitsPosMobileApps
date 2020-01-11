@@ -9,6 +9,7 @@ import android.widget.*;
 import com.controllers.LoginController;
 import com.utils.exception.ExceptionHandler;
 import com.utils.exception.NoConnectionException;
+import com.utils.exception.ServerErrorException;
 import com.utils.loading.LoadingHandler;
 import com.utils.loading.LoadingProcess;
 
@@ -108,34 +109,38 @@ public class LoginActivity extends BaseActivity {
      */
     private void autenticar(View v) {
         try {
-            String username = user.getText().toString();
-            String password = pass.getText().toString();
-            String access = getResources().getString(R.string.access_level);
+            final BaseActivity act = this;
+            final String username = user.getText().toString();
+            final String password = pass.getText().toString();
+            final String access = getResources().getString(R.string.access_level);
 
             if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
                 loginResult.setTextColor(Color.RED);
                 loginResult.setText(R.string.errorAlAutenticar);
             } else {
-                boolean resp = new LoadingHandler<Boolean>(this, false, new LoadingProcess<Boolean>() {
+
+                new LoadingHandler<Boolean>(this, new LoadingProcess<Boolean>() {
                     @Override
                     public Boolean process() throws Exception {
-                        //throw new NoConnectionException();
-                        return controller.loginAction(username, password);
+                        return controller.loginAction(username, password, access);
                     }
-                }).value();
 
-                if (resp) {
-                    loginResult.setTextColor(Color.GREEN);
-                    loginResult.setText(R.string.autenticacionCorrecta);
+                    @Override
+                    public void post(Boolean value) {
+                        if (value) {
+                            loginResult.setTextColor(Color.GREEN);
+                            loginResult.setText(R.string.autenticacionCorrecta);
 
-                    //cambio de activity
-                    Intent launch = new Intent(this, PantallaPrincipalActivity.class);
-                    launch.putExtra(String.valueOf(R.string.user), username);
-                    startActivity(launch);
+                            //cambio de activity
+                            Intent launch = new Intent(act, PantallaPrincipalActivity.class);
+                            launch.putExtra(String.valueOf(R.string.user), username);
+                            startActivity(launch);
 
-                } else {//si no es correcto lanza error
-                    errorAlAutenticar();
-                }
+                        } else {//si no es correcto lanza error
+                            errorAlAutenticar();
+                        }
+                    }
+                });
             }
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
