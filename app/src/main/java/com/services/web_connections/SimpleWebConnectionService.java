@@ -12,6 +12,8 @@ import java.net.HttpURLConnection;
 import com.utils.EnvironmentVariables;
 
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Capa: Services
@@ -71,13 +73,13 @@ public class SimpleWebConnectionService {
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public String connect(String url) throws ServerErrorException, NoConnectionException {
+    public String connect(String url) throws ServerErrorException, NoConnectionException, TimeoutException {
         fetchData f = new fetchData();
         f.execute(url);
         String res = null;
 
         try {
-            res = f.get();
+            res = f.get(3*1000, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {//convierte las excepciones que manda a las que manejamos
             throw new NoConnectionException();
         } catch (ExecutionException e) {

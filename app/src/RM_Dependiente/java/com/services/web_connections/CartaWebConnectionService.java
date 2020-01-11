@@ -3,6 +3,7 @@ package com.services.web_connections;
 import com.utils.EnvironmentVariables;
 
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by Jorge on 2/8/18.
@@ -23,6 +24,8 @@ public class CartaWebConnectionService extends SimpleWebConnectionService {
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
             e.printStackTrace();
         }
         return "";

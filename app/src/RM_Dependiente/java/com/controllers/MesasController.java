@@ -62,7 +62,7 @@ public class MesasController extends BaseController {
         ordenWCService.setCodOrden(cod_orden);
     }
 
-    public boolean validate() throws ServerErrorException, NoConnectionException {
+    public boolean validate() throws Exception {
         return ordenWCService.validate();
     }
 
@@ -70,7 +70,7 @@ public class MesasController extends BaseController {
         return new CartaWebConnectionService().getNombreRest();
     }
 
-    public String[] getAreas() throws ServerErrorException, NoConnectionException {
+    public String[] getAreas() throws Exception {
         return new MesaWebConnectionService(user, null).getAreasName();
     }
 }

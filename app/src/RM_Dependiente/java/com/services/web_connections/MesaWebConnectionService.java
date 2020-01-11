@@ -23,7 +23,7 @@ public class MesaWebConnectionService extends SimpleWebConnectionService {
     }
 
 
-    public String[] getAreasName() throws ServerErrorException, NoConnectionException {
+    public String[] getAreasName() throws Exception {
         return connect(path + fetchareas).split(",");
     }
 }
