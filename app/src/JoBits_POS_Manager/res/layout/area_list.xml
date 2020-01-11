@@ -16,7 +16,7 @@
             android:text="Código del Area"
             android:textSize="30sp" />
 
-        <EditText
+        <TextView
             android:id="@+id/editTextCodigo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
             android:text="Nombre del Área"
             android:textSize="30sp" />
 
-        <EditText
+        <TextView
             android:id="@+id/editTextNombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
             android:text="Venta Neta"
             android:textSize="30sp" />
 
-        <EditText
+        <TextView
             android:id="@+id/editTextNeta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
             android:text="Venta Real"
             android:textSize="30sp" />
 
-        <EditText
+        <TextView
             android:id="@+id/editTextReal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

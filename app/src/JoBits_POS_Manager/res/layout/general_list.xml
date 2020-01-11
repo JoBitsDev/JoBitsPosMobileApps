@@ -17,7 +17,7 @@
             android:text="Venta Neta"
             android:textSize="30sp" />
 
-        <EditText
+        <TextView
             android:id="@+id/editTextVentaNeta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
             android:text="Total"
             android:textSize="30sp" />
 
-        <EditText
+        <TextView
             android:id="@+id/editTextTotal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
             android:text="Autorizos"
             android:textSize="30sp" />
 
-        <EditText
+        <TextView
             android:id="@+id/editTextAutorizos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
             android:text="Insumos"
             android:textSize="30sp" />
 
-        <EditText
+        <TextView
             android:id="@+id/editTextInsumos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
             android:text="Salarios"
             android:textSize="30sp" />
 
-        <EditText
+        <TextView
             android:id="@+id/editTextSalarios"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
             android:text="Otros"
             android:textSize="30sp" />
 
-        <EditText
+        <TextView
             android:id="@+id/editTextOtros"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
