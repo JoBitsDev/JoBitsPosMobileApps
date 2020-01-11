@@ -6,9 +6,7 @@ import android.os.AsyncTask;
 import com.activities.BaseActivity;
 import com.utils.exception.ExceptionHandler;
 
-import java.util.concurrent.TimeUnit;
-
-import javax.xml.transform.Result;
+import java.util.concurrent.ExecutionException;
 
 public class LoadingHandler<T> extends AsyncTask<Void, Void, T> {
 
@@ -21,10 +19,6 @@ public class LoadingHandler<T> extends AsyncTask<Void, Void, T> {
      * Activity sobre el que se va a mostrar el dialog.
      */
     private BaseActivity activity;
-
-    private T result = null;
-
-    private T neutro;
 
     /**
      * Proceso que se va a ejecutar en background mientras sale el cargando.
@@ -42,11 +36,10 @@ public class LoadingHandler<T> extends AsyncTask<Void, Void, T> {
      * @param activity Activity sobre el que se va a mostrar el dialog.
      * @param process  Proceso que se va a ejecutar en background mientras sale el cargando.
      */
-    public LoadingHandler(BaseActivity activity, T neutro, LoadingProcess process) {
+    public LoadingHandler(BaseActivity activity, LoadingProcess process) {
         this.activity = activity;
         this.process = process;
-        this.neutro = neutro;
-        execute();
+        this.execute();//start the secuence
     }
 
     /**
@@ -90,38 +83,28 @@ public class LoadingHandler<T> extends AsyncTask<Void, Void, T> {
     @Override
     protected T doInBackground(Void... voids) {
         try {
-            result = (T) process.process();
-            return result;
+            return (T) process.process();
         } catch (Exception e) {
             this.exc = e;
-            this.result = null;
-            return result;
         }
+        return null;
     }
 
     /**
      * Cuando termina esconde el Cargando.
-     *
-     * @param t Lo que devuelve el #doInBackground
      */
     @Override
     protected void onPostExecute(T t) {
         this.hideProgressDialog();
-        if (exc != null) {//si hubo excepcion la manejo
-            ExceptionHandler.handleException(exc, activity);
+        try {
+            if (exc == null) {
+                process.post(get());
+            } else {
+                throw exc;
+            }
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, activity);
         }
     }
 
-    public T value() {
-        try {
-            T act = this.get(3, TimeUnit.SECONDS);
-            if (act == null) {
-                return neutro;
-            } else {
-                return act;
-            }
-        } catch (Exception e) {
-        }
-        return neutro;
-    }
 }
