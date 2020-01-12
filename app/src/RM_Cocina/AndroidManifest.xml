@@ -4,7 +4,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/logo_android"
+        android:icon="@drawable/pos_cocina"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         >

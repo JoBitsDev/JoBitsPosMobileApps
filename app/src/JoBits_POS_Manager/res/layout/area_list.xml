@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="295dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewCodigo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Código"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/editTextCodigo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="right"
+            android:hint="Código"
+            android:inputType="text"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textViewNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/editTextNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="right"
+            android:hint="Nombre"
+            android:inputType="text"
+            android:textSize="30sp" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="?android:attr/listDivider" />
+
+    <LinearLayout
+        android:layout_width="295dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewNeta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Venta Neta"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/editTextNeta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="right"
+            android:hint="0.0 CUC"
+            android:inputType="numberSigned"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textViewReal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Venta Real"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/editTextReal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="right"
+            android:hint="0.0 CUC"
+            android:inputType="numberSigned"
+            android:textSize="30sp" />
+
+    </LinearLayout>
+</LinearLayout>

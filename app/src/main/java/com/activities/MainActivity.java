@@ -51,6 +51,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         try {
+            Thread.sleep(2000);
             setContentView(R.layout.activity_main);
             initVarialbes();
             addListeners();

@@ -21,7 +21,8 @@
 
         <activity
             android:name="com.activities.MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/SplashTheme"> <!--Aquí llamamos nuestro tema -->
             <intent-filter>
                 <action
                     android:name="android.intent.action.MAIN"
