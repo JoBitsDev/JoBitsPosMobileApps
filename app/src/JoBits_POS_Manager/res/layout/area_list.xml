@@ -13,7 +13,7 @@
             android:id="@+id/textViewCodigo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Código del Area"
+            android:text="Código"
             android:textSize="30sp" />
 
         <TextView
@@ -30,7 +30,7 @@
             android:id="@+id/textViewNombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nombre del Área"
+            android:text="Nombre"
             android:textSize="30sp" />
 
         <TextView
