@@ -1,5 +1,6 @@
 package com.activities;
 
+import android.graphics.Color;
 import android.view.*;
 import android.widget.*;
 import android.content.*;
@@ -12,6 +13,8 @@ import com.controllers.MesasController;
 
 import com.utils.adapters.MesaAdapter;
 import com.utils.exception.*;
+import com.utils.loading.LoadingHandler;
+import com.utils.loading.LoadingProcess;
 
 
 public class PantallaPrincipalActivity extends BaseActivity {
@@ -148,9 +151,9 @@ public class PantallaPrincipalActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void continuar(MesaModel m) throws NoExistingException {
+    private void continuar(final MesaModel m) throws NoExistingException {
         try {
-
+            final BaseActivity act = this;
             final Bundle data = new Bundle();
             data.putString(String.valueOf(R.string.mesa), m.getCodMesa());
 
@@ -158,38 +161,52 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
             if (!m.getEstado().equals(EnvironmentVariables.ESTADO_MESA_VACIA)) {
 
-                String cod_orden = m.getEstado().split(" ")[0];
+                final String cod_orden = m.getEstado().split(" ")[0];
                 data.putString(String.valueOf(R.string.user), m.getUsuario());
 
                 controller.setCodOrden(cod_orden);
 
-                if (!controller.validate()) {
-                    throw new NoExistingException("La orden a acceder ya no se encuentra abierta", this);
-                }
-                data.putString(String.valueOf(R.string.cod_Orden), cod_orden);
-
-                if (!controller.getUser().equals(m.getUsuario())) {//si no es el usuario pide confirmacion
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setMessage("La mesa que quiere acceder " +
-                            "la esta atendiendo otro camarero");
-                    builder.setNegativeButton("No entrar", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {//no entrar
-                            dialog.dismiss();
+                new LoadingHandler<Boolean>(this, new LoadingProcess<Boolean>() {
+                    @Override
+                    public Boolean process() throws Exception {
+                        boolean res = controller.validate();
+                        if (!res) {
+                            throw new NoExistingException("La orden a acceder ya no se encuentra abierta");
                         }
-                    });
-                    builder.setPositiveButton("Entrar en modo solo lectura", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {//entrar en solo lectura
-                            entrarSoloLectura(data);
-                        }
-                    });
-                    builder.show();
+                        return res;
+                    }
 
-                } else {
-                    data.putString(String.valueOf(R.string.user), controller.getUser());
-                    entrarMiOrden(data);
-                }
+                    @Override
+                    public void post(Boolean value) {
+                        if (value) {
+                            data.putString(String.valueOf(R.string.cod_Orden), cod_orden);
+
+                            if (!controller.getUser().equals(m.getUsuario())) {//si no es el usuario pide confirmacion
+                                AlertDialog.Builder builder = new AlertDialog.Builder(act);
+                                builder.setMessage("La mesa que quiere acceder " +
+                                        "la esta atendiendo otro camarero");
+                                builder.setNegativeButton("No entrar", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {//no entrar
+                                        dialog.dismiss();
+                                    }
+                                });
+                                builder.setPositiveButton("Entrar en modo solo lectura", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {//entrar en solo lectura
+                                        entrarSoloLectura(data);
+                                    }
+                                });
+                                builder.show();
+
+                            } else {
+                                data.putString(String.valueOf(R.string.user), controller.getUser());
+                                entrarMiOrden(data);
+                            }
+                        }
+                    }
+                });
+
             } else {//es el usuario
                 data.putString(String.valueOf(R.string.user), controller.getUser());
                 entrarMiOrden(data);
@@ -222,13 +239,18 @@ public class PantallaPrincipalActivity extends BaseActivity {
     public void configurarTabla() {
         try {
             final BaseActivity act = this;
-            listaMesas.post(new Runnable() {
+            final String orden = switchOrden.isChecked() ? String.valueOf(R.string.orden) : String.valueOf(R.string.mesa);
+            new LoadingHandler<MesaAdapter>(this, new LoadingProcess<MesaAdapter>() {
                 @Override
-                public void run() {
+                public MesaAdapter process() throws Exception {
                     MesaAdapter adapter = controller.getData(selectedArea, act);
-                    String orden = switchOrden.isChecked() ? String.valueOf(R.string.orden) : String.valueOf(R.string.mesa);
                     adapter.orderBy(orden);
-                    listaMesas.setAdapter(adapter);
+                    return adapter;
+                }
+
+                @Override
+                public void post(MesaAdapter value) {
+                    listaMesas.setAdapter(value);
                 }
             });
         } catch (Exception e) {
