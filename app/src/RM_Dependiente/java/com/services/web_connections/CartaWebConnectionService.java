@@ -21,11 +21,7 @@ public class CartaWebConnectionService extends SimpleWebConnectionService {
     public String getNombreRest(){
         try {
             return connect(urlNombreRest);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (TimeoutException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return "";
