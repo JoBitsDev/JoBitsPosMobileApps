@@ -7,7 +7,46 @@ import com.activities.BaseActivity;
 import com.utils.exception.ExceptionHandler;
 
 import java.util.concurrent.ExecutionException;
+/*
+  new LoadingHandler<Boolean>(this, new LoadingProcess<Boolean>() {
+       @Override
+       public Boolean process() throws Exception {
+       }
 
+       @Override
+       public void post(Boolean value) {
+
+       }
+  });
+ */
+
+/**
+ * Asi se usa.
+ * <pre>
+ * new LoadingHandler<Boolean>(this, new LoadingProcess<Boolean>() {
+ *
+ *      @Override
+ *      public Boolean process() throws Exception {
+ *          return controller.loginAction(username, password, access);
+ *      }
+ *
+ *      @Override
+ *      public void post(Boolean value) {
+ *          if (value) {
+ *              loginResult.setTextColor(Color.GREEN);
+ *              loginResult.setText(R.string.autenticacionCorrecta);
+ *
+ *              Intent launch = new Intent(act, PantallaPrincipalActivity.class);
+ *              launch.putExtra(String.valueOf(R.string.user), username);
+ *              startActivity(launch);
+ *
+ *          } else {//si no es correcto lanza error
+ *              errorAlAutenticar();
+ *          }
+ *      }
+ * });
+ * <pre/>
+ */
 public class LoadingHandler<T> extends AsyncTask<Void, Void, T> {
 
     /**
