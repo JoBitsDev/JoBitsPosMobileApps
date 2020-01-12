@@ -32,6 +32,8 @@ import com.utils.adapters.SeccionAdapter;
 import com.utils.exception.DayClosedException;
 import com.utils.exception.ExceptionHandler;
 import com.utils.exception.ServerErrorException;
+import com.utils.loading.LoadingHandler;
+import com.utils.loading.LoadingProcess;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -66,12 +68,15 @@ public class OrdenActivity extends BaseActivity {
             setContentView(R.layout.activity_orden);
 
             initVarialbes();
+
+            //separado porque es un init y un set adapter en paralelo
+            Bundle bundleExtra = getIntent().getExtras();
+            initMenu(bundleExtra.getString(String.valueOf(R.string.mesa)));
+
             setAdapters();
             addListeners();
 
-            Bundle bundleExtra = getIntent().getExtras();
             createOldOrden(bundleExtra);//crea la orden vieja
-            actDeLaCasa();
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
@@ -106,7 +111,6 @@ public class OrdenActivity extends BaseActivity {
             menuAdapter = new MenuAdapterThis(this, R.layout.list_menu, new ArrayList<ProductoVentaModel>());
             productoVentaOrdenAdapter = new ProductoVentaOrdenAdapter(this, R.id.listaOrden, productosVentaOrden);
 
-            initMenu(bundleExtra.getString(String.valueOf(R.string.mesa)));
             initTab();
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
@@ -172,10 +176,7 @@ public class OrdenActivity extends BaseActivity {
             searchText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    searchText.setText("");
-                    seccionAdapter.getFilter().filter("");
-                    menuAdapter = new MenuAdapterThis(getApplicationContext(), R.layout.list_menu, new ArrayList<ProductoVentaModel>());
-                    menuProductosListView.setAdapter(menuAdapter);
+                    onSearchTextClick(v);
                 }
             });
 
@@ -187,12 +188,7 @@ public class OrdenActivity extends BaseActivity {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if (!s.toString().isEmpty()) {
-                        seccionAdapter.getFilter().filter(s.toString());
-                    } else {
-                        seccionAdapter.getFilter().filter("");
-                    }
-                    onSeccionClick(seccionAdapter.getPosition(seccionSelected));
+                    onSearchTextTextChange(s);
                 }
 
                 @Override
@@ -208,10 +204,25 @@ public class OrdenActivity extends BaseActivity {
                 }
             });
 
-
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
+    }
+
+    private void onSearchTextTextChange(CharSequence s) {
+        if (!s.toString().isEmpty()) {
+            seccionAdapter.getFilter().filter(s.toString());
+        } else {
+            seccionAdapter.getFilter().filter("");
+        }
+        onSeccionClick(seccionAdapter.getPosition(seccionSelected));
+    }
+
+    private void onSearchTextClick(View v) {
+        searchText.setText("");
+        seccionAdapter.getFilter().filter("");
+        menuAdapter = new MenuAdapterThis(getApplicationContext(), R.layout.list_menu, new ArrayList<ProductoVentaModel>());
+        menuProductosListView.setAdapter(menuAdapter);
     }
 
     private boolean onTabChangeTouchEvent(MotionEvent event) {
@@ -257,11 +268,18 @@ public class OrdenActivity extends BaseActivity {
 
 
     private void onDeLaCasaCheckBoxClick() {
-        try {
-            controller.setDeLaCasa(deLaCasaCheckBox.isChecked());
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
-        }
+        new LoadingHandler<Void>(this, new LoadingProcess<Void>() {
+            @Override
+            public Void process() throws Exception {
+                controller.setDeLaCasa(deLaCasaCheckBox.isChecked());
+                return null;
+            }
+
+            @Override
+            public void post(Void value) {
+
+            }
+        });
     }
 
 
@@ -346,9 +364,6 @@ public class OrdenActivity extends BaseActivity {
     @Override
     protected void setAdapters() {
         try {
-            seccionAdapter = new SeccionAdapter(this, android.R.layout.simple_list_item_1, secciones);
-            menuSeccionListView.setAdapter(seccionAdapter);
-
             listaOrden.setAdapter(new ProductoVentaOrdenAdapter(this, R.id.listaOrden, productosVentaOrden, new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -360,30 +375,57 @@ public class OrdenActivity extends BaseActivity {
         }
     }
 
+    private void setMenuSeccionListViewAdapters() {
+        final BaseActivity act = this;
+        seccionAdapter = new SeccionAdapter(act, android.R.layout.simple_list_item_1, secciones);
+        menuSeccionListView.setAdapter(seccionAdapter);
+    }
+
     private void createOldOrden(Bundle bundleExtra) {
         try {
-            String codOrden;
 
             OrdenActivity old = (OrdenActivity) getLastNonConfigurationInstance();//TODO: porque un metodo deprecated??
-            if (old != null) {
-                codOrden = old.getController().getCodOrden();
-            } else {
-                codOrden = bundleExtra.getString(String.valueOf(R.string.cod_Orden));
-            }
+            final String codOrden = old != null ? old.getController().getCodOrden() : bundleExtra.getString(String.valueOf(R.string.cod_Orden));
 
-            String mesa = bundleExtra.getString(String.valueOf(R.string.mesa));
-            String dependiente = bundleExtra.getString(String.valueOf(R.string.user));
+            final String mesa = bundleExtra.getString(String.valueOf(R.string.mesa));
+            final String dependiente = bundleExtra.getString(String.valueOf(R.string.user));
 
             if (codOrden != null && mesa != null && dependiente != null) {
-                fillAct(controller.starService(codOrden, mesa, dependiente).getProductoVentaOrden(codOrden));
-            } else {
-                controller.starService(mesa, dependiente);
-                if (!controller.initOrden()) {
-                    throw new DayClosedException(getResources().getString(R.string.dayClosedError),this);
 
-                }
+                new LoadingHandler<List<ProductoVentaOrdenModel>>(this, new LoadingProcess<List<ProductoVentaOrdenModel>>() {
+                    @Override
+                    public List<ProductoVentaOrdenModel> process() {
+                        return controller.starService(codOrden, mesa, dependiente).getProductoVentaOrden(codOrden);
+                    }
+
+                    @Override
+                    public void post(List<ProductoVentaOrdenModel> value) {
+                        fillAct(value);
+                        ordenNoLabel.setText(controller.getCodOrden());
+                        actDeLaCasa();
+                    }
+                });
+
+            } else {
+
+                controller.starService(mesa, dependiente);
+                new LoadingHandler<Void>(this, new LoadingProcess<Void>() {
+                    @Override
+                    public Void process() throws Exception {
+                        if (!controller.initOrden()) {
+                            throw new DayClosedException(getResources().getString(R.string.dayClosedError));
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    public void post(Void value) {
+                        ordenNoLabel.setText(controller.getCodOrden());
+                        actDeLaCasa();
+                    }
+                });
+
             }
-            ordenNoLabel.setText(controller.getCodOrden());
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
@@ -422,43 +464,45 @@ public class OrdenActivity extends BaseActivity {
     private void fillAct(final List<ProductoVentaOrdenModel> orden) {
         try {
             final ProductoVentaOrdenAdapter adapter = (ProductoVentaOrdenAdapter) listaOrden.getAdapter();
-            listaOrden.post(new Runnable() {
-                @Override
-                public void run() {
-                    adapter.clear();
-                    adapter.setObjects(orden);
-                    updateCosto();
-                }
-            });
+            adapter.clear();
+            adapter.setObjects(orden);
+            updateCosto();
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
     }
 
-    private void initMenu(String codMesa) {
-        try {
-            secciones = controller.getSecciones();
-            productos = controller.getProductos(codMesa);
+    private void initMenu(final String codMesa) {
+        final BaseActivity act = this;
+        new LoadingHandler<Void>(this, new LoadingProcess<Void>() {
+            @Override
+            public Void process() {
+                secciones = controller.getSecciones();
+                productos = controller.getProductos(codMesa);
+                return null;
+            }
 
-            for (ProductoVentaModel x : productos) {
-                for (SeccionModel y : secciones) {
-                    if (x.getSeccionnombreSeccion().equals(y.getNombreSeccion())) {
-                        y.addProducto(x);
-                        break;
+            @Override
+            public void post(Void value) {
+                for (ProductoVentaModel x : productos) {
+                    for (SeccionModel y : secciones) {
+                        if (x.getSeccionnombreSeccion().equals(y.getNombreSeccion())) {
+                            y.addProducto(x);
+                            break;
+                        }
                     }
                 }
-            }
 
-            for (Iterator<SeccionModel> it = secciones.iterator(); it.hasNext(); ) {//TODO: Revisar el for que asi es como mejor funciona
-                SeccionModel secc = it.next();
-                if (secc.getProductos().isEmpty()) {
-                    it.remove();
+                for (Iterator<SeccionModel> it = secciones.iterator(); it.hasNext(); ) {//TODO: Revisar el for que asi es como mejor funciona
+                    SeccionModel secc = it.next();
+                    if (secc.getProductos().isEmpty()) {
+                        it.remove();
+                    }
                 }
-            }
 
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
-        }
+                setMenuSeccionListViewAdapters();
+            }
+        });
     }
 
 
@@ -518,43 +562,53 @@ public class OrdenActivity extends BaseActivity {
     }
 
     private void cederACamarero() {
-        try {
-            final String[] usuarios = controller.getUsuariosActivos();
-
-            if (usuarios.length > 0) {//hay usuarios
-                final BaseActivity act = this;
-                new AlertDialog.Builder(this).
-                        setTitle(R.string.seleccioneElUsuarioACeder).
-                        setSingleChoiceItems(usuarios, -1, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                try {
-                                    boolean serverReponse = controller.cederAUsuario(usuarios[which]);
-                                    if (serverReponse) {//TODO: ver bien esto, xq el finish()
-                                        dialog.dismiss();
-                                        finish();
-                                        Toast.makeText(getApplicationContext(), "Orden cedida al camarero.", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        dialog.dismiss();
-                                        Toast.makeText(getApplicationContext(), "No se pudo seder la orden.", Toast.LENGTH_SHORT).show();
-                                    }
-                                } catch (Exception e) {
-                                    ExceptionHandler.handleException(e, act);
-                                }
-                            }
-                        }).
-                        setNeutralButton(R.string.cancelar, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).create().show();
-            } else {
-                Toast.makeText(this, "No existe ningun otro usuario trabajando para ceder orden", Toast.LENGTH_LONG).show();
+        final BaseActivity act = this;
+        new LoadingHandler<String[]>(act, new LoadingProcess<String[]>() {
+            @Override
+            public String[] process() throws Exception {
+                return controller.getUsuariosActivos();
             }
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
-        }
+
+            @Override
+            public void post(final String[] value) {
+                if (value.length > 0) {//hay usuarios
+                    new AlertDialog.Builder(act).
+                            setTitle(R.string.seleccioneElUsuarioACeder).
+                            setSingleChoiceItems(value, -1, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(final DialogInterface dialog, final int which) {
+
+                                    new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
+                                        @Override
+                                        public Boolean process() throws Exception {
+                                            return controller.cederAUsuario(value[which]);
+                                        }
+
+                                        @Override
+                                        public void post(Boolean value) {
+                                            if (value) {//TODO: ver bien esto, xq el finish()
+                                                dialog.dismiss();
+                                                finish();
+                                                Toast.makeText(getApplicationContext(), "Orden cedida al camarero.", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                dialog.dismiss();
+                                                Toast.makeText(getApplicationContext(), "No se pudo seder la orden.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+
+                                }
+                            }).setNeutralButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).create().show();
+                } else {
+                    Toast.makeText(act, "No existe ningun otro usuario trabajando para ceder orden", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     private void compartirPedido() {//TODO: vacio???
@@ -583,29 +637,42 @@ public class OrdenActivity extends BaseActivity {
         try {
             lastClickedOrden = (ProductoVentaOrdenModel) listaOrden.getAdapter().getItem((Integer) v.getTag());
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Agregar Nota");
-            // Get the layout inflater
-            LayoutInflater inflater = this.getLayoutInflater();
-            final EditText nota = new EditText(this);
-            nota.getText().insert(0, controller.getNota(lastClickedOrden));
 
-            // Inflate and set the layout for the dialog
-            // Pass null as the parent view because its going in the dialog layout
-            builder.setView(nota)
-                    // Add action buttons
-                    .setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            addNota(toHTMLString(nota.getText().toString()));
-                        }
-                    })
-                    .setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-            builder.create().show();
+            // Get the layout inflater
+            final EditText nota = new EditText(this);
+
+            new LoadingHandler<String>(this, new LoadingProcess<String>() {
+                @Override
+                public String process() throws Exception {
+                    return controller.getNota(lastClickedOrden);
+                }
+
+                @Override
+                public void post(String value) {
+                    nota.getText().insert(0, value);
+
+                    // Inflate and set the layout for the dialog
+                    // Pass null as the parent view because its going in the dialog layout
+                    builder.setView(nota)
+                            // Add action buttons
+                            .setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int id) {
+                                    addNota(toHTMLString(nota.getText().toString()));
+                                }
+                            })
+                            .setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    builder.create().show();
+                }
+            });
+
+
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
@@ -615,44 +682,62 @@ public class OrdenActivity extends BaseActivity {
         try {
             lastClickedOrden = ((ProductoVentaOrdenModel) listaOrden.getAdapter().getItem((Integer) v.getTag()));
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Agregar Comensal");
 
             final EditText nota = new EditText(this);
-            nota.getText().insert(0, controller.getComensal(lastClickedOrden));
 
-            // Inflate and set the layout for the dialog
-            // Pass null as the parent view because its going in the dialog layout
-            builder.setView(nota)
-                    // Add action buttons
-                    .setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            addComensal(nota.getText().toString());
-                        }
-                    })
-                    .setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-            builder.create().show();
+            new LoadingHandler<String>(this, new LoadingProcess<String>() {
+                @Override
+                public String process() throws Exception {
+                    return controller.getComensal(lastClickedOrden);
+                }
+
+                @Override
+                public void post(String value) {
+                    nota.getText().insert(0, value);
+
+                    // Inflate and set the layout for the dialog
+                    // Pass null as the parent view because its going in the dialog layout
+                    builder.setView(nota)
+                            // Add action buttons
+                            .setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int id) {
+                                    addComensal(nota.getText().toString());
+                                }
+                            })
+                            .setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    builder.create().show();
+                }
+            });
+
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
     }
 
-    private void addComensal(String comensal) {
-        try {
-            boolean response = controller.addComensal(lastClickedOrden, comensal);
-            if (response) {
-                Toast.makeText(this, lastClickedOrden.getProductoVentaModel().getNombre() + " Comensal Agregado", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Error agragando comensal.", Toast.LENGTH_SHORT).show();
+    private void addComensal(final String comensal) {
+        final BaseActivity act = this;
+        new LoadingHandler<Boolean>(this, new LoadingProcess<Boolean>() {
+            @Override
+            public Boolean process() throws Exception {
+                return controller.addComensal(lastClickedOrden, comensal);
             }
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
-        }
+
+            @Override
+            public void post(Boolean value) {
+                if (value) {
+                    Toast.makeText(act, lastClickedOrden.getProductoVentaModel().getNombre() + " Comensal Agregado", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(act, "Error agragando comensal.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     public void moverAMesa() {//TODO: terminar esto
@@ -664,19 +749,25 @@ public class OrdenActivity extends BaseActivity {
                     setTitle(R.string.seleccioneLaMesaAMover).
                     setSingleChoiceItems(mesas, -1, new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            try {
-                                if (controller.moverAMesa(mesas[which])) {//TODO: ver bien esto, xq el finish()
-                                    dialog.dismiss();
-                                    finish();
-                                    Toast.makeText(getApplicationContext(), "Movido a mesa", Toast.LENGTH_SHORT).show();//TODO: ver bien el texto
-                                } else {
-                                    dialog.dismiss();
-                                    Toast.makeText(getApplicationContext(), "No se pudo mover a mesa.", Toast.LENGTH_SHORT).show();
+                        public void onClick(final DialogInterface dialog, final int which) {
+                            new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
+                                @Override
+                                public Boolean process() throws Exception {
+                                    return controller.moverAMesa(mesas[which]);
                                 }
-                            } catch (Exception e) {
-                                ExceptionHandler.handleException(e, act);
-                            }
+
+                                @Override
+                                public void post(Boolean value) {
+                                    if (value) {//TODO: ver bien esto, xq el finish()
+                                        dialog.dismiss();
+                                        finish();
+                                        Toast.makeText(getApplicationContext(), "Movido a mesa", Toast.LENGTH_SHORT).show();//TODO: ver bien el texto
+                                    } else {
+                                        dialog.dismiss();
+                                        Toast.makeText(getApplicationContext(), "No se pudo mover a mesa.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
                         }
                     }).
                     setNeutralButton(R.string.cancelar, new DialogInterface.OnClickListener() {
@@ -710,14 +801,27 @@ public class OrdenActivity extends BaseActivity {
 
     public void addProductoUnoSolo() {
         try {
+            final BaseActivity act = this;
             if (lastClickedMenu != null) {
-                if (controller.addProducto(lastClickedMenu)) {
-                    controller.increasePoducto(lastClickedMenu, (ProductoVentaOrdenAdapter) listaOrden.getAdapter());
-                    updateCosto();
-                    Toast.makeText(this, lastClickedMenu.getNombre() + " agregado al pedido.", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, R.string.errorAlAutenticar, Toast.LENGTH_SHORT).show();//TODO: como que error al autenticar??
-                }
+
+                new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
+                    @Override
+                    public Boolean process() throws Exception {
+                        return controller.addProducto(lastClickedMenu);
+                    }
+
+                    @Override
+                    public void post(Boolean value) {
+                        if (value) {
+                            controller.increasePoducto(lastClickedMenu, (ProductoVentaOrdenAdapter) listaOrden.getAdapter());
+                            updateCosto();
+                            Toast.makeText(act, lastClickedMenu.getNombre() + " agregado al pedido.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(act, R.string.errorAlAutenticar, Toast.LENGTH_SHORT).show();//TODO: como que error al autenticar??
+                        }
+                    }
+                });
+
             } else {
                 Toast.makeText(this, R.string.noItemSeleccionado, Toast.LENGTH_SHORT).show();
             }
@@ -726,17 +830,30 @@ public class OrdenActivity extends BaseActivity {
         }
     }
 
-    public void addProductoVarios(float cantidad, ProductoVentaModel productoVentaModel) {
+    public void addProductoVarios(final float cantidad, ProductoVentaModel productoVentaModel) {
         lastClickedMenu = productoVentaModel;
+        final BaseActivity act = this;
         try {
             if (lastClickedMenu != null) {
-                if (controller.addProducto(lastClickedMenu, cantidad)) {
-                    controller.increasePoducto(lastClickedMenu, (ProductoVentaOrdenAdapter) listaOrden.getAdapter(), cantidad);
-                    updateCosto();
-                    Toast.makeText(this, lastClickedMenu.getNombre() + " agregado al pedido.", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, R.string.errorAlAutenticar, Toast.LENGTH_SHORT).show();//TODO: como que error al autenticar??
-                }
+
+                new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
+                    @Override
+                    public Boolean process() throws Exception {
+                        return controller.addProducto(lastClickedMenu, cantidad);
+                    }
+
+                    @Override
+                    public void post(Boolean value) {
+                        if (value) {
+                            controller.increasePoducto(lastClickedMenu, (ProductoVentaOrdenAdapter) listaOrden.getAdapter(), cantidad);
+                            updateCosto();
+                            Toast.makeText(act, lastClickedMenu.getNombre() + " agregado al pedido.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(act, R.string.errorAlAutenticar, Toast.LENGTH_SHORT).show();//TODO: como que error al autenticar??
+                        }
+                    }
+                });
+
             } else {
                 Toast.makeText(this, R.string.noItemSeleccionado, Toast.LENGTH_SHORT).show();
             }
@@ -746,24 +863,34 @@ public class OrdenActivity extends BaseActivity {
     }
 
     private void removeProducto() {
-        try {
-            if (lastClickedOrden != null) {
-                if (lastClickedOrden.getCantidad() > lastClickedOrden.getEnviadosACocina()) {
-                    if (controller.removeProducto(lastClickedOrden.getProductoVentaModel())) {
-                        ProductoVentaOrdenAdapter adapter = (ProductoVentaOrdenAdapter) listaOrden.getAdapter();
-                        adapter.decrease(lastClickedOrden.getProductoVentaModel());
-                        updateCosto();
-                        Toast.makeText(this, lastClickedOrden.getProductoVentaModel().getNombre() + " removido del pedido.", Toast.LENGTH_SHORT).show();
-                    } else
-                        Toast.makeText(this, R.string.errorAlBorrar, Toast.LENGTH_SHORT).show();
-                } else {
-                    showMessage("Para eliminar un producto enviado a cocina \n necesita autorizacion.");
-                }
+        final BaseActivity act = this;
+        if (lastClickedOrden != null) {
+            if (lastClickedOrden.getCantidad() > lastClickedOrden.getEnviadosACocina()) {
+
+                new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
+                    @Override
+                    public Boolean process() throws Exception {
+                        return controller.removeProducto(lastClickedOrden.getProductoVentaModel());
+                    }
+
+                    @Override
+                    public void post(Boolean value) {
+                        if (value) {
+                            ProductoVentaOrdenAdapter adapter = (ProductoVentaOrdenAdapter) listaOrden.getAdapter();
+                            adapter.decrease(lastClickedOrden.getProductoVentaModel());
+                            updateCosto();
+                            Toast.makeText(act, lastClickedOrden.getProductoVentaModel().getNombre() + " removido del pedido.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(act, R.string.errorAlBorrar, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
             } else {
-                Toast.makeText(this, R.string.noItemSeleccionado, Toast.LENGTH_SHORT).show();
+                showMessage("Para eliminar un producto enviado a cocina \n necesita autorizacion.");
             }
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+        } else {
+            Toast.makeText(this, R.string.noItemSeleccionado, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -779,24 +906,36 @@ public class OrdenActivity extends BaseActivity {
 
     private void cerrarOrden() {
         try {
-            if (controller.finishOrden(deLaCasaCheckBox.isChecked())) {
-                new AlertDialog.Builder(this).
-                        setMessage(R.string.cerrarOrden).
-                        setOnDismissListener(new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialog) {
-                                finish();
-                            }
-                        }).create().show();
-            } else {
-                new AlertDialog.Builder(this).setMessage(R.string.error_al_cerrar_falta_enviar_cocina).
-                        setOnDismissListener(new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialog) {
-                                dialog.dismiss();
-                            }
-                        }).create().show();
-            }
+            final BaseActivity act = this;
+            new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
+                @Override
+                public Boolean process() throws Exception {
+                    return controller.finishOrden(deLaCasaCheckBox.isChecked());
+                }
+
+                @Override
+                public void post(Boolean value) {
+                    if (value) {
+                        new AlertDialog.Builder(act).
+                                setMessage(R.string.cerrarOrden).
+                                setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                    @Override
+                                    public void onDismiss(DialogInterface dialog) {
+                                        finish();
+                                    }
+                                }).create().show();
+                    } else {
+                        new AlertDialog.Builder(act).setMessage(R.string.error_al_cerrar_falta_enviar_cocina).
+                                setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                    @Override
+                                    public void onDismiss(DialogInterface dialog) {
+                                        dialog.dismiss();
+                                    }
+                                }).create().show();
+                    }
+                }
+            });
+
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
@@ -813,22 +952,34 @@ public class OrdenActivity extends BaseActivity {
     }
 
     private void despacharACocina() {
-        try {
-            controller.sendToKitchen();
-            fillAct(controller.getProductoVentaOrden());
-            new AlertDialog.Builder(this).setMessage(R.string.enviarAcocina).create().show();
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
-        }
+        final BaseActivity act = this;
+        new LoadingHandler<Boolean>(this, new LoadingProcess<Boolean>() {
+            @Override
+            public Boolean process() throws Exception {
+                return controller.sendToKitchen();
+            }
+
+            @Override
+            public void post(Boolean value) {
+                fillAct(controller.getProductoVentaOrden());
+                new AlertDialog.Builder(act).setMessage(R.string.enviarAcocina).create().show();
+            }
+        });
     }
 
-    private void addNota(String nota) {
-        try {
-            controller.addNota(lastClickedOrden.getProductoVentaModel(), nota);
-            Toast.makeText(this, lastClickedOrden.getProductoVentaModel().getNombre() + " Nota Agregada", Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
-        }
+    private void addNota(final String nota) {
+        final BaseActivity act = this;
+        new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
+            @Override
+            public Boolean process() throws Exception {
+                return controller.addNota(lastClickedOrden.getProductoVentaModel(), nota);
+            }
+
+            @Override
+            public void post(Boolean value) {
+                Toast.makeText(act, lastClickedOrden.getProductoVentaModel().getNombre() + " Nota Agregada", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private String toHTMLString(String s) {
