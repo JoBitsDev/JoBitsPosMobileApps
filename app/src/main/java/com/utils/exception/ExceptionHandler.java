@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.NetworkOnMainThreadException;
 import android.view.View;
 import android.widget.Toast;
 
@@ -60,9 +61,21 @@ public class ExceptionHandler {
             handleDayClosedException((DayClosedException) e, activity);
         } else if (e instanceof TimeoutException) {
             handleTimeoutException((Exception) e, activity);
+        } else if (e instanceof NetworkOnMainThreadException) {
+            handleNetworkOnMainThreadException((Exception) e, activity);
         } else {//error inesperado
             handleUnknownException((Exception) e, activity);
         }
+    }
+
+    private static void handleNetworkOnMainThreadException(Exception e, BaseActivity activity) {
+        final Context c = activity.getApplicationContext();
+        final View v = activity.findViewById(android.R.id.content).getRootView();
+
+        //mensaje explicando que pasa
+        String networkOnMainThreadMessage = v.findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.networkOnMainThreadError).toString();
+
+        createDialog(networkOnMainThreadMessage, c, activity);
     }
 
     private static void handleTimeoutException(Exception e, BaseActivity activity) {
