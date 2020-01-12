@@ -1,5 +1,6 @@
 <resources>
 
+    <color name="color_splash_screen">#FFFFFF</color>
     <color name="color_Labels">#FFFFFF</color>
     <color name="color_Buttons">#FFFFFF</color>
     <color name="color_Fondo2">#5A818D</color>

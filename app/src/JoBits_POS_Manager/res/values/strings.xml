@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">JoBits POS \n Manager</string>
+    <string name="app_name">POS Manager</string>
 
     <string name="version">Version 0.1</string>
     <string name="access_level">3</string>
