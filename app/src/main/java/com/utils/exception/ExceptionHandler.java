@@ -197,7 +197,7 @@ public class ExceptionHandler {
      * @param e        el tipo de excepcion debe ser {@link DayClosedException }
      * @param activity el activity desde donde se lanza la excepcion
      */
-    private static void handleDayClosedException(DayClosedException e, BaseActivity activity) {
+    private static void handleDayClosedException(DayClosedException e, final BaseActivity activity) {
 
         final Context c = activity.getApplicationContext();
         final View v = activity.findViewById(android.R.id.content).getRootView();
@@ -211,6 +211,7 @@ public class ExceptionHandler {
             @Override
             public void onClick(DialogInterface dialog, int which) {//comportamiento al clickear el boton
                 dialog.dismiss();
+                activity.navigateUpTo(new Intent(c, MainActivity.class));
             }
         });
         builder.create().show();
