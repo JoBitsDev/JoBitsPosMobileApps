@@ -67,7 +67,6 @@ public class OrdenReadOnlyActivity extends BaseActivity {
 
     @Override
     protected void addListeners() {
-        listaOrden.setFocusable(false);
     }
 
     @Override
