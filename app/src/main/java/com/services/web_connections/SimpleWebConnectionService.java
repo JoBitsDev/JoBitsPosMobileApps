@@ -1,7 +1,5 @@
 package com.services.web_connections;
 
-import android.os.AsyncTask;
-
 import java.io.*;
 import java.net.URL;
 
@@ -10,10 +8,6 @@ import com.utils.exception.*;
 import java.net.HttpURLConnection;
 
 import com.utils.EnvironmentVariables;
-
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Capa: Services
@@ -73,18 +67,8 @@ public class SimpleWebConnectionService {
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public String connect(String url) throws ServerErrorException, NoConnectionException, TimeoutException {
-        fetchData f = new fetchData();
-        f.execute(url);
-        String res = null;
-
-        try {
-            res = f.get(3*1000, TimeUnit.MILLISECONDS);
-        } catch (InterruptedException e) {//convierte las excepciones que manda a las que manejamos
-            throw new NoConnectionException();
-        } catch (ExecutionException e) {
-            throw new ServerErrorException();
-        }
+    public String connect(final String url) throws Exception {
+        String res = execute(url);
 
         if (res == null) {
             throw new ServerErrorException();
@@ -95,42 +79,32 @@ public class SimpleWebConnectionService {
         }
     }
 
-    /**
-     * Capa: Interna
-     * Clase que sealiza Asyncronicamente la peticion al servidor.
-     *
-     * @extends AsyncTask<String, Void, String> ya que es una tarea asincrona.
-     */
-    protected class fetchData extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... url) {
-            try {
-                String ret = downloadUrl(url[0]);
-                return ret;
-            } catch (IOException e) {
-                e.printStackTrace();
-                return EnvironmentVariables.PETITION_ERROR;
-            }
-
+    protected String execute(String... url) {
+        try {
+            String ret = downloadUrl(url[0]);
+            return ret;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return EnvironmentVariables.PETITION_ERROR;
         }
 
-        private String downloadUrl(String urlString) throws IOException {
-            url = new URL(urlString);
-            con = (HttpURLConnection) url.openConnection();
-            con.setDoInput(true);
-            // Starts the query
-            if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                BufferedReader input = new BufferedReader(
-                        new InputStreamReader(con.getInputStream()),
-                        8192);
-                resp = input.readLine();
-                input.close();
-                con.disconnect();
-                return resp;
-            } else {
-                return null;
-            }
+    }
+
+    private String downloadUrl(String urlString) throws IOException {
+        url = new URL(urlString);
+        con = (HttpURLConnection) url.openConnection();
+        con.setDoInput(true);
+        // Starts the query
+        if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+            BufferedReader input = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()),
+                    8192);
+            resp = input.readLine();
+            input.close();
+            con.disconnect();
+            return resp;
+        } else {
+            return null;
         }
     }
 
