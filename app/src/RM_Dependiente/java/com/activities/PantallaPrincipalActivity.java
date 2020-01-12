@@ -1,6 +1,5 @@
 package com.activities;
 
-import android.graphics.Color;
 import android.view.*;
 import android.widget.*;
 import android.content.*;
@@ -11,8 +10,8 @@ import com.services.models.MesaModel;
 import com.utils.EnvironmentVariables;
 import com.controllers.MesasController;
 
-import com.utils.adapters.MesaAdapter;
 import com.utils.exception.*;
+import com.utils.adapters.MesaAdapter;
 import com.utils.loading.LoadingHandler;
 import com.utils.loading.LoadingProcess;
 
@@ -60,7 +59,17 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
             restNameLabel = (TextView) findViewById(R.id.textViewNombreRest);
             if (restNameLabel != null) {
-                restNameLabel.setText(controller.getNombreRest());
+                new LoadingHandler<String>(this, new LoadingProcess<String>() {
+                    @Override
+                    public String process() {
+                        return controller.getNombreRest();
+                    }
+
+                    @Override
+                    public void post(String value) {
+                        restNameLabel.setText(value);
+                    }
+                });
             }
 
             listaMesas = (ListView) findViewById(R.id.listaMesas);
@@ -218,22 +227,29 @@ public class PantallaPrincipalActivity extends BaseActivity {
     }
 
     public void onCambiarAreaButtonClick(View view) {//Cambia de area
-        try {
-            final String[] areas = controller.getAreas();
-            new AlertDialog.Builder(this).
-                    setTitle(R.string.seleccionararea).
-                    setSingleChoiceItems(areas, selectedAreaWich, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            selectedAreaWich = which;
-                            selectedArea = areas[selectedAreaWich];
-                            dialog.dismiss();
-                            configurarTabla();
-                        }
-                    }).create().show();
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
-        }
+        final BaseActivity act = this;
+        new LoadingHandler<String[]>(this, new LoadingProcess<String[]>() {
+            @Override
+            public String[] process() throws Exception {
+                return controller.getAreas();
+            }
+
+            @Override
+            public void post(final String[] value) {
+                new AlertDialog.Builder(act).
+                        setTitle(R.string.seleccionararea).
+                        setSingleChoiceItems(value, selectedAreaWich, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                selectedAreaWich = which;
+                                selectedArea = value[selectedAreaWich];
+                                dialog.dismiss();
+                                configurarTabla();
+                            }
+                        }).create().show();
+            }
+        });
+
     }
 
     public void configurarTabla() {
