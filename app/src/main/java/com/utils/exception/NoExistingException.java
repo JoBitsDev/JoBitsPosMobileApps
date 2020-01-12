@@ -9,28 +9,7 @@ import android.widget.Toast;
  * NO SE USA
  */
 public class NoExistingException extends Exception {
-    private Context context;
-
-    public NoExistingException(String detailMessage, Context context) {
+    public NoExistingException(String detailMessage) {
         super(detailMessage);
-        this.context = context;
     }
-
-    public void showMessageInToast() {
-        Toast.makeText(context, getMessage(), Toast.LENGTH_LONG).show();
-
-    }
-
-    public void showMessageInAlert() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage(getMessage());
-        builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.show();
-    }
-
 }
