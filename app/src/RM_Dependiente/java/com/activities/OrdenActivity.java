@@ -744,38 +744,47 @@ public class OrdenActivity extends BaseActivity {
         try {
             final BaseActivity act = this;
 
-            final String[] mesas = controller.getMesas();
-            new AlertDialog.Builder(this).
-                    setTitle(R.string.seleccioneLaMesaAMover).
-                    setSingleChoiceItems(mesas, -1, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(final DialogInterface dialog, final int which) {
-                            new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
-                                @Override
-                                public Boolean process() throws Exception {
-                                    return controller.moverAMesa(mesas[which]);
-                                }
+            new LoadingHandler<String[]>(act, new LoadingProcess<String[]>() {
+                @Override
+                public String[] process() {
+                    return controller.getMesas();
+                }
 
+                @Override
+                public void post(final String[] value) {
+                    new AlertDialog.Builder(act).
+                            setTitle(R.string.seleccioneLaMesaAMover).
+                            setSingleChoiceItems(value, -1, new DialogInterface.OnClickListener() {
                                 @Override
-                                public void post(Boolean value) {
-                                    if (value) {//TODO: ver bien esto, xq el finish()
-                                        dialog.dismiss();
-                                        finish();
-                                        Toast.makeText(getApplicationContext(), "Movido a mesa", Toast.LENGTH_SHORT).show();//TODO: ver bien el texto
-                                    } else {
-                                        dialog.dismiss();
-                                        Toast.makeText(getApplicationContext(), "No se pudo mover a mesa.", Toast.LENGTH_SHORT).show();
-                                    }
+                                public void onClick(final DialogInterface dialog, final int which) {
+                                    new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
+                                        @Override
+                                        public Boolean process() throws Exception {
+                                            return controller.moverAMesa(value[which]);
+                                        }
+
+                                        @Override
+                                        public void post(Boolean value) {
+                                            if (value) {//TODO: ver bien esto, xq el finish()
+                                                dialog.dismiss();
+                                                finish();
+                                                Toast.makeText(getApplicationContext(), "Movido a mesa", Toast.LENGTH_SHORT).show();//TODO: ver bien el texto
+                                            } else {
+                                                dialog.dismiss();
+                                                Toast.makeText(getApplicationContext(), "No se pudo mover a mesa.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
                                 }
-                            });
-                        }
-                    }).
-                    setNeutralButton(R.string.cancelar, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    }).create().show();
+                            }).
+                            setNeutralButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).create().show();
+                }
+            });
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
@@ -953,15 +962,16 @@ public class OrdenActivity extends BaseActivity {
 
     private void despacharACocina() {
         final BaseActivity act = this;
-        new LoadingHandler<Boolean>(this, new LoadingProcess<Boolean>() {
+        new LoadingHandler<List<ProductoVentaOrdenModel>>(this, new LoadingProcess<List<ProductoVentaOrdenModel>>() {
             @Override
-            public Boolean process() throws Exception {
-                return controller.sendToKitchen();
+            public List<ProductoVentaOrdenModel> process() throws Exception {
+                controller.sendToKitchen();
+                return controller.getProductoVentaOrden();
             }
 
             @Override
-            public void post(Boolean value) {
-                fillAct(controller.getProductoVentaOrden());
+            public void post(List<ProductoVentaOrdenModel> value) {
+                fillAct(value);
                 new AlertDialog.Builder(act).setMessage(R.string.enviarAcocina).create().show();
             }
         });
