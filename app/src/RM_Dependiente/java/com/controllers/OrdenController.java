@@ -95,7 +95,7 @@ public class OrdenController extends BaseController {
     }
 
     public String[] getMesas() {
-        String url = "http://" + EnvironmentVariables.IP + ":" + EnvironmentVariables.PORT + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.mesaNoLabel/MOSTRARVACIAS";
+        String url = "http://" + EnvironmentVariables.IP + ":" + EnvironmentVariables.PORT + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.mesa/MOSTRARVACIAS";
 
         final List<MesaModel> mesaModels = new MesaXMlParser().fetch(url);
 
