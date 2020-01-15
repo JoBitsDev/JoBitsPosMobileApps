@@ -14,6 +14,7 @@ import com.services.models.ProductoVentaModel;
 import com.services.models.ProductoVentaOrdenModel;
 import com.services.models.ProductovOrdenPKModel;
 import com.services.web_connections.OrdenWebConnectionService;
+import com.utils.EnvironmentVariables;
 
 import java.util.List;
 
@@ -66,9 +67,9 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
 
         holder.precioVenta.setTextColor(c);
         holder.nombreProducto.setText(objects.get(position).getProductoVentaModel().getNombre());
-        holder.precioVenta.setText(String.valueOf(
+        holder.precioVenta.setText(
                 objects.get(position).getProductoVentaModel().getPrecioVenta() *
-                        objects.get(position).getCantidad()));
+                        objects.get(position).getCantidad() + EnvironmentVariables.MONEDA_PRINCIPAL);
         holder.cantidad.setText(String.valueOf(objects.get(position).getCantidad()));
         holder.adjunto.setTag(position);
         holder.add.setTag(position);
