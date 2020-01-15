@@ -8,6 +8,7 @@ import com.utils.exception.NoConnectionException;
 import com.utils.exception.ServerErrorException;
 
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Capa: Services.
@@ -55,7 +56,7 @@ public class LoginWebConnectionServiceService extends SimpleWebConnectionService
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public boolean authenticate() throws ServerErrorException, NoConnectionException {
+    public boolean authenticate() throws Exception {
         return connect(path + "com.restmanager.personal/l_" + user + "_" + pass + "_" + access).equals(EnvironmentVariables.PETITION_TRUE);
     }
 

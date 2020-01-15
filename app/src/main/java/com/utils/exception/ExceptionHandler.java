@@ -4,12 +4,15 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.NetworkOnMainThreadException;
 import android.view.View;
 import android.widget.Toast;
 
 import com.activities.BaseActivity;
 import com.activities.MainActivity;
 import com.activities.R;
+
+import java.util.concurrent.TimeoutException;
 
 /**
  * Capa: Utils.
@@ -46,7 +49,7 @@ public class ExceptionHandler {
      * @param activity Donde se lanzo la excepcion para poder notificar al usuario.
      */
     public static void handleException(Exception e, BaseActivity activity) {
-        StackTraceElement element = e.getStackTrace()[0];
+        e.printStackTrace();
 
         if (e instanceof NoConnectionException) {//no conection
             handleNoConnectionException((NoConnectionException) e, activity);
@@ -56,23 +59,45 @@ public class ExceptionHandler {
             handleNoExistingException((Exception) e, activity);
         } else if (e instanceof DayClosedException) {//error de dia cerrado
             handleDayClosedException((DayClosedException) e, activity);
+        } else if (e instanceof TimeoutException) {
+            handleTimeoutException((Exception) e, activity);
+        } else if (e instanceof NetworkOnMainThreadException) {
+            handleNetworkOnMainThreadException((Exception) e, activity);
         } else {//error inesperado
             handleUnknownException((Exception) e, activity);
         }
     }
 
+    private static void handleNetworkOnMainThreadException(Exception e, BaseActivity activity) {
+        final Context c = activity.getApplicationContext();
+        final View v = activity.findViewById(android.R.id.content).getRootView();
 
-        /*Viejo, sin boton ni nada
-        Dialog dialog = new AlertDialog.Builder(c).setMessage(message).create();
+        //mensaje explicando que pasa
+        String networkOnMainThreadMessage = v.findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.networkOnMainThreadError).toString();
 
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+        createDialog(networkOnMainThreadMessage, c, activity);
+    }
+
+    private static void handleTimeoutException(Exception e, BaseActivity activity) {
+        final Context c = activity.getApplicationContext();
+        final View v = activity.findViewById(android.R.id.content).getRootView();
+
+        //mensaje explicando que pasa
+        String timeoutMessage = v.findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.timeoutError).toString();
+
+        //popup a mostrar
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setMessage(timeoutMessage);
+        builder.setTitle(ExceptionHandler.POPUP_TITLE);
+
+        builder.setNeutralButton(ExceptionHandler.POPUP_BUTTON_TEXT, new DialogInterface.OnClickListener() {
             @Override
-            public void onDismiss(DialogInterface dialog) {
-
+            public void onClick(DialogInterface dialog, int which) {//comportamiento al clickear el boton
+                dialog.dismiss();
             }
         });
-
-        dialog.show();*/
+        builder.create().show();
+    }
 
     private static void handleNoExistingException(Exception e, BaseActivity activity) {
         final Context c = activity.getApplicationContext();
@@ -168,10 +193,11 @@ public class ExceptionHandler {
 
     /**
      * Excepcion para manejar cuando la venta esta cerrada solo en el favour del dependiente
-     * @param e el tipo de excepcion debe ser {@link DayClosedException }
+     *
+     * @param e        el tipo de excepcion debe ser {@link DayClosedException }
      * @param activity el activity desde donde se lanza la excepcion
      */
-    private static void handleDayClosedException(DayClosedException e, BaseActivity activity) {
+    private static void handleDayClosedException(DayClosedException e, final BaseActivity activity) {
 
         final Context c = activity.getApplicationContext();
         final View v = activity.findViewById(android.R.id.content).getRootView();
@@ -185,6 +211,7 @@ public class ExceptionHandler {
             @Override
             public void onClick(DialogInterface dialog, int which) {//comportamiento al clickear el boton
                 dialog.dismiss();
+                activity.navigateUpTo(new Intent(c, MainActivity.class));
             }
         });
         builder.create().show();

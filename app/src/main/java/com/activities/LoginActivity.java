@@ -8,6 +8,10 @@ import android.widget.*;
 
 import com.controllers.LoginController;
 import com.utils.exception.ExceptionHandler;
+import com.utils.exception.NoConnectionException;
+import com.utils.exception.ServerErrorException;
+import com.utils.loading.LoadingHandler;
+import com.utils.loading.LoadingProcess;
 
 /**
  * Capa: Activities
@@ -49,28 +53,40 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);//xml asociado
 
-        initVarialbes();//inicializa las variables
-        addListeners();//agrega listeners
+        try {
+            initVarialbes();//inicializa las variables
+            addListeners();//agrega listeners
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     @Override
     void initVarialbes() {//inicializa las variables
-        controller = new LoginController();//inicializa el controller
+        try {
+            controller = new LoginController();//inicializa el controller
 
-        loginResult = (TextView) findViewById(R.id.loginResult);//asigna el label a su variable
-        loginButton = (Button) findViewById(R.id.loginButton);//asigna el boton a su variable
-        user = (EditText) findViewById(R.id.user);//asigna el campo de texto de usuario a su variable
-        pass = (EditText) findViewById(R.id.pass);//asigna el campo de texto de contrasenna a su variable
+            loginResult = (TextView) findViewById(R.id.loginResult);//asigna el label a su variable
+            loginButton = (Button) findViewById(R.id.loginButton);//asigna el boton a su variable
+            user = (EditText) findViewById(R.id.user);//asigna el campo de texto de usuario a su variable
+            pass = (EditText) findViewById(R.id.pass);//asigna el campo de texto de contrasenna a su variable
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     @Override
     void addListeners() {//agrega listeners
-        loginButton.setOnClickListener(new View.OnClickListener() {//listener del boton
-            @Override
-            public void onClick(View v) {//agrega la accion del click del boton
-                onLoginButtonOnClick(v);
-            }
-        });
+        try {
+            loginButton.setOnClickListener(new View.OnClickListener() {//listener del boton
+                @Override
+                public void onClick(View v) {//agrega la accion del click del boton
+                    onLoginButtonOnClick(v);
+                }
+            });
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     /**
@@ -79,7 +95,11 @@ public class LoginActivity extends BaseActivity {
      * @param v View de la aplicacion.
      */
     private void onLoginButtonOnClick(View v) {//accion del click del boton
-        autenticar(v);//llama a autenticar
+        try {
+            autenticar(v);//llama a autenticar
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     /**
@@ -89,26 +109,38 @@ public class LoginActivity extends BaseActivity {
      */
     private void autenticar(View v) {
         try {
-            String username = user.getText().toString();
-            String password = pass.getText().toString();
-            String access = getResources().getString(R.string.access_level);
+            final BaseActivity act = this;
+            final String username = user.getText().toString();
+            final String password = pass.getText().toString();
+            final String access = getResources().getString(R.string.access_level);
 
             if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
                 loginResult.setTextColor(Color.RED);
                 loginResult.setText(R.string.errorAlAutenticar);
             } else {
-                if (controller.loginAction(username, password, access)) {
-                    loginResult.setTextColor(Color.GREEN);
-                    loginResult.setText(R.string.autenticacionCorrecta);
 
-                    //cambio de activity
-                    Intent launch = new Intent(this, PantallaPrincipalActivity.class);
-                    launch.putExtra(String.valueOf(R.string.user), username);
-                    startActivity(launch);
+                new LoadingHandler<Boolean>(this, new LoadingProcess<Boolean>() {
+                    @Override
+                    public Boolean process() throws Exception {
+                        return controller.loginAction(username, password, access);
+                    }
 
-                } else {//si no es correcto lanza error
-                    errorAlAutenticar();
-                }
+                    @Override
+                    public void post(Boolean value) {
+                        if (value) {
+                            loginResult.setTextColor(Color.GREEN);
+                            loginResult.setText(R.string.autenticacionCorrecta);
+
+                            //cambio de activity
+                            Intent launch = new Intent(act, PantallaPrincipalActivity.class);
+                            launch.putExtra(String.valueOf(R.string.user), username);
+                            startActivity(launch);
+
+                        } else {//si no es correcto lanza error
+                            errorAlAutenticar();
+                        }
+                    }
+                });
             }
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);

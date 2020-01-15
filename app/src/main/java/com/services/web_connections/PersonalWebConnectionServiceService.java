@@ -37,7 +37,7 @@ public class PersonalWebConnectionServiceService extends SimpleWebConnectionServ
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public String[] getUsuariosActivos() throws InterruptedException, ExecutionException {
+    public String[] getUsuariosActivos() throws Exception {
         String[] result = {};
         String ret = connect(path + usuariosActivos);
 
