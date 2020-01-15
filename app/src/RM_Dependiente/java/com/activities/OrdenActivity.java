@@ -77,7 +77,7 @@ public class OrdenActivity extends BaseActivity {
 
             createOldOrden(bundleExtra);//crea la orden vieja
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -108,12 +108,12 @@ public class OrdenActivity extends BaseActivity {
             dependienteLabel.setText(bundleExtra.getString(String.valueOf(R.string.user)));//set el label con el dependiente
             ordenNoLabel.setText(bundleExtra.getString(String.valueOf(R.string.cod_Orden)));//set el label de la orden
             productosVentaOrden = new ArrayList<ProductoVentaOrdenModel>();
-            menuAdapter = new MenuAdapterThis(this, R.layout.list_menu, new ArrayList<ProductoVentaModel>());
-            productoVentaOrdenAdapter = new ProductoVentaOrdenAdapter(this, R.id.listaOrden, productosVentaOrden);
+            menuAdapter = new MenuAdapterThis(act, R.layout.list_menu, new ArrayList<ProductoVentaModel>());
+            productoVentaOrdenAdapter = new ProductoVentaOrdenAdapter(act, R.id.listaOrden, productosVentaOrden);
 
             initTab();
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -209,7 +209,7 @@ public class OrdenActivity extends BaseActivity {
             });
 
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -244,7 +244,7 @@ public class OrdenActivity extends BaseActivity {
             }
             return false;
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
             return false;
         }
     }
@@ -260,14 +260,14 @@ public class OrdenActivity extends BaseActivity {
             }
             return true;
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
             return false;
         }
     }
 
 
     private void onDeLaCasaCheckBoxClick() {
-        new LoadingHandler<Void>(this, new LoadingProcess<Void>() {
+        new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
             @Override
             public Void process() throws Exception {
                 controller.setDeLaCasa(deLaCasaCheckBox.isChecked());
@@ -288,12 +288,12 @@ public class OrdenActivity extends BaseActivity {
                 seccionSelected = seccionAdapter.getItem(position);
                 List<ProductoVentaModel> productosSelected = seccionSelected.getProductos();
                 if (!productosSelected.isEmpty()) {
-                    menuAdapter = new MenuAdapterThis(this, R.layout.list_menu, productosSelected);
+                    menuAdapter = new MenuAdapterThis(act, R.layout.list_menu, productosSelected);
                     menuProductosListView.setAdapter(menuAdapter);
                 }
             }
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -318,7 +318,7 @@ public class OrdenActivity extends BaseActivity {
             }).create().show();
             return true;
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
             return false;
         }
     }
@@ -344,7 +344,7 @@ public class OrdenActivity extends BaseActivity {
             }).create().show();
             return true;
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
             return false;
         }
     }
@@ -355,7 +355,7 @@ public class OrdenActivity extends BaseActivity {
             addProductoUnoSolo();
             return true;
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
             return false;
         }
     }
@@ -363,19 +363,18 @@ public class OrdenActivity extends BaseActivity {
     @Override
     protected void setAdapters() {
         try {
-            listaOrden.setAdapter(new ProductoVentaOrdenAdapter(this, R.id.listaOrden, productosVentaOrden, new View.OnLongClickListener() {
+            listaOrden.setAdapter(new ProductoVentaOrdenAdapter(act, R.id.listaOrden, productosVentaOrden, new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     return onMenuOrdenListViewLongClick(v, (Integer) v.getTag());
                 }
             }));
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
     private void setMenuSeccionListViewAdapters() {
-        final BaseActivity act = this;
         seccionAdapter = new SeccionAdapter(act, android.R.layout.simple_list_item_1, secciones);
         menuSeccionListView.setAdapter(seccionAdapter);
     }
@@ -391,7 +390,7 @@ public class OrdenActivity extends BaseActivity {
 
             if (codOrden != null && mesa != null && dependiente != null) {
 
-                new LoadingHandler<List<ProductoVentaOrdenModel>>(this, new LoadingProcess<List<ProductoVentaOrdenModel>>() {
+                new LoadingHandler<List<ProductoVentaOrdenModel>>(act, new LoadingProcess<List<ProductoVentaOrdenModel>>() {
                     @Override
                     public List<ProductoVentaOrdenModel> process() {
                         return controller.starService(codOrden, mesa, dependiente).getProductoVentaOrden(codOrden);
@@ -408,7 +407,7 @@ public class OrdenActivity extends BaseActivity {
             } else {
 
                 controller.starService(mesa, dependiente);
-                new LoadingHandler<Void>(this, new LoadingProcess<Void>() {
+                new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
                     @Override
                     public Void process() throws Exception {
                         if (!controller.initOrden()) {
@@ -426,7 +425,7 @@ public class OrdenActivity extends BaseActivity {
 
             }
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -451,7 +450,7 @@ public class OrdenActivity extends BaseActivity {
                 host.addTab(spec);
             }
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -467,13 +466,12 @@ public class OrdenActivity extends BaseActivity {
             adapter.setObjects(orden);
             updateCosto();
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
     private void initMenu(final String codMesa) {
-        final BaseActivity act = this;
-        new LoadingHandler<Void>(this, new LoadingProcess<Void>() {
+        new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
             @Override
             public Void process() {
                 secciones = controller.getSecciones();
@@ -512,7 +510,7 @@ public class OrdenActivity extends BaseActivity {
             getMenuInflater().inflate(R.menu.menu_orden, menu);
             return true;
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
             return false;
         }
     }
@@ -554,14 +552,13 @@ public class OrdenActivity extends BaseActivity {
             }
             return super.onOptionsItemSelected(item);
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
             return false;
         }
 
     }
 
     private void cederACamarero() {
-        final BaseActivity act = this;
         new LoadingHandler<String[]>(act, new LoadingProcess<String[]>() {
             @Override
             public String[] process() throws Exception {
@@ -619,7 +616,7 @@ public class OrdenActivity extends BaseActivity {
             lastClickedMenu = ((ProductoVentaOrdenModel) listaOrden.getAdapter().getItem((Integer) v.getTag())).getProductoVentaModel();
             addProductoUnoSolo();
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -628,7 +625,7 @@ public class OrdenActivity extends BaseActivity {
             lastClickedOrden = ((ProductoVentaOrdenModel) listaOrden.getAdapter().getItem((Integer) v.getTag()));
             removeProducto();
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -636,13 +633,13 @@ public class OrdenActivity extends BaseActivity {
         try {
             lastClickedOrden = (ProductoVentaOrdenModel) listaOrden.getAdapter().getItem((Integer) v.getTag());
 
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            final AlertDialog.Builder builder = new AlertDialog.Builder(act);
             builder.setTitle("Agregar Nota");
 
             // Get the layout inflater
-            final EditText nota = new EditText(this);
+            final EditText nota = new EditText(act);
 
-            new LoadingHandler<String>(this, new LoadingProcess<String>() {
+            new LoadingHandler<String>(act, new LoadingProcess<String>() {
                 @Override
                 public String process() throws Exception {
                     return controller.getNota(lastClickedOrden);
@@ -673,7 +670,7 @@ public class OrdenActivity extends BaseActivity {
 
 
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -681,12 +678,12 @@ public class OrdenActivity extends BaseActivity {
         try {
             lastClickedOrden = ((ProductoVentaOrdenModel) listaOrden.getAdapter().getItem((Integer) v.getTag()));
 
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            final AlertDialog.Builder builder = new AlertDialog.Builder(act);
             builder.setTitle("Agregar Comensal");
 
-            final EditText nota = new EditText(this);
+            final EditText nota = new EditText(act);
 
-            new LoadingHandler<String>(this, new LoadingProcess<String>() {
+            new LoadingHandler<String>(act, new LoadingProcess<String>() {
                 @Override
                 public String process() throws Exception {
                     return controller.getComensal(lastClickedOrden);
@@ -716,13 +713,12 @@ public class OrdenActivity extends BaseActivity {
             });
 
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
     private void addComensal(final String comensal) {
-        final BaseActivity act = this;
-        new LoadingHandler<Boolean>(this, new LoadingProcess<Boolean>() {
+        new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
             @Override
             public Boolean process() throws Exception {
                 return controller.addComensal(lastClickedOrden, comensal);
@@ -740,53 +736,47 @@ public class OrdenActivity extends BaseActivity {
     }
 
     public void moverAMesa() {//TODO: terminar esto
-        try {
-            final BaseActivity act = this;
+        new LoadingHandler<String[]>(act, new LoadingProcess<String[]>() {
+            @Override
+            public String[] process() {
+                return controller.getMesas();
+            }
 
-            new LoadingHandler<String[]>(act, new LoadingProcess<String[]>() {
-                @Override
-                public String[] process() {
-                    return controller.getMesas();
-                }
+            @Override
+            public void post(final String[] value) {
+                new AlertDialog.Builder(act).
+                        setTitle(R.string.seleccioneLaMesaAMover).
+                        setSingleChoiceItems(value, -1, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(final DialogInterface dialog, final int which) {
+                                new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
+                                    @Override
+                                    public Boolean process() throws Exception {
+                                        return controller.moverAMesa(value[which]);
+                                    }
 
-                @Override
-                public void post(final String[] value) {
-                    new AlertDialog.Builder(act).
-                            setTitle(R.string.seleccioneLaMesaAMover).
-                            setSingleChoiceItems(value, -1, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(final DialogInterface dialog, final int which) {
-                                    new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
-                                        @Override
-                                        public Boolean process() throws Exception {
-                                            return controller.moverAMesa(value[which]);
+                                    @Override
+                                    public void post(Boolean value) {
+                                        if (value) {//TODO: ver bien esto, xq el finish()
+                                            dialog.dismiss();
+                                            finish();
+                                            Toast.makeText(getApplicationContext(), "Movido a mesa", Toast.LENGTH_SHORT).show();//TODO: ver bien el texto
+                                        } else {
+                                            dialog.dismiss();
+                                            Toast.makeText(getApplicationContext(), "No se pudo mover a mesa.", Toast.LENGTH_SHORT).show();
                                         }
-
-                                        @Override
-                                        public void post(Boolean value) {
-                                            if (value) {//TODO: ver bien esto, xq el finish()
-                                                dialog.dismiss();
-                                                finish();
-                                                Toast.makeText(getApplicationContext(), "Movido a mesa", Toast.LENGTH_SHORT).show();//TODO: ver bien el texto
-                                            } else {
-                                                dialog.dismiss();
-                                                Toast.makeText(getApplicationContext(), "No se pudo mover a mesa.", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    });
-                                }
-                            }).
-                            setNeutralButton(R.string.cancelar, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            }).create().show();
-                }
-            });
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
-        }
+                                    }
+                                });
+                            }
+                        }).
+                        setNeutralButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).create().show();
+            }
+        });
     }
 
     private void updateCosto() {
@@ -803,75 +793,63 @@ public class OrdenActivity extends BaseActivity {
                 totalSecundariaLabel.setText(EnvironmentVariables.setDosLugaresDecimales(tot * EnvironmentVariables.conversion) + EnvironmentVariables.MONEDA_SECUNDARIA);
             }
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
     public void addProductoUnoSolo() {
-        try {
-            final BaseActivity act = this;
-            if (lastClickedMenu != null) {
+        if (lastClickedMenu != null) {
 
-                new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
-                    @Override
-                    public Boolean process() throws Exception {
-                        return controller.addProducto(lastClickedMenu);
+            new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
+                @Override
+                public Boolean process() throws Exception {
+                    return controller.addProducto(lastClickedMenu);
+                }
+
+                @Override
+                public void post(Boolean value) {
+                    if (value) {
+                        controller.increasePoducto(lastClickedMenu, (ProductoVentaOrdenAdapter) listaOrden.getAdapter());
+                        updateCosto();
+                        Toast.makeText(act, lastClickedMenu.getNombre() + " agregado al pedido.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(act, R.string.errorAlAutenticar, Toast.LENGTH_SHORT).show();//TODO: como que error al autenticar??
                     }
+                }
+            });
 
-                    @Override
-                    public void post(Boolean value) {
-                        if (value) {
-                            controller.increasePoducto(lastClickedMenu, (ProductoVentaOrdenAdapter) listaOrden.getAdapter());
-                            updateCosto();
-                            Toast.makeText(act, lastClickedMenu.getNombre() + " agregado al pedido.", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(act, R.string.errorAlAutenticar, Toast.LENGTH_SHORT).show();//TODO: como que error al autenticar??
-                        }
-                    }
-                });
-
-            } else {
-                Toast.makeText(this, R.string.noItemSeleccionado, Toast.LENGTH_SHORT).show();
-            }
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+        } else {
+            Toast.makeText(act, R.string.noItemSeleccionado, Toast.LENGTH_SHORT).show();
         }
     }
 
     public void addProductoVarios(final float cantidad, ProductoVentaModel productoVentaModel) {
         lastClickedMenu = productoVentaModel;
-        final BaseActivity act = this;
-        try {
-            if (lastClickedMenu != null) {
+        if (lastClickedMenu != null) {
+            new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
+                @Override
+                public Boolean process() throws Exception {
+                    return controller.addProducto(lastClickedMenu, cantidad);
+                }
 
-                new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
-                    @Override
-                    public Boolean process() throws Exception {
-                        return controller.addProducto(lastClickedMenu, cantidad);
+                @Override
+                public void post(Boolean value) {
+                    if (value) {
+                        controller.increasePoducto(lastClickedMenu, (ProductoVentaOrdenAdapter) listaOrden.getAdapter(), cantidad);
+                        updateCosto();
+                        Toast.makeText(act, lastClickedMenu.getNombre() + " agregado al pedido.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(act, R.string.errorAlAutenticar, Toast.LENGTH_SHORT).show();//TODO: como que error al autenticar??
                     }
+                }
+            });
 
-                    @Override
-                    public void post(Boolean value) {
-                        if (value) {
-                            controller.increasePoducto(lastClickedMenu, (ProductoVentaOrdenAdapter) listaOrden.getAdapter(), cantidad);
-                            updateCosto();
-                            Toast.makeText(act, lastClickedMenu.getNombre() + " agregado al pedido.", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(act, R.string.errorAlAutenticar, Toast.LENGTH_SHORT).show();//TODO: como que error al autenticar??
-                        }
-                    }
-                });
-
-            } else {
-                Toast.makeText(this, R.string.noItemSeleccionado, Toast.LENGTH_SHORT).show();
-            }
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+        } else {
+            Toast.makeText(act, R.string.noItemSeleccionado, Toast.LENGTH_SHORT).show();
         }
     }
 
     private void removeProducto() {
-        final BaseActivity act = this;
         if (lastClickedOrden != null) {
             if (lastClickedOrden.getCantidad() > lastClickedOrden.getEnviadosACocina()) {
 
@@ -898,7 +876,7 @@ public class OrdenActivity extends BaseActivity {
                 showMessage("Para eliminar un producto enviado a cocina \n necesita autorizacion.");
             }
         } else {
-            Toast.makeText(this, R.string.noItemSeleccionado, Toast.LENGTH_SHORT).show();
+            Toast.makeText(act, R.string.noItemSeleccionado, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -907,14 +885,12 @@ public class OrdenActivity extends BaseActivity {
             cerrarOrden();
             return true;
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
             return false;
         }
     }
 
     private void cerrarOrden() {
-        try {
-            final BaseActivity act = this;
             new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
                 @Override
                 public Boolean process() throws Exception {
@@ -943,10 +919,6 @@ public class OrdenActivity extends BaseActivity {
                     }
                 }
             });
-
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
-        }
     }
 
     private boolean onDespacharACocinaLongClick() {
@@ -954,14 +926,13 @@ public class OrdenActivity extends BaseActivity {
             despacharACocina();
             return true;
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
             return false;
         }
     }
 
     private void despacharACocina() {
-        final BaseActivity act = this;
-        new LoadingHandler<List<ProductoVentaOrdenModel>>(this, new LoadingProcess<List<ProductoVentaOrdenModel>>() {
+        new LoadingHandler<List<ProductoVentaOrdenModel>>(act, new LoadingProcess<List<ProductoVentaOrdenModel>>() {
             @Override
             public List<ProductoVentaOrdenModel> process() throws Exception {
                 controller.sendToKitchen();
@@ -977,7 +948,6 @@ public class OrdenActivity extends BaseActivity {
     }
 
     private void addNota(final String nota) {
-        final BaseActivity act = this;
         new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
             @Override
             public Boolean process() throws Exception {

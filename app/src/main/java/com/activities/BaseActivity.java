@@ -1,6 +1,7 @@
 package com.activities;
 
 import android.app.*;
+import android.os.Bundle;
 
 /**
  * Capa: Activities
@@ -11,6 +12,10 @@ import android.app.*;
  * @extends Activity ya que es una activity
  */
 public abstract class BaseActivity extends Activity {
+
+    protected BaseActivity act = this;
+
+    private Bundle bundle;
 
     /**
      * Método abstracto a reimplementar para inicializar las variables del XML en el activity.
@@ -28,6 +33,22 @@ public abstract class BaseActivity extends Activity {
      * Metodo a reimplementar por las activitys que lo necesiten si usan algun adapter.
      */
     protected void setAdapters() {
+    }
+
+    /**
+     * Get el bundle. Es usado por ejemplo en almacen para pasarle cosas al initVariables.
+     * @return
+     */
+    public Bundle getBundle() {
+        return bundle;
+    }
+
+    /**
+     * Set el nuevo bundle.
+     * @param bundle
+     */
+    public void setBundle(Bundle bundle) {
+        this.bundle = bundle;
     }
 
     /**
