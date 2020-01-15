@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -16,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -31,7 +31,6 @@ import com.utils.adapters.ProductoVentaOrdenAdapter;
 import com.utils.adapters.SeccionAdapter;
 import com.utils.exception.DayClosedException;
 import com.utils.exception.ExceptionHandler;
-import com.utils.exception.ServerErrorException;
 import com.utils.loading.LoadingHandler;
 import com.utils.loading.LoadingProcess;
 
@@ -97,6 +96,7 @@ public class OrdenActivity extends BaseActivity {
             deLaCasaCheckBox = (CheckBox) findViewById(R.id.deLaCasaCheckBox);
             menuProductosListView = (ListView) findViewById(R.id.menuListView);
             menuSeccionListView = (ListView) findViewById(R.id.menuPrincipalListView);
+
             listaOrden = (ListView) findViewById(R.id.listaOrden);
             cerrarOrdenButton = (Button) findViewById(R.id.buttonCerrarOrden);
             despacharACocinaButton = (Button) findViewById(R.id.buttondespacharCocina);
@@ -120,20 +120,22 @@ public class OrdenActivity extends BaseActivity {
     @Override
     protected void addListeners() {
         try {
-            if (cerrarOrdenButton != null) {//TODO: por que esta este if??
+            if (cerrarOrdenButton != null) {
                 cerrarOrdenButton.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        return onCerrarOrdenButtonLongClick();
+                        onCerrarOrdenButtonLongClick();
+                        return true;
                     }
                 });
             }
 
-            if (despacharACocinaButton != null) {//TODO: por que esta este if??
+            if (despacharACocinaButton != null) {
                 despacharACocinaButton.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        return onDespacharACocinaLongClock();
+                        onDespacharACocinaLongClick();
+                        return true;
                     }
                 });
             }
@@ -148,7 +150,8 @@ public class OrdenActivity extends BaseActivity {
             menuProductosListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    return onMenuProductosListViewLongClick(view, position);
+                    onMenuProductosListViewLongClick(view, position);
+                    return true;
                 }
             });
 
@@ -162,7 +165,8 @@ public class OrdenActivity extends BaseActivity {
             listaOrden.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    return onTabChangeTouchEvent(event);
+                    onTabChangeTouchEvent(event);
+                    return true;
                 }
             });
 
@@ -236,18 +240,13 @@ public class OrdenActivity extends BaseActivity {
                     currentX = event.getX();
                     boolean dirRight = Math.abs(lastX - currentX) > 200;
                     switchTab(dirRight);
-                    break;
+                    return dirRight;
             }
-            return true;
+            return false;
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
             return false;
         }
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        return onTabChangeTouchEvent(event);
     }
 
     private boolean switchTab(boolean change) {
@@ -950,7 +949,7 @@ public class OrdenActivity extends BaseActivity {
         }
     }
 
-    private boolean onDespacharACocinaLongClock() {
+    private boolean onDespacharACocinaLongClick() {
         try {
             despacharACocina();
             return true;
