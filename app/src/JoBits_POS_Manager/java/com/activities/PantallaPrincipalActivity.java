@@ -7,8 +7,13 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TabHost;
 
+import com.services.models.AreaListModel;
+import com.services.models.DpteListModel;
+import com.services.models.PuntoElaboracionListModel;
+import com.services.models.VentaResumenModel;
 import com.utils.adapter.AreaAdapter;
 import com.utils.adapter.DependientesAdapter;
 import com.utils.adapter.GeneralAdapter;
@@ -16,6 +21,7 @@ import com.utils.adapter.PtoElaboracionAdapter;
 import com.utils.exception.ExceptionHandler;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class PantallaPrincipalActivity extends BaseActivity {
 
@@ -23,6 +29,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
     private DependientesAdapter dependientesAdapter;
     private GeneralAdapter generalAdapter;
     private PtoElaboracionAdapter ptoElaboracionAdapter;
+
+    private List<VentaResumenModel> ventaResumenModels;
+    private List<AreaListModel> areaListModels;
+    private List<DpteListModel> dpteListModels;
+    private List<PuntoElaboracionListModel> puntoElaboracionListModels;
 
     private Calendar calendar;
     private int mes;
@@ -34,6 +45,10 @@ public class PantallaPrincipalActivity extends BaseActivity {
     private TabHost host;
     private float lastX;
 
+    private ListView listViewGeneral;
+    private ListView listViewAreas;
+    private ListView listViewDependientes;
+    private ListView listViewPtoElaboracion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,30 +57,59 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
         initVarialbes();
         addListeners();
+        setAdapters();
     }
 
     @Override
     void initVarialbes() {
-        calendar = Calendar.getInstance();
-        mes = calendar.get(Calendar.MONTH);
-        dia = calendar.get(Calendar.DAY_OF_MONTH);
-        año = calendar.get(Calendar.YEAR);
+        try {
+            calendar = Calendar.getInstance();
+            mes = calendar.get(Calendar.MONTH);
+            dia = calendar.get(Calendar.DAY_OF_MONTH);
+            año = calendar.get(Calendar.YEAR);
 
-        editTextShowDate = (EditText)findViewById(R.id.editTextDatePicker);
-        imageButtonDatePicker = (ImageButton)findViewById(R.id.imageButtonDatePicker);
+            editTextShowDate = (EditText) findViewById(R.id.editTextDatePicker);
+            imageButtonDatePicker = (ImageButton) findViewById(R.id.imageButtonDatePicker);
+            listViewGeneral = (ListView) findViewById(R.id.listViewGeneral);
+            listViewAreas = (ListView) findViewById(R.id.listViewAreas);
+            listViewDependientes = (ListView) findViewById(R.id.listViewDependientes);
+            listViewPtoElaboracion = (ListView) findViewById(R.id.listViewPtoElaboracion);
 
-        initTab();
+            generalAdapter = new GeneralAdapter(this, R.layout.general_list, ventaResumenModels);
+            areaAdapter = new AreaAdapter(this, R.layout.area_list, areaListModels);
+            dependientesAdapter = new DependientesAdapter(this, R.layout.dependientes_list, dpteListModels);
+            ptoElaboracionAdapter = new PtoElaboracionAdapter(this, R.layout.pto_elaboracion_list, puntoElaboracionListModels);
+
+            initTab();
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     @Override
     void addListeners() {
+        try {
+            imageButtonDatePicker.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pickDate();
+                }
+            });
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
+    }
 
-        imageButtonDatePicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pickDate();
-            }
-        });
+    @Override
+    protected void setAdapters() {
+        try {
+            listViewGeneral.setAdapter(generalAdapter);
+            listViewAreas.setAdapter(areaAdapter);
+            listViewDependientes.setAdapter(dependientesAdapter);
+            listViewPtoElaboracion.setAdapter(ptoElaboracionAdapter);
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
     }
 
     private void initTab() {
@@ -112,7 +156,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 break;
             case MotionEvent.ACTION_UP:
                 currentX = event.getX();
-                boolean dirRight = Math.abs( lastX - currentX) > 200;
+                boolean dirRight = Math.abs(lastX - currentX) > 200;
                 switchTab(dirRight);
                 break;
         }
@@ -121,6 +165,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
         return onTabChangeTouchEvent(event);
     }
 
@@ -135,20 +180,20 @@ public class PantallaPrincipalActivity extends BaseActivity {
         return false;
     }
 
-    private void pickDate(){
+    private void pickDate() {
         DatePickerDialog recogerFecha = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 //Esta variable lo que realiza es aumentar en uno el mes ya que comienza desde 0 = enero
                 final int mesActual = month + 1;
                 //Formateo el día obtenido: antepone el 0 si son menores de 10
-                String diaFormateado = (dayOfMonth < 10)? "0" + String.valueOf(dayOfMonth):String.valueOf(dayOfMonth);
+                String diaFormateado = (dayOfMonth < 10) ? "0" + String.valueOf(dayOfMonth) : String.valueOf(dayOfMonth);
                 //Formateo el mes obtenido: antepone el 0 si son menores de 10
-                String mesFormateado = (mesActual < 10)? "0" + String.valueOf(mesActual):String.valueOf(mesActual);
+                String mesFormateado = (mesActual < 10) ? "0" + String.valueOf(mesActual) : String.valueOf(mesActual);
                 //Muestro la fecha con el formato deseado
                 editTextShowDate.setText(diaFormateado + "/" + mesFormateado + "/" + year);
             }
-        },año, mes, dia);
+        }, año, mes, dia);
         recogerFecha.show();
     }
 }

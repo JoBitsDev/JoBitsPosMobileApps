@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.activities.R;
+import com.services.models.AreaListModel;
 
 import java.util.List;
 
@@ -15,22 +16,22 @@ import java.util.List;
  * Capa: Adapter
  * Clase adapter de la lista de areas respecto ingresos y gastos, encargada de manejar la vista de la lista.
  *
- * @extends de ArrayAdapter para poder implementar un nuevo adapter basado en el modelo ...
+ * @extends de ArrayAdapter para poder implementar un nuevo adapter basado en el modelo AreaListModel
  */
 
-public class AreaAdapter extends ArrayAdapter<String> {
+public class AreaAdapter extends ArrayAdapter<AreaListModel> {
 
     private Context context;
-    private List<String> change;
+    private List<AreaListModel> areaListModels;
 
     /**
      * Constructor
      */
 
-    public AreaAdapter(Context context, int textViewResourceId, List<String> change) {
-        super(context, textViewResourceId, change);
+    public AreaAdapter(Context context, int textViewResourceId, List<AreaListModel> areaListModels) {
+        super(context, textViewResourceId, areaListModels);
         this.context = context;
-        this.change = change;
+        this.areaListModels = areaListModels;
     }
 
     /**
@@ -53,10 +54,10 @@ public class AreaAdapter extends ArrayAdapter<String> {
         } else {
             holder = (ViewHolder) item.getTag();
         }
-        holder.codigo.setText("");
-        holder.nombre.setText("");
-        holder.ventaNetaArea.setText("");
-        holder.ventaReal.setText("");
+        holder.codigo.setText(areaListModels.get(position).getCod());
+        holder.nombre.setText(areaListModels.get(position).getNombre());
+        holder.ventaNetaArea.setText(areaListModels.get(position).getVentaNeta()+"");
+        holder.ventaReal.setText(areaListModels.get(position).getVentaReal()+"");
         return (item);
     }
 
