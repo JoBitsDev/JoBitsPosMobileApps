@@ -43,7 +43,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             addListeners();
             configurarTabla();
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -59,7 +59,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
             restNameLabel = (TextView) findViewById(R.id.textViewNombreRest);
             if (restNameLabel != null) {
-                new LoadingHandler<String>(this, new LoadingProcess<String>() {
+                new LoadingHandler<String>(act, new LoadingProcess<String>() {
                     @Override
                     public String process() {
                         return controller.getNombreRest();
@@ -79,7 +79,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
             switchOrden = (Switch) findViewById(R.id.switchOrden);
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -107,7 +107,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 }
             });
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -127,7 +127,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             continuar(((MesaAdapter) listaMesas.getAdapter()).getMesa(position));
             return true;
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
             return false;
         }
     }
@@ -162,7 +162,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
     private void continuar(final MesaModel m) throws NoExistingException {
         try {
-            final BaseActivity act = this;
             final Bundle data = new Bundle();
             data.putString(String.valueOf(R.string.mesa), m.getCodMesa());
 
@@ -175,7 +174,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
                 controller.setCodOrden(cod_orden);
 
-                new LoadingHandler<Boolean>(this, new LoadingProcess<Boolean>() {
+                new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
                     @Override
                     public Boolean process() throws Exception {
                         boolean res = controller.validate();
@@ -222,13 +221,12 @@ public class PantallaPrincipalActivity extends BaseActivity {
             }
 
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
     public void onCambiarAreaButtonClick(View view) {//Cambia de area
-        final BaseActivity act = this;
-        new LoadingHandler<String[]>(this, new LoadingProcess<String[]>() {
+        new LoadingHandler<String[]>(act, new LoadingProcess<String[]>() {
             @Override
             public String[] process() throws Exception {
                 return controller.getAreas();
@@ -253,44 +251,39 @@ public class PantallaPrincipalActivity extends BaseActivity {
     }
 
     public void configurarTabla() {
-        try {
-            final BaseActivity act = this;
-            final String orden = switchOrden.isChecked() ? String.valueOf(R.string.orden) : String.valueOf(R.string.mesa);
-            new LoadingHandler<MesaAdapter>(this, new LoadingProcess<MesaAdapter>() {
-                @Override
-                public MesaAdapter process() throws Exception {
-                    MesaAdapter adapter = controller.getData(selectedArea, act);
-                    adapter.orderBy(orden);
-                    return adapter;
-                }
+        final String orden = switchOrden.isChecked() ? String.valueOf(R.string.orden) : String.valueOf(R.string.mesa);
+        new LoadingHandler<MesaAdapter>(act, new LoadingProcess<MesaAdapter>() {
+            @Override
+            public MesaAdapter process() throws Exception {
+                MesaAdapter adapter = controller.getData(selectedArea, act);
+                adapter.orderBy(orden);
+                return adapter;
+            }
 
-                @Override
-                public void post(MesaAdapter value) {
-                    listaMesas.setAdapter(value);
-                }
-            });
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
-        }
+            @Override
+            public void post(MesaAdapter value) {
+                listaMesas.setAdapter(value);
+            }
+        });
     }
 
     private void entrarSoloLectura(Bundle data) {
         try {
-            Intent launch = new Intent(this, OrdenReadOnlyActivity.class);
+            Intent launch = new Intent(act, OrdenReadOnlyActivity.class);
             launch.putExtras(data);
             startActivity(launch);
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
     private void entrarMiOrden(Bundle data) {
         try {
-            Intent launch = new Intent(this, OrdenActivity.class);
+            Intent launch = new Intent(act, OrdenActivity.class);
             launch.putExtras(data);
             startActivity(launch);
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 

@@ -1,8 +1,5 @@
 package com.activities;
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.widget.*;
 import android.os.Bundle;
 import android.view.View;
@@ -10,11 +7,10 @@ import android.content.Intent;
 import android.graphics.Color;
 
 import com.controllers.MainController;
-import com.services.notifications.ReceiverNotificationService;
-import com.utils.exception.ExceptionHandler;
-import com.utils.exception.NoConnectionException;
 import com.utils.loading.LoadingHandler;
 import com.utils.loading.LoadingProcess;
+import com.utils.exception.ExceptionHandler;
+import com.services.notifications.ReceiverNotificationService;
 
 /**
  * Capa: Activities
@@ -58,7 +54,7 @@ public class MainActivity extends BaseActivity {
 
             updateConnectionText();
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -68,7 +64,7 @@ public class MainActivity extends BaseActivity {
             super.onResume();
             updateConnectionText();
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -81,7 +77,7 @@ public class MainActivity extends BaseActivity {
             initializeSesionButton = (Button) findViewById(R.id.initializeSesionButton);
             connectionStatusText = ((TextView) (findViewById(R.id.connectionStatusText)));
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -101,7 +97,7 @@ public class MainActivity extends BaseActivity {
                 }
             });
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -114,7 +110,7 @@ public class MainActivity extends BaseActivity {
         try {
             startService(v);
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -124,37 +120,29 @@ public class MainActivity extends BaseActivity {
      * @param v View de la aplicacion.
      */
     private void onInitializeSesionButtOnClick(View v) {
+        new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
+            @Override
+            public Boolean process() {
+                return controller.checkConnection();
+            }
 
-        try {
-            final BaseActivity act = this;
-
-            new LoadingHandler<Boolean>(this, new LoadingProcess<Boolean>() {
-                @Override
-                public Boolean process() {
-                    return controller.checkConnection();
+            @Override
+            public void post(Boolean value) {
+                if (value) {
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                } else {
+                    act.showMessage(act.getApplication().getApplicationContext().getResources().
+                            getText(R.string.noConnectionError).toString());
                 }
-
-                @Override
-                public void post(Boolean value) {
-                    if (value) {
-                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                    } else {
-                        act.showMessage(act.getApplication().getApplicationContext().getResources().
-                                getText(R.string.noConnectionError).toString());
-                    }
-                }
-            });
-
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
-        }
+            }
+        });
     }
 
     /**
      * Actualiza el label de coneccion en dependencia de si hay o no coneccion con el servidor.
      */
     private void updateConnectionText() {
-        new LoadingHandler<Boolean>(this, new LoadingProcess<Boolean>() {
+        new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
             @Override
             public Boolean process() {
                 return controller.checkConnection();
@@ -183,7 +171,7 @@ public class MainActivity extends BaseActivity {
                 notificationButton.setText("Activar Notificationes");
             }
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 

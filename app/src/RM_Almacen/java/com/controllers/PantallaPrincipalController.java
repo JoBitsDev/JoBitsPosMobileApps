@@ -41,7 +41,7 @@ public class PantallaPrincipalController extends BaseController {
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public boolean imprimirTicketCompra() throws ExecutionException, InterruptedException {
+    public boolean imprimirTicketCompra() throws Exception {
         return almacenWCService.imprimirTicketCompra();
     }
 
@@ -52,7 +52,7 @@ public class PantallaPrincipalController extends BaseController {
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public boolean imprimirEstadoActualAlmacen() throws ExecutionException, InterruptedException {
+    public boolean imprimirEstadoActualAlmacen() throws Exception {
         return almacenWCService.imprimirEstadoActualAlmacen();
     }
 
@@ -65,7 +65,7 @@ public class PantallaPrincipalController extends BaseController {
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public void darEntrada(InsumoAlmacenModel i, float cantidad, float monto) throws ExecutionException, InterruptedException {
+    public void darEntrada(InsumoAlmacenModel i, float cantidad, float monto) throws Exception {
         almacenWCService.darEntrada(i, cantidad, monto);
     }
 
@@ -78,7 +78,7 @@ public class PantallaPrincipalController extends BaseController {
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public void darSalida(InsumoAlmacenModel i, float cantidad, String codPtoElaboracion) throws ExecutionException, InterruptedException {
+    public void darSalida(InsumoAlmacenModel i, float cantidad, String codPtoElaboracion) throws Exception {
         almacenWCService.darSalida(i, cantidad, codPtoElaboracion);
     }
 
@@ -91,7 +91,7 @@ public class PantallaPrincipalController extends BaseController {
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public void rebajar(InsumoAlmacenModel i, float cantidad, String razon) throws ExecutionException, InterruptedException {
+    public void rebajar(InsumoAlmacenModel i, float cantidad, String razon) throws Exception {
         almacenWCService.rebajar(i, cantidad, razon);
     }
 
@@ -102,7 +102,7 @@ public class PantallaPrincipalController extends BaseController {
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public List<InsumoAlmacenModel> getPrimerAlmacen() throws ExecutionException, InterruptedException {
+    public List<InsumoAlmacenModel> getPrimerAlmacen() throws Exception {
         return almacenWCService.getPrimerAlmacen();
     }
 
@@ -114,7 +114,7 @@ public class PantallaPrincipalController extends BaseController {
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public String[] getCocinasNamesForIPV(String codInsumo) throws ExecutionException, InterruptedException {
+    public String[] getCocinasNamesForIPV(String codInsumo) throws Exception {
         return almacenWCService.getCocinasNamesForIPV(codInsumo);
     }
 
@@ -125,7 +125,7 @@ public class PantallaPrincipalController extends BaseController {
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public String[] getCocinasNames() throws ExecutionException, InterruptedException {
+    public String[] getCocinasNames() throws Exception {
         return new CocinaWebConnection().getCocinasNames();
     }
 
@@ -148,11 +148,11 @@ public class PantallaPrincipalController extends BaseController {
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public AlmacenInsumoAdapter getAdapter(Context c, int listaInsumos) throws ExecutionException, InterruptedException {
+    public AlmacenInsumoAdapter getAdapter(Context c, int listaInsumos) throws Exception {
         return new AlmacenInsumoAdapter(c, listaInsumos, getPrimerAlmacen());
     }
 
-    public AlmacenInsumoAdapter getAdapter(Context c, int listaInsumos,String filtros) throws ExecutionException, InterruptedException {
+    public AlmacenInsumoAdapter getAdapter(Context c, int listaInsumos,String filtros) throws Exception {
         return new AlmacenInsumoAdapter(c, listaInsumos, filterBy(filtros));
     }
 }

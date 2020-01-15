@@ -57,7 +57,7 @@ public class LoginActivity extends BaseActivity {
             initVarialbes();//inicializa las variables
             addListeners();//agrega listeners
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -71,7 +71,7 @@ public class LoginActivity extends BaseActivity {
             user = (EditText) findViewById(R.id.user);//asigna el campo de texto de usuario a su variable
             pass = (EditText) findViewById(R.id.pass);//asigna el campo de texto de contrasenna a su variable
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -85,7 +85,7 @@ public class LoginActivity extends BaseActivity {
                 }
             });
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -98,7 +98,7 @@ public class LoginActivity extends BaseActivity {
         try {
             autenticar(v);//llama a autenticar
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -109,7 +109,6 @@ public class LoginActivity extends BaseActivity {
      */
     private void autenticar(View v) {
         try {
-            final BaseActivity act = this;
             final String username = user.getText().toString();
             final String password = pass.getText().toString();
             final String access = getResources().getString(R.string.access_level);
@@ -119,7 +118,7 @@ public class LoginActivity extends BaseActivity {
                 loginResult.setText(R.string.errorAlAutenticar);
             } else {
 
-                new LoadingHandler<Boolean>(this, new LoadingProcess<Boolean>() {
+                new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
                     @Override
                     public Boolean process() throws Exception {
                         return controller.loginAction(username, password, access);
@@ -143,7 +142,7 @@ public class LoginActivity extends BaseActivity {
                 });
             }
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
