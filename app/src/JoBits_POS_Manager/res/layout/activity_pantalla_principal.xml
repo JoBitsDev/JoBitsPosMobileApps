@@ -3,6 +3,53 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/editTextDatePicker"
+            android:layout_width="219dp"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:ems="10"
+            android:focusable="false"
+            android:gravity="center"
+            android:hint="@string/formato_fecha"
+            android:inputType="date"
+            android:textSize="24sp" />
+
+        <ImageButton
+            android:id="@+id/imageButtonDatePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:src="@android:drawable/ic_menu_today" />
+
+        <EditText
+            android:id="@+id/editTextHoraActualizar"
+            android:layout_width="219dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="false"
+            android:ems="10"
+            android:focusable="false"
+            android:gravity="center"
+            android:hint="@string/formato_hora"
+            android:inputType="date"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/buttonActualizar"
+            android:layout_width="112dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Act"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
     <TabHost
         android:id="@+id/tabHost"
         android:layout_width="match_parent"
@@ -34,40 +81,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <EditText
-                                android:id="@+id/editTextDatePicker"
-                                android:layout_width="219dp"
-                                android:layout_height="wrap_content"
-                                android:clickable="false"
-                                android:ems="10"
-                                android:focusable="false"
-                                android:gravity="center"
-                                android:hint="@string/formato_fecha"
-                                android:inputType="date"
-                                android:textSize="24sp" />
-
-                            <ImageButton
-                                android:id="@+id/imageButtonDatePicker"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:baselineAligned="false"
-                                android:src="@android:drawable/ic_menu_today" />
-
-                            <Button
-                                android:id="@+id/buttonActualizar"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Actualizar"
-                                android:textSize="24sp" />
-
-                        </LinearLayout>
 
                         <ListView
                             android:id="@+id/listViewGeneral"
