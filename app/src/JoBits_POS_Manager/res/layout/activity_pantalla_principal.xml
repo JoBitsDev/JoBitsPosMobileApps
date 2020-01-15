@@ -42,9 +42,12 @@
 
                             <EditText
                                 android:id="@+id/editTextDatePicker"
-                                android:layout_width="wrap_content"
+                                android:layout_width="219dp"
                                 android:layout_height="wrap_content"
+                                android:clickable="false"
                                 android:ems="10"
+                                android:focusable="false"
+                                android:gravity="center"
                                 android:hint="@string/formato_fecha"
                                 android:inputType="date"
                                 android:textSize="24sp" />

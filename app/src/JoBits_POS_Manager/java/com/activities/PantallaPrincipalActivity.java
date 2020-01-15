@@ -2,15 +2,18 @@ package com.activities;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TabHost;
 
 import com.utils.adapter.AreaAdapter;
 import com.utils.adapter.DependientesAdapter;
 import com.utils.adapter.GeneralAdapter;
 import com.utils.adapter.PtoElaboracionAdapter;
+import com.utils.exception.ExceptionHandler;
 
 import java.util.Calendar;
 
@@ -22,12 +25,15 @@ public class PantallaPrincipalActivity extends BaseActivity {
     private PtoElaboracionAdapter ptoElaboracionAdapter;
 
     private Calendar calendar;
-    private int mes = calendar.get(Calendar.MONTH);
-    private int dia = calendar.get(Calendar.DAY_OF_MONTH);
-    private int año = calendar.get(Calendar.YEAR);
+    private int mes;
+    private int dia;
+    private int año;
 
     private EditText editTextShowDate;
     private ImageButton imageButtonDatePicker;
+    private TabHost host;
+    private float lastX;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +53,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
         editTextShowDate = (EditText)findViewById(R.id.editTextDatePicker);
         imageButtonDatePicker = (ImageButton)findViewById(R.id.imageButtonDatePicker);
+
+        initTab();
     }
 
     @Override
@@ -55,10 +63,76 @@ public class PantallaPrincipalActivity extends BaseActivity {
         imageButtonDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                pickDate();
             }
         });
+    }
 
+    private void initTab() {
+        try {
+            host = (TabHost) findViewById(R.id.tabHost);
+            if (host != null) {//TODO: por que este if??
+                host.setup();
+
+                TabHost.TabSpec spec = host.newTabSpec("General");
+
+                //Tab 1
+                spec.setContent(R.id.General);
+                spec.setIndicator("General");
+                host.addTab(spec);
+
+                //Tab 2
+                spec = host.newTabSpec("Àreas");
+                spec.setContent(R.id.Areas);
+                spec.setIndicator("Àreas");
+                host.addTab(spec);
+
+                //Tab 3
+                spec = host.newTabSpec("Dependientes");
+                spec.setContent(R.id.Dependientes);
+                spec.setIndicator("Dependiente");
+                host.addTab(spec);
+
+                //Tab 4
+                spec = host.newTabSpec("Punto de Elaboraciòn");
+                spec.setContent(R.id.Ptos_Elaboracion);
+                spec.setIndicator("Punto de Elaboraciòn");
+                host.addTab(spec);
+            }
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
+    }
+
+    private boolean onTabChangeTouchEvent(MotionEvent event) {
+        float currentX = 0;
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                lastX = event.getX();
+                break;
+            case MotionEvent.ACTION_UP:
+                currentX = event.getX();
+                boolean dirRight = Math.abs( lastX - currentX) > 200;
+                switchTab(dirRight);
+                break;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return onTabChangeTouchEvent(event);
+    }
+
+    private boolean switchTab(boolean change) {
+        if (change) {
+            if (host.getCurrentTab() == 1) {
+                host.setCurrentTab(0);
+            } else {
+                host.setCurrentTab(1);
+            }
+        }
+        return false;
     }
 
     private void pickDate(){
