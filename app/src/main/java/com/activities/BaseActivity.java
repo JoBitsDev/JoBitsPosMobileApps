@@ -12,6 +12,8 @@ import android.app.*;
  */
 public abstract class BaseActivity extends Activity {
 
+    protected BaseActivity act = this;
+
     /**
      * Método abstracto a reimplementar para inicializar las variables del XML en el activity.
      */
