@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">POS Manager</string>
-
+    <string name="formato_fecha">dd/mm/yyyy</string>
     <string name="version">Version 0.1</string>
     <string name="access_level">3</string>
 
