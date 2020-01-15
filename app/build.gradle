@@ -35,6 +35,9 @@ android {
             versionName '0.1'
         }
     }
+    packagingOptions{
+        pickFirst 'META-INF/*'
+    }
 }
 
 dependencies {
