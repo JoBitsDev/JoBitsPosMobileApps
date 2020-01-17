@@ -10,4 +10,6 @@
     <color name="black_overlay">#5A818D</color>
     <color name="color_resaltado2">#186141</color>
 
+    <color name = "color_huesito">#ebf3e2</color>
+
 </resources>

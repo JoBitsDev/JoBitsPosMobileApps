@@ -39,7 +39,8 @@
             android:gravity="center_vertical"
             android:hint="username"
             android:inputType="text"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:textSize="@dimen/textSizeNormal" />
 
         <EditText
             android:id="@+id/pass"
@@ -53,7 +54,8 @@
             android:gravity="center_vertical"
             android:hint="password"
             android:inputType="numberPassword"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:textSize="@dimen/textSizeNormal" />
 
 
         <TextView
@@ -71,7 +73,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:text="Autenticar" />
+            android:text="Autenticar"
+            android:textSize="@dimen/textSizeNormal" />
 
 
     </LinearLayout>
