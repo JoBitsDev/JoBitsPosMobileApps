@@ -18,6 +18,24 @@ import com.utils.EnvironmentVariables;
 
 public class SimpleWebConnectionService {
 
+    private final String AUTHORITATION = "Authorization";
+    private final String BEARER = "Bearer ";
+
+    /**
+     * Token para las llamandas seguras al servidor.
+     */
+    protected static String TOKEN = null;
+
+    /**
+     * Tiempo maximo esperado para la lectura.
+     */
+    public static final int MAX_READ_TIME = 5 * 1000;
+
+    /**
+     * Tiempo maximo esperado para la respuesta del servidor.
+     */
+    public static final int MAX_RESPONSE_TIME = 3 * 1000;
+
     /**
      * Partes de la URL de las consultas.
      */
@@ -79,22 +97,45 @@ public class SimpleWebConnectionService {
         }
     }
 
-    protected String execute(String... url) {
+    protected String execute(String urlToExcecute) {
         try {
-            String ret = downloadUrl(url[0]);
-            return ret;
+            URL url = new URL(urlToExcecute);
+            con = (HttpURLConnection) url.openConnection();
+            con.setDoInput(true);
+            // Starts the query
+            if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                BufferedReader input = new BufferedReader(
+                        new InputStreamReader(con.getInputStream()),
+                        8192);
+                resp = input.readLine();
+                input.close();
+                con.disconnect();
+                return resp;
+            } else {
+                return null;
+            }
         } catch (IOException e) {
             e.printStackTrace();
             return EnvironmentVariables.PETITION_ERROR;
         }
-
     }
 
-    private String downloadUrl(String urlString) throws IOException {
-        url = new URL(urlString);
+    public String connectPost(final String urlToExcecute, final String body, final String token) throws Exception {
+        URL url = new URL(urlToExcecute);
         con = (HttpURLConnection) url.openConnection();
         con.setDoInput(true);
+        con.setDoOutput(true);
+        con.setRequestMethod("POST");
+        con.setRequestProperty("Content-Type", "text/plain");
+        con.setReadTimeout(MAX_READ_TIME);
+        con.setConnectTimeout(MAX_RESPONSE_TIME);
+        con.setRequestProperty(AUTHORITATION, BEARER + token);
         // Starts the query
+
+        OutputStreamWriter os = new OutputStreamWriter(con.getOutputStream());
+        os.write(body);
+        os.flush();
+
         if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
             BufferedReader input = new BufferedReader(
                     new InputStreamReader(con.getInputStream()),
@@ -102,9 +143,17 @@ public class SimpleWebConnectionService {
             resp = input.readLine();
             input.close();
             con.disconnect();
+            os.close();
             return resp;
         } else {
-            return null;
+            BufferedReader input = new BufferedReader(
+                    new InputStreamReader(con.getErrorStream()),
+                    8192);
+            resp = input.readLine();
+            input.close();
+            con.disconnect();
+            os.close();
+            throw new ServerErrorException(resp);
         }
     }
 
