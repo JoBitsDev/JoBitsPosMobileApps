@@ -6,6 +6,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/color_huesito"
         android:orientation="horizontal">
 
         <EditText
@@ -38,7 +39,7 @@
             android:gravity="center"
             android:hint="@string/formato_hora"
             android:inputType="date"
-            android:textSize="24sp" />
+            android:textSize="@dimen/textSizeNormal" />
 
         <Button
             android:id="@+id/buttonActualizar"
@@ -64,12 +65,14 @@
                 android:id="@android:id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/color_dinero"
                 android:showDividers="middle" />
 
             <FrameLayout
                 android:id="@android:id/tabcontent"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@color/color_huesito">
 
                 <LinearLayout
                     android:id="@+id/General"

@@ -18,18 +18,20 @@
                 android:id="@+id/textViewCodigoPto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/color_naranja_oscuro"
                 android:text="Código"
-                android:textSize="33sp" />
+                android:textSize="@dimen/textSizeMedium" />
 
             <EditText
                 android:id="@+id/editTextCodigoPto"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
+                android:background="@color/color_naranja_claro"
                 android:ems="10"
                 android:gravity="right"
                 android:hint="Código"
                 android:inputType="text"
-                android:textSize="30sp" />
+                android:textSize="@dimen/textSizeMedium" />
 
         </LinearLayout>
 
@@ -49,18 +51,20 @@
                 android:id="@+id/textViewNombrePto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/color_naranja_oscuro"
                 android:text="Nombre"
-                android:textSize="33sp" />
+                android:textSize="@dimen/textSizeMedium" />
 
             <EditText
                 android:id="@+id/editTextNombrePto"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
+                android:background="@color/color_naranja_claro"
                 android:ems="10"
                 android:gravity="right"
                 android:hint="Nombre"
                 android:inputType="text"
-                android:textSize="30sp" />
+                android:textSize="@dimen/textSizeMedium" />
 
         </LinearLayout>
 
@@ -75,17 +79,19 @@
             android:id="@+id/textViewMontoPto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_naranja_oscuro"
             android:text="Monto"
-            android:textSize="33sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
         <EditText
             android:id="@+id/editTextMontoPto"
             android:layout_width="match_parent"
             android:layout_height="45dp"
+            android:background="@color/color_naranja_claro"
             android:ems="10"
             android:gravity="right"
             android:hint="0.0 CUC"
             android:inputType="numberSigned"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
     </LinearLayout>
 </LinearLayout>

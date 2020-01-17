@@ -13,6 +13,7 @@
             android:id="@+id/textViewUsuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_naranja_oscuro"
             android:text="Usuario"
             android:textSize="30sp" />
 
@@ -20,6 +21,7 @@
             android:id="@+id/editTextUsuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_naranja_claro"
             android:ems="10"
             android:gravity="right"
             android:hint="Usuario"
@@ -30,6 +32,7 @@
             android:id="@+id/textViewOrden"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_naranja_oscuro"
             android:text="Órdenes Atendidas"
             android:textSize="30sp" />
 
@@ -37,6 +40,7 @@
             android:id="@+id/editTextOrden"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_naranja_claro"
             android:ems="10"
             android:gravity="right"
             android:hint="Órden"
@@ -61,6 +65,7 @@
             android:id="@+id/textMonto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_naranja_oscuro"
             android:text="Monto"
             android:textSize="30sp" />
 
@@ -68,6 +73,7 @@
             android:id="@+id/editTextMonto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_naranja_claro"
             android:ems="10"
             android:gravity="right"
             android:hint="0.0 CUC"
@@ -78,6 +84,7 @@
             android:id="@+id/textViewPago"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_naranja_oscuro"
             android:text="Pago por Venta"
             android:textSize="30sp" />
 
@@ -85,6 +92,7 @@
             android:id="@+id/editTextPago"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_naranja_claro"
             android:ems="10"
             android:gravity="right"
             android:hint="0.0 CUC"

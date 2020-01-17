@@ -13,35 +13,39 @@
             android:id="@+id/textViewCodigo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_naranja_oscuro"
             android:text="Código"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
         <TextView
             android:id="@+id/editTextCodigo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_naranja_claro"
             android:ems="10"
             android:gravity="right"
             android:hint="Código"
             android:inputType="text"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
         <TextView
             android:id="@+id/textViewNombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_naranja_oscuro"
             android:text="Nombre"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
         <TextView
             android:id="@+id/editTextNombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_naranja_claro"
             android:ems="10"
             android:gravity="right"
             android:hint="Nombre"
             android:inputType="text"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
     </LinearLayout>
 
@@ -61,35 +65,39 @@
             android:id="@+id/textViewNeta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_naranja_oscuro"
             android:text="Venta Neta"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
         <TextView
             android:id="@+id/editTextNeta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_naranja_claro"
             android:ems="10"
             android:gravity="right"
             android:hint="0.0 CUC"
             android:inputType="numberSigned"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
         <TextView
             android:id="@+id/textViewReal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_naranja_oscuro"
             android:text="Venta Real"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
         <TextView
             android:id="@+id/editTextReal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_naranja_claro"
             android:ems="10"
             android:gravity="right"
             android:hint="0.0 CUC"
             android:inputType="numberSigned"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
     </LinearLayout>
 </LinearLayout>

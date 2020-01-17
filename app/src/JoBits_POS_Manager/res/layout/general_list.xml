@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="295dp"
         android:layout_height="wrap_content"
-        android:background="#5EDB62"
+        android:background="@color/color_ingreso"
         android:orientation="vertical">
 
         <TextView
@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Venta Neta"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
         <TextView
             android:id="@+id/editTextVentaNeta"
@@ -25,14 +25,14 @@
             android:gravity="right"
             android:hint="0.0 CUC"
             android:inputType="numberSigned"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
         <TextView
             android:id="@+id/textViewTotal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Total"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
         <TextView
             android:id="@+id/editTextTotal"
@@ -42,14 +42,14 @@
             android:gravity="right"
             android:hint="0.0 CUC"
             android:inputType="numberSigned"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
         <TextView
             android:id="@+id/textViewAutorizos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Autorizos"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
         <TextView
             android:id="@+id/editTextAutorizos"
@@ -59,7 +59,7 @@
             android:gravity="right"
             android:hint="0.0 CUC"
             android:inputType="numberSigned"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
     </LinearLayout>
 
@@ -73,7 +73,7 @@
     <LinearLayout
         android:layout_width="295dp"
         android:layout_height="wrap_content"
-        android:background="#DF5F58"
+        android:background="@color/color_gasto"
         android:orientation="vertical">
 
         <TextView
@@ -81,7 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Insumos"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
         <TextView
             android:id="@+id/editTextInsumos"
@@ -91,14 +91,14 @@
             android:gravity="right"
             android:hint="0.0 CUC"
             android:inputType="numberSigned"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
         <TextView
             android:id="@+id/textViewSalario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Salarios"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
         <TextView
             android:id="@+id/editTextSalarios"
@@ -108,14 +108,14 @@
             android:gravity="right"
             android:hint="0.0 CUC"
             android:inputType="numberSigned"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
         <TextView
             android:id="@+id/textViewOtros"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Otros"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
         <TextView
             android:id="@+id/editTextOtros"
@@ -125,6 +125,6 @@
             android:gravity="right"
             android:hint="0.0 CUC"
             android:inputType="numberSigned"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
     </LinearLayout>
 </LinearLayout>
