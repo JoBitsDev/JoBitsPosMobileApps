@@ -1,5 +1,9 @@
 package com.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.*;
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +11,7 @@ import android.content.Intent;
 import android.graphics.Color;
 
 import com.controllers.MainController;
+import com.services.models.UbicacionModel;
 import com.utils.loading.LoadingHandler;
 import com.utils.loading.LoadingProcess;
 import com.utils.exception.ExceptionHandler;
@@ -99,6 +104,57 @@ public class MainActivity extends BaseActivity {
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        try {
+            // Inflate the menuProductosListView; this adds items to the action bar if it is present.
+            getMenuInflater().inflate(R.menu.menu_main, menu);
+            return true;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+
+        switch (item.getItemId()) {
+            case R.id.cambiar_ubicacion:
+                cambiarUbicacion();
+                return true;
+            case R.id.agregar_ubicacion:
+                agregarUbicacion();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void cambiarUbicacion() {
+        String ubicaciones[] = controller.getAllUbicaciones();
+
+        new AlertDialog.Builder(act).
+                setTitle(R.string.cambiar_ubicacion).
+                setSingleChoiceItems(ubicaciones, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which) {
+                        controller.changeUbication(which);
+                        updateConnectionText();
+                    }
+                }).setNeutralButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).create().show();
+    }
+
+    private void agregarUbicacion() {
     }
 
     /**
