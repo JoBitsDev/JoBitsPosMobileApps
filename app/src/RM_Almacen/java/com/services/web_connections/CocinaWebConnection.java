@@ -25,7 +25,7 @@ public class CocinaWebConnection extends SimpleWebConnectionService {
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public String[] getCocinasNames() throws ServerErrorException, NoConnectionException {
+    public String[] getCocinasNames() throws Exception {
         return connect(path + P + fetchNames).split(",");
     }
 

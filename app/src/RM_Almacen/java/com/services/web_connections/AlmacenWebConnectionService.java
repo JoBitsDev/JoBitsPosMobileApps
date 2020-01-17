@@ -63,7 +63,7 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public List<InsumoAlmacenModel> getPrimerAlmacen() throws ServerErrorException, NoConnectionException {
+    public List<InsumoAlmacenModel> getPrimerAlmacen() throws Exception {
         return new InsumoAlmacenXMLParser().fetch(path);
     }
 
@@ -76,7 +76,7 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public String darEntrada(InsumoAlmacenModel i, float cantidad, float monto) throws ServerErrorException, NoConnectionException {
+    public String darEntrada(InsumoAlmacenModel i, float cantidad, float monto) throws Exception {
         return connect(path
                 + ENTRADA
                 + i.getCodAlmacen()
@@ -93,7 +93,7 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public String darSalida(InsumoAlmacenModel i, float cantidad, String codPtoElaboracion) throws ServerErrorException, NoConnectionException {
+    public String darSalida(InsumoAlmacenModel i, float cantidad, String codPtoElaboracion) throws Exception {
         return connect(path
                 + SALIDA
                 + i.getCodAlmacen()
@@ -111,7 +111,7 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public String rebajar(InsumoAlmacenModel i, float cantidad, String razon) throws ServerErrorException, NoConnectionException {
+    public String rebajar(InsumoAlmacenModel i, float cantidad, String razon) throws Exception {
         return connect(path
                 + MERMA
                 + "_" + i.getInsumoAlmacenPKModel().getAlmacencodAlmacen()
@@ -128,7 +128,7 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public String[] getCocinasNamesForIPV(String codInsumo) throws ServerErrorException, NoConnectionException {
+    public String[] getCocinasNamesForIPV(String codInsumo) throws Exception {
         return connect(path + LISTA_IPV + "_" + codInsumo).split(",");
     }
 
@@ -149,7 +149,7 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public boolean imprimirTicketCompra() throws ServerErrorException, NoConnectionException {
+    public boolean imprimirTicketCompra() throws Exception {
         return connect(path + TICKET_COMPRA).equals(EnvironmentVariables.PETITION_TRUE);
     }
 
@@ -160,7 +160,7 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public boolean imprimirEstadoActualAlmacen() throws ServerErrorException, NoConnectionException {
+    public boolean imprimirEstadoActualAlmacen() throws Exception {
         return connect(path + ESTADO_ALMACEN).equals(EnvironmentVariables.PETITION_TRUE);
     }
 

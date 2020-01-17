@@ -10,8 +10,10 @@ import android.widget.Toast;
 
 import com.activities.BaseActivity;
 import com.activities.MainActivity;
+import com.activities.PantallaPrincipalActivity;
 import com.activities.R;
 
+import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -51,7 +53,7 @@ public class ExceptionHandler {
     public static void handleException(Exception e, BaseActivity activity) {
         e.printStackTrace();
 
-        if (e instanceof NoConnectionException) {//no conection
+        if (e instanceof NoConnectionException || e instanceof SocketTimeoutException) {//no conection o timeout
             handleNoConnectionException((NoConnectionException) e, activity);
         } else if (e instanceof ServerErrorException) {//error del server
             handleServerErrorException((ServerErrorException) e, activity);
@@ -145,8 +147,7 @@ public class ExceptionHandler {
 
         //mensaje explicando que pasa
         String serverErrorMessage = v.findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.serverError).toString();
-
-        createDialog(serverErrorMessage, c, activity);
+        createDialog(serverErrorMessage + e.getMessage(), c, activity);
     }
 
     /**
@@ -162,8 +163,45 @@ public class ExceptionHandler {
         //mensaje explicando que pasa
         String unespectedError = v.findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.unespectedError).toString();
 
-        createDialog(unespectedError, c, activity);
+        //popup a mostrar
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setMessage(e.getMessage());
+        builder.setTitle(ExceptionHandler.POPUP_TITLE);
 
+        builder.setNeutralButton(ExceptionHandler.POPUP_BUTTON_TEXT, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {//comportamiento al clickear el boton
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+
+    }
+
+    /**
+     * Excepcion para manejar cuando la venta esta cerrada solo en el favour del dependiente
+     *
+     * @param e        el tipo de excepcion debe ser {@link DayClosedException }
+     * @param activity el activity desde donde se lanza la excepcion
+     */
+    private static void handleDayClosedException(DayClosedException e, final BaseActivity activity) {
+
+        final Context c = activity.getApplicationContext();
+        final View v = activity.findViewById(android.R.id.content).getRootView();
+
+        //popup a mostrar
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setMessage(e.getMessage());
+        builder.setTitle(ExceptionHandler.POPUP_TITLE);
+
+        builder.setNeutralButton(ExceptionHandler.POPUP_BUTTON_TEXT, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {//comportamiento al clickear el boton
+                dialog.dismiss();
+                activity.navigateUpTo(new Intent(c, PantallaPrincipalActivity.class));
+            }
+        });
+        builder.create().show();
     }
 
     /**
@@ -191,30 +229,5 @@ public class ExceptionHandler {
         //Toast.makeText(c, e.getCause().getMessage(), TOAST_DURATION).show();//un pequenno toast con mas detalles
     }
 
-    /**
-     * Excepcion para manejar cuando la venta esta cerrada solo en el favour del dependiente
-     *
-     * @param e        el tipo de excepcion debe ser {@link DayClosedException }
-     * @param activity el activity desde donde se lanza la excepcion
-     */
-    private static void handleDayClosedException(DayClosedException e, final BaseActivity activity) {
-
-        final Context c = activity.getApplicationContext();
-        final View v = activity.findViewById(android.R.id.content).getRootView();
-
-        //popup a mostrar
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setMessage(e.getMessage());
-        builder.setTitle(ExceptionHandler.POPUP_TITLE);
-
-        builder.setNeutralButton(ExceptionHandler.POPUP_BUTTON_TEXT, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {//comportamiento al clickear el boton
-                dialog.dismiss();
-                activity.navigateUpTo(new Intent(c, MainActivity.class));
-            }
-        });
-        builder.create().show();
-    }
 
 }
