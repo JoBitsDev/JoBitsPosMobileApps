@@ -3,10 +3,15 @@ package com.services.web_connections;
 import android.content.res.Resources;
 
 import com.activities.R;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.services.models.CredentialsModel;
 import com.utils.EnvironmentVariables;
 import com.utils.exception.NoConnectionException;
 import com.utils.exception.ServerErrorException;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
@@ -20,33 +25,20 @@ import java.util.concurrent.TimeoutException;
 
 public class LoginWebConnectionServiceService extends SimpleWebConnectionService {
 
-    /**
-     * Nombre de usuario a autenticar.
-     */
-    private String user;
+    private final String login_URL;
 
-    /**
-     * Contrasenna del usuario a autenticar.
-     */
-    private String pass;
-
-    /**
-     * Nivel de acceso de la aplicacion
-     */
-    private String access;
+    private CredentialsModel credentials;
 
     /**
      * Constructor del servicio, recive el usuario y la contrasenna de los que se van a logear.
      *
      * @param user usuario a autenticar.
      * @param pass contrasenna del usuario.
-     * @param access nivel de acceso de la aplicacion
      */
-    public LoginWebConnectionServiceService(String user, String pass, String access) {
+    public LoginWebConnectionServiceService(String user, String pass) {
         super();
-        this.user = user;
-        this.pass = pass;
-        this.access = access;
+        credentials = new CredentialsModel(user, pass);
+        this.login_URL = path += "com.restmanager.personal/AUTH";
     }
 
     /**
@@ -57,7 +49,9 @@ public class LoginWebConnectionServiceService extends SimpleWebConnectionService
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public boolean authenticate() throws Exception {
-        return connect(path + "com.restmanager.personal/l_" + user + "_" + pass + "_" + access).equals(EnvironmentVariables.PETITION_TRUE);
+        String body = new ObjectMapper().writeValueAsString(credentials);
+        TOKEN = connectPost(login_URL, body, null);
+        return true;
     }
 
 }
