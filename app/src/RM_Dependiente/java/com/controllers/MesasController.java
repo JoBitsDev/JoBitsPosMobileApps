@@ -31,7 +31,7 @@ import java.util.List;
  */
 public class MesasController extends BaseController {
 
-    private static final String urlMesas = "http://" + EnvironmentVariables.IP + ":" + EnvironmentVariables.PORT + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.mesa";
+    private static final String urlMesas = "http://" + EnvironmentVariables.getIP() + ":" + EnvironmentVariables.getPORT() + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.mesa";
     private String user;
     private OrdenWebConnectionService ordenWCService = null;
 

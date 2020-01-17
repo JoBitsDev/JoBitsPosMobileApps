@@ -29,9 +29,9 @@ import java.util.concurrent.ExecutionException;
  */
 public class OrdenController extends BaseController {
 
-    public static final String urlSeccion = "http://" + EnvironmentVariables.IP + ":" + EnvironmentVariables.PORT + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.seccion",
-            urlProducts_ = "http://" + EnvironmentVariables.IP + ":" + EnvironmentVariables.PORT + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.productoventa/PRODUCTS_",
-            urlListProducts_ = "http://" + EnvironmentVariables.IP + ":" + EnvironmentVariables.PORT + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.orden/LISTPRODUCTS_";
+    public static final String urlSeccion = "http://" + EnvironmentVariables.getIP() + ":" + EnvironmentVariables.getPORT() + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.seccion",
+            urlProducts_ = "http://" + EnvironmentVariables.getIP() + ":" + EnvironmentVariables.getPORT() + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.productoventa/PRODUCTS_",
+            urlListProducts_ = "http://" + EnvironmentVariables.getIP() + ":" + EnvironmentVariables.getPORT() + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.orden/LISTPRODUCTS_";
 
     private OrdenWebConnectionService ordenWCService = null;
 
@@ -95,7 +95,7 @@ public class OrdenController extends BaseController {
     }
 
     public String[] getMesas() {
-        String url = "http://" + EnvironmentVariables.IP + ":" + EnvironmentVariables.PORT + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.mesa/MOSTRARVACIAS";
+        String url = "http://" + EnvironmentVariables.getIP() + ":" + EnvironmentVariables.getPORT() + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.mesa/MOSTRARVACIAS";
 
         final List<MesaModel> mesaModels = new MesaXMlParser().fetch(url);
 

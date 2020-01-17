@@ -7,20 +7,15 @@ import com.utils.EnvironmentVariables;
  */
 public class AreaWebConnectionService extends SimpleWebConnectionService {
 
-    String user,codmesa;
+    String user, codmesa;
     final String P = "com.restmanager.area/";
 
-
-
-
     public AreaWebConnectionService(String user, String codMesa) {
-        super(EnvironmentVariables.IP, "8080");
+        super();
         this.user = user;
         this.codmesa = codMesa;
-        path+= P;
+        path += P;
     }
-
-
 
 
 }
