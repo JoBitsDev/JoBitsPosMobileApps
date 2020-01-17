@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_Fondo"
+    android:background="@color/color_mano_oscuro"
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
@@ -37,12 +37,14 @@
                     android:id="@android:id/tabs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/color_carmelita_claro"
                     android:orientation="horizontal" />
 
                 <FrameLayout
                     android:id="@android:id/tabcontent"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@color/color_mano_claro">
 
                     <LinearLayout
                         android:id="@+id/ordenModel"
@@ -61,8 +63,8 @@
                                 android:layout_alignParentStart="true"
                                 android:text="@string/laberOrderNo"
                                 android:textAppearance="?android:attr/textAppearanceLarge"
-                                android:textColor="@color/color_Labels"
-                                android:textSize="@dimen/normal" />
+                                android:textColor="@color/color_carmelita_oscuro"
+                                android:textSize="@dimen/textSizeExact20" />
 
                             <TextView
                                 android:id="@+id/textView5"
@@ -71,8 +73,8 @@
                                 android:layout_below="@id/textView4"
                                 android:text="@string/labelMesaNo"
                                 android:textAppearance="?android:attr/textAppearanceLarge"
-                                android:textColor="@color/color_Labels"
-                                android:textSize="@dimen/normal" />
+                                android:textColor="@color/color_carmelita_oscuro"
+                                android:textSize="@dimen/textSizeExact20" />
 
                             <TextView
                                 android:id="@+id/ordenNoLabel"
@@ -82,8 +84,8 @@
                                 android:layout_toRightOf="@id/textView4"
                                 android:text="####"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@color/color_Labels"
-                                android:textSize="@dimen/normal" />
+                                android:textColor="@color/color_carmelita_oscuro"
+                                android:textSize="@dimen/textSizeExact20" />
 
 
                             <TextView
@@ -95,8 +97,8 @@
                                 android:layout_toRightOf="@id/textView5"
                                 android:text="####"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@color/color_Labels"
-                                android:textSize="@dimen/normal" />
+                                android:textColor="@color/color_carmelita_oscuro"
+                                android:textSize="@dimen/textSizeExact20" />
 
                             <TextView
                                 android:id="@+id/textView3"
@@ -105,8 +107,8 @@
                                 android:layout_below="@+id/textView5"
                                 android:text="@string/labelDependiente"
                                 android:textAppearance="?android:attr/textAppearanceLarge"
-                                android:textColor="@color/color_Labels"
-                                android:textSize="@dimen/normal" />
+                                android:textColor="@color/color_carmelita_oscuro"
+                                android:textSize="@dimen/textSizeExact20" />
 
                             <TextView
                                 android:id="@+id/dependienteLabel"
@@ -117,8 +119,8 @@
                                 android:layout_toRightOf="@+id/textView3"
                                 android:text="####"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@color/color_Labels"
-                                android:textSize="@dimen/normal" />
+                                android:textColor="@color/color_carmelita_oscuro"
+                                android:textSize="@dimen/textSizeExact20" />
 
                         </RelativeLayout>
 
@@ -134,7 +136,8 @@
                                 android:layout_alignParentStart="true"
                                 android:layout_alignParentTop="true"
                                 android:hapticFeedbackEnabled="true"
-                                android:text="@string/botonEnviarCocina" />
+                                android:text="@string/botonEnviarCocina"
+                                android:textSize="@dimen/textSizeNormal" />
 
                             <Button
                                 android:id="@+id/buttonLimpiar"
@@ -151,7 +154,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:hapticFeedbackEnabled="true"
-                                android:text="@string/botonCerrarOrden" />
+                                android:text="@string/botonCerrarOrden"
+                                android:textSize="@dimen/textSizeNormal" />
 
                         </RelativeLayout>
 
@@ -179,8 +183,8 @@
                                 android:layout_centerVertical="true"
 
                                 android:text="@string/botonDeLaCasa"
-                                android:textColor="@color/color_Labels"
-                                android:textSize="@dimen/normal" />
+                                android:textColor="@color/color_carmelita_oscuro"
+                                android:textSize="@dimen/textSizeExact20" />
 
 
                             <TextView
@@ -195,8 +199,8 @@
                                 android:gravity="center"
                                 android:text="@string/labelTotal"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@color/color_Labels"
-                                android:textSize="@dimen/normal" />
+                                android:textColor="@color/color_carmelita_oscuro"
+                                android:textSize="@dimen/textSizeExact20" />
 
 
                             <LinearLayout
@@ -216,8 +220,8 @@
                                     android:maxLines="1"
                                     android:text="0.00 C.U.C"
                                     android:textAppearance="?android:attr/textAppearanceLarge"
-                                    android:textColor="#0bff00"
-                                    android:textSize="@dimen/normal" />
+                                    android:textColor="@color/color_botella"
+                                    android:textSize="@dimen/textSizeExact20" />
 
                                 <TextView
                                     android:id="@+id/totalSecundariaLabel"
@@ -227,8 +231,8 @@
                                     android:gravity="center"
                                     android:text="0.00 C.U.C"
                                     android:textAppearance="?android:attr/textAppearanceLarge"
-                                    android:textColor="#0bff00"
-                                    android:textSize="@dimen/normal" />
+                                    android:textColor="@color/color_botella"
+                                    android:textSize="@dimen/textSizeExact20" />
 
                             </LinearLayout>
 

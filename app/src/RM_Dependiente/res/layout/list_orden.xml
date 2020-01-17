@@ -20,7 +20,7 @@
             android:paddingRight="10dp"
             android:text="Nombre"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="@dimen/titulos" />
+            android:textSize="@dimen/textSizeLarge" />
 
     </LinearLayout>
 
@@ -61,8 +61,6 @@
             android:visibility="visible" />
 
 
-
-
         <TextView
             android:id="@+id/textCantidad"
             android:layout_width="wrap_content"
@@ -71,7 +69,7 @@
             android:paddingLeft="20dp"
             android:text="Cantidad"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textSize="@dimen/precio"
+            android:textSize="@dimen/textSizeNormal"
             android:textStyle="bold" />
 
         <TextView
@@ -82,7 +80,7 @@
             android:paddingLeft="20dp"
             android:text="Precio"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textSize="@dimen/precio" />
+            android:textSize="@dimen/textSizeNormal" />
     </LinearLayout>
 
 
