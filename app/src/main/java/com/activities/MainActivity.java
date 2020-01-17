@@ -2,6 +2,8 @@ package com.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.*;
@@ -145,6 +147,7 @@ public class MainActivity extends BaseActivity {
                     public void onClick(final DialogInterface dialog, final int which) {
                         controller.changeUbication(which);
                         updateConnectionText();
+                        dialog.dismiss();
                     }
                 }).setNeutralButton(R.string.cancelar, new DialogInterface.OnClickListener() {
             @Override
@@ -155,6 +158,20 @@ public class MainActivity extends BaseActivity {
     }
 
     private void agregarUbicacion() {
+        final EditText input = new EditText(act);
+        new AlertDialog.Builder(act).
+                setView(input).
+                setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                controller.agregarUbicacion(input.getText().toString());
+            }
+        }).create().show();
     }
 
     /**

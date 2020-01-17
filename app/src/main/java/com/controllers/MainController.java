@@ -21,7 +21,7 @@ public class MainController extends BaseController {
         return arr;
     }
 
-    public void agregarUbicacion() {
+    public void agregarUbicacion(String s) {
 
     }
 
