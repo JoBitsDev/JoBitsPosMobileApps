@@ -1,5 +1,7 @@
 package com.utils;
 
+import com.services.models.UbicacionModel;
+
 /**
  * Clase: Utils
  * Clase que contiene las variables de ambiente predefinidas para la aplicacion, como ip, puerto, moneda y demas.
@@ -18,17 +20,7 @@ public class EnvironmentVariables {
      */
     public static final int SOCKET_PORT = 8888;
 
-    /**
-     * Ip del servidor.
-     */
-    public static String IP = "192.168.173.1";
-
-            //"192.168.173.1";//10.0.2.2
-
-    /**
-     * Puerto para la coneccion.
-     */
-    public static String PORT = "8080";
+    private static UbicacionModel ubicacionActual = UbicacionModel.getDefaultUbicacion();
 
     /**
      * Path de inicio de las peticiones.
@@ -66,22 +58,28 @@ public class EnvironmentVariables {
     public static int conversion = 24;
 
     /**
-     * Método para cambiar el IP de la coneccion.
-     *
-     * @param ip para el que se va a cambiar.
-     */
-    public static void changeIP(String ip) {
-        IP = ip;
-    }
-
-    /**
      * Redondea un valor a dos lugares despues de la coma.
      *
      * @param valorARedondear que se quiere redondear.
      * @return el String con el valor redondeado a dos lugares.
      */
     public static String setDosLugaresDecimales(float valorARedondear) {
-        return Math.round(valorARedondear * Math.pow(10, 2)) / Math.pow(10, 2)+"";
+        return Math.round(valorARedondear * Math.pow(10, 2)) / Math.pow(10, 2) + "";
     }
 
+    public static String getIP() {
+        return ubicacionActual.getIp();
+    }
+
+    public static String getPORT() {
+        return ubicacionActual.getPuerto();
+    }
+
+    public static String getNombre() {
+        return ubicacionActual.getNombre();
+    }
+
+    public static void setUbicacionActual(UbicacionModel act) {
+        ubicacionActual = act;
+    }
 }
