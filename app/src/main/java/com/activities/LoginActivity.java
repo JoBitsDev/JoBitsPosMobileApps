@@ -121,7 +121,7 @@ public class LoginActivity extends BaseActivity {
                 new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
                     @Override
                     public Boolean process() throws Exception {
-                        return controller.loginAction(username, password, access);
+                        return controller.loginAction(username, password);
                     }
 
                     @Override
