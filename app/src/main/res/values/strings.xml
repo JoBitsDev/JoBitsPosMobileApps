@@ -21,8 +21,7 @@
     <string name="noConnectionError">No hay conexión con el servidor.
         \nVerifique que esta conectado a la wi-fi
         \ny que la PC servidor se encuentra encendida y con el servicio funcionando</string>
-    <string name="serverError">A ocurrido un error procesando la petición al servidor.\n
-        Si el error persiste reinicie el servidor.</string>
+    <string name="serverError">A ocurrido un error procesando la petición al servidor:\n</string>
     <string name="unespectedError">Uppppsssss algo no funciona :(\n
         Si el error persiste contacte con soporte técnico.</string>
     <string name="timeoutError">La respuesta al servidor ha exedido el tiempo de espera.</string>
