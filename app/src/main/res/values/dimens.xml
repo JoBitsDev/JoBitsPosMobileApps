@@ -16,8 +16,7 @@
     <dimen name="textSizeNormal">25dp</dimen>
     <dimen name="textSizeMedium">30dp</dimen>
     <dimen name="textSizeExact20">20dp</dimen>
-
-
+    <dimen name="textSizeTitle">50dp</dimen>
 
 
 </resources>
