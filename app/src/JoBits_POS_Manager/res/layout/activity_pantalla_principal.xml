@@ -38,8 +38,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/color_primario"
-            android:textSize="24sp"
-            tools:src="@drawable/refrescarhdpi" />
+            android:src="@drawable/refrescarhdpi"
+            android:textSize="24sp" />
 
     </LinearLayout>
     <TabHost

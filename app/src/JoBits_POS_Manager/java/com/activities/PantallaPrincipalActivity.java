@@ -112,6 +112,13 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 }
             });
 
+            imageButtonActualizar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    actualizar(editTextShowDate.getText().toString());
+                }
+            });
+
             editTextShowDate.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
