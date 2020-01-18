@@ -2,6 +2,8 @@ package com.activities;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.DatePicker;
@@ -10,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TabHost;
 
+import com.controllers.ResumenVentasController;
 import com.services.models.AreaListModel;
 import com.services.models.DpteListModel;
 import com.services.models.PuntoElaboracionListModel;
@@ -19,7 +22,10 @@ import com.utils.adapter.DependientesAdapter;
 import com.utils.adapter.GeneralAdapter;
 import com.utils.adapter.PtoElaboracionAdapter;
 import com.utils.exception.ExceptionHandler;
+import com.utils.loading.LoadingHandler;
+import com.utils.loading.LoadingProcess;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -29,6 +35,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     private DependientesAdapter dependientesAdapter;
     private GeneralAdapter generalAdapter;
     private PtoElaboracionAdapter ptoElaboracionAdapter;
+    private ResumenVentasController resumenVentasController;
 
     private List<VentaResumenModel> ventaResumenModels;
     private List<AreaListModel> areaListModels;
@@ -42,6 +49,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
     private EditText editTextShowDate;
     private ImageButton imageButtonDatePicker;
+    private ImageButton imageButtonActualizar;
     private TabHost host;
     private float lastX;
 
@@ -70,15 +78,23 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
             editTextShowDate = (EditText) findViewById(R.id.editTextDatePicker);
             imageButtonDatePicker = (ImageButton) findViewById(R.id.imageButtonDatePicker);
+            imageButtonActualizar = (ImageButton) findViewById(R.id.buttonActualizar);
             listViewGeneral = (ListView) findViewById(R.id.listViewGeneral);
             listViewAreas = (ListView) findViewById(R.id.listViewAreas);
             listViewDependientes = (ListView) findViewById(R.id.listViewDependientes);
             listViewPtoElaboracion = (ListView) findViewById(R.id.listViewPtoElaboracion);
 
+            ventaResumenModels = new ArrayList<VentaResumenModel>();
+            areaListModels = new ArrayList<AreaListModel>();
+            dpteListModels = new ArrayList<DpteListModel>();
+            puntoElaboracionListModels = new ArrayList<PuntoElaboracionListModel>();
+
             generalAdapter = new GeneralAdapter(this, R.layout.general_list, ventaResumenModels);
             areaAdapter = new AreaAdapter(this, R.layout.area_list, areaListModels);
             dependientesAdapter = new DependientesAdapter(this, R.layout.dependientes_list, dpteListModels);
             ptoElaboracionAdapter = new PtoElaboracionAdapter(this, R.layout.pto_elaboracion_list, puntoElaboracionListModels);
+
+            resumenVentasController = new ResumenVentasController();
 
             initTab();
         } catch (Exception e) {
@@ -93,6 +109,23 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     pickDate();
+                }
+            });
+
+            editTextShowDate.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    actualizar(editTextShowDate.getText().toString());
                 }
             });
         } catch (Exception e) {
@@ -110,6 +143,30 @@ public class PantallaPrincipalActivity extends BaseActivity {
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
+    }
+
+    public void actualizar(final String fecha){
+        new LoadingHandler<VentaResumenModel>(act, new LoadingProcess<VentaResumenModel>() {
+            @Override
+            public VentaResumenModel process() throws Exception {
+                return resumenVentasController.getResumenVentas(fecha);
+            }
+
+            @Override
+            public void post(VentaResumenModel answer) {
+                ventaResumenModels.clear();
+                areaListModels.clear();
+                dpteListModels.clear();
+                ptoElaboracionAdapter.clear();
+
+                ventaResumenModels.add(answer);
+                areaListModels.addAll(answer.getAreas());
+                dpteListModels.addAll(answer.getDptes());
+                ptoElaboracionAdapter.addAll(answer.getPtosElaboracion());
+
+                setAdapters();
+            }
+        });
     }
 
     private void initTab() {
