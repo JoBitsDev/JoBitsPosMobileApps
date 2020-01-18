@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.activities.R;
+import com.services.models.PuntoElaboracionListModel;
 
 import java.util.List;
 
@@ -15,22 +16,22 @@ import java.util.List;
  * Capa: Adapter
  * Clase adapter de la lista de puntos de elaboracion respecto ingresos y gastos, encargada de manejar la vista de la lista.
  *
- * @extends de ArrayAdapter para poder implementar un nuevo adapter basado en el modelo ...
+ * @extends de ArrayAdapter para poder implementar un nuevo adapter basado en el modelo PuntoElaboracionListModel
  */
 
-public class PtoElaboracionAdapter extends ArrayAdapter<String> {
+public class PtoElaboracionAdapter extends ArrayAdapter<PuntoElaboracionListModel> {
 
     private Context context;
-    private List<String> change;
+    private List<PuntoElaboracionListModel> puntoElaboracionListModels;
 
     /**
      * Constructor
      */
 
-    public PtoElaboracionAdapter(Context context, int textViewResourceId, List<String> change) {
-        super(context, textViewResourceId, change);
+    public PtoElaboracionAdapter(Context context, int textViewResourceId, List<PuntoElaboracionListModel> puntoElaboracionListModels) {
+        super(context, textViewResourceId, puntoElaboracionListModels);
         this.context = context;
-        this.change = change;
+        this.puntoElaboracionListModels = puntoElaboracionListModels;
     }
 
     /**
@@ -52,9 +53,9 @@ public class PtoElaboracionAdapter extends ArrayAdapter<String> {
         } else {
             holder = (ViewHolder) item.getTag();
         }
-        holder.codigoPto.setText("");
-        holder.nombrePto.setText("");
-        holder.montoPto.setText("");
+        holder.codigoPto.setText(puntoElaboracionListModels.get(position).getCodigo());
+        holder.nombrePto.setText(puntoElaboracionListModels.get(position).getNombre());
+        holder.montoPto.setText(puntoElaboracionListModels.get(position).getMonto()+"");
         return (item);
     }
 

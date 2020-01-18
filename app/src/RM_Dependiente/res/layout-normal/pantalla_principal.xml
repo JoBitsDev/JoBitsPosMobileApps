@@ -1,20 +1,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
-    android:layout_height="fill_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.activities.LoginActivity"
-    android:background="@color/color_Fondo">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/especifico_app_primario"
+    tools:context="com.activities.LoginActivity">
 
     <LinearLayout
-        android:orientation="vertical"
+        android:id="@+id/linearLayout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_marginTop="5dp"
-        android:id="@+id/linearLayout">
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -24,6 +22,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/especifico_app_primario"
                 android:orientation="horizontal">
 
                 <TextView
@@ -32,8 +31,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/user"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/color_Labels"
-                    android:textSize="@dimen/subtitulos" />
+                    android:textColor="@color/texto_primario"
+                    android:textSize="@dimen/textSizeExact20" />
 
                 <Switch
                     android:id="@+id/switchOrden"
@@ -41,7 +40,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textOff="@string/mesa"
-                    android:textOn="@string/orden" />
+                    android:textOn="@string/orden"
+                    android:textSize="@dimen/textSizeExact20" />
             </LinearLayout>
 
 
@@ -51,31 +51,39 @@
                 android:layout_height="wrap_content"
                 android:text="@string/estadoMesas"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/color_Labels"
+                android:textColor="@color/texto_primario"
                 android:textSize="@dimen/subtitulos"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true" />
+                android:textColor="@color/color_primario_oscuro"
+                android:textSize="@dimen/textSizeExact20" />
 
         </RelativeLayout>
 
         <ListView
+            android:id="@+id/listaMesas"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="20"
-            android:id="@+id/listaMesas"
+            android:background="@color/especifico_app_primario"
             android:choiceMode="singleChoice" />
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/secundario">
+
 
             <Button
                 android:id="@+id/cambiarArea"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
                 android:enabled="false"
                 android:text="Pedido en Barra"
+                android:textColor="@color/texto_secundario"
+                android:textSize="@dimen/textSizeExact20"
                 tools:ignore="ButtonStyle" />
 
             <Button
@@ -84,15 +92,16 @@
                 android:layout_height="wrap_content"
                 android:enabled="false"
                 android:text="Pedido a Domicilio"
+                android:textSize="@dimen/textSizeExact20"
+                android:textColor="@color/texto_secundario"
                 tools:ignore="ButtonStyle" />
 
             <Button
                 android:id="@+id/button7"
-                style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginEnd="61dp"
+                android:textColor="@color/texto_secundario"
                 android:layout_toStartOf="@+id/textViewNombreRest"
                 android:enabled="false"
                 android:text="R" />

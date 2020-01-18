@@ -1,13 +1,37 @@
 <resources>
 
-    <color name="color_splash_screen">#FFFFFF</color>
-    <color name="color_Labels">#FFFFFF</color>
-    <color name="color_Buttons">#FFFFFF</color>
-    <color name="color_Fondo2">#5A818D</color>
-    <color name="alternativoparabotones">#2A4047</color>
-    <color name="color_fondo_resaltado">#6B22AA</color>
+
+    <color name="splash_screen">#FFFFFF</color>
+
+    --Texto
+    <color name="texto_primario">#FFFFFF</color>
+    <color name="texto_secundario">#000000</color>
+
+    <color name="botones_fondo">#FFFFFF</color>
+    <color name="fondo_resaltado">#6B22AA</color>
 
     <color name="black_overlay">#5A818D</color>
-    <color name="color_resaltado2">#186141</color>
+    <color name="resaltado2">#186141</color>
+
+
+    --Fondo
+
+    <color name="primario">#ebf3e2</color>
+    <color name="secundario">#ebf3e2</color>
+    <color name="auxiliar">#dbca00</color>
+    <color name="especifico_app_primario">#ebf3e2</color>
+
+    --listas y tablas
+
+    <color name="list_view">#ffbd86</color>
+    <color name="seleccion_listas">#ebf3e2</color>
+
+
+    --Colores Dark Mode
+
+    <color name="primario_oscuro">#ebf3e2</color>
+
+    --Otros
+
 
 </resources>

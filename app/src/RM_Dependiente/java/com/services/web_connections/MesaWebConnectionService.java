@@ -16,7 +16,7 @@ public class MesaWebConnectionService extends SimpleWebConnectionService {
 
 
     public MesaWebConnectionService(String user, String codMesa) {
-        super(EnvironmentVariables.IP, "8080");
+        super();
         this.user = user;
         this.codmesa = codMesa;
         path += P;

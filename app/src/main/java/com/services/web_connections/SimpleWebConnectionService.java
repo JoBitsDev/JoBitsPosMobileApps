@@ -56,35 +56,23 @@ public class SimpleWebConnectionService {
     protected URL url = null;
 
     /**
-     * Constructor que solicita ip y puerto para en caso de que se quiera conectar a otro lugar.
-     *
-     * @param ip   del servidor donde se hacen las peticiones.
-     * @param port del servidor donde se hacen las peticiones.
-     */
-    public SimpleWebConnectionService(String ip, String port) {
-        this.ip = ip;
-        this.port = port;
-        path = "http://" + ip + ":" + port + "/" + EnvironmentVariables.STARTPATH;
-    }
-
-    /**
      * Constructor por defecto. Carga el IP y el Puerto de la configuracion por defecto de las
      * variables de entorno.
      */
     public SimpleWebConnectionService() {
-        this.ip = EnvironmentVariables.IP;
-        port = EnvironmentVariables.PORT;
+        this.ip = EnvironmentVariables.getIP();
+        port = EnvironmentVariables.getPORT();
         path = "http://" + ip + ":" + port + "/" + EnvironmentVariables.STARTPATH;
     }
 
     /**
      * Devuelve la informacion de la consulta a la URL pasada por parametro.
      *
-     * @Deprecated Usar en ves de esto usar {@connectPost} y trabajar con JSONs
      * @param url a consultar
      * @return Respuesta de la consulta
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
+     * @Deprecated Usar en ves de esto usar {@connectPost} y trabajar con JSONs
      */
     @Deprecated
     public String connect(final String url) throws Exception {
@@ -102,9 +90,9 @@ public class SimpleWebConnectionService {
     /**
      * Ejecuta la consulta en el URL por GET.
      *
-     * @Deprecated Usar en ves de esto usar {@connectPost} y trabajar con JSONs
      * @param urlToExcecute
      * @return el String con la respuesta.
+     * @Deprecated Usar en ves de esto usar {@connectPost} y trabajar con JSONs
      */
     @Deprecated
     protected String execute(String urlToExcecute) {
@@ -139,8 +127,8 @@ public class SimpleWebConnectionService {
      * Manda por POST la peticion a la url con el body especifico y el token de segurdad en el header
      *
      * @param urlToExcecute URL a ejecutar la peticion
-     * @param body Cuerpo del mensaje, JSON con la info.
-     * @param token Token de seguridad.
+     * @param body          Cuerpo del mensaje, JSON con la info.
+     * @param token         Token de seguridad.
      * @return String con el formato JSON.
      * @throws Exception Si algo sale mal.
      */
@@ -155,7 +143,7 @@ public class SimpleWebConnectionService {
         con.setReadTimeout(MAX_READ_TIME);
         con.setConnectTimeout(MAX_RESPONSE_TIME);
         con.setRequestProperty(AUTHORITATION, BEARER + token);
-        
+
         // Starts the query
         OutputStreamWriter os = new OutputStreamWriter(con.getOutputStream());
         os.write(body);

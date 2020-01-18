@@ -5,8 +5,6 @@ import android.os.AsyncTask;
 
 import com.activities.BaseActivity;
 import com.utils.exception.ExceptionHandler;
-
-import java.util.concurrent.ExecutionException;
 /*
   new LoadingHandler<Boolean>(this, new LoadingProcess<Boolean>() {
        @Override
@@ -19,6 +17,8 @@ import java.util.concurrent.ExecutionException;
        }
   });
  */
+
+//TODO: el loading handler se quita cuando se da un click fuera de el.lo esperado seria que bloqueara cualquier interaccion con el hasta que no terminara el proceso
 
 /**
  * Asi se usa.

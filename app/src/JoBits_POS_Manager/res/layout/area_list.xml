@@ -5,91 +5,101 @@
     android:orientation="horizontal">
 
     <LinearLayout
-        android:layout_width="295dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="20"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/textViewCodigo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_list_view"
             android:text="Código"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
         <TextView
             android:id="@+id/editTextCodigo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_naranja_claro"
             android:ems="10"
             android:gravity="right"
             android:hint="Código"
             android:inputType="text"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
         <TextView
             android:id="@+id/textViewNombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_list_view"
             android:text="Nombre"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
         <TextView
             android:id="@+id/editTextNombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_naranja_claro"
             android:ems="10"
             android:gravity="right"
             android:hint="Nombre"
             android:inputType="text"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
     </LinearLayout>
 
     <View
         android:id="@+id/divider2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="?android:attr/listDivider" />
 
     <LinearLayout
-        android:layout_width="295dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="20"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/textViewNeta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_list_view"
             android:text="Venta Neta"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
         <TextView
             android:id="@+id/editTextNeta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_naranja_claro"
             android:ems="10"
             android:gravity="right"
             android:hint="0.0 CUC"
             android:inputType="numberSigned"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
         <TextView
             android:id="@+id/textViewReal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_list_view"
             android:text="Venta Real"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
         <TextView
             android:id="@+id/editTextReal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_naranja_claro"
             android:ems="10"
             android:gravity="right"
             android:hint="0.0 CUC"
             android:inputType="numberSigned"
-            android:textSize="30sp" />
+            android:textSize="@dimen/textSizeMedium" />
 
     </LinearLayout>
 </LinearLayout>

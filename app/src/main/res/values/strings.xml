@@ -28,5 +28,7 @@
     <string name="networkOnMainThreadError">Ejecutado conneción al servidor en hilo principal.</string>
 
     <string name="dayClosedError">La caja debe comenzar el dia \nde trabajo para acceder a las ordenes</string>
+    <string name="cambiar_ubicacion">Cambiar ubicación</string>
+    <string name="agregar_ubicacion">Agregar ubicación</string>
 
 </resources>
