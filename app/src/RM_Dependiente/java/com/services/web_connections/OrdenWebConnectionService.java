@@ -22,7 +22,7 @@ public class OrdenWebConnectionService extends SimpleWebConnectionService {
 
 
     public OrdenWebConnectionService(String codOrden, String codMesa, String usuarioTrabajador) {
-        super(EnvironmentVariables.IP, EnvironmentVariables.PORT);
+        super();
         this.path += P;
 
         this.codMesa = codMesa;
@@ -33,7 +33,7 @@ public class OrdenWebConnectionService extends SimpleWebConnectionService {
 
 
     public OrdenWebConnectionService(String codMesa, String usuarioTrabajador) {
-        super(EnvironmentVariables.IP, EnvironmentVariables.PORT);
+        super();
         this.path += P;
 
         this.codMesa = codMesa;

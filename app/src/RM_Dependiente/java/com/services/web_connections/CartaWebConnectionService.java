@@ -12,13 +12,13 @@ import java.util.concurrent.TimeoutException;
 public class CartaWebConnectionService extends SimpleWebConnectionService {
 
 
-    private String urlNombreRest = "http://"+ EnvironmentVariables.IP +":8080/RM/rest/com.restmanager.carta/NOMBRE_REST";
+    private String urlNombreRest = "http://" + EnvironmentVariables.getIP() + ":" + EnvironmentVariables.getPORT() + "/RM/rest/com.restmanager.carta/NOMBRE_REST";
 
     public CartaWebConnectionService() {
         super();
     }
 
-    public String getNombreRest(){
+    public String getNombreRest() {
         try {
             return connect(urlNombreRest);
         } catch (Exception e) {
