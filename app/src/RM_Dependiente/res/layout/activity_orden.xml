@@ -3,12 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_secundario"
+    android:background="@color/especifico_app_primario"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.activities.PantallaPrincipalActivity">
 
 
@@ -37,15 +33,14 @@
                     android:id="@android:id/tabs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/color_primario"
+                    android:background="@color/secundario"
                     android:orientation="horizontal" />
 
                 <FrameLayout
                     android:id="@android:id/tabcontent"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
                     android:layout_height="match_parent"
-                    android:background="@color/color_list_view">
+                    android:background="@color/especifico_app_primario">
 
                     <LinearLayout
                         android:id="@+id/ordenModel"
@@ -55,7 +50,8 @@
 
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="10dp">
 
                             <TextView
                                 android:id="@+id/textView4"
@@ -64,10 +60,8 @@
                                 android:layout_alignParentStart="true"
                                 android:text="@string/laberOrderNo"
                                 android:textAppearance="?android:attr/textAppearanceLarge"
-                                android:textColor="@color/color_Labels"
+                                android:textColor="@color/texto_primario"
                                 android:textSize="@dimen/normal" />
-                                android:textColor="@color/color_primario_oscuro"
-                                android:textSize="@dimen/textSizeExact20" />
 
                             <TextView
                                 android:id="@+id/textView5"
@@ -76,10 +70,10 @@
                                 android:layout_below="@id/textView4"
                                 android:text="@string/labelMesaNo"
                                 android:textAppearance="?android:attr/textAppearanceLarge"
-                                android:textColor="@color/color_Labels"
+                                android:textColor="@color/texto_primario"
                                 android:textSize="@dimen/normal" />
-                                android:textColor="@color/color_primario_oscuro"
-                                android:textSize="@dimen/textSizeExact20" />
+                            android:textColor="@color/color_primario_oscuro"
+                            android:textSize="@dimen/textSizeExact20" />
 
                             <TextView
                                 android:id="@+id/ordenNoLabel"
@@ -89,10 +83,10 @@
                                 android:layout_toRightOf="@id/textView4"
                                 android:text="####"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@color/color_Labels"
+                                android:textColor="@color/texto_primario"
                                 android:textSize="@dimen/normal" />
-                                android:textColor="@color/color_primario_oscuro"
-                                android:textSize="@dimen/textSizeExact20" />
+                            android:textColor="@color/color_primario_oscuro"
+                            android:textSize="@dimen/textSizeExact20" />
 
 
                             <TextView
@@ -104,10 +98,10 @@
                                 android:layout_toRightOf="@id/textView5"
                                 android:text="####"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@color/color_Labels"
+                                android:textColor="@color/texto_primario"
                                 android:textSize="@dimen/normal" />
-                                android:textColor="@color/color_primario_oscuro"
-                                android:textSize="@dimen/textSizeExact20" />
+                            android:textColor="@color/color_primario_oscuro"
+                            android:textSize="@dimen/textSizeExact20" />
 
                             <TextView
                                 android:id="@+id/textView3"
@@ -116,10 +110,10 @@
                                 android:layout_below="@+id/textView5"
                                 android:text="@string/labelDependiente"
                                 android:textAppearance="?android:attr/textAppearanceLarge"
-                                android:textColor="@color/color_Labels"
+                                android:textColor="@color/texto_primario"
                                 android:textSize="@dimen/normal" />
-                                android:textColor="@color/color_primario_oscuro"
-                                android:textSize="@dimen/textSizeExact20" />
+                            android:textColor="@color/color_primario_oscuro"
+                            android:textSize="@dimen/textSizeExact20" />
 
                             <TextView
                                 android:id="@+id/dependienteLabel"
@@ -130,12 +124,13 @@
                                 android:layout_toRightOf="@+id/textView3"
                                 android:text="####"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@color/color_Labels"
+                                android:textColor="@color/texto_primario"
                                 android:textSize="@dimen/normal" />
-                                android:textColor="@color/color_primario_oscuro"
-                                android:textSize="@dimen/textSizeExact20" />
+                            android:textColor="@color/color_primario_oscuro"
+                            android:textSize="@dimen/textSizeExact20" />
 
                         </RelativeLayout>
+
 
                         <RelativeLayout
                             android:layout_width="wrap_content"
@@ -150,6 +145,7 @@
                                 android:layout_alignParentTop="true"
                                 android:hapticFeedbackEnabled="true"
                                 android:text="@string/botonEnviarCocina"
+                                android:textColor="@color/texto_primario"
                                 android:textSize="@dimen/textSizeNormal" />
 
                             <Button
@@ -168,9 +164,11 @@
                                 android:layout_alignParentRight="true"
                                 android:hapticFeedbackEnabled="true"
                                 android:text="@string/botonCerrarOrden"
-                                android:textSize="@dimen/textSizeNormal" />
+                                android:textSize="@dimen/textSizeNormal"
+                                android:textColor="@color/texto_primario"/>
 
                         </RelativeLayout>
+
 
                         <ListView
                             android:id="@+id/listaOrden"
@@ -179,14 +177,16 @@
                             android:layout_gravity="center"
                             android:layout_weight="8"
                             android:choiceMode="singleChoice"
-                            android:listSelector="@color/selector_listas"
+
+                            android:listSelector="@color/secundario"
                             android:scrollingCache="true"
                             android:smoothScrollbar="true" />
 
                         <RelativeLayout
                             android:layout_width="fill_parent"
                             android:layout_height="0dp"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:background="@color/secundario">
 
                             <CheckBox
                                 android:id="@+id/deLaCasaCheckBox"
@@ -196,10 +196,8 @@
                                 android:layout_centerVertical="true"
 
                                 android:text="@string/botonDeLaCasa"
-                                android:textColor="@color/color_Labels"
+                                android:textColor="@color/texto_secundario"
                                 android:textSize="@dimen/normal" />
-                                android:textColor="@color/color_primario_oscuro"
-                                android:textSize="@dimen/textSizeExact20" />
 
 
                             <TextView
@@ -214,10 +212,8 @@
                                 android:gravity="center"
                                 android:text="@string/labelTotal"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@color/color_Labels"
+                                android:textColor="@color/texto_secundario"
                                 android:textSize="@dimen/normal" />
-                                android:textColor="@color/color_primario_oscuro"
-                                android:textSize="@dimen/textSizeExact20" />
 
 
                             <LinearLayout
@@ -237,8 +233,9 @@
                                     android:maxLines="1"
                                     android:text="0.00 C.U.C"
                                     android:textAppearance="?android:attr/textAppearanceLarge"
-                                    android:textColor="@color/color_botella"
-                                    android:textSize="@dimen/textSizeExact20" />
+                                    android:textColor="@color/precios"
+                                    android:textSize="@dimen/textSizeMedium"
+                                    android:textStyle="bold" />
 
                                 <TextView
                                     android:id="@+id/totalSecundariaLabel"
@@ -248,8 +245,9 @@
                                     android:gravity="center"
                                     android:text="0.00 C.U.C"
                                     android:textAppearance="?android:attr/textAppearanceLarge"
-                                    android:textColor="@color/color_botella"
-                                    android:textSize="@dimen/textSizeExact20" />
+                                    android:textColor="@color/precios"
+                                    android:textSize="@dimen/textSizeMedium"
+                                    android:textStyle="bold" />
 
                             </LinearLayout>
 
@@ -274,7 +272,9 @@
                             android:layout_weight="1"
                             android:ems="10"
                             android:hint="Buscar..."
-                            android:inputType="textNoSuggestions|textFilter" />
+                            android:inputType="textNoSuggestions|textFilter"
+                            android:textColor="@color/texto_primario"
+                            android:textSize="@dimen/precio" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -284,25 +284,25 @@
 
                             <ListView
                                 android:id="@+id/menuPrincipalListView"
-                                android:layout_width="147dp"
+                                android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_marginRight="4dp"
+                                android:layout_weight="1"
                                 android:choiceMode="singleChoice"
                                 android:clickable="true"
                                 android:focusable="true"
-                                android:listSelector="@color/selector_listas"
                                 android:scrollingCache="true"
                                 android:smoothScrollbar="true" />
 
                             <ListView
                                 android:id="@+id/menuListView"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_marginLeft="10dp"
+                                android:layout_weight="4"
                                 android:choiceMode="singleChoice"
                                 android:clickable="true"
                                 android:focusable="true"
-                                android:listSelector="@color/selector_listas"
                                 android:scrollingCache="true"
                                 android:smoothScrollbar="true" />
                         </LinearLayout>
