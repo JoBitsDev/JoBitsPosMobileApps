@@ -165,8 +165,8 @@ public class OrdenActivity extends BaseActivity {
             listaOrden.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    onTabChangeTouchEvent(event);
-                    return true;
+                    return onTabChangeTouchEvent(event);
+
                 }
             });
 
@@ -375,7 +375,7 @@ public class OrdenActivity extends BaseActivity {
     }
 
     private void setMenuSeccionListViewAdapters() {
-        seccionAdapter = new SeccionAdapter(act, android.R.layout.simple_list_item_1, secciones);
+        seccionAdapter = new SeccionAdapter(act, R.id.menuListView, secciones);
         menuSeccionListView.setAdapter(seccionAdapter);
     }
 
@@ -785,7 +785,7 @@ public class OrdenActivity extends BaseActivity {
             for (ProductoVentaOrdenModel x : productosVentaOrden) {
                 tot += x.getProductoVentaModel().getPrecioVenta() * x.getCantidad();
             }
-            if (EnvironmentVariables.MONEDA_PRINCIPAL.equals(EnvironmentVariables.MONEDA_PRINCIPAL)) {
+            if (EnvironmentVariables.MONEDA_PRINCIPAL.equals(" MN")) {
                 totalPrincipalLabel.setText(EnvironmentVariables.setDosLugaresDecimales(tot) + EnvironmentVariables.MONEDA_PRINCIPAL);
                 totalSecundariaLabel.setText(EnvironmentVariables.setDosLugaresDecimales(tot / EnvironmentVariables.conversion) + EnvironmentVariables.MONEDA_SECUNDARIA);
             } else {
