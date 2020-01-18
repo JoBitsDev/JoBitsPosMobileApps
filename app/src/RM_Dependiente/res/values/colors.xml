@@ -9,16 +9,16 @@
     <color name="selector_listas" >#FFCBCBCB</color>
     <color name="color_fondo_resaltado">#0C5153</color>
 
-    <color name="color_carmelita_oscuro">#3c1b13</color>
-    <color name="color_carmelita_claro">#663325</color>
+    <color name="color_primario">#663325</color>
     <color name="color_etiqueta">#eebf00</color>
     <color name="color_botella">#7fe881</color>
     <color name="color_copa_oscuro">#e53c79</color>
     <color name="color_copa_claro">#ff5a99</color>
-    <color name="color_mano_oscuro">#f6a96c</color>
-    <color name="color_mano_claro">#ffbd86</color>
+    <color name="color_secundario">#f6a96c</color>
+    <color name="color_list_view">#ffbd86</color>
     <color name="color_plato_oscuro">#e2d8fc</color>
     <color name="color_plato_claro">#f2f2fc</color>
 
 
+    <color name="color_primario_oscuro">#3c1b13</color>
 </resources>

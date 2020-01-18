@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_mano_oscuro"
+    android:background="@color/color_Fondo"
+    android:background="@color/color_secundario"
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
@@ -37,14 +38,15 @@
                     android:id="@android:id/tabs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/color_carmelita_claro"
+                    android:background="@color/color_primario"
                     android:orientation="horizontal" />
 
                 <FrameLayout
                     android:id="@android:id/tabcontent"
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent">
                     android:layout_height="match_parent"
-                    android:background="@color/color_mano_claro">
+                    android:background="@color/color_list_view">
 
                     <LinearLayout
                         android:id="@+id/ordenModel"
@@ -63,7 +65,9 @@
                                 android:layout_alignParentStart="true"
                                 android:text="@string/laberOrderNo"
                                 android:textAppearance="?android:attr/textAppearanceLarge"
-                                android:textColor="@color/color_carmelita_oscuro"
+                                android:textColor="@color/color_Labels"
+                                android:textSize="@dimen/normal" />
+                                android:textColor="@color/color_primario_oscuro"
                                 android:textSize="@dimen/textSizeExact20" />
 
                             <TextView
@@ -73,7 +77,9 @@
                                 android:layout_below="@id/textView4"
                                 android:text="@string/labelMesaNo"
                                 android:textAppearance="?android:attr/textAppearanceLarge"
-                                android:textColor="@color/color_carmelita_oscuro"
+                                android:textColor="@color/color_Labels"
+                                android:textSize="@dimen/normal" />
+                                android:textColor="@color/color_primario_oscuro"
                                 android:textSize="@dimen/textSizeExact20" />
 
                             <TextView
@@ -84,7 +90,9 @@
                                 android:layout_toRightOf="@id/textView4"
                                 android:text="####"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@color/color_carmelita_oscuro"
+                                android:textColor="@color/color_Labels"
+                                android:textSize="@dimen/normal" />
+                                android:textColor="@color/color_primario_oscuro"
                                 android:textSize="@dimen/textSizeExact20" />
 
 
@@ -97,7 +105,9 @@
                                 android:layout_toRightOf="@id/textView5"
                                 android:text="####"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@color/color_carmelita_oscuro"
+                                android:textColor="@color/color_Labels"
+                                android:textSize="@dimen/normal" />
+                                android:textColor="@color/color_primario_oscuro"
                                 android:textSize="@dimen/textSizeExact20" />
 
                             <TextView
@@ -107,7 +117,9 @@
                                 android:layout_below="@+id/textView5"
                                 android:text="@string/labelDependiente"
                                 android:textAppearance="?android:attr/textAppearanceLarge"
-                                android:textColor="@color/color_carmelita_oscuro"
+                                android:textColor="@color/color_Labels"
+                                android:textSize="@dimen/normal" />
+                                android:textColor="@color/color_primario_oscuro"
                                 android:textSize="@dimen/textSizeExact20" />
 
                             <TextView
@@ -119,7 +131,9 @@
                                 android:layout_toRightOf="@+id/textView3"
                                 android:text="####"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@color/color_carmelita_oscuro"
+                                android:textColor="@color/color_Labels"
+                                android:textSize="@dimen/normal" />
+                                android:textColor="@color/color_primario_oscuro"
                                 android:textSize="@dimen/textSizeExact20" />
 
                         </RelativeLayout>
@@ -183,7 +197,9 @@
                                 android:layout_centerVertical="true"
 
                                 android:text="@string/botonDeLaCasa"
-                                android:textColor="@color/color_carmelita_oscuro"
+                                android:textColor="@color/color_Labels"
+                                android:textSize="@dimen/normal" />
+                                android:textColor="@color/color_primario_oscuro"
                                 android:textSize="@dimen/textSizeExact20" />
 
 
@@ -199,7 +215,9 @@
                                 android:gravity="center"
                                 android:text="@string/labelTotal"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="@color/color_carmelita_oscuro"
+                                android:textColor="@color/color_Labels"
+                                android:textSize="@dimen/normal" />
+                                android:textColor="@color/color_primario_oscuro"
                                 android:textSize="@dimen/textSizeExact20" />
 
 

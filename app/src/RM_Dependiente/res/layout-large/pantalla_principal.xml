@@ -1,8 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/color_mano_oscuro"
+    android:background="@color/color_secundario"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -31,7 +33,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="5dp"
                 android:layout_weight="1"
-                android:background="@color/color_carmelita_claro"
+                android:background="@color/color_primario"
                 android:textColor="@color/color_plato_claro"
                 android:textOff="@string/mesa"
                 android:textOn="@string/orden" />
@@ -44,7 +46,9 @@
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
                 android:text="@string/rest_Name"
-                android:textColor="@color/color_carmelita_oscuro"
+                android:textColor="@color/color_Labels"
+                android:textSize="50dp" />
+                android:textColor="@color/color_primario_oscuro"
                 android:textSize="@dimen/MainTitle" />
 
             <TextView
@@ -55,7 +59,9 @@
                 android:layout_centerHorizontal="true"
                 android:text="@string/estadoMesas"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/color_carmelita_oscuro"
+                android:textColor="@color/color_Labels"
+                android:textSize="@dimen/subtitulos" />
+                android:textColor="@color/color_primario_oscuro"
                 android:textSize="@dimen/textSizeNormal" />
 
             <TextView
@@ -67,7 +73,8 @@
                 android:layout_marginBottom="14dp"
                 android:text="@string/user"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/color_carmelita_oscuro"
+                android:textColor="@color/color_Labels" />
+                android:textColor="@color/color_primario_oscuro"
                 android:textSize="@dimen/textSizeNormal" />
 
             <ImageButton
@@ -76,7 +83,8 @@
                 android:layout_height="100dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:background="@color/color_carmelita_oscuro"
+                android:background="@color/color_Fondo"
+                android:background="@color/color_primario_oscuro"
                 android:scaleType="fitXY"
                 android:src="@drawable/empty_user" />
 
@@ -87,13 +95,14 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="20"
-            android:background="@color/color_mano_claro"
+            android:background="@color/color_list_view"
             android:choiceMode="singleChoice" />
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content">
             android:layout_height="wrap_content"
-            android:background="@color/color_carmelita_oscuro"
+            android:background="@color/color_primario_oscuro"
             android:orientation="horizontal">
 
             <Button

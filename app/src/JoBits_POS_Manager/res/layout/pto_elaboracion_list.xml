@@ -10,15 +10,16 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="295dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="20"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textViewCodigoPto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/color_naranja_oscuro"
+                android:background="@color/color_list_view"
                 android:text="Código"
                 android:textSize="@dimen/textSizeMedium" />
 
@@ -37,21 +38,22 @@
 
         <View
             android:id="@+id/divider4"
-            android:layout_width="10dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="?android:attr/listDivider" />
 
         <LinearLayout
-            android:layout_width="295dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="20"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textViewNombrePto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/color_naranja_oscuro"
+                android:background="@color/color_list_view"
                 android:text="Nombre"
                 android:textSize="@dimen/textSizeMedium" />
 
@@ -79,7 +81,7 @@
             android:id="@+id/textViewMontoPto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/color_naranja_oscuro"
+            android:background="@color/color_list_view"
             android:text="Monto"
             android:textSize="@dimen/textSizeMedium" />
 

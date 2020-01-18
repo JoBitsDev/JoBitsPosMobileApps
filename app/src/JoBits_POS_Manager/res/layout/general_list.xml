@@ -5,9 +5,11 @@
     android:orientation="horizontal">
 
     <LinearLayout
-        android:layout_width="295dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="20"
         android:background="@color/color_ingreso"
+        android:background="#5EDB62"
         android:orientation="vertical">
 
         <TextView
@@ -65,14 +67,16 @@
 
     <View
         android:id="@+id/divider"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="?android:attr/listDivider" />
 
     <LinearLayout
-        android:layout_width="295dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="#DF5F58"
+        android:layout_weight="20"
         android:background="@color/color_gasto"
         android:orientation="vertical">
 
