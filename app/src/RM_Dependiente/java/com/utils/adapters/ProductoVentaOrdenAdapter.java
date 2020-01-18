@@ -70,7 +70,7 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         holder.precioVenta.setText(
                 objects.get(position).getProductoVentaModel().getPrecioVenta() *
                         objects.get(position).getCantidad() + EnvironmentVariables.MONEDA_PRINCIPAL);
-        holder.cantidad.setText(String.valueOf(objects.get(position).getCantidad()));
+        holder.cantidad.setText("x " + String.valueOf(objects.get(position).getCantidad()));
         holder.adjunto.setTag(position);
         holder.add.setTag(position);
         holder.remove.setTag(position);
