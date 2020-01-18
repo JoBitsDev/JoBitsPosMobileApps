@@ -1,6 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
-    android:layout_height="fill_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -84,7 +82,6 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:background="@color/color_Fondo"
-                android:background="@color/color_primario_oscuro"
                 android:scaleType="fitXY"
                 android:src="@drawable/empty_user" />
 
