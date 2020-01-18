@@ -45,12 +45,12 @@ public class EnvironmentVariables {
     /**
      * Monedo principal a trabajar.
      */
-    public static String MONEDA_PRINCIPAL = " MN";
+    public static String MONEDA_PRINCIPAL = " CUC";
 
     /**
      * Monedo secundarios a trabajar.
      */
-    public static String MONEDA_SECUNDARIA = " CUC";
+    public static String MONEDA_SECUNDARIA = " MN";
 
     /**
      * Tasa de conversión de moneda principal a secundaria.
