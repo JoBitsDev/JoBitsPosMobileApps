@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
+        android:textColor="@color/texto_primario"
         android:text="Nombre"
         android:textSize="@dimen/textSizeNormal" />
 
@@ -19,6 +20,7 @@
         android:layout_gravity="end"
         android:layout_weight="1"
         android:text="Precio"
+        android:textColor="@color/precios"
         android:textSize="@dimen/textSizeNormal" />
 
 </LinearLayout>
