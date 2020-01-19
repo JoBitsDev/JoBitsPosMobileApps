@@ -6,7 +6,7 @@
     <dimen name="icondimension">30sp</dimen>
     <dimen name="titulos">35sp</dimen>
     <dimen name="ListNames">40sp</dimen>
-    <dimen name="MainTitle">80sp</dimen>
+    <dimen name="MainTitle">50sp</dimen>
     <dimen name="precio">17sp</dimen>
     <dimen name="titulo_Texto">40sp</dimen>
 </resources>

@@ -22,12 +22,12 @@ public class CheckUpdateService {
     /**
      * Path de la version.
      */
-    private static String versionPath = "http://" + EnvironmentVariables.IP + ":" + EnvironmentVariables.PORT + "/RM/apk_upd/version.txt";
+    private static String versionPath = "http://" + EnvironmentVariables.getIP() + ":" + EnvironmentVariables.getPORT() + "/RM/apk_upd/version.txt";
 
     /**
      * Path de la apk.
      */
-    private static String apkPath = "http://" + EnvironmentVariables.IP + ":" + EnvironmentVariables.PORT + "/RM/apk_upd/RestManager.apk";
+    private static String apkPath = "http://" + EnvironmentVariables.getIP() + ":" + EnvironmentVariables.getPORT() + "/RM/apk_upd/RestManager.apk";
 
     /**
      * Codigo de la version del servidor.

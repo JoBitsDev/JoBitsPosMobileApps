@@ -31,7 +31,7 @@ import java.util.List;
  */
 public class MesasController extends BaseController {
 
-    private static final String urlMesas = "http://" + EnvironmentVariables.IP + ":" + EnvironmentVariables.PORT + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.mesa";
+    private static final String urlMesas = "http://" + EnvironmentVariables.getIP() + ":" + EnvironmentVariables.getPORT() + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.mesa";
     private String user;
     private OrdenWebConnectionService ordenWCService = null;
 
@@ -62,7 +62,7 @@ public class MesasController extends BaseController {
         ordenWCService.setCodOrden(cod_orden);
     }
 
-    public boolean validate() throws ServerErrorException, NoConnectionException {
+    public boolean validate() throws Exception {
         return ordenWCService.validate();
     }
 
@@ -70,7 +70,7 @@ public class MesasController extends BaseController {
         return new CartaWebConnectionService().getNombreRest();
     }
 
-    public String[] getAreas() throws ServerErrorException, NoConnectionException {
+    public String[] getAreas() throws Exception {
         return new MesaWebConnectionService(user, null).getAreasName();
     }
 }

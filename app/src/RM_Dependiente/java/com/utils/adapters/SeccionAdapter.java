@@ -27,7 +27,6 @@ import java.util.List;
 
 public class SeccionAdapter extends ArrayAdapter<SeccionModel> implements Filterable {
 
-    public final int c = Color.GREEN;
     private Context context;
     private List<SeccionModel> secciones;
     private List<SeccionModel> displayedSecciones;
@@ -74,24 +73,20 @@ public class SeccionAdapter extends ArrayAdapter<SeccionModel> implements Filter
     public View getView(final int position, View convertView, ViewGroup parent) {
 
         View item = convertView;
-        MenuAdapterThis.ViewHolder holder;
+        SeccionViewHolder holder;
         if (item == null) {
             LayoutInflater inflater = LayoutInflater.from(context);
-            item = inflater.inflate(R.layout.list_menu, null);
+            item = inflater.inflate(R.layout.list_parent, null);
 
-            holder = new MenuAdapterThis.ViewHolder();
-            holder.nombreProducto = (TextView) item.findViewById(R.id.textViewNombre);
-            holder.precioVenta = (TextView) item.findViewById(R.id.textViewPrecio);
+            holder = new SeccionViewHolder();
+            holder.nombreSeccion = (TextView) item.findViewById(R.id.boxParent);
             item.setTag(holder);
         } else {
-            holder = (MenuAdapterThis.ViewHolder) item.getTag();
+            holder = (SeccionViewHolder) item.getTag();
         }
         String nombre = displayedSecciones.get(position).getNombreSeccion();
-       // String nombre = displayedSecciones.get(position).getNombreSeccion().replace(" ", "\n");
-        holder.nombreProducto.setBackgroundColor(Color.parseColor("#0C5153"));
-        holder.nombreProducto.setTextColor(Color.WHITE);
-        holder.nombreProducto.setText(nombre);
-        holder.precioVenta.setVisibility(View.GONE);
+       // String nombre = displayedSecciones.get(position).getNombreSeccion().replace(" ", "\n");//TODO: ni idea de esto
+        holder.nombreSeccion.setText(nombre);
         return (item);
     }
 
@@ -167,6 +162,10 @@ public class SeccionAdapter extends ArrayAdapter<SeccionModel> implements Filter
             }
         };
         return filter;
+    }
+
+    static class SeccionViewHolder{
+        TextView nombreSeccion;
     }
 
 }

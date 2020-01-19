@@ -1,12 +1,7 @@
 package com.activities;
 
 import android.app.*;
-import android.content.*;
-
-import com.utils.exception.*;
-
 import android.os.Bundle;
-import android.view.View;
 
 /**
  * Capa: Activities
@@ -18,14 +13,8 @@ import android.view.View;
  */
 public abstract class BaseActivity extends Activity {
 
-    /**
-     * Progress Dialog para el cargando.
-     */
-    public ProgressDialog mProgressDialog;
+    protected BaseActivity act = this;
 
-    /**
-     * TODO: ver bien que es esto y para que se usa.
-     */
     private Bundle bundle;
 
     /**
@@ -47,26 +36,19 @@ public abstract class BaseActivity extends Activity {
     }
 
     /**
-     * Muestra el progress dialog activo, cargando indefinidamente.
+     * Get el bundle. Es usado por ejemplo en almacen para pasarle cosas al initVariables.
+     * @return
      */
-    public void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage("Cargando ...");
-            mProgressDialog.setIndeterminate(true);
-        }
-
-        mProgressDialog.show();
+    public Bundle getBundle() {
+        return bundle;
     }
 
     /**
-     * Esconde el progress dialog.
+     * Set el nuevo bundle.
+     * @param bundle
      */
-    public void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
-        }
+    public void setBundle(Bundle bundle) {
+        this.bundle = bundle;
     }
 
     /**
@@ -75,7 +57,6 @@ public abstract class BaseActivity extends Activity {
     @Override
     public void onStop() {
         super.onStop();
-        hideProgressDialog();
     }
 
     /**
@@ -87,23 +68,6 @@ public abstract class BaseActivity extends Activity {
         new AlertDialog.Builder(this).setMessage(message).create().show();
     }
 
-    /**
-     * Devuelve el bundle.
-     *
-     * @return el bundle.
-     */
-    public Bundle getBundle() {
-        return bundle;
-    }
-
-    /**
-     * Sobreescribe el bundle actual por el especifico
-     *
-     * @param bundle a sobreescribir
-     */
-    public void setBundle(Bundle bundle) {
-        this.bundle = bundle;
-    }
 
     /*public void notificarError(Exception e) { Noficacion de error vieja, entes de procesarlo _todo con el ExceptionHandler.
         String noConnectionError = findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.noConnectionError).toString();

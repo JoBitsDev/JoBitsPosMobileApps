@@ -1,14 +1,22 @@
 package com.activities;
 
-import android.widget.*;
-import android.os.Bundle;
-import android.view.View;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.controllers.MainController;
 import com.services.notifications.ReceiverNotificationService;
 import com.utils.exception.ExceptionHandler;
+import com.utils.loading.LoadingHandler;
+import com.utils.loading.LoadingProcess;
 
 /**
  * Capa: Activities
@@ -40,18 +48,24 @@ public class MainActivity extends BaseActivity {
      */
     private Button initializeSesionButton;
 
+    /**
+     * Label que contiene la version del sistema que esta corriendo
+     */
+    private TextView version;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         try {
+            Thread.sleep(2000);
             setContentView(R.layout.activity_main);
             initVarialbes();
             addListeners();
 
             updateConnectionText();
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -61,7 +75,7 @@ public class MainActivity extends BaseActivity {
             super.onResume();
             updateConnectionText();
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -73,8 +87,11 @@ public class MainActivity extends BaseActivity {
             notificationButton = (Button) findViewById(R.id.notificationButton);
             initializeSesionButton = (Button) findViewById(R.id.initializeSesionButton);
             connectionStatusText = ((TextView) (findViewById(R.id.connectionStatusText)));
+            version = (TextView) findViewById(R.id.version);
+            version.setText("Versión " + BuildConfig.VERSION_NAME);
+
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -94,8 +111,74 @@ public class MainActivity extends BaseActivity {
                 }
             });
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        try {
+            // Inflate the menuProductosListView; this adds items to the action bar if it is present.
+            getMenuInflater().inflate(R.menu.menu_main, menu);
+            return true;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+
+        switch (item.getItemId()) {
+            case R.id.cambiar_ubicacion:
+                cambiarUbicacion();
+                return true;
+            case R.id.agregar_ubicacion:
+                agregarUbicacion();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void cambiarUbicacion() {
+        String ubicaciones[] = controller.getAllUbicaciones();
+
+        new AlertDialog.Builder(act).
+                setTitle(R.string.cambiar_ubicacion).
+                setSingleChoiceItems(ubicaciones, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which) {
+                        controller.changeUbication(which);
+                        updateConnectionText();
+                        dialog.dismiss();
+                    }
+                }).setNeutralButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).create().show();
+    }
+
+    private void agregarUbicacion() {
+        final EditText input = new EditText(act);
+        new AlertDialog.Builder(act).
+                setView(input).
+                setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                controller.agregarUbicacion(input.getText().toString());
+            }
+        }).create().show();
     }
 
     /**
@@ -107,7 +190,7 @@ public class MainActivity extends BaseActivity {
         try {
             startService(v);
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -117,38 +200,45 @@ public class MainActivity extends BaseActivity {
      * @param v View de la aplicacion.
      */
     private void onInitializeSesionButtOnClick(View v) {
-        try {
-            if (updateConnectionText()) {
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            } else {
-                this.showMessage(v.getContext().getResources().
-                        getText(R.string.noConnectionError).toString());
+        new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
+            @Override
+            public Boolean process() {
+                return controller.checkConnection();
             }
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
-        }
+
+            @Override
+            public void post(Boolean value) {
+                if (value) {
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                } else {
+                    act.showMessage(act.getApplication().getApplicationContext().getResources().
+                            getText(R.string.noConnectionError).toString());
+                }
+            }
+        });
     }
 
     /**
      * Actualiza el label de coneccion en dependencia de si hay o no coneccion con el servidor.
-     *
-     * @return true si hay coneccion con el servidor, false en cualquier otro caso.
      */
-    private boolean updateConnectionText() {
-        try {
-            if (controller.checkConnection()) {
-                connectionStatusText.setText(R.string.conexion_succesfull);
-                connectionStatusText.setTextColor(Color.GREEN);
-                return true;
-            } else {
-                connectionStatusText.setText(R.string.no_network);
-                connectionStatusText.setTextColor(Color.RED);
-                return false;
+    private void updateConnectionText() {
+        new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
+            @Override
+            public Boolean process() {
+                return controller.checkConnection();
             }
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
-            return false;
-        }
+
+            @Override
+            public void post(Boolean value) {
+                if (value) {
+                    connectionStatusText.setText(R.string.conexion_succesfull);
+                    connectionStatusText.setTextColor(Color.GREEN);
+                } else {
+                    connectionStatusText.setText(R.string.no_network);
+                    connectionStatusText.setTextColor(Color.RED);
+                }
+            }
+        });
     }
 
     public void startService(View view) {
@@ -161,7 +251,7 @@ public class MainActivity extends BaseActivity {
                 notificationButton.setText("Activar Notificationes");
             }
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 

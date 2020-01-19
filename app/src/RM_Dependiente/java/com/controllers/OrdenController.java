@@ -29,9 +29,9 @@ import java.util.concurrent.ExecutionException;
  */
 public class OrdenController extends BaseController {
 
-    public static final String urlSeccion = "http://" + EnvironmentVariables.IP + ":" + EnvironmentVariables.PORT + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.seccion",
-            urlProducts_ = "http://" + EnvironmentVariables.IP + ":" + EnvironmentVariables.PORT + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.productoventa/PRODUCTS_",
-            urlListProducts_ = "http://" + EnvironmentVariables.IP + ":" + EnvironmentVariables.PORT + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.orden/LISTPRODUCTS_";
+    public static final String urlSeccion = "http://" + EnvironmentVariables.getIP() + ":" + EnvironmentVariables.getPORT() + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.seccion",
+            urlProducts_ = "http://" + EnvironmentVariables.getIP() + ":" + EnvironmentVariables.getPORT() + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.productoventa/PRODUCTS_",
+            urlListProducts_ = "http://" + EnvironmentVariables.getIP() + ":" + EnvironmentVariables.getPORT() + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.orden/LISTPRODUCTS_";
 
     private OrdenWebConnectionService ordenWCService = null;
 
@@ -70,32 +70,32 @@ public class OrdenController extends BaseController {
         return ordenWCService.getCodOrden();
     }
 
-    public boolean initOrden() throws ServerErrorException, NoConnectionException {
+    public boolean initOrden() throws Exception {
         return ordenWCService.initOrden();
     }
 
-    public boolean cederAUsuario(String usuario) throws ServerErrorException, NoConnectionException {
+    public boolean cederAUsuario(String usuario) throws Exception {
         return ordenWCService.cederAUsuario(usuario);
     }
 
-    public String getNota(ProductoVentaOrdenModel pVO) throws ServerErrorException, NoConnectionException {
+    public String getNota(ProductoVentaOrdenModel pVO) throws Exception {
         return ordenWCService.getNota(pVO.getProductoVentaModel().getPCod());
     }
 
-    public String getComensal(ProductoVentaOrdenModel pVO) throws ServerErrorException, NoConnectionException {
+    public String getComensal(ProductoVentaOrdenModel pVO) throws Exception {
         return ordenWCService.getComensal(pVO.getProductoVentaModel().getPCod());
     }
 
-    public boolean addComensal(ProductoVentaOrdenModel pVO, String comensal) throws ServerErrorException, NoConnectionException {
+    public boolean addComensal(ProductoVentaOrdenModel pVO, String comensal) throws Exception {
         return ordenWCService.addComensal(pVO.getProductoVentaModel().getPCod(), comensal);
     }
 
-    public boolean moverAMesa(String codMesa) throws ServerErrorException, NoConnectionException {
+    public boolean moverAMesa(String codMesa) throws Exception {
         return ordenWCService.moverAMesa(codMesa);
     }
 
     public String[] getMesas() {
-        String url = "http://" + EnvironmentVariables.IP + ":" + EnvironmentVariables.PORT + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.mesaNoLabel/MOSTRARVACIAS";
+        String url = "http://" + EnvironmentVariables.getIP() + ":" + EnvironmentVariables.getPORT() + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.mesa/MOSTRARVACIAS";
 
         final List<MesaModel> mesaModels = new MesaXMlParser().fetch(url);
 
@@ -109,7 +109,7 @@ public class OrdenController extends BaseController {
         return codMesas;
     }
 
-    public boolean addProducto(ProductoVentaModel lastClickedMenu) throws ServerErrorException, NoConnectionException {
+    public boolean addProducto(ProductoVentaModel lastClickedMenu) throws Exception {
         return ordenWCService.addProducto(lastClickedMenu.getPCod());
     }
 
@@ -117,7 +117,7 @@ public class OrdenController extends BaseController {
         adapter.increase(lastClickedMenu, ordenWCService);//TODO capas mezcladas actulizando el adaptdor desde el controlador
     }
 
-    public boolean addProducto(ProductoVentaModel lastClickedMenu, float cantidad) throws ServerErrorException, NoConnectionException {
+    public boolean addProducto(ProductoVentaModel lastClickedMenu, float cantidad) throws Exception {
         return ordenWCService.addProducto(lastClickedMenu.getPCod(), cantidad);//TODO capas mezcladas actulizando el adaptdor desde el controlador
     }
 
@@ -125,20 +125,20 @@ public class OrdenController extends BaseController {
         adapter.increase(lastClickedMenu, ordenWCService, cantidad);
     }
 
-    public boolean removeProducto(ProductoVentaModel productoVentaModel) throws ServerErrorException, NoConnectionException {
+    public boolean removeProducto(ProductoVentaModel productoVentaModel) throws Exception {
         return ordenWCService.removeProducto(productoVentaModel.getPCod());
     }
 
-    public boolean finishOrden(boolean deLaCasa) throws ServerErrorException, NoConnectionException {
+    public boolean finishOrden(boolean deLaCasa) throws Exception {
         return ordenWCService.finishOrden(deLaCasa);
     }
 
-    public boolean sendToKitchen() throws ServerErrorException, NoConnectionException {
+    public boolean sendToKitchen() throws Exception {
         return ordenWCService.sendToKitchen();
     }
 
 
-    public boolean addNota(ProductoVentaModel productoVentaModel, String nota) throws ServerErrorException, NoConnectionException {
+    public boolean addNota(ProductoVentaModel productoVentaModel, String nota) throws Exception {
         return ordenWCService.addNota(productoVentaModel.getPCod(), nota);
     }
 
@@ -146,13 +146,13 @@ public class OrdenController extends BaseController {
         ordenWCService.setCodOrden(codOrden);
     }
 
-    public String[] getUsuariosActivos() throws ExecutionException, InterruptedException {
+    public String[] getUsuariosActivos() throws Exception {
         String[] usuarios = new PersonalWebConnectionServiceService().getUsuariosActivos();
         Arrays.sort(usuarios);//TODO: que el server lo devuelva ordenado
         return usuarios;
     }
 
-    public boolean setDeLaCasa(boolean resp) throws ServerErrorException, NoConnectionException {
+    public boolean setDeLaCasa(boolean resp) throws Exception {
         return ordenWCService.setDeLaCasa(resp);
     }
 

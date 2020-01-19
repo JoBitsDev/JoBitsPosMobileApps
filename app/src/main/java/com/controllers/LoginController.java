@@ -1,7 +1,10 @@
 package com.controllers;
 
+import com.services.web_connections.SimpleWebConnectionService;
 import com.utils.exception.*;
 import com.services.web_connections.LoginWebConnectionServiceService;
+
+import java.util.concurrent.TimeoutException;
 
 /**
  * Capa: Controllers
@@ -20,8 +23,9 @@ public class LoginController extends BaseController {
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public boolean loginAction(String username, String password) throws ServerErrorException, NoConnectionException {
+    public boolean loginAction(String username, String password) throws Exception {
         LoginWebConnectionServiceService login = new LoginWebConnectionServiceService(username, password);
-        return login.authenticate();
+        login.authenticate();
+        return true;
     }
 }

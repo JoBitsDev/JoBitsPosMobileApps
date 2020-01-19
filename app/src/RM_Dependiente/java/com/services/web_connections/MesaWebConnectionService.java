@@ -16,14 +16,14 @@ public class MesaWebConnectionService extends SimpleWebConnectionService {
 
 
     public MesaWebConnectionService(String user, String codMesa) {
-        super(EnvironmentVariables.IP, "8080");
+        super();
         this.user = user;
         this.codmesa = codMesa;
         path += P;
     }
 
 
-    public String[] getAreasName() throws ServerErrorException, NoConnectionException {
+    public String[] getAreasName() throws Exception {
         return connect(path + fetchareas).split(",");
     }
 }

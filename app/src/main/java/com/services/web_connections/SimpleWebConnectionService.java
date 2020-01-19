@@ -1,7 +1,5 @@
 package com.services.web_connections;
 
-import android.os.AsyncTask;
-
 import java.io.*;
 import java.net.URL;
 
@@ -11,8 +9,6 @@ import java.net.HttpURLConnection;
 
 import com.utils.EnvironmentVariables;
 
-import java.util.concurrent.ExecutionException;
-
 /**
  * Capa: Services
  * Clase base para TODOS los servicios de la aplicación.
@@ -21,6 +17,24 @@ import java.util.concurrent.ExecutionException;
  */
 
 public class SimpleWebConnectionService {
+
+    private final String AUTHORITATION = "Authorization";
+    private final String BEARER = "Bearer ";
+
+    /**
+     * Token para las llamandas seguras al servidor.
+     */
+    protected static String TOKEN = null;
+
+    /**
+     * Tiempo maximo esperado para la lectura.
+     */
+    public static final int MAX_READ_TIME = 5 * 1000;
+
+    /**
+     * Tiempo maximo esperado para la respuesta del servidor.
+     */
+    public static final int MAX_RESPONSE_TIME = 3 * 1000;
 
     /**
      * Partes de la URL de las consultas.
@@ -42,24 +56,12 @@ public class SimpleWebConnectionService {
     protected URL url = null;
 
     /**
-     * Constructor que solicita ip y puerto para en caso de que se quiera conectar a otro lugar.
-     *
-     * @param ip   del servidor donde se hacen las peticiones.
-     * @param port del servidor donde se hacen las peticiones.
-     */
-    public SimpleWebConnectionService(String ip, String port) {
-        this.ip = ip;
-        this.port = port;
-        path = "http://" + ip + ":" + port + "/" + EnvironmentVariables.STARTPATH;
-    }
-
-    /**
      * Constructor por defecto. Carga el IP y el Puerto de la configuracion por defecto de las
      * variables de entorno.
      */
     public SimpleWebConnectionService() {
-        this.ip = EnvironmentVariables.IP;
-        port = EnvironmentVariables.PORT;
+        this.ip = EnvironmentVariables.getIP();
+        port = EnvironmentVariables.getPORT();
         path = "http://" + ip + ":" + port + "/" + EnvironmentVariables.STARTPATH;
     }
 
@@ -70,19 +72,11 @@ public class SimpleWebConnectionService {
      * @return Respuesta de la consulta
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
+     * @Deprecated Usar en ves de esto usar {@connectPost} y trabajar con JSONs
      */
-    public String connect(String url) throws ServerErrorException, NoConnectionException {
-        fetchData f = new fetchData();
-        f.execute(url);
-        String res = null;
-
-        try {
-            res = f.get();
-        } catch (InterruptedException e) {//convierte las excepciones que manda a las que manejamos
-            throw new NoConnectionException();
-        } catch (ExecutionException e) {
-            throw new ServerErrorException();
-        }
+    @Deprecated
+    public String connect(final String url) throws Exception {
+        String res = execute(url);
 
         if (res == null) {
             throw new ServerErrorException();
@@ -94,27 +88,16 @@ public class SimpleWebConnectionService {
     }
 
     /**
-     * Capa: Interna
-     * Clase que sealiza Asyncronicamente la peticion al servidor.
+     * Ejecuta la consulta en el URL por GET.
      *
-     * @extends AsyncTask<String, Void, String> ya que es una tarea asincrona.
+     * @param urlToExcecute
+     * @return el String con la respuesta.
+     * @Deprecated Usar en ves de esto usar {@connectPost} y trabajar con JSONs
      */
-    protected class fetchData extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... url) {
-            try {
-                String ret = downloadUrl(url[0]);
-                return ret;
-            } catch (IOException e) {
-                e.printStackTrace();
-                return EnvironmentVariables.PETITION_ERROR;
-            }
-
-        }
-
-        private String downloadUrl(String urlString) throws IOException {
-            url = new URL(urlString);
+    @Deprecated
+    protected String execute(String urlToExcecute) {
+        try {
+            URL url = new URL(urlToExcecute);
             con = (HttpURLConnection) url.openConnection();
             con.setDoInput(true);
             // Starts the query
@@ -122,13 +105,72 @@ public class SimpleWebConnectionService {
                 BufferedReader input = new BufferedReader(
                         new InputStreamReader(con.getInputStream()),
                         8192);
-                resp = input.readLine();
-                input.close();
+                resp = "";
+                String linea;
+                while ((linea = input.readLine()) != null) {
+                    resp += linea;
+                }
                 con.disconnect();
+                input.close();
                 return resp;
             } else {
                 return null;
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return EnvironmentVariables.PETITION_ERROR;
+        }
+    }
+
+    /**
+     * Metodo a usar para la coneccion al servicio.
+     * Manda por POST la peticion a la url con el body especifico y el token de segurdad en el header
+     *
+     * @param urlToExcecute URL a ejecutar la peticion
+     * @param body          Cuerpo del mensaje, JSON con la info.
+     * @param token         Token de seguridad.
+     * @return String con el formato JSON.
+     * @throws Exception Si algo sale mal.
+     */
+    public String connectPost(final String urlToExcecute, final String body, final String token) throws Exception {
+        //Set up the connection
+        URL url = new URL(urlToExcecute);
+        con = (HttpURLConnection) url.openConnection();
+        con.setDoInput(true);
+        con.setDoOutput(true);
+        con.setRequestMethod("POST");
+        con.setRequestProperty("Content-Type", "text/plain");
+        con.setReadTimeout(MAX_READ_TIME);
+        con.setConnectTimeout(MAX_RESPONSE_TIME);
+        con.setRequestProperty(AUTHORITATION, BEARER + token);
+
+        // Starts the query
+        OutputStreamWriter os = new OutputStreamWriter(con.getOutputStream());
+        os.write(body);
+        os.flush();
+
+        if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {//si esta ok lee el JSON
+            BufferedReader input = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()),
+                    8192);
+            resp = "";
+            String linea;
+            while ((linea = input.readLine()) != null) {
+                resp += linea;
+            }
+            con.disconnect();
+            input.close();
+            os.close();
+            return resp;
+        } else {//Si no, lee el error y lo propaga
+            BufferedReader input = new BufferedReader(
+                    new InputStreamReader(con.getErrorStream()),
+                    8192);
+            resp = input.readLine();
+            input.close();
+            con.disconnect();
+            os.close();
+            throw new ServerErrorException(resp);
         }
     }
 

@@ -10,15 +10,16 @@ import com.services.models.MesaModel;
 import com.utils.EnvironmentVariables;
 import com.controllers.MesasController;
 
-import com.utils.adapters.MesaAdapter;
 import com.utils.exception.*;
+import com.utils.adapters.MesaAdapter;
+import com.utils.loading.LoadingHandler;
+import com.utils.loading.LoadingProcess;
 
 
 public class PantallaPrincipalActivity extends BaseActivity {
 
     private MesasController controller;
 
-    private TextClock clockText;
     private TextView restNameLabel;
     private TextView userLabel;
 
@@ -30,6 +31,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     private Button pedidoDomicilioButton;
     private Button RButton;
     private String selectedArea = null;
+    private int selectedAreaWich = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             addListeners();
             configurarTabla();
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -57,18 +59,27 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
             restNameLabel = (TextView) findViewById(R.id.textViewNombreRest);
             if (restNameLabel != null) {
-                restNameLabel.setText(controller.getNombreRest());
+                new LoadingHandler<String>(act, new LoadingProcess<String>() {
+                    @Override
+                    public String process() {
+                        return controller.getNombreRest();
+                    }
+
+                    @Override
+                    public void post(String value) {
+                        restNameLabel.setText(value);
+                    }
+                });
             }
 
             listaMesas = (ListView) findViewById(R.id.listaMesas);
-            clockText = (TextClock) findViewById(R.id.textClock);
 
             cambiarAreaButton = (Button) findViewById(R.id.cambiarArea);
             pedidoDomicilioButton = (Button) findViewById(R.id.pedidoDomicilio);
 
             switchOrden = (Switch) findViewById(R.id.switchOrden);
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -96,7 +107,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 }
             });
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -116,7 +127,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             continuar(((MesaAdapter) listaMesas.getAdapter()).getMesa(position));
             return true;
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
             return false;
         }
     }
@@ -149,9 +160,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void continuar(MesaModel m) throws NoExistingException{
+    private void continuar(final MesaModel m) throws NoExistingException {
         try {
-
             final Bundle data = new Bundle();
             data.putString(String.valueOf(R.string.mesa), m.getCodMesa());
 
@@ -159,102 +169,121 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
             if (!m.getEstado().equals(EnvironmentVariables.ESTADO_MESA_VACIA)) {
 
-                String cod_orden = m.getEstado().split(" ")[0];
+                final String cod_orden = m.getEstado().split(" ")[0];
                 data.putString(String.valueOf(R.string.user), m.getUsuario());
 
                 controller.setCodOrden(cod_orden);
 
-                if (!controller.validate()) {
-                    throw new NoExistingException("La orden a acceder ya no se encuentra abierta", this);
-                }
-                data.putString(String.valueOf(R.string.cod_Orden), cod_orden);
-
-                if (!controller.getUser().equals(m.getUsuario())) {//si no es el usuario pide confirmacion
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setMessage("La mesa que quiere acceder " +
-                            "la esta atendiendo otro camarero");
-                    builder.setNegativeButton("No entrar", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {//no entrar
-                            dialog.dismiss();
+                new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
+                    @Override
+                    public Boolean process() throws Exception {
+                        boolean res = controller.validate();
+                        if (!res) {
+                            throw new NoExistingException("La orden a acceder ya no se encuentra abierta");
                         }
-                    });
-                    builder.setPositiveButton("Entrar en modo solo lectura", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {//entrar en solo lectura
-                            entrarSoloLectura(data);
-                        }
-                    });
-                    builder.show();
+                        return res;
+                    }
 
-                } else {
-                    data.putString(String.valueOf(R.string.user), controller.getUser());
-                    entrarMiOrden(data);
-                }
+                    @Override
+                    public void post(Boolean value) {
+                        if (value) {
+                            data.putString(String.valueOf(R.string.cod_Orden), cod_orden);
+
+                            if (!controller.getUser().equals(m.getUsuario())) {//si no es el usuario pide confirmacion
+                                AlertDialog.Builder builder = new AlertDialog.Builder(act);
+                                builder.setMessage("La mesa que quiere acceder " +
+                                        "la esta atendiendo otro camarero");
+                                builder.setNegativeButton("No entrar", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {//no entrar
+                                        dialog.dismiss();
+                                    }
+                                });
+                                builder.setPositiveButton("Entrar en modo solo lectura", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {//entrar en solo lectura
+                                        entrarSoloLectura(data);
+                                    }
+                                });
+                                builder.show();
+
+                            } else {
+                                data.putString(String.valueOf(R.string.user), controller.getUser());
+                                entrarMiOrden(data);
+                            }
+                        }
+                    }
+                });
+
             } else {//es el usuario
                 data.putString(String.valueOf(R.string.user), controller.getUser());
                 entrarMiOrden(data);
             }
 
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
     public void onCambiarAreaButtonClick(View view) {//Cambia de area
-        try {
-            final String[] areas = controller.getAreas();
-            new AlertDialog.Builder(this).
-                    setTitle(R.string.seleccionararea).
-                    setSingleChoiceItems(areas, 1, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            selectedArea = areas[which];
-                            dialog.dismiss();
-                            configurarTabla();
-                        }
-                    }).create().show();
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
-        }
+        new LoadingHandler<String[]>(act, new LoadingProcess<String[]>() {
+            @Override
+            public String[] process() throws Exception {
+                return controller.getAreas();
+            }
+
+            @Override
+            public void post(final String[] value) {
+                new AlertDialog.Builder(act).
+                        setTitle(R.string.seleccionararea).
+                        setSingleChoiceItems(value, selectedAreaWich, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                selectedAreaWich = which;
+                                selectedArea = value[selectedAreaWich];
+                                dialog.dismiss();
+                                configurarTabla();
+                            }
+                        }).create().show();
+            }
+        });
+
     }
 
     public void configurarTabla() {
-        try {
-            final BaseActivity act = this;
-            showProgressDialog();
-            listaMesas.post(new Runnable() {
-                @Override
-                public void run() {
-                    MesaAdapter adapter = controller.getData(selectedArea, act);
-                    String orden = switchOrden.isChecked() ? String.valueOf(R.string.orden) : String.valueOf(R.string.mesa);
-                    adapter.orderBy(orden);
-                    listaMesas.setAdapter(adapter);
-                    hideProgressDialog();
-                }
-            });
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
-        }
+        final String orden = switchOrden.isChecked() ? String.valueOf(R.string.orden) : String.valueOf(R.string.mesa);
+        new LoadingHandler<MesaAdapter>(act, new LoadingProcess<MesaAdapter>() {
+            @Override
+            public MesaAdapter process() throws Exception {
+                MesaAdapter adapter = controller.getData(selectedArea, act);
+                adapter.orderBy(orden);
+                return adapter;
+            }
+
+            @Override
+            public void post(MesaAdapter value) {
+                listaMesas.setAdapter(value);
+            }
+        });
     }
 
     private void entrarSoloLectura(Bundle data) {
         try {
-            Intent launch = new Intent(this, OrdenReadOnlyActivity.class);
+            Intent launch = new Intent(act, OrdenReadOnlyActivity.class);
             launch.putExtras(data);
             startActivity(launch);
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
     private void entrarMiOrden(Bundle data) {
         try {
-            Intent launch = new Intent(this, OrdenActivity.class);
+            Intent launch = new Intent(act, OrdenActivity.class);
             launch.putExtras(data);
             startActivity(launch);
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 

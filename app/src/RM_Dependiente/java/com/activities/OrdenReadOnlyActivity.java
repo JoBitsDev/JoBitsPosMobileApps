@@ -33,7 +33,7 @@ public class OrdenReadOnlyActivity extends BaseActivity {
             addListeners();
             actDeLaCasa();
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -67,12 +67,11 @@ public class OrdenReadOnlyActivity extends BaseActivity {
 
     @Override
     protected void addListeners() {
-        listaOrden.setFocusable(false);
     }
 
     @Override
     protected void setAdapters() {
-        listaOrden.setAdapter(new ProductoVentaOrdenReadOnlyAdapter(this, R.id.listaOrdenReadOnly, productosVOrden));
+        listaOrden.setAdapter(new ProductoVentaOrdenReadOnlyAdapter(act, R.id.listaOrdenReadOnly, productosVOrden));
     }
 
     private void updateCosto() {
@@ -89,7 +88,7 @@ public class OrdenReadOnlyActivity extends BaseActivity {
                 totalSecundaria.setText(EnvironmentVariables.setDosLugaresDecimales(tot * EnvironmentVariables.conversion)+EnvironmentVariables.MONEDA_SECUNDARIA);
             }
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 }

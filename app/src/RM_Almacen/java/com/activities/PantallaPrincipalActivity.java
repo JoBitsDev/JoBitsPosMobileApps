@@ -75,7 +75,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             addListeners();//agrega los listener
             setAdapters();//agrega los adapters
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -84,9 +84,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
     protected void initVarialbes() {
         try {
             listView = (ListView) findViewById(R.id.listaInsumos);
-            userText = (TextView) findViewById(R.id.textUser);
             almacenText = (TextView) findViewById(R.id.textViewNombreAlmacen);
+
+            userText = (TextView) findViewById(R.id.textUser);
             userText.setText(getBundle().getString(String.valueOf(R.string.user)));
+
             controller = new PantallaPrincipalController(userText.getText().toString());
             searchText = (EditText) findViewById(R.id.editText);
             radioButtonSalida = (RadioButton) findViewById(R.id.radioButtonSalida);
@@ -94,9 +96,9 @@ public class PantallaPrincipalActivity extends BaseActivity {
             salidaButton = (ImageButton) findViewById(R.id.salidaButton);
             entradaButton = (ImageButton) findViewById(R.id.entradaButton);
             spinnerFiltrar = (Spinner) findViewById(R.id.filtrarBy);
-            filterAdapter = new FilterAdapter(this, android.R.layout.simple_spinner_dropdown_item, controller.getCocinasNames());
+            filterAdapter = new FilterAdapter(act, android.R.layout.simple_spinner_dropdown_item, controller.getCocinasNames());
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -133,7 +135,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             });
             //TODO: faltan dos listener que estan directo en el xml
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -145,22 +147,22 @@ public class PantallaPrincipalActivity extends BaseActivity {
     private void onSpinnerFiltrarItemSelected(View view) {
         try {
             if (spinnerFiltrar.getSelectedItemPosition() == 0) {
-                listView.setAdapter(controller.getAdapter(this, R.id.listaInsumos));
+                listView.setAdapter(controller.getAdapter(act, R.id.listaInsumos));
             } else {
-                listView.setAdapter(controller.getAdapter(this, R.id.listaInsumos, spinnerFiltrar.getSelectedItem().toString()));
+                listView.setAdapter(controller.getAdapter(act, R.id.listaInsumos, spinnerFiltrar.getSelectedItem().toString()));
             }
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
     @Override
     protected void setAdapters() {
         try {
-            listView.setAdapter(controller.getAdapter(this, R.id.listaInsumos));
+            listView.setAdapter(controller.getAdapter(act, R.id.listaInsumos));
             spinnerFiltrar.setAdapter(filterAdapter.createAdapter());
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -171,7 +173,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             getMenuInflater().inflate(R.menu.menu_almacenstate, menu);
             return true;
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
             return false;
         }
     }
@@ -192,7 +194,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                     return super.onOptionsItemSelected(item);
             }
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
             return false;
         }
     }
@@ -208,11 +210,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
             if (resp) {
                 Toast.makeText(getApplicationContext(), "Imprimiendo...", Toast.LENGTH_SHORT);
             } else {
-                ExceptionHandler.handleException(new Exception("Error imprimiendo"), this);
+                ExceptionHandler.handleException(new Exception("Error imprimiendo"), act);
             }
             return resp;
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
             return false;
         }
     }
@@ -228,11 +230,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
             if (resp) {
                 showMessage("Imprimiendo...");
             } else {
-                ExceptionHandler.handleException(new Exception("Error imprimiendo"), this);
+                ExceptionHandler.handleException(new Exception("Error imprimiendo"), act);
             }
             return resp;
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
             return false;
         }
     }
@@ -255,7 +257,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
             amount.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
             amount.setRawInputType(Configuration.KEYBOARD_12KEY);
 
-            final BaseActivity act = this;
             new AlertDialog.Builder(v.getContext()).
                     setView(input).
                     setTitle("Entrada de InsumoModel").
@@ -296,7 +297,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                 ExceptionHandler.handleException(e, act);
                             }
 
-                            updateListView();
+                            updateListView(v);
 
                             dialog.dismiss();
                         }
@@ -306,12 +307,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
             }).create().show();
 
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
-    private void updateListView() {
-        final BaseActivity act = this;
+    private void updateListView(View v) {
         listView.post(new Runnable() {
             @Override
             public void run() {
@@ -320,7 +320,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
                     View v = listView.getChildAt(0);
                     int top = v.getTop();
 
-                    listView.setAdapter(controller.getAdapter(act, R.id.listaInsumos));
+                    onSpinnerFiltrarItemSelected(v);
+                    //listView.setAdapter(controller.getAdapter(act, R.id.listaInsumos));
 
                     listView.setSelectionFromTop(index, top);
                 } catch (Exception e) {
@@ -343,7 +344,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 onRebajaClick(v);
             }
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -361,8 +362,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
             final EditText input = new EditText(v.getContext());
             input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
             input.setRawInputType(Configuration.KEYBOARD_12KEY);
-
-            final BaseActivity act = this;
 
             new AlertDialog.Builder(v.getContext()).
                     setView(input).
@@ -397,7 +396,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                                     ExceptionHandler.handleException(e, act);
                                                 }
 
-                                                updateListView();
+                                                updateListView(v);
 
                                                 dialog.dismiss();
                                             }
@@ -415,7 +414,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                     }).create().show();
 
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -436,7 +435,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
             final EditText razon = new EditText(v.getContext());
             razon.setInputType(InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE);
 
-            final BaseActivity act = this;
             new AlertDialog.Builder(v.getContext()).
                     setView(input).
                     setTitle("Merma").
@@ -477,7 +475,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                             ExceptionHandler.handleException(e, act);
                                         }
 
-                                        updateListView();
+                                        updateListView(v);
 
                                         dialog.dismiss();
                                     }
@@ -490,7 +488,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                     }).create().show();
 
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
         }
     }
 
@@ -504,7 +502,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         try {
             return controller.getCocinasNamesForIPV(insumoCod);
         } catch (Exception e) {
-            ExceptionHandler.handleException(e, this);
+            ExceptionHandler.handleException(e, act);
             return null;
         }
     }

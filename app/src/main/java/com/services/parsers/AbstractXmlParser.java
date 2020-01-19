@@ -1,14 +1,12 @@
 package com.services.parsers;
 
 import android.util.Xml;
-import android.os.AsyncTask;
 
 import org.xmlpull.v1.*;
 
 import java.io.*;
 import java.net.*;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Capa: Services.
@@ -157,54 +155,37 @@ public abstract class AbstractXmlParser<T> {
      * @return List<T> con la lista de los objetos parseados.
      */
     public List<T> fetch(String url) {
-        fetchData f = new fetchData();
-        f.execute(url);//TODO: aqui falta implementar algo para tratar el tiempo de espera
+        return execute(url);
+    }
+
+    protected List<T> execute(String... url) {
         try {
-            return f.get();
-        } catch (InterruptedException e) {
+            InputStream in = downloadUrl(url[0]);
+            objects = parse(in);
+            return objects;
+        } catch (IOException e) {
             e.printStackTrace();
             return null;
-        } catch (ExecutionException e) {
+        } catch (XmlPullParserException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    /**
-     * Capa: Inner
-     */
-    protected class fetchData extends AsyncTask<String, Integer, List<T>> {
 
-
-        @Override
-        protected List<T> doInBackground(String... url) {
-            try {
-                InputStream in = downloadUrl(url[0]);
-                objects = parse(in);
-                return objects;
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            } catch (XmlPullParserException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-
-        private InputStream downloadUrl(String urlString) throws IOException {
-            URL url = new URL(urlString);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setDoInput(true);
-            // Starts the query
-            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                InputStream ret = conn.getInputStream();
-                //conn.disconnect(); TODO: ver porque esto esta comentariado;
-                return ret;
-            } else {
-                return null;
-            }
+    private InputStream downloadUrl(String urlString) throws IOException {
+        URL url = new URL(urlString);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setDoInput(true);
+        // Starts the query
+        if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+            InputStream ret = conn.getInputStream();
+            //conn.disconnect(); TODO: ver porque esto esta comentariado;
+            return ret;
+        } else {
+            return null;
         }
     }
+
 
 }
