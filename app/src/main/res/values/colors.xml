@@ -4,7 +4,7 @@
     <color name="splash_screen">#FFFFFF</color>
 
     --Texto
-    <color name="texto_primario">#FFFFFF</color>
+    <color name="texto_primario">#ebf3e2</color>
     <color name="texto_secundario">#000000</color>
 
     <color name="botones_fondo">#FFFFFF</color>
