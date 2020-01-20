@@ -3,6 +3,8 @@
 
 
     <color name="especifico_app_primario">#28130F</color>
+    <color name="secundario">#645656</color>
+    <color name="opcionalSecundario">#706868</color>
 
     <color name="precios">#10DB05</color>
     <color name="cantidades">#E53C79</color>
