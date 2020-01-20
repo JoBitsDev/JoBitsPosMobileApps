@@ -2,22 +2,21 @@ package com.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.res.Configuration;
-import android.text.InputType;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.*;
-import android.os.Bundle;
-import android.view.View;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.controllers.MainController;
-import com.services.models.UbicacionModel;
+import com.services.notifications.ReceiverNotificationService;
+import com.utils.exception.ExceptionHandler;
 import com.utils.loading.LoadingHandler;
 import com.utils.loading.LoadingProcess;
-import com.utils.exception.ExceptionHandler;
-import com.services.notifications.ReceiverNotificationService;
 
 /**
  * Capa: Activities
@@ -48,6 +47,11 @@ public class MainActivity extends BaseActivity {
      * Boton para iniciar el flujo de la aplicacion. Boton comenzar.
      */
     private Button initializeSesionButton;
+
+    /**
+     * Label que contiene la version del sistema que esta corriendo
+     */
+    private TextView version;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +87,9 @@ public class MainActivity extends BaseActivity {
             notificationButton = (Button) findViewById(R.id.notificationButton);
             initializeSesionButton = (Button) findViewById(R.id.initializeSesionButton);
             connectionStatusText = ((TextView) (findViewById(R.id.connectionStatusText)));
+            version = (TextView) findViewById(R.id.version);
+            version.setText("Versión " + BuildConfig.VERSION_NAME);
+
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
