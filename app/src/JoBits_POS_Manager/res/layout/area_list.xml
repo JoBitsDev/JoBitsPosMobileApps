@@ -2,104 +2,109 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="20"
+        android:layout_weight="50"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textViewCodigo"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_list_view"
-            android:text="Código"
-            android:textSize="@dimen/textSizeMedium" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/editTextCodigo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_naranja_claro"
-            android:ems="10"
-            android:gravity="right"
-            android:hint="Código"
-            android:inputType="text"
-            android:textSize="@dimen/textSizeMedium" />
+            <TextView
+                android:id="@+id/editTextNombre"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="15"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="Nombre"
+                android:inputType="text"
+                android:textColorHint="@color/texto_secundario"
+                android:textSize="@dimen/textSizeLarge" />
 
-        <TextView
-            android:id="@+id/textViewNombre"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_list_view"
-            android:text="Nombre"
-            android:textSize="@dimen/textSizeMedium" />
+            <TextView
+                android:id="@+id/editTextCodigo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="15"
+                android:ems="10"
+                android:gravity="end"
+                android:hint="Código"
+                android:inputType="text"
+                android:textColorHint="@color/texto_secundario"
+                android:textSize="@dimen/textSizeMedium" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/editTextNombre"
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="61dp"
+        android:layout_weight="50"
+        android:orientation="vertical">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_naranja_claro"
-            android:ems="10"
-            android:gravity="right"
-            android:hint="Nombre"
-            android:inputType="text"
-            android:textSize="@dimen/textSizeMedium" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textViewReal"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:text="Venta Real:"
+                android:textColor="@color/color_primario"
+                android:textSize="@dimen/textSizeNormal" />
+
+            <TextView
+                android:id="@+id/editTextReal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="15"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="0.0 CUC"
+                android:inputType="numberSigned"
+                android:textColorHint="@color/texto_secundario"
+                android:textSize="@dimen/textSizeLarge" />
+
+            <TextView
+                android:id="@+id/textViewNeta"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:text="Venta Neta:"
+                android:textColor="@color/color_primario"
+                android:textSize="@dimen/textSizeNormal" />
+
+            <TextView
+                android:id="@+id/editTextNeta"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="15"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="0.0 CUC"
+                android:inputType="numberSigned"
+                android:textColorHint="@color/texto_secundario"
+                android:textSize="@dimen/textSizeLarge" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
     <View
-        android:id="@+id/divider2"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
         android:layout_weight="1"
-        android:background="?android:attr/listDivider" />
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="20"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/textViewNeta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_list_view"
-            android:text="Venta Neta"
-            android:textSize="@dimen/textSizeMedium" />
-
-        <TextView
-            android:id="@+id/editTextNeta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_naranja_claro"
-            android:ems="10"
-            android:gravity="right"
-            android:hint="0.0 CUC"
-            android:inputType="numberSigned"
-            android:textSize="@dimen/textSizeMedium" />
-
-        <TextView
-            android:id="@+id/textViewReal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_list_view"
-            android:text="Venta Real"
-            android:textSize="@dimen/textSizeMedium" />
-
-        <TextView
-            android:id="@+id/editTextReal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_naranja_claro"
-            android:ems="10"
-            android:gravity="right"
-            android:hint="0.0 CUC"
-            android:inputType="numberSigned"
-            android:textSize="@dimen/textSizeMedium" />
-
-    </LinearLayout>
+        android:background="@color/color_primario" />
 </LinearLayout>

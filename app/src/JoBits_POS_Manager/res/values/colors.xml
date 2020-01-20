@@ -9,10 +9,11 @@
     <color name="black_overlay">#5A818D</color>
     <color name="color_resaltado2">#186141</color>
 
-    <color name = "color_primario">#ebf3e2</color>
-    <color name = "color_morado_oscuro">#662e57</color>
-    <color name = "color_morado_claro">#983262</color>
+    <color name="especifico_app_primario">#ebf3e2</color>
     <color name = "color_secundario">#ffeb97</color>
+    <color name = "color_primario">#662e57</color>
+
+    <color name = "color_morado_claro">#983262</color>
     <color name = "color_naranja_claro">#ffc612</color>
     <color name = "color_list_view">#ffb115</color>
     <color name = "color_ingreso">#5EDB62</color>
