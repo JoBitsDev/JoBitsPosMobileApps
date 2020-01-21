@@ -1,19 +1,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fondo"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.activities.MainActivity"
-    android:background="#000000">
+    tools:context="com.activities.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="false"
         android:layout_alignParentTop="false"
-        android:background="@color/color_Fondo2"
         android:gravity="center_vertical|center_horizontal"
         android:orientation="vertical">
 
@@ -25,7 +26,7 @@
             android:layout_marginBottom="50dp"
             android:text="Auntenticar"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/color_Labels"
+            android:textColor="@color/texto_primario"
             android:textSize="@dimen/MainTitle" />
 
 
@@ -39,7 +40,8 @@
             android:gravity="center_vertical"
             android:hint="username"
             android:inputType="text"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:textSize="@dimen/textSizeNormal" />
 
         <EditText
             android:id="@+id/pass"
@@ -53,7 +55,8 @@
             android:gravity="center_vertical"
             android:hint="password"
             android:inputType="numberPassword"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:textSize="@dimen/textSizeNormal" />
 
 
         <TextView
@@ -71,7 +74,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:text="Autenticar" />
+            android:text="Autenticar"
+            android:textSize="@dimen/textSizeNormal" />
 
 
     </LinearLayout>

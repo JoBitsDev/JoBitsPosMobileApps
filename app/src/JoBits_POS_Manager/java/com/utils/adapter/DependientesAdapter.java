@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.activities.R;
+import com.services.models.DpteListModel;
 
 import java.util.List;
 
@@ -15,22 +16,22 @@ import java.util.List;
  * Capa: Adapter
  * Clase adapter de la lista de dependientes respecto ingresos y gastos, encargada de manejar la vista de la lista.
  *
- * @extends de ArrayAdapter para poder implementar un nuevo adapter basado en el modelo ...
+ * @extends de ArrayAdapter para poder implementar un nuevo adapter basado en el modelo DpteListModel
  */
 
-public class DependientesAdapter extends ArrayAdapter<String> {
+public class DependientesAdapter extends ArrayAdapter<DpteListModel> {
 
     private Context context;
-    private List<String> change;
+    private List<DpteListModel> dpteListModels;
 
     /**
      * Constructor
      */
 
-    public DependientesAdapter(Context context, int textViewResourceId, List<String> change) {
-        super(context, textViewResourceId, change);
+    public DependientesAdapter(Context context, int textViewResourceId, List<DpteListModel> dpteListModels) {
+        super(context, textViewResourceId, dpteListModels);
         this.context = context;
-        this.change = change;
+        this.dpteListModels = dpteListModels;
     }
 
     /**
@@ -53,10 +54,10 @@ public class DependientesAdapter extends ArrayAdapter<String> {
         } else {
             holder = (ViewHolder) item.getTag();
         }
-        holder.usuario.setText("");
-        holder.ordenesAtendidas.setText("");
-        holder.monto.setText("");
-        holder.pagoVenta.setText("");
+        holder.usuario.setText(dpteListModels.get(position).getUsuario());
+        holder.ordenesAtendidas.setText(dpteListModels.get(position).getOrdenesAtendidas()+"");
+        holder.monto.setText(dpteListModels.get(position).getMonto()+"");
+        holder.pagoVenta.setText(dpteListModels.get(position).getPagoPorVentas()+"");
         return (item);
     }
 
