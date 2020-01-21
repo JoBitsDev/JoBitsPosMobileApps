@@ -3,7 +3,7 @@
     android:id="@+id/fondo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/especifico_app_primario"
+    android:background="@color/fondo"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -68,7 +68,6 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#19ff00"
         android:textSize="@dimen/textSizeSmall" />
-
 
 
 </RelativeLayout>
