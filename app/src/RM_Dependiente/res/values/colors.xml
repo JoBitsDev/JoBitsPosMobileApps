@@ -1,7 +1,6 @@
 <resources>
 
-
-
+    <color name="fondo">#28130F</color>
     <color name="especifico_app_primario">#28130F</color>
     <color name="secundario">#645656</color>
     <color name="opcionalSecundario">#706868</color>
