@@ -2,131 +2,152 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="20"
-        android:background="@color/color_ingreso"
-        android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/textViewVentaNeta"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Venta Neta"
-            android:textSize="@dimen/textSizeMedium" />
+            android:layout_weight="40"
+            android:background="@color/color_ingreso"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/editTextVentaNeta"
-            android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/textViewVentaNeta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Venta Neta"
+                android:textSize="@dimen/textSizeMedium" />
+
+            <TextView
+                android:id="@+id/editTextVentaNeta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="right"
+                android:hint="0.0 CUC"
+                android:inputType="numberSigned"
+                android:textColorHint="@color/texto_secundario"
+                android:textSize="@dimen/textSizeLarge" />
+
+            <TextView
+                android:id="@+id/textViewTotal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Total"
+                android:textSize="@dimen/textSizeMedium" />
+
+            <TextView
+                android:id="@+id/editTextTotal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="right"
+                android:hint="0.0 CUC"
+                android:inputType="numberSigned"
+                android:textColorHint="@color/texto_secundario"
+                android:textSize="@dimen/textSizeLarge" />
+
+            <TextView
+                android:id="@+id/textViewAutorizos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Autorizos"
+                android:textSize="@dimen/textSizeMedium" />
+
+            <TextView
+                android:id="@+id/editTextAutorizos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="right"
+                android:hint="0.0 CUC"
+                android:inputType="numberSigned"
+                android:textColorHint="@color/texto_secundario"
+                android:textSize="@dimen/textSizeLarge" />
+
+        </LinearLayout>
+
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/color_primario" />
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:gravity="right"
-            android:hint="0.0 CUC"
-            android:inputType="numberSigned"
-            android:textSize="@dimen/textSizeMedium" />
+            android:layout_weight="40"
+            android:background="@color/color_gasto"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textViewTotal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Total"
-            android:textSize="@dimen/textSizeMedium" />
+            <TextView
+                android:id="@+id/textViewInsumos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Insumos"
+                android:textSize="@dimen/textSizeMedium" />
 
-        <TextView
-            android:id="@+id/editTextTotal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:gravity="right"
-            android:hint="0.0 CUC"
-            android:inputType="numberSigned"
-            android:textSize="@dimen/textSizeMedium" />
+            <TextView
+                android:id="@+id/editTextInsumos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="right"
+                android:hint="0.0 CUC"
+                android:inputType="numberSigned"
+                android:textColorHint="@color/texto_secundario"
+                android:textSize="@dimen/textSizeLarge" />
 
-        <TextView
-            android:id="@+id/textViewAutorizos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Autorizos"
-            android:textSize="@dimen/textSizeMedium" />
+            <TextView
+                android:id="@+id/textViewSalario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Salarios"
+                android:textSize="@dimen/textSizeMedium" />
 
-        <TextView
-            android:id="@+id/editTextAutorizos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:gravity="right"
-            android:hint="0.0 CUC"
-            android:inputType="numberSigned"
-            android:textSize="@dimen/textSizeMedium" />
+            <TextView
+                android:id="@+id/editTextSalarios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="right"
+                android:hint="0.0 CUC"
+                android:inputType="numberSigned"
+                android:textColorHint="@color/texto_secundario"
+                android:textSize="@dimen/textSizeLarge" />
 
+            <TextView
+                android:id="@+id/textViewOtros"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Otros"
+                android:textSize="@dimen/textSizeMedium" />
+
+            <TextView
+                android:id="@+id/editTextOtros"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="right"
+                android:hint="0.0 CUC"
+                android:inputType="numberSigned"
+                android:textColorHint="@color/texto_secundario"
+                android:textSize="@dimen/textSizeLarge" />
+        </LinearLayout>
     </LinearLayout>
 
     <View
-        android:id="@+id/divider"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="?android:attr/listDivider" />
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_weight="50"
+        android:background="@color/color_primario" />
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="20"
-        android:background="@color/color_gasto"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/textViewInsumos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Insumos"
-            android:textSize="@dimen/textSizeMedium" />
-
-        <TextView
-            android:id="@+id/editTextInsumos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:gravity="right"
-            android:hint="0.0 CUC"
-            android:inputType="numberSigned"
-            android:textSize="@dimen/textSizeMedium" />
-
-        <TextView
-            android:id="@+id/textViewSalario"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Salarios"
-            android:textSize="@dimen/textSizeMedium" />
-
-        <TextView
-            android:id="@+id/editTextSalarios"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:gravity="right"
-            android:hint="0.0 CUC"
-            android:inputType="numberSigned"
-            android:textSize="@dimen/textSizeMedium" />
-
-        <TextView
-            android:id="@+id/textViewOtros"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Otros"
-            android:textSize="@dimen/textSizeMedium" />
-
-        <TextView
-            android:id="@+id/editTextOtros"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:gravity="right"
-            android:hint="0.0 CUC"
-            android:inputType="numberSigned"
-            android:textSize="@dimen/textSizeMedium" />
-    </LinearLayout>
 </LinearLayout>
