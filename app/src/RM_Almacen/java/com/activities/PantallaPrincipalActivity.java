@@ -148,29 +148,29 @@ public class PantallaPrincipalActivity extends BaseActivity {
     private void onSpinnerFiltrarItemSelected(View view) {
         if (spinnerFiltrar.getSelectedItemPosition() == 0) {
 
-            new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+            new LoadingHandler<AlmacenInsumoAdapter>(act, new LoadingProcess<AlmacenInsumoAdapter>() {
                 @Override
-                public Void process() throws Exception {
-                    listView.setAdapter(controller.getAdapter(act, R.id.listaInsumos));
-                    return null;
+                public AlmacenInsumoAdapter process() throws Exception {
+                    return controller.getAdapter(act, R.id.listaInsumos);
                 }
 
                 @Override
-                public void post(Void answer) {
+                public void post(AlmacenInsumoAdapter answer) {
+                    listView.setAdapter(answer);
                 }
             });
 
         } else {
 
-            new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+            new LoadingHandler<AlmacenInsumoAdapter>(act, new LoadingProcess<AlmacenInsumoAdapter>() {
                 @Override
-                public Void process() throws Exception {
-                    listView.setAdapter(controller.getAdapter(act, R.id.listaInsumos, spinnerFiltrar.getSelectedItem().toString()));
-                    return null;
+                public AlmacenInsumoAdapter process() throws Exception {
+                    return controller.getAdapter(act, R.id.listaInsumos, spinnerFiltrar.getSelectedItem().toString());
                 }
 
                 @Override
-                public void post(Void answer) {
+                public void post(AlmacenInsumoAdapter answer) {
+                    listView.setAdapter(answer);
                 }
             });
 
@@ -179,19 +179,33 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
     @Override
     protected void setAdapters() {
-        new LoadingHandler<FilterAdapter>(act, new LoadingProcess<FilterAdapter>() {
+        new LoadingHandler<AlmacenInsumoAdapter>(act, new LoadingProcess<AlmacenInsumoAdapter>() {
             @Override
-            public FilterAdapter process() throws Exception {
-                listView.setAdapter(controller.getAdapter(act, R.id.listaInsumos));
-                return new FilterAdapter(act, android.R.layout.simple_spinner_dropdown_item, controller.getCocinasNames());
+            public AlmacenInsumoAdapter process() throws Exception {
+                return controller.getAdapter(act, R.id.listaInsumos);
             }
 
             @Override
-            public void post(FilterAdapter answer) {
-                filterAdapter = answer;
-                spinnerFiltrar.setAdapter(filterAdapter.createAdapter());
+            public void post(AlmacenInsumoAdapter answer) {
+                listView.setAdapter(answer);
+
+                new LoadingHandler<FilterAdapter>(act, new LoadingProcess<FilterAdapter>() {
+                    @Override
+                    public FilterAdapter process() throws Exception {
+                        return new FilterAdapter(act, android.R.layout.simple_spinner_dropdown_item, controller.getCocinasNames());
+                    }
+
+                    @Override
+                    public void post(FilterAdapter answer) {
+                        filterAdapter = answer;
+                        spinnerFiltrar.setAdapter(filterAdapter.createAdapter());
+                    }
+                });
+
             }
         });
+
+
     }
 
     @Override
