@@ -12,6 +12,8 @@ import com.utils.adapters.*;
 import com.utils.exception.ExceptionHandler;
 import com.services.models.InsumoAlmacenModel;
 import com.controllers.PantallaPrincipalController;
+import com.utils.loading.LoadingHandler;
+import com.utils.loading.LoadingProcess;
 
 /**
  * Capa: Activities
@@ -96,7 +98,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
             salidaButton = (ImageButton) findViewById(R.id.salidaButton);
             entradaButton = (ImageButton) findViewById(R.id.entradaButton);
             spinnerFiltrar = (Spinner) findViewById(R.id.filtrarBy);
-            filterAdapter = new FilterAdapter(act, android.R.layout.simple_spinner_dropdown_item, controller.getCocinasNames());
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
@@ -145,25 +146,52 @@ public class PantallaPrincipalActivity extends BaseActivity {
      * @param view View de la aplicacion.
      */
     private void onSpinnerFiltrarItemSelected(View view) {
-        try {
-            if (spinnerFiltrar.getSelectedItemPosition() == 0) {
-                listView.setAdapter(controller.getAdapter(act, R.id.listaInsumos));
-            } else {
-                listView.setAdapter(controller.getAdapter(act, R.id.listaInsumos, spinnerFiltrar.getSelectedItem().toString()));
-            }
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, act);
+        if (spinnerFiltrar.getSelectedItemPosition() == 0) {
+
+            new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+                @Override
+                public Void process() throws Exception {
+                    listView.setAdapter(controller.getAdapter(act, R.id.listaInsumos));
+                    return null;
+                }
+
+                @Override
+                public void post(Void answer) {
+                }
+            });
+
+        } else {
+
+            new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+                @Override
+                public Void process() throws Exception {
+                    listView.setAdapter(controller.getAdapter(act, R.id.listaInsumos, spinnerFiltrar.getSelectedItem().toString()));
+                    return null;
+                }
+
+                @Override
+                public void post(Void answer) {
+                }
+            });
+
         }
     }
 
     @Override
     protected void setAdapters() {
-        try {
-            listView.setAdapter(controller.getAdapter(act, R.id.listaInsumos));
-            spinnerFiltrar.setAdapter(filterAdapter.createAdapter());
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, act);
-        }
+        new LoadingHandler<FilterAdapter>(act, new LoadingProcess<FilterAdapter>() {
+            @Override
+            public FilterAdapter process() throws Exception {
+                listView.setAdapter(controller.getAdapter(act, R.id.listaInsumos));
+                return new FilterAdapter(act, android.R.layout.simple_spinner_dropdown_item, controller.getCocinasNames());
+            }
+
+            @Override
+            public void post(FilterAdapter answer) {
+                filterAdapter = answer;
+                spinnerFiltrar.setAdapter(filterAdapter.createAdapter());
+            }
+        });
     }
 
     @Override
@@ -187,9 +215,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
             int id = item.getItemId();
             switch (id) {
                 case R.id.action_imprimirEstado:
-                    return imprimirEstadoAlmacen();
+                    imprimirEstadoAlmacen();
+                    return true;
                 case R.id.action_ticket_compra:
-                    return imprimirTicketCompra();
+                    imprimirTicketCompra();
+                    return true;
                 default:
                     return super.onOptionsItemSelected(item);
             }
@@ -204,19 +234,23 @@ public class PantallaPrincipalActivity extends BaseActivity {
      *
      * @return true si se puede imprimir el ticket, false de lo contrario.
      */
-    private boolean imprimirTicketCompra() {
-        try {
-            boolean resp = controller.imprimirTicketCompra();
-            if (resp) {
-                Toast.makeText(getApplicationContext(), "Imprimiendo...", Toast.LENGTH_SHORT);
-            } else {
-                ExceptionHandler.handleException(new Exception("Error imprimiendo"), act);
+    private void imprimirTicketCompra() {
+        new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
+            @Override
+            public Boolean process() throws Exception {
+                return controller.imprimirTicketCompra();
+
             }
-            return resp;
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, act);
-            return false;
-        }
+
+            @Override
+            public void post(Boolean answer) {
+                if (answer) {
+                    Toast.makeText(getApplicationContext(), "Imprimiendo...", Toast.LENGTH_SHORT);
+                } else {
+                    ExceptionHandler.handleException(new Exception("Error imprimiendo"), act);
+                }
+            }
+        });
     }
 
     /**
@@ -224,19 +258,22 @@ public class PantallaPrincipalActivity extends BaseActivity {
      *
      * @return true si se puede imprimir el ticket, false de lo contrario.
      */
-    private boolean imprimirEstadoAlmacen() {
-        try {
-            boolean resp = controller.imprimirEstadoActualAlmacen();
-            if (resp) {
-                showMessage("Imprimiendo...");
-            } else {
-                ExceptionHandler.handleException(new Exception("Error imprimiendo"), act);
+    private void imprimirEstadoAlmacen() {
+        new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
+            @Override
+            public Boolean process() throws Exception {
+                return controller.imprimirEstadoActualAlmacen();
             }
-            return resp;
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, act);
-            return false;
-        }
+
+            @Override
+            public void post(Boolean answer) {
+                if (answer) {
+                    Toast.makeText(getApplicationContext(), "Imprimiendo...", Toast.LENGTH_SHORT);
+                } else {
+                    ExceptionHandler.handleException(new Exception("Error imprimiendo"), act);
+                }
+            }
+        });
     }
 
     /**
@@ -286,20 +323,23 @@ public class PantallaPrincipalActivity extends BaseActivity {
                         }
                     }).setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            float cantidad = 0, monto = 0;
-                            try {
-                                cantidad = Float.parseFloat(input.getText().toString());
-                                monto = Float.parseFloat(amount.getText().toString());
+                        public void onClick(final DialogInterface dialog, int which) {
 
-                                controller.darEntrada(insumoModel, cantidad, monto);
-                            } catch (Exception e) {
-                                ExceptionHandler.handleException(e, act);
-                            }
+                            new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+                                @Override
+                                public Void process() throws Exception {
+                                    float cantidad = Float.parseFloat(input.getText().toString());
+                                    float monto = Float.parseFloat(amount.getText().toString());
+                                    controller.darEntrada(insumoModel, cantidad, monto);
+                                    return null;
+                                }
 
-                            updateListView(v);
-
-                            dialog.dismiss();
+                                @Override
+                                public void post(Void answer) {
+                                    updateListView(v);
+                                    dialog.dismiss();
+                                }
+                            });
                         }
                     }).create().show();
                     dialog.dismiss();
@@ -357,61 +397,71 @@ public class PantallaPrincipalActivity extends BaseActivity {
         try {
             int pos = (Integer) v.getTag();
             final InsumoAlmacenModel i = ((InsumoAlmacenModel) listView.getAdapter().getItem(pos));
-            final String[] ipvs = getIPVData(i.getInsumoModel().getCodInsumo());
 
-            final EditText input = new EditText(v.getContext());
-            input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
-            input.setRawInputType(Configuration.KEYBOARD_12KEY);
+            new LoadingHandler<String[]>(act, new LoadingProcess<String[]>() {
+                @Override
+                public String[] process() throws Exception {
+                    return controller.getCocinasNamesForIPV(i.getInsumoModel().getCodInsumo());
+                }
 
-            new AlertDialog.Builder(v.getContext()).
-                    setView(input).
-                    setTitle("Salida a punto de elaboracion").
-                    setMessage("Introduzca la cantidad de " + i.getInsumoModel() + " a dar salida").
-                    setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    }).
-                    setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            new AlertDialog.Builder(v.getContext())
-                                    .setItems(ipvs, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            float cantidad = 0;
-                                            try {
-                                                cantidad = Float.parseFloat(input.getText().toString());
-                                            } catch (Exception e) {
-                                                ExceptionHandler.handleException(e, act);
-                                            }
-                                            if (cantidad > i.getCantidad()) {
-                                                Toast.makeText(v.getContext(), R.string.saldo_insuficiente, Toast.LENGTH_LONG);
-                                                dialog.dismiss();
-                                            } else {
-                                                try {
-                                                    controller.darSalida(i, cantidad, ipvs[which]);
-                                                } catch (Exception e) {
-                                                    ExceptionHandler.handleException(e, act);
+                @Override
+                public void post(final String[] ipvs) {
+                    final EditText input = new EditText(v.getContext());
+                    input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                    input.setRawInputType(Configuration.KEYBOARD_12KEY);
+
+                    new AlertDialog.Builder(v.getContext()).
+                            setView(input).
+                            setTitle("Salida a punto de elaboracion").
+                            setMessage("Introduzca la cantidad de " + i.getInsumoModel() + " a dar salida").
+                            setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).
+                            setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, final int which) {
+                                    new AlertDialog.Builder(v.getContext())
+                                            .setItems(ipvs, new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(final DialogInterface dialog, final int whichAct) {
+                                                    final float cantidad = Float.parseFloat(input.getText().toString());
+                                                    if (cantidad > i.getCantidad()) {
+                                                        Toast.makeText(v.getContext(), R.string.saldo_insuficiente, Toast.LENGTH_LONG);
+                                                        dialog.dismiss();
+                                                    } else {
+
+                                                        new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+                                                            @Override
+                                                            public Void process() throws Exception {
+                                                                controller.darSalida(i, cantidad, ipvs[whichAct]);
+                                                                return null;
+                                                            }
+
+                                                            @Override
+                                                            public void post(Void answer) {
+                                                                updateListView(v);
+                                                                dialog.dismiss();
+                                                            }
+                                                        });
+
+                                                    }
                                                 }
-
-                                                updateListView(v);
-
-                                                dialog.dismiss();
-                                            }
-                                        }
-                                    }).setTitle("Destino")
-                                    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                        }
-                                    }).
-                                    create().show();
-                            dialog.dismiss();
-                        }
-                    }).create().show();
+                                            }).setTitle("Destino")
+                                            .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                }
+                                            }).
+                                            create().show();
+                                    dialog.dismiss();
+                                }
+                            }).create().show();
+                }
+            });
 
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
@@ -458,26 +508,26 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                         }
                                     }).setPositiveButton("Mermar", new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    float cantidad = 0;
-                                    try {
-                                        cantidad = Float.parseFloat(input.getText().toString());
-                                    } catch (Exception e) {
-                                        dialog.dismiss();
-                                    }
+                                public void onClick(final DialogInterface dialog, int which) {
+                                    final float cantidad = Float.parseFloat(input.getText().toString());
                                     if (cantidad > insumoModel.getCantidad()) {
                                         Toast.makeText(v.getContext(), R.string.saldo_insuficiente, Toast.LENGTH_LONG);
                                         dialog.dismiss();
                                     } else {
-                                        try {
-                                            controller.rebajar(insumoModel, cantidad, razon.getText().toString());
-                                        } catch (Exception e) {
-                                            ExceptionHandler.handleException(e, act);
-                                        }
+                                        new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+                                            @Override
+                                            public Void process() throws Exception {
+                                                controller.rebajar(insumoModel, cantidad, razon.getText().toString());
+                                                return null;
+                                            }
 
-                                        updateListView(v);
+                                            @Override
+                                            public void post(Void answer) {
+                                                updateListView(v);
+                                                dialog.dismiss();
+                                            }
+                                        });
 
-                                        dialog.dismiss();
                                     }
                                 }
 
@@ -489,21 +539,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
-        }
-    }
-
-    /**
-     * Obtiene la informacion de los IPVs segun un insumo.
-     *
-     * @param insumoCod Codigo del insumo.
-     * @return arreglo de String con los IPVs.
-     */
-    private String[] getIPVData(String insumoCod) {
-        try {
-            return controller.getCocinasNamesForIPV(insumoCod);
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, act);
-            return null;
         }
     }
 
