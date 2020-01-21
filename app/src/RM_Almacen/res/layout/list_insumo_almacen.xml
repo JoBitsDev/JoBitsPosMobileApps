@@ -20,7 +20,8 @@
             android:gravity="center_vertical"
             android:text="Nombre"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="@dimen/titulos" />
+            android:textColor="@color/texto_primario"
+            android:textSize="@dimen/textSizeLarge" />
 
     </LinearLayout>
 
@@ -55,12 +56,13 @@
 
         <TextView
             android:id="@+id/editPrecioPromedio"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:autoText="false"
             android:gravity="start|center_vertical"
             android:text="Costo Medio: 17.00 CUC "
-            android:textColor="@color/color_resaltado2" />
+            android:textColor="@color/secundario"
+            android:textSize="@dimen/textSizeNormal" />
 
         <TextView
             android:id="@+id/textCantidad"
