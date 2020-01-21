@@ -62,6 +62,14 @@ public class LoginActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        user.setText("");
+        pass.setText("");
+        loginResult.setText("");
+    }
+
+    @Override
     void initVarialbes() {//inicializa las variables
         try {
             controller = new LoginController();//inicializa el controller
