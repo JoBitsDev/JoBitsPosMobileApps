@@ -147,7 +147,7 @@ public class ExceptionHandler {
 
         //mensaje explicando que pasa
         String serverErrorMessage = v.findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.serverError).toString();
-
+        serverErrorMessage += e.getMessage();
         //popup a mostrar
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setMessage(serverErrorMessage);
