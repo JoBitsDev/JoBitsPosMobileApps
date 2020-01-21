@@ -11,8 +11,8 @@
 
     <color name="fondo">#662e57</color>
     <color name="especifico_app_primario">#ebf3e2</color>
-    <color name = "color_secundario">#ffeb97</color>
-    <color name = "color_primario">#662e57</color>
+    <color name = "secundario">#ffeb97</color>
+    <color name = "primario">#662e57</color>
     <color name = "color_ingreso">#5EDB62</color>
     <color name = "color_gasto">#DF5F58</color>
 

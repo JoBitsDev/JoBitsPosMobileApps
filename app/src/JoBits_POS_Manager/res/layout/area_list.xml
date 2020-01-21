@@ -60,7 +60,7 @@
                 android:layout_weight="5"
                 android:gravity="center"
                 android:text="Venta Real:"
-                android:textColor="@color/color_primario"
+                android:textColor="@color/primario"
                 android:textSize="@dimen/textSizeNormal" />
 
             <TextView
@@ -82,7 +82,7 @@
                 android:layout_weight="5"
                 android:gravity="center"
                 android:text="Venta Neta:"
-                android:textColor="@color/color_primario"
+                android:textColor="@color/primario"
                 android:textSize="@dimen/textSizeNormal" />
 
             <TextView
@@ -106,5 +106,5 @@
         android:layout_width="match_parent"
         android:layout_height="5dp"
         android:layout_weight="1"
-        android:background="@color/color_primario" />
+        android:background="@color/primario" />
 </LinearLayout>
