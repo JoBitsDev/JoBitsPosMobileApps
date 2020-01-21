@@ -4,7 +4,7 @@
     android:id="@+id/fondo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_Fondo2"
+    android:background="@color/primario"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -38,23 +38,24 @@
 
             <Spinner
                 android:id="@+id/filtrarBy"
-                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="start"/>
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:background="@color/especifico_app_primario" />
 
             <EditText
                 android:id="@+id/editText"
-                android:layout_gravity="right"
-                android:layout_weight="2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/alternativoparabotones"
+                android:layout_gravity="right"
+                android:layout_weight="2"
+                android:background="@color/especifico_app_primario"
                 android:ems="10"
                 android:hint="@string/buscar"
                 android:inputType="textPersonName"
                 android:textColor="@color/color_Buttons"
-                android:textSize="@dimen/icondimension"
+                android:textSize="@dimen/textSizeMedium"
                 android:visibility="visible" />
         </LinearLayout>
 
@@ -102,7 +103,7 @@
             <ListView
                 android:id="@+id/listaInsumos"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:choiceMode="singleChoice" />
         </FrameLayout>
 
