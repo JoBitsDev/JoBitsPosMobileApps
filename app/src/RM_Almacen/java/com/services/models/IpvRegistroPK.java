@@ -4,40 +4,19 @@
  * and open the template in the editor.
  */
 
-package com.jobits.pos.persistence;
+package com.services.models;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 /**
  * FirstDream
  * @author Jorge
  * 
  */
-@Embeddable
 public class IpvRegistroPK implements Serializable {
 
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 6)
-    @Column(name = "ipvinsumocod_insumo")
     private String ipvinsumocodInsumo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 5)
-    @Column(name = "ipvcocinacod_cocina")
     private String ipvcocinacodCocina;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "fecha")
-    @Temporal(TemporalType.DATE)
     private Date fecha;
 
     public IpvRegistroPK() {
