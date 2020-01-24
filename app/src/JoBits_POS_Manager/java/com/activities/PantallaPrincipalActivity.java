@@ -66,6 +66,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         initVarialbes();
         addListeners();
         setAdapters();
+        actualizar(formatDate());
     }
 
     @Override
@@ -259,5 +260,14 @@ public class PantallaPrincipalActivity extends BaseActivity {
             }
         }, año, mes, dia);
         recogerFecha.show();
+    }
+    private String formatDate(){
+        //Esta variable lo que realiza es aumentar en uno el mes ya que comienza desde 0 = enero
+        final int mesActual = mes + 1;
+        //Formateo el día obtenido: antepone el 0 si son menores de 10
+        String diaFormateado = (dia < 10) ? "0" + String.valueOf(dia) : String.valueOf(dia);
+        //Formateo el mes obtenido: antepone el 0 si son menores de 10
+        String mesFormateado = (mesActual < 10) ? "0" + String.valueOf(mesActual) : String.valueOf(mesActual);
+        return diaFormateado + "/" + mesFormateado + "/" + año;
     }
 }
