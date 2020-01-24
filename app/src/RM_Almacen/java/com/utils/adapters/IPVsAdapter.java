@@ -10,7 +10,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 import com.activities.R;
-import com.services.models.InsumoAlmacenModel;
+import com.services.models.IpvRegistro;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,14 +25,14 @@ import java.util.List;
 public class IPVsAdapter extends ArrayAdapter<String> implements Filterable {
 
     private Context context;
-    private List<String> objects, displayedObjects;
+    private List<IpvRegistro> objects, displayedObjects;
 
     /**
      * Constructor
      */
 
-    public IPVsAdapter(Context context, int textViewResourceId, List<String> objects) {
-        super(context, textViewResourceId, objects);
+    public IPVsAdapter(Context context, int textViewResourceId, List<IpvRegistro> objects) {
+        super(context, textViewResourceId);
         this.context = context;
         this.objects = objects;
         displayedObjects = objects;
@@ -45,7 +45,7 @@ public class IPVsAdapter extends ArrayAdapter<String> implements Filterable {
 
     @Override
     public String getItem(int position) {
-        return displayedObjects.get(position);
+        return displayedObjects.get(position).toString();
     }
 
     /**
@@ -74,11 +74,11 @@ public class IPVsAdapter extends ArrayAdapter<String> implements Filterable {
         } else {
             holder = (ViewHolder) item.getTag();
         }
-        holder.inicio.setText("");
-        holder.entrada.setText("");
-        holder.disponibles.setText("");
-        holder.consumidos.setText("");
-        holder.finals.setText("");
+        holder.inicio.setText(displayedObjects.get(position).getInicio()+"");
+        holder.entrada.setText(displayedObjects.get(position).getEntrada()+"");
+        holder.disponibles.setText(displayedObjects.get(position).getDisponible()+"");
+        holder.consumidos.setText(displayedObjects.get(position).getConsumo()+"");
+        holder.finals.setText(displayedObjects.get(position).getFinal1()+"");
         return (item);
     }
 
@@ -100,17 +100,17 @@ public class IPVsAdapter extends ArrayAdapter<String> implements Filterable {
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
 
-                displayedObjects = (List<String>) results.values; // has the filtered values
+                displayedObjects = (List<IpvRegistro>) results.values; // has the filtered values
                 notifyDataSetChanged();  // notifies the data with new filtered values
             }
 
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();        // Holds the results of a filtering operation in values
-                List<String> filteredArrList = new ArrayList<String>();
+                List<IpvRegistro> filteredArrList = new ArrayList<IpvRegistro>();
 
                 if (objects == null) {
-                    objects = new ArrayList<String>(displayedObjects); // saves the original data in mOriginalValues
+                    objects = new ArrayList<IpvRegistro>(displayedObjects); // saves the original data in mOriginalValues
                 }
 
                 /********
@@ -125,11 +125,11 @@ public class IPVsAdapter extends ArrayAdapter<String> implements Filterable {
                     results.values = objects;
                 } else {
                     constraint = constraint.toString().toLowerCase();
-                    for (String i : objects) {
-                       // String data = i.getInsumoModel().getNombre();
-                      //  if (data.toLowerCase().contains(constraint.toString())) {
-                        //    filteredArrList.add(i);
-                     //   }
+                    for (IpvRegistro i : objects) {
+                        String data = i.getIpvRegistroPK().getIpvinsumocodInsumo();
+                        if (data.toLowerCase().contains(constraint.toString())) {
+                           filteredArrList.add(i);
+                        }
                     }
                     // set the Filtered result to return
                     results.count = filteredArrList.size();
