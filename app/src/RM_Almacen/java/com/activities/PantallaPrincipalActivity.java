@@ -8,12 +8,16 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 
+import com.services.models.IpvRegistro;
 import com.utils.adapters.*;
 import com.utils.exception.ExceptionHandler;
 import com.services.models.InsumoAlmacenModel;
 import com.controllers.PantallaPrincipalController;
 import com.utils.loading.LoadingHandler;
 import com.utils.loading.LoadingProcess;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Capa: Activities
@@ -32,6 +36,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
      * Lista que muestra los productos en el almacen.
      */
     private ListView listView;
+    private ListView listViewIPV;
 
     /**
      * Textos con el usuario y el almacen
@@ -41,7 +46,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     /**
      * Cuadro de texto de busqueda.
      */
-    private EditText searchText;
+    private EditText searchText, searchTextIPV;
 
     /**
      * Radio Button para darle salida a producto.
@@ -58,12 +63,20 @@ public class PantallaPrincipalActivity extends BaseActivity {
     /**
      * Spinner para filtrar por cocina.
      */
-    private Spinner spinnerFiltrar;
+    private Spinner spinnerFiltrar, spinnerFiltrarIPV;
 
     /**
      * Adapter para el filtro.
      */
     private FilterAdapter filterAdapter;
+    private FilterAdapterIPV filterAdapterIPV;
+
+    private AlmacenInsumoAdapter almacenInsumoAdapter;
+    private IPVsAdapter ipVsAdapter;
+    private ImageButton imageButtonActualizar;
+    private TabHost host;
+    private float lastX;
+    List<IpvRegistro> ipvRegistroList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +99,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     protected void initVarialbes() {
         try {
             listView = (ListView) findViewById(R.id.listaInsumos);
+            listViewIPV = (ListView) findViewById(R.id.listViewIPVs);
             almacenText = (TextView) findViewById(R.id.textViewNombreAlmacen);
 
             userText = (TextView) findViewById(R.id.textUser);
@@ -93,11 +107,17 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
             controller = new PantallaPrincipalController(userText.getText().toString());
             searchText = (EditText) findViewById(R.id.editText);
+            searchTextIPV = (EditText) findViewById(R.id.editTextBuscarIPV);
             radioButtonSalida = (RadioButton) findViewById(R.id.radioButtonSalida);
             radioButtonRebaja = (RadioButton) findViewById(R.id.radioButtonRebaja);
             salidaButton = (ImageButton) findViewById(R.id.salidaButton);
             entradaButton = (ImageButton) findViewById(R.id.entradaButton);
+            imageButtonActualizar = (ImageButton) findViewById(R.id.imageButtonActualizar);
             spinnerFiltrar = (Spinner) findViewById(R.id.filtrarBy);
+            spinnerFiltrarIPV = (Spinner) findViewById(R.id.filtrarByIPV);
+            ipvRegistroList = new ArrayList<IpvRegistro>();
+
+            initTab();
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
@@ -115,7 +135,23 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     ((AlmacenInsumoAdapter) listView.getAdapter()).getFilter().filter(s.toString());
+                }
 
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+
+            searchTextIPV.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    ((IPVsAdapter)listViewIPV.getAdapter()).getFilter().filter(s.toString());
                 }
 
                 @Override
@@ -132,6 +168,18 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+
+            spinnerFiltrarIPV.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    onSpinnerFiltrarItemSelectedIPV(view);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
                 }
             });
             //TODO: faltan dos listener que estan directo en el xml
@@ -177,35 +225,64 @@ public class PantallaPrincipalActivity extends BaseActivity {
         }
     }
 
+    private void onSpinnerFiltrarItemSelectedIPV(View view) {
+        if (spinnerFiltrarIPV.getSelectedItemPosition() == 0) {
+
+            new LoadingHandler<AlmacenInsumoAdapter>(act, new LoadingProcess<AlmacenInsumoAdapter>() {
+                @Override
+                public AlmacenInsumoAdapter process() throws Exception {
+                    return controller.getAdapter(act, R.id.listaInsumos);
+                }
+
+                @Override
+                public void post(AlmacenInsumoAdapter answer) {
+                    listView.setAdapter(answer);
+                }
+            });
+
+        } else {
+
+            new LoadingHandler<AlmacenInsumoAdapter>(act, new LoadingProcess<AlmacenInsumoAdapter>() {
+                @Override
+                public AlmacenInsumoAdapter process() throws Exception {
+                    return controller.getAdapter(act, R.id.listaInsumos, spinnerFiltrar.getSelectedItem().toString());
+                }
+
+                @Override
+                public void post(AlmacenInsumoAdapter answer) {
+                    listView.setAdapter(answer);
+                }
+            });
+        }
+    }
+
     @Override
     protected void setAdapters() {
-        new LoadingHandler<AlmacenInsumoAdapter>(act, new LoadingProcess<AlmacenInsumoAdapter>() {
-            @Override
-            public AlmacenInsumoAdapter process() throws Exception {
-                return controller.getAdapter(act, R.id.listaInsumos);
-            }
+        try {
 
-            @Override
-            public void post(AlmacenInsumoAdapter answer) {
-                listView.setAdapter(answer);
+            new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+                @Override
+                public Void process() throws Exception {
+                    filterAdapter = new FilterAdapter(act, android.R.layout.simple_spinner_dropdown_item, controller.getCocinasNames());
+                    filterAdapterIPV = new FilterAdapterIPV(act, android.R.layout.simple_spinner_dropdown_item, controller.getCocinasNames());
+                    ipVsAdapter = new IPVsAdapter(act, R.layout.list_ipvs, ipvRegistroList);
+                    almacenInsumoAdapter = new AlmacenInsumoAdapter(act,R.id.listaInsumos,controller.getPrimerAlmacen());
+                    return null;
+                }
 
-                new LoadingHandler<FilterAdapter>(act, new LoadingProcess<FilterAdapter>() {
-                    @Override
-                    public FilterAdapter process() throws Exception {
-                        return new FilterAdapter(act, android.R.layout.simple_spinner_dropdown_item, controller.getCocinasNames());
-                    }
-
-                    @Override
-                    public void post(FilterAdapter answer) {
-                        filterAdapter = answer;
-                        spinnerFiltrar.setAdapter(filterAdapter.createAdapter());
-                    }
-                });
-
-            }
-        });
+                @Override
+                public void post(Void answer) {
+                    spinnerFiltrar.setAdapter(filterAdapter.createAdapter());
+                    spinnerFiltrarIPV.setAdapter(filterAdapterIPV.createAdapter());
+                    listViewIPV.setAdapter(ipVsAdapter);
+                    listView.setAdapter(almacenInsumoAdapter);
+                }
+            });
 
 
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+        }
     }
 
     @Override
@@ -554,6 +631,77 @@ public class PantallaPrincipalActivity extends BaseActivity {
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
+    }
+
+    /**
+     * Obtiene la informacion de los IPVs segun un insumo.
+     *
+     * @param insumoCod Codigo del insumo.
+     * @return arreglo de String con los IPVs.
+     */
+    private String[] getIPVData(String insumoCod) {
+        try {
+            return controller.getCocinasNamesForIPV(insumoCod);
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+            return null;
+        }
+    }
+
+    private void initTab() {
+        try {
+            host = (TabHost) findViewById(R.id.tabHost);
+            if (host != null) {//TODO: por que este if??
+                host.setup();
+
+                TabHost.TabSpec spec = host.newTabSpec("Almacen");
+
+                //Tab 1
+                spec.setContent(R.id.Almacen);
+                spec.setIndicator("Almacen");
+                host.addTab(spec);
+
+                //Tab 2
+                spec = host.newTabSpec("IPVs");
+                spec.setContent(R.id.IPV);
+                spec.setIndicator("IPVs");
+                host.addTab(spec);
+            }
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
+    }
+
+    private boolean onTabChangeTouchEvent(MotionEvent event) {
+        float currentX = 0;
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                lastX = event.getX();
+                break;
+            case MotionEvent.ACTION_UP:
+                currentX = event.getX();
+                boolean dirRight = Math.abs(lastX - currentX) > 200;
+                switchTab(dirRight);
+                break;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        return onTabChangeTouchEvent(event);
+    }
+
+    private boolean switchTab(boolean change) {
+        if (change) {
+            if (host.getCurrentTab() == 1) {
+                host.setCurrentTab(0);
+            } else {
+                host.setCurrentTab(1);
+            }
+        }
+        return false;
     }
 
 }
