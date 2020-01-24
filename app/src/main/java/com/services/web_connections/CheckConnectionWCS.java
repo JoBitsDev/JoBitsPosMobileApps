@@ -12,7 +12,7 @@ public class CheckConnectionWCS {
     /**
      * URL con la coneccion al servidor.
      */
-    private final String URLCONN = "http://" + EnvironmentVariables.getIP() + ":" + EnvironmentVariables.getPORT() + "/RM";
+    private final String URLCONN = "http://" + EnvironmentVariables.getIP() + ":" + EnvironmentVariables.getPORT() + "/jobits";
 
     public Boolean checkConnection() {
         URL url = null;
