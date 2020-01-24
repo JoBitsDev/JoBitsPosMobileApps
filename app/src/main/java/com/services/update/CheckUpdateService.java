@@ -52,7 +52,7 @@ public class CheckUpdateService {
      * @throws Exception Si existe algun error chekeando el update.
      */
     public static boolean check() throws Exception {
-        SimpleWebConnectionService s = new SimpleWebConnectionService();
+        /*SimpleWebConnectionService s = new SimpleWebConnectionService();
         try {
             serverVersionCode = Integer.parseInt(s.connect(versionPath));
             availableUpdate = getVersionCode() < serverVersionCode;
@@ -61,7 +61,7 @@ public class CheckUpdateService {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
         return availableUpdate;
     }
 

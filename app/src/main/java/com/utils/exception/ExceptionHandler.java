@@ -53,7 +53,7 @@ public class ExceptionHandler {
     public static void handleException(Exception e, BaseActivity activity) {
         e.printStackTrace();
 
-        if (e instanceof NoConnectionException || e instanceof SocketTimeoutException) {//no conection o timeout
+        if (e instanceof NoConnectionException) {//no conection o timeout
             handleNoConnectionException((NoConnectionException) e, activity);
         } else if (e instanceof ServerErrorException) {//error del server
             handleServerErrorException((ServerErrorException) e, activity);
@@ -61,7 +61,7 @@ public class ExceptionHandler {
             handleNoExistingException((Exception) e, activity);
         } else if (e instanceof DayClosedException) {//error de dia cerrado
             handleDayClosedException((DayClosedException) e, activity);
-        } else if (e instanceof TimeoutException) {
+        } else if (e instanceof TimeoutException || e instanceof SocketTimeoutException) {
             handleTimeoutException((Exception) e, activity);
         } else if (e instanceof NetworkOnMainThreadException) {
             handleNetworkOnMainThreadException((Exception) e, activity);
@@ -147,7 +147,19 @@ public class ExceptionHandler {
 
         //mensaje explicando que pasa
         String serverErrorMessage = v.findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.serverError).toString();
-        createDialog(serverErrorMessage + e.getMessage(), c, activity);
+        serverErrorMessage += e.getMessage();
+        //popup a mostrar
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setMessage(serverErrorMessage);
+        builder.setTitle(ExceptionHandler.POPUP_TITLE);
+
+        builder.setNeutralButton(ExceptionHandler.POPUP_BUTTON_TEXT, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {//comportamiento al clickear el boton
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
     }
 
     /**
