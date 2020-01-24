@@ -11,7 +11,7 @@ import com.utils.EnvironmentVariables;
  */
 public class MainController extends BaseController {
 
-    private UbicacionModel[] ubicaciones = new UbicacionModel[]{new UbicacionModel("A", "192.168.173.1", "8080"), new UbicacionModel("B", "192.168.173.101", "8080")};
+    private UbicacionModel[] ubicaciones = new UbicacionModel[]{new UbicacionModel("A", "192.168.173.1", "8080"), new UbicacionModel("B", "192.168.173.100", "8080"), new UbicacionModel("B", "192.168.173.2", "8080"), new UbicacionModel("B", "192.168.173.103", "8080")};
 
     public String[] getAllUbicaciones() {
         String[] arr = new String[ubicaciones.length];
