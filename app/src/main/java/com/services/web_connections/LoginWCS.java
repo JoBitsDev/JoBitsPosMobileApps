@@ -1,19 +1,9 @@
 package com.services.web_connections;
 
-import android.content.res.Resources;
-
-import com.activities.R;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.services.models.CredentialsModel;
-import com.utils.EnvironmentVariables;
 import com.utils.exception.NoConnectionException;
 import com.utils.exception.ServerErrorException;
-
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Capa: Services.
@@ -23,7 +13,7 @@ import java.util.concurrent.TimeoutException;
  * @extends SimpleWebConnectionService ya que es un servicio.
  */
 
-public class LoginWebConnectionServiceService extends SimpleWebConnectionService {
+public class LoginWCS extends SimpleWebConnectionService {
 
     private final String login_URL;
 
@@ -35,10 +25,10 @@ public class LoginWebConnectionServiceService extends SimpleWebConnectionService
      * @param user usuario a autenticar.
      * @param pass contrasenna del usuario.
      */
-    public LoginWebConnectionServiceService(String user, String pass) {
+    public LoginWCS(String user, String pass) {
         super();
         credentials = new CredentialsModel(user, pass);
-        this.login_URL = path += "com.restmanager.personal/AUTH";
+        this.login_URL = path + "login/AUTH";
     }
 
     /**
@@ -50,7 +40,7 @@ public class LoginWebConnectionServiceService extends SimpleWebConnectionService
      */
     public boolean authenticate() throws Exception {
         String body = new ObjectMapper().writeValueAsString(credentials);
-        TOKEN = connectPost(login_URL, body, null);
+        TOKEN = connect(login_URL, body, null, HTTPMethod.POST);
         return true;
     }
 
