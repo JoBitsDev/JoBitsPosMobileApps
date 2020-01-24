@@ -11,6 +11,7 @@
 
     <color name="fondo">#243f4f</color>
     <color name="primario">#345065</color>
+    <color name="auxiliar">#3E6F91</color>
     <color name="secundario">#3498db</color>
     <color name="especifico_app_primario">#243f4f</color>
 

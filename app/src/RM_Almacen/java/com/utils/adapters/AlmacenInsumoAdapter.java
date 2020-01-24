@@ -96,10 +96,7 @@ public class AlmacenInsumoAdapter extends ArrayAdapter<InsumoAlmacenModel> imple
         holder.entrada.setTag(position);
         holder.salida.setTag(position);
 
-
         return (v);
-
-
     }
 
     @Override
