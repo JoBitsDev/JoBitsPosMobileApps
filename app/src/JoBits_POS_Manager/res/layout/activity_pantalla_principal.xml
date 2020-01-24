@@ -21,7 +21,7 @@
             android:gravity="center"
             android:hint="@string/formato_fecha"
             android:inputType="date"
-            android:textColorHint="@color/color_primario"
+            android:textColorHint="@color/primario"
             android:textSize="24sp" />
 
         <ImageButton
@@ -57,7 +57,7 @@
                 android:id="@android:id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/color_secundario"
+                android:background="@color/secundario"
                 android:showDividers="middle" />
 
             <FrameLayout
