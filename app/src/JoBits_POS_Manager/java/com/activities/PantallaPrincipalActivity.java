@@ -29,6 +29,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+/**
+ * Capa: Activities
+ * Clase que controla el XML de la pantalla principal de POS Manager.
+ *
+ * @extends BaseActivity ya que es una activity propia de la aplicacion.
+ */
 public class PantallaPrincipalActivity extends BaseActivity {
 
     private AreaAdapter areaAdapter;
@@ -153,6 +159,10 @@ public class PantallaPrincipalActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Método para actualizar las listas de datos.
+     */
+
     public void actualizar(final String fecha){
         new LoadingHandler<VentaResumenModel>(act, new LoadingProcess<VentaResumenModel>() {
             @Override
@@ -245,6 +255,9 @@ public class PantallaPrincipalActivity extends BaseActivity {
         return false;
     }
 
+    /**
+     * Metodo para mostrar un Widget al usuario para que introduzca la fecha y formatearla.
+     */
     private void pickDate() {
         DatePickerDialog recogerFecha = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
