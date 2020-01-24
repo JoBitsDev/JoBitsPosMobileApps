@@ -78,22 +78,25 @@ public class SimpleWebConnectionService {
      * @return String con el formato JSON.
      * @throws Exception Si algo sale mal.
      */
-    public String connect(final String urlToExcecute, final String body, final String token, final HTTPMethod method) throws Exception {
+    public String connect(final String urlToExcecute, final String body, final String token, HTTPMethod method) throws Exception {
         //Set up the connection
         URL url = new URL(urlToExcecute);
         con = (HttpURLConnection) url.openConnection();
         con.setDoInput(true);
-        con.setDoOutput(true);
-        con.setRequestMethod(method.toString());
+        con.setDoOutput(method != HTTPMethod.GET);
+        con.setRequestMethod(method.getMethod());
         con.setRequestProperty("Content-Type", "text/plain");
         con.setReadTimeout(MAX_READ_TIME);
         con.setConnectTimeout(MAX_RESPONSE_TIME);
         con.setRequestProperty(AUTHORITATION, BEARER + token);
 
         // Starts the query
-        OutputStreamWriter os = new OutputStreamWriter(con.getOutputStream());
-        os.write(body);
-        os.flush();
+        if (method != HTTPMethod.GET) {
+            OutputStreamWriter os = new OutputStreamWriter(con.getOutputStream());
+            os.write(body == null ? "" : body);
+            os.flush();
+            os.close();
+        }
 
         if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {//si esta ok lee el JSON
             BufferedReader input = new BufferedReader(
@@ -106,7 +109,7 @@ public class SimpleWebConnectionService {
             }
             con.disconnect();
             input.close();
-            os.close();
+            //os.close();
             return resp;
         } else {//Si no, lee el error y lo propaga
             BufferedReader input = new BufferedReader(
@@ -115,7 +118,7 @@ public class SimpleWebConnectionService {
             resp = input.readLine();
             input.close();
             con.disconnect();
-            os.close();
+            //os.close();
             throw new ServerErrorException(resp);
         }
     }
