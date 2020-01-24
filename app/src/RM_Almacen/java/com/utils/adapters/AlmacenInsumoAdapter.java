@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.activities.R;
 import com.services.models.InsumoAlmacenModel;
-import com.services.web_connections.AlmacenWebConnectionService;
 import com.utils.EnvironmentVariables;
 
 import java.util.ArrayList;
