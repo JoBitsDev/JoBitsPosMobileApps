@@ -19,7 +19,9 @@
     <color name="primario">#ebf3e2</color>
     <color name="secundario">#ebf3e2</color>
     <color name="auxiliar">#dbca00</color>
-    <color name="especifico_app_primario">#ebf3e2</color>
+    <color name="especifico_app_primario">#ebf3e2</color>>
+    <color name="fondo">#ebf3e2</color>
+
 
     --listas y tablas
 
