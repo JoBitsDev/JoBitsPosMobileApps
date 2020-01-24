@@ -28,7 +28,7 @@
             android:baselineAligned="false"
             android:gravity="fill"
             android:text="Órdenes Atendidas"
-            android:textColor="@color/color_primario"
+            android:textColor="@color/primario"
             android:textSize="@dimen/textSizeNormal" />
 
         <EditText
@@ -57,7 +57,7 @@
             android:layout_weight="6"
             android:gravity="fill"
             android:text="Monto"
-            android:textColor="@color/color_primario"
+            android:textColor="@color/primario"
             android:textSize="@dimen/textSizeNormal" />
 
         <EditText
@@ -79,7 +79,7 @@
             android:layout_weight="9"
             android:gravity="fill"
             android:text="Pago por Venta"
-            android:textColor="@color/color_primario"
+            android:textColor="@color/primario"
             android:textSize="@dimen/textSizeNormal" />
 
         <EditText
@@ -101,6 +101,6 @@
         android:layout_width="match_parent"
         android:layout_height="5dp"
         android:layout_weight="50"
-        android:background="@color/color_primario" />
+        android:background="@color/primario" />
 
 </LinearLayout>
