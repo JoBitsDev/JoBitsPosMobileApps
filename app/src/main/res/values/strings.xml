@@ -32,4 +32,6 @@
     <string name="agregar_ubicacion">Agregar ubicación</string>
     <string name="formato_fecha">dd/mm/yyyy</string>
 
+    <string name="formato_hora">00:00:00</string>
+
 </resources>
