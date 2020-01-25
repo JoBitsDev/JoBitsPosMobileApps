@@ -23,13 +23,9 @@ public class InsumoAlmacenModel implements Comparable<InsumoAlmacenModel>{
         this.insumoModel = insumoModel;
     }
 
-    public InsumoAlmacenModel(InsumoAlmacenPKModel insumoAlmacenPKModel) {
-        this.insumoAlmacenPKModel = insumoAlmacenPKModel;
+    public InsumoAlmacenModel() {
     }
 
-    public InsumoAlmacenModel(String insumocodInsumo, String almacencodAlmacen) {
-        this.insumoAlmacenPKModel = new InsumoAlmacenPKModel(insumocodInsumo, almacencodAlmacen);
-    }
 
     public InsumoAlmacenPKModel getInsumoAlmacenPKModel() {
         return insumoAlmacenPKModel;
