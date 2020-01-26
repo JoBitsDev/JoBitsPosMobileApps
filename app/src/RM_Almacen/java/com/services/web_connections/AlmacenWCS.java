@@ -83,7 +83,7 @@ public class AlmacenWCS extends SimpleWebConnectionService {
     public String darEntrada(InsumoAlmacenModel i, float cantidad, float monto) throws Exception {
         HashMap<String, Object> hm = new HashMap<String, Object>();
         hm.put("almacenCod", i.getCodAlmacen());
-        hm.put("insumonCod", i.getInsumoAlmacenPKModel().getInsumocodInsumo());
+        hm.put("insumoCod", i.getInsumoAlmacenPKModel().getInsumocodInsumo());
         hm.put("cantidad", cantidad);
         hm.put("monto", monto);
         return connect(path + ENTRADA, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
@@ -101,7 +101,7 @@ public class AlmacenWCS extends SimpleWebConnectionService {
     public String darSalida(InsumoAlmacenModel i, float cantidad, String codPtoElaboracion) throws Exception {
         HashMap<String, Object> hm = new HashMap<String, Object>();
         hm.put("almacenCod", i.getCodAlmacen());
-        hm.put("insumonCod", i.getInsumoAlmacenPKModel().getInsumocodInsumo());
+        hm.put("insumoCod", i.getInsumoAlmacenPKModel().getInsumocodInsumo());
         hm.put("cantidad", cantidad);
         hm.put("destino", codPtoElaboracion);
         return connect(path + SALIDA, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
@@ -145,8 +145,7 @@ public class AlmacenWCS extends SimpleWebConnectionService {
     public String[] getCocinasNamesForIPV(String codInsumo) throws Exception {
         String URL = path + LISTA_IPV + "?insumoCod=" + codInsumo;
         String resp = connect(URL, null, super.TOKEN, HTTPMethod.GET);
-        List<String> list = om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, String.class));
-        return (String[]) list.toArray();
+        return om.readValue(resp, om.getTypeFactory().constructArrayType(String.class));
     }
 
     /**
