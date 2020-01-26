@@ -31,7 +31,7 @@ public class CocinaWCS extends SimpleWebConnectionService {
      */
     public String[] getCocinasNames() throws Exception {
         String resp = connect(path + names, null, super.TOKEN, HTTPMethod.GET);
-        return om.readValue(resp, String[].class/*om.getTypeFactory().constructCollectionType(List.class, String.class)*/);
+        return om.readValue(resp, om.getTypeFactory().constructArrayType(String.class));
     }
 
 }
