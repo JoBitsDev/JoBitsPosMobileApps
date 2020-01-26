@@ -84,6 +84,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             año = calendar.get(Calendar.YEAR);
 
             editTextShowDate = (EditText) findViewById(R.id.editTextDatePicker);
+            editTextShowDate.setText(formatDate());
             imageButtonDatePicker = (ImageButton) findViewById(R.id.imageButtonDatePicker);
             imageButtonActualizar = (ImageButton) findViewById(R.id.buttonActualizar);
             listViewGeneral = (ListView) findViewById(R.id.listViewGeneral);
