@@ -2,10 +2,11 @@ package com.controllers;
 
 import android.content.Context;
 
-import com.services.models.IpvRegistro;
+import com.services.models.IpvRegistroModel;
 import com.services.web_connections.*;
 import com.services.models.InsumoAlmacenModel;
 import com.utils.adapters.AlmacenInsumoAdapter;
+import com.utils.adapters.IPVsAdapter;
 import com.utils.exception.NoConnectionException;
 import com.utils.exception.ServerErrorException;
 
@@ -155,7 +156,10 @@ public class PantallaPrincipalController extends BaseController {
         return new AlmacenInsumoAdapter(c, listaInsumos, filterBy(filtros));
     }
 
-    public List<IpvRegistro> getIPVRegistro(String codCocina) {
+    public List<IpvRegistroModel> getIPVRegistro(String codCocina) {
         return almacenWCS.getIPVRegistro(codCocina);
+    }
+    public IPVsAdapter getIPVAdapter (Context c, int ipvRegisro, String codCocina){
+        return new IPVsAdapter(c, ipvRegisro, almacenWCS.getIPVRegistro(codCocina));
     }
 }
