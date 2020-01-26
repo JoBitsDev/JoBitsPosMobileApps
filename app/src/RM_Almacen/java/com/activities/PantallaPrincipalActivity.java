@@ -263,8 +263,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
             new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
                 @Override
                 public Void process() throws Exception {
-                    filterAdapter = new FilterAdapter(act, android.R.layout.simple_spinner_dropdown_item, controller.getCocinasNames());
-                    filterAdapterIPV = new FilterAdapterIPV(act, android.R.layout.simple_spinner_dropdown_item, controller.getCocinasNames());
+                    filterAdapter = new FilterAdapter(act, R.layout.spinner_item_list, controller.getCocinasNames());
+                    filterAdapterIPV = new FilterAdapterIPV(act,R.layout.spinner_item_list, controller.getCocinasNames());
                     ipVsAdapter = new IPVsAdapter(act, R.layout.list_ipvs, ipvRegistroList);
                     almacenInsumoAdapter = new AlmacenInsumoAdapter(act,R.id.listaInsumos,controller.getPrimerAlmacen());
                     return null;
