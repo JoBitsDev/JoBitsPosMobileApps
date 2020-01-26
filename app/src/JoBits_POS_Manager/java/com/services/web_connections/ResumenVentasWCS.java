@@ -5,11 +5,11 @@ public class ResumenVentasWCS extends SimpleWebConnectionService {
     private final String resumen_URL;
 
     public ResumenVentasWCS() {
-        resumen_URL = path + "com.jobits.pos.venta/SALES";
+        resumen_URL = path + "venta/SALES";
     }
 
     public String getResumenVentas(String fecha) throws Exception {
-        return connectPost(resumen_URL, fecha, TOKEN);
+        return connect(resumen_URL + "?fecha=" + fecha.replace("/","-"), null, TOKEN, HTTPMethod.GET);
     }
 
 }

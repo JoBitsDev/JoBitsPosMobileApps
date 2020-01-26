@@ -5,6 +5,7 @@ import com.utils.EnvironmentVariables;
 import com.services.models.InsumoAlmacenModel;
 import com.services.parsers.InsumoAlmacenXMLParser;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -13,23 +14,23 @@ import java.util.List;
  *
  * @extends SimpleWebConnectionService ya que es un servicio.
  */
-public class AlmacenWebConnectionService extends SimpleWebConnectionService {
+public class AlmacenWCS extends SimpleWebConnectionService {
 
     /**
      * Path local.
      */
-    final String P = "com.restmanager.almacen/";
+    final String P = "almacen/";
 
     /**
      * Etiquetas a llamar.
      */
-    final String ENTRADA = "ENTRADA_",
-            TICKET_COMPRA = "IMPRIMIR_TICKET_COMPRA",
-            ESTADO_ALMACEN = "IMPRIMIR_ESTADO_ALMACEN",
-            SALIDA = "SALIDA_",
+    final String ENTRADA = "ENTRADA",
+            TICKET_COMPRA = "IMPRIMIR-TICKET-COMPRA",
+            ESTADO_ALMACEN = "IMPRIMIR-ESTADO-ALMACEN",
+            SALIDA = "SALIDA",
             MERMA = "MERMAR",
-            LISTA_IPV = "IPVS",
-            FILTRAR_ = "FILTRAR_";
+            LISTA_IPV = "IPVS-DE-INSUMO",
+            FILTRAR = "FILTRAR";
 
     /**
      * Usuario que lo esta usando.
@@ -49,7 +50,7 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
      * @param user       Usuario que lo esta usando.
      * @param codAlmacen Codigo del almacen que se esta trabajando.
      */
-    public AlmacenWebConnectionService(String user, String codAlmacen) {
+    public AlmacenWCS(String user, String codAlmacen) {
         super();
         this.user = user;
         this.codAlmacen = codAlmacen;
@@ -64,7 +65,8 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public List<InsumoAlmacenModel> getPrimerAlmacen() throws Exception {
-        return new InsumoAlmacenXMLParser().fetch(path);
+        String resp = connect(path, null, super.TOKEN, HTTPMethod.GET);
+        return om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, InsumoAlmacenModel.class));
     }
 
     /**
@@ -77,11 +79,12 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public String darEntrada(InsumoAlmacenModel i, float cantidad, float monto) throws Exception {
-        return connect(path
-                + ENTRADA
-                + i.getCodAlmacen()
-                + "_" + i.getInsumoAlmacenPKModel().getInsumocodInsumo() + "_"
-                + cantidad + "_" + monto);
+        HashMap<String, Object> hm = new HashMap<String, Object>();
+        hm.put("almacenCod", i.getCodAlmacen());
+        hm.put("insumoCod", i.getInsumoAlmacenPKModel().getInsumocodInsumo());
+        hm.put("cantidad", cantidad);
+        hm.put("monto", monto);
+        return connect(path + ENTRADA, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
     }
 
     /**
@@ -94,12 +97,12 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public String darSalida(InsumoAlmacenModel i, float cantidad, String codPtoElaboracion) throws Exception {
-        return connect(path
-                + SALIDA
-                + i.getCodAlmacen()
-                + "_" + i.getInsumoAlmacenPKModel().getInsumocodInsumo()
-                + "_" + cantidad
-                + "_" + codPtoElaboracion);
+        HashMap<String, Object> hm = new HashMap<String, Object>();
+        hm.put("almacenCod", i.getCodAlmacen());
+        hm.put("insumoCod", i.getInsumoAlmacenPKModel().getInsumocodInsumo());
+        hm.put("cantidad", cantidad);
+        hm.put("destino", codPtoElaboracion);
+        return connect(path + SALIDA, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
     }
 
     /**
@@ -112,12 +115,21 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public String rebajar(InsumoAlmacenModel i, float cantidad, String razon) throws Exception {
+        /*HashMap<String, Object> hm = new HashMap<String, Object>();
+        hm.put("almacenCod", i.getCodAlmacen());
+        hm.put("insumonCod", i.getInsumoAlmacenPKModel().getInsumocodInsumo());
+        hm.put("cantidad", cantidad);
+        hm.put("razon", razon);
+        return connect(path + SALIDA, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
+
+
         return connect(path
                 + MERMA
                 + "_" + i.getInsumoAlmacenPKModel().getAlmacencodAlmacen()
                 + "_" + i.getInsumoAlmacenPKModel().getInsumocodInsumo()
                 + "_" + cantidad
-                + "_" + razon);
+                + "_" + razon);*/
+        return "";
     }
 
     /**
@@ -129,7 +141,9 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public String[] getCocinasNamesForIPV(String codInsumo) throws Exception {
-        return connect(path + LISTA_IPV + "_" + codInsumo).split(",");
+        String URL = path + LISTA_IPV + "?insumoCod=" + codInsumo;
+        String resp = connect(URL, null, super.TOKEN, HTTPMethod.GET);
+        return om.readValue(resp, om.getTypeFactory().constructArrayType(String.class));
     }
 
     /**
@@ -138,8 +152,10 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
      * @param codPtoElaboracion Codigo del punto de elaboracion.
      * @return Lista con los insumos filtrados.
      */
-    public List<InsumoAlmacenModel> filterBy(String codPtoElaboracion) {
-        return new InsumoAlmacenXMLParser().fetch(path + FILTRAR_ + codPtoElaboracion);
+    public List<InsumoAlmacenModel> filterBy(String codPtoElaboracion) throws Exception {
+        String URL = path + FILTRAR + "?ptoElab=" + codPtoElaboracion;
+        String resp = connect(URL, null, super.TOKEN, HTTPMethod.GET);
+        return om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, InsumoAlmacenModel.class));
     }
 
     /**
@@ -150,7 +166,8 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public boolean imprimirTicketCompra() throws Exception {
-        return connect(path + TICKET_COMPRA).equals(EnvironmentVariables.PETITION_TRUE);
+        connect(path + TICKET_COMPRA, null, super.TOKEN, HTTPMethod.GET);
+        return true;
     }
 
     /**
@@ -161,7 +178,8 @@ public class AlmacenWebConnectionService extends SimpleWebConnectionService {
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public boolean imprimirEstadoActualAlmacen() throws Exception {
-        return connect(path + ESTADO_ALMACEN).equals(EnvironmentVariables.PETITION_TRUE);
+        connect(path + ESTADO_ALMACEN, null, super.TOKEN, HTTPMethod.GET);
+        return true;
     }
 
 }

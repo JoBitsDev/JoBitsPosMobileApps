@@ -7,65 +7,36 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="20"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textViewCodigoPto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/color_list_view"
-                android:text="Código"
-                android:textSize="@dimen/textSizeMedium" />
-
-            <EditText
-                android:id="@+id/editTextCodigoPto"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:background="@color/color_naranja_claro"
-                android:ems="10"
-                android:gravity="right"
-                android:hint="Código"
-                android:inputType="text"
-                android:textSize="@dimen/textSizeMedium" />
-
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider4"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="?android:attr/listDivider" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="20"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textViewNombrePto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/color_list_view"
-                android:text="Nombre"
-                android:textSize="@dimen/textSizeMedium" />
+            android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/editTextNombrePto"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:background="@color/color_naranja_claro"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="15"
                 android:ems="10"
-                android:gravity="right"
+                android:gravity="center|start"
                 android:hint="Nombre"
                 android:inputType="text"
+                android:textColorHint="@color/texto_secundario"
+                android:textSize="@dimen/textSizeLarge" />
+
+            <EditText
+                android:id="@+id/editTextCodigoPto"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="15"
+                android:ems="10"
+                android:gravity="end"
+                android:hint="Código"
+                android:inputType="text"
+                android:textColorHint="@color/texto_secundario"
                 android:textSize="@dimen/textSizeMedium" />
 
         </LinearLayout>
@@ -75,25 +46,35 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/textViewMontoPto"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/color_list_view"
+            android:layout_weight="3"
+            android:gravity="center"
             android:text="Monto"
+            android:textColor="@color/primario"
             android:textSize="@dimen/textSizeMedium" />
 
         <EditText
             android:id="@+id/editTextMontoPto"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="@color/color_naranja_claro"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="15"
             android:ems="10"
-            android:gravity="right"
+            android:gravity="center"
             android:hint="0.0 CUC"
             android:inputType="numberSigned"
-            android:textSize="@dimen/textSizeMedium" />
+            android:textColorHint="@color/texto_secundario"
+            android:textSize="@dimen/textSizeLarge" />
     </LinearLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_weight="50"
+        android:background="@color/primario" />
 </LinearLayout>

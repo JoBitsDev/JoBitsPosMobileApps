@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fondo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_Fondo2"
+    android:background="@color/especifico_app_primario"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -12,119 +13,326 @@
     tools:context="com.activities.PantallaPrincipalActivity">
 
 
-    <LinearLayout
+    <TabHost
+        android:id="@+id/tabHost"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="0dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/textViewNombreAlmacen"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Estado Actual del almacen"
-            android:textColor="@color/color_Labels"
-            android:textSize="@dimen/ListNames" />
-
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <Spinner
-                android:id="@+id/filtrarBy"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"/>
-
-            <EditText
-                android:id="@+id/editText"
-                android:layout_gravity="right"
-                android:layout_weight="2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/alternativoparabotones"
-                android:ems="10"
-                android:hint="@string/buscar"
-                android:inputType="textPersonName"
-                android:textColor="@color/color_Buttons"
-                android:textSize="@dimen/icondimension"
-                android:visibility="visible" />
-        </LinearLayout>
-
-        <RadioGroup
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Tipo de Rebaja"
-                android:visibility="gone"
-                tools:visibility="gone" />
-
-            <RadioButton
-                android:id="@+id/radioButtonSalida"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:checked="true"
-                android:text="Salida"
-                android:visibility="gone"
-                tools:visibility="gone" />
-
-            <RadioButton
-                android:id="@+id/radioButtonRebaja"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Rebaja"
-                android:visibility="gone"
-                tools:visibility="gone" />
-
-
-        </RadioGroup>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ListView
-                android:id="@+id/listaInsumos"
+            <TabWidget
+                android:id="@android:id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:choiceMode="singleChoice" />
-        </FrameLayout>
+                android:background="@color/auxiliar" />
 
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textUser"
+            <FrameLayout
+                android:id="@android:id/tabcontent"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/user"
-                android:textColor="@color/color_Labels"
-                android:textSize="@dimen/precio" />
+                android:layout_height="match_parent">
 
+                <LinearLayout
+                    android:id="@+id/Almacen"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="7dp"
+                        android:layout_marginTop="0dp"
+                        android:background="@color/primario"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textViewNombreAlmacen"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Estado Actual del almacen"
+                            android:textColor="@color/color_Labels"
+                            android:textSize="@dimen/ListNames" />
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:orientation="horizontal">
+
+                            <Spinner
+                                android:id="@+id/filtrarBy"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="start"
+                                android:layout_weight="5"
+                                android:background="@color/especifico_app_primario"
+                                android:popupBackground="@color/especifico_app_primario" />
+
+                            <EditText
+                                android:id="@+id/editText"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:layout_weight="15"
+                                android:background="@color/especifico_app_primario"
+                                android:ems="10"
+                                android:hint="@string/buscar"
+                                android:inputType="textPersonName"
+                                android:textColor="@color/color_Buttons"
+                                android:textSize="@dimen/textSizeMedium"
+                                android:visibility="visible" />
+                        </LinearLayout>
+
+                        <RadioGroup
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="left"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/textView3"
+                                android:layout_width="166dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:text="Tipo de Rebaja"
+                                android:visibility="gone"
+                                tools:visibility="gone" />
+
+                            <RadioButton
+                                android:id="@+id/radioButtonSalida"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:checked="true"
+                                android:text="Salida"
+                                android:visibility="gone"
+                                tools:visibility="gone" />
+
+                            <RadioButton
+                                android:id="@+id/radioButtonRebaja"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Rebaja"
+                                android:visibility="gone"
+                                tools:visibility="gone" />
+
+
+                        </RadioGroup>
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="30">
+
+                            <ListView
+                                android:id="@+id/listaInsumos"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:choiceMode="singleChoice" />
+                        </FrameLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/textUser"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:text="@string/user"
+                                android:textColor="@color/color_Labels"
+                                android:textSize="@dimen/precio" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/IPV"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="20"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textViewFechaServidor"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="5"
+                            android:background="@color/primario"
+                            android:clickable="false"
+                            android:gravity="center"
+                            android:hint="@string/formato_fecha"
+                            android:textColorHint="@color/texto_primario"
+                            android:textSize="@dimen/textSizeMedium" />
+
+                        <ImageButton
+                            android:id="@+id/imageButtonActualizar"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:background="@color/primario"
+                            android:src="@drawable/refrescarhdpi" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="20"
+                        android:orientation="horizontal">
+
+                        <Spinner
+                            android:id="@+id/filtrarByIPV"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="start"
+                            android:layout_weight="5"
+                            android:background="@color/especifico_app_primario"
+                            android:popupBackground="@color/especifico_app_primario" />
+
+                        <EditText
+                            android:id="@+id/editTextBuscarIPV"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_weight="15"
+                            android:background="@color/especifico_app_primario"
+                            android:ems="10"
+                            android:hint="@string/buscar"
+                            android:inputType="textPersonName"
+                            android:textColor="@color/color_Buttons"
+                            android:textSize="@dimen/textSizeMedium"
+                            android:visibility="visible" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="20"
+                        android:background="@color/primario"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/editTextInicio"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="20"
+                            android:gravity="center"
+                            android:text="Inicio"
+                            android:textColor="@color/texto_primario"
+                            android:textSize="@dimen/textSizeNormal" />
+
+                        <View
+                            android:id="@+id/divider"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@color/especifico_app_primario" />
+
+                        <TextView
+                            android:id="@+id/editTextEntrada"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="20"
+                            android:gravity="center"
+                            android:text="Entrada"
+                            android:textColor="@color/texto_primario"
+                            android:textSize="@dimen/textSizeNormal" />
+
+                        <View
+                            android:id="@+id/divider2"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@color/especifico_app_primario" />
+
+                        <TextView
+                            android:id="@+id/editTextDisponible"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="30"
+                            android:gravity="center"
+                            android:text="Disponibles"
+                            android:textColor="@color/texto_primario"
+                            android:textSize="@dimen/textSizeNormal" />
+
+                        <View
+                            android:id="@+id/divider3"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@color/especifico_app_primario" />
+
+                        <TextView
+                            android:id="@+id/editTextCosumido"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="30"
+                            android:gravity="center"
+                            android:text="Cosumidos"
+                            android:textColor="@color/texto_primario"
+                            android:textSize="@dimen/textSizeNormal" />
+
+                        <View
+                            android:id="@+id/divider4"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@color/especifico_app_primario" />
+
+                        <TextView
+                            android:id="@+id/editTextFinal"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="20"
+                            android:gravity="center"
+                            android:text="Final"
+                            android:textColor="@color/texto_primario"
+                            android:textSize="@dimen/textSizeNormal" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/divider7"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
+                        android:background="@color/especifico_app_primario" />
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="310">
+
+                        <ListView
+                            android:id="@+id/listViewIPVs"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/primario" />
+                    </FrameLayout>
+
+                </LinearLayout>
+
+            </FrameLayout>
         </LinearLayout>
-
-
-    </LinearLayout>
+    </TabHost>
 
 
 </RelativeLayout>

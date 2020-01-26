@@ -2,7 +2,6 @@ package com.controllers;
 
 import android.content.Context;
 
-import com.activities.BaseActivity;
 import com.services.web_connections.*;
 import com.services.models.InsumoAlmacenModel;
 import com.utils.adapters.AlmacenInsumoAdapter;
@@ -10,7 +9,6 @@ import com.utils.exception.NoConnectionException;
 import com.utils.exception.ServerErrorException;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Capa: Controllers
@@ -23,7 +21,7 @@ public class PantallaPrincipalController extends BaseController {
     /**
      * WCS del almacen.
      */
-    AlmacenWebConnectionService almacenWCService;
+    AlmacenWCS almacenWCService;
 
     /**
      * Constructor de la clase.
@@ -31,7 +29,7 @@ public class PantallaPrincipalController extends BaseController {
      * @param usuario para conocer el que hace las operaciones.
      */
     public PantallaPrincipalController(String usuario) {
-        almacenWCService = new AlmacenWebConnectionService(usuario, null);
+        almacenWCService = new AlmacenWCS(usuario, null);
     }
 
     /**
@@ -126,7 +124,7 @@ public class PantallaPrincipalController extends BaseController {
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public String[] getCocinasNames() throws Exception {
-        return new CocinaWebConnection().getCocinasNames();
+        return new CocinaWCS().getCocinasNames();
     }
 
     /**
@@ -135,7 +133,7 @@ public class PantallaPrincipalController extends BaseController {
      * @param codPtoElaboracion Codigo del punto de elaboracion.
      * @return Lista con los insumos filtrados.
      */
-    public List<InsumoAlmacenModel> filterBy(String codPtoElaboracion) {
+    public List<InsumoAlmacenModel> filterBy(String codPtoElaboracion) throws Exception {
         return almacenWCService.filterBy(codPtoElaboracion);
     }
 

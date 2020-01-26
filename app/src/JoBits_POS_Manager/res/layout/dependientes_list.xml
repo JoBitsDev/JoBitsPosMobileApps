@@ -2,104 +2,105 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="20"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/textViewUsuario"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_list_view"
-            android:text="Usuario"
-            android:textSize="30sp" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/editTextUsuario"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/color_naranja_claro"
+            android:layout_weight="20"
             android:ems="10"
-            android:gravity="right"
             android:hint="Usuario"
             android:inputType="text"
-            android:textSize="30sp" />
+            android:textColorHint="@color/texto_secundario"
+            android:textSize="@dimen/textSizeLarge" />
 
         <TextView
             android:id="@+id/textViewOrden"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_list_view"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="9"
+            android:baselineAligned="false"
+            android:gravity="fill"
             android:text="Órdenes Atendidas"
-            android:textSize="30sp" />
+            android:textColor="@color/primario"
+            android:textSize="@dimen/textSizeNormal" />
 
         <EditText
             android:id="@+id/editTextOrden"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/color_naranja_claro"
+            android:layout_weight="15"
             android:ems="10"
-            android:gravity="right"
+            android:gravity="center"
             android:hint="Órden"
             android:inputType="text"
-            android:textSize="30sp" />
+            android:textColorHint="@color/texto_secundario"
+            android:textSize="@dimen/textSizeLarge" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="20"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textMonto"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:gravity="fill"
+            android:text="Monto"
+            android:textColor="@color/primario"
+            android:textSize="@dimen/textSizeNormal" />
+
+        <EditText
+            android:id="@+id/editTextMonto"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="15"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="0.0 CUC"
+            android:inputType="numberSigned"
+            android:textColorHint="@color/texto_secundario"
+            android:textSize="@dimen/textSizeLarge" />
+
+        <TextView
+            android:id="@+id/textViewPago"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="9"
+            android:gravity="fill"
+            android:text="Pago por Venta"
+            android:textColor="@color/primario"
+            android:textSize="@dimen/textSizeNormal" />
+
+        <EditText
+            android:id="@+id/editTextPago"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="15"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="0.0 CUC"
+            android:inputType="numberSigned"
+            android:textColorHint="@color/texto_secundario"
+            android:textSize="@dimen/textSizeLarge" />
 
     </LinearLayout>
 
     <View
-        android:id="@+id/divider3"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="?android:attr/listDivider" />
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_weight="50"
+        android:background="@color/primario" />
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="20"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/textMonto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_list_view"
-            android:text="Monto"
-            android:textSize="30sp" />
-
-        <EditText
-            android:id="@+id/editTextMonto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_naranja_claro"
-            android:ems="10"
-            android:gravity="right"
-            android:hint="0.0 CUC"
-            android:inputType="numberSigned"
-            android:textSize="30sp" />
-
-        <TextView
-            android:id="@+id/textViewPago"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_list_view"
-            android:text="Pago por Venta"
-            android:textSize="30sp" />
-
-        <EditText
-            android:id="@+id/editTextPago"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_naranja_claro"
-            android:ems="10"
-            android:gravity="right"
-            android:hint="0.0 CUC"
-            android:inputType="numberSigned"
-            android:textSize="30sp" />
-
-    </LinearLayout>
 </LinearLayout>
