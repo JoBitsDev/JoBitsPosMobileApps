@@ -336,7 +336,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
             @Override
             public void post(Boolean answer) {
                 if (answer) {
-                    Toast.makeText(getApplicationContext(), "Imprimiendo...", Toast.LENGTH_SHORT);
+                    showMessage("Imprimiendo...");
+                    //Toast.makeText(act, "Imprimiendo...", Toast.LENGTH_LONG);
                 } else {
                     ExceptionHandler.handleException(new Exception("Error imprimiendo"), act);
                 }
@@ -359,7 +360,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             @Override
             public void post(Boolean answer) {
                 if (answer) {
-                    Toast.makeText(getApplicationContext(), "Imprimiendo...", Toast.LENGTH_SHORT);
+                    showMessage("Imprimiendo...");
                 } else {
                     ExceptionHandler.handleException(new Exception("Error imprimiendo"), act);
                 }
