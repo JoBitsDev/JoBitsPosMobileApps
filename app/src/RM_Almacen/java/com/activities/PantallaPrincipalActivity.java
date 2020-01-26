@@ -8,7 +8,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 
-import com.services.models.IpvRegistro;
+import com.services.models.IpvRegistroModel;
 import com.utils.adapters.*;
 import com.utils.exception.ExceptionHandler;
 import com.services.models.InsumoAlmacenModel;
@@ -76,7 +76,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     private ImageButton imageButtonActualizar;
     private TabHost host;
     private float lastX;
-    List<IpvRegistro> ipvRegistroList;
+    List<IpvRegistroModel> ipvRegistroModelList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +115,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             imageButtonActualizar = (ImageButton) findViewById(R.id.imageButtonActualizar);
             spinnerFiltrar = (Spinner) findViewById(R.id.filtrarBy);
             spinnerFiltrarIPV = (Spinner) findViewById(R.id.filtrarByIPV);
-            ipvRegistroList = new ArrayList<IpvRegistro>();
+            ipvRegistroModelList = new ArrayList<IpvRegistroModel>();
 
             initTab();
         } catch (Exception e) {
@@ -151,7 +151,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    ((IPVsAdapter)listViewIPV.getAdapter()).getFilter().filter(s.toString());
+                    ((IPVsAdapter) listViewIPV.getAdapter()).getFilter().filter(s.toString());
                 }
 
                 @Override
@@ -228,29 +228,29 @@ public class PantallaPrincipalActivity extends BaseActivity {
     private void onSpinnerFiltrarItemSelectedIPV(View view) {
         if (spinnerFiltrarIPV.getSelectedItemPosition() == 0) {
 
-            new LoadingHandler<AlmacenInsumoAdapter>(act, new LoadingProcess<AlmacenInsumoAdapter>() {
+            new LoadingHandler<IPVsAdapter>(act, new LoadingProcess<IPVsAdapter>() {
                 @Override
-                public AlmacenInsumoAdapter process() throws Exception {
-                    return controller.getAdapter(act, R.id.listaInsumos);
+                public IPVsAdapter process() throws Exception {
+                    return controller.getIPVAdapter(act, R.id.listViewIPVs, spinnerFiltrar.getSelectedItem().toString());
                 }
 
                 @Override
-                public void post(AlmacenInsumoAdapter answer) {
-                    listView.setAdapter(answer);
+                public void post(IPVsAdapter answer) {
+                    listViewIPV.setAdapter(answer);
                 }
             });
 
         } else {
 
-            new LoadingHandler<AlmacenInsumoAdapter>(act, new LoadingProcess<AlmacenInsumoAdapter>() {
+            new LoadingHandler<IPVsAdapter>(act, new LoadingProcess<IPVsAdapter>() {
                 @Override
-                public AlmacenInsumoAdapter process() throws Exception {
-                    return controller.getAdapter(act, R.id.listaInsumos, spinnerFiltrar.getSelectedItem().toString());
+                public IPVsAdapter process() throws Exception {
+                    return controller.getIPVAdapter(act, R.id.listViewIPVs, spinnerFiltrar.getSelectedItem().toString());
                 }
 
                 @Override
-                public void post(AlmacenInsumoAdapter answer) {
-                    listView.setAdapter(answer);
+                public void post(IPVsAdapter answer) {
+                    listViewIPV.setAdapter(answer);
                 }
             });
         }
@@ -263,10 +263,10 @@ public class PantallaPrincipalActivity extends BaseActivity {
             new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
                 @Override
                 public Void process() throws Exception {
-                    filterAdapter = new FilterAdapter(act, android.R.layout.simple_spinner_dropdown_item, controller.getCocinasNames());
-                    filterAdapterIPV = new FilterAdapterIPV(act, android.R.layout.simple_spinner_dropdown_item, controller.getCocinasNames());
-                    ipVsAdapter = new IPVsAdapter(act, R.layout.list_ipvs, ipvRegistroList);
-                    almacenInsumoAdapter = new AlmacenInsumoAdapter(act,R.id.listaInsumos,controller.getPrimerAlmacen());
+                    filterAdapter = new FilterAdapter(act, R.layout.spinner_item_list, controller.getCocinasNames());
+                    filterAdapterIPV = new FilterAdapterIPV(act, R.layout.spinner_item_list, controller.getCocinasNames());
+                    ipVsAdapter = new IPVsAdapter(act, R.layout.list_ipvs, ipvRegistroModelList);
+                    almacenInsumoAdapter = new AlmacenInsumoAdapter(act, R.id.listaInsumos, controller.getPrimerAlmacen());
                     return null;
                 }
 

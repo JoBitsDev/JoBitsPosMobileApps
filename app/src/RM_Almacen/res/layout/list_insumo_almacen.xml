@@ -33,9 +33,10 @@
 
         <ImageButton
             android:id="@+id/entradaButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_gravity="fill"
+            android:layout_weight="40"
             android:background="@null"
             android:onClick="onEntradaClick"
             android:scaleType="fitCenter"
@@ -44,20 +45,22 @@
         <ImageButton
             android:id="@+id/salidaButton"
             android:layout_width="@dimen/listButtons"
-            android:layout_height="40dp"
+            android:layout_height="match_parent"
             android:layout_gravity="fill"
             android:layout_marginLeft="5dp"
+            android:layout_weight="40"
             android:background="@null"
             android:onClick="onSalidaRebajaClick"
             android:scaleType="fitCenter"
             android:src="@drawable/salida"
-            tools:layout_width="40dp" />
+            tools:layout_width="0dp" />
 
 
         <TextView
             android:id="@+id/editPrecioPromedio"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_weight="25"
             android:autoText="false"
             android:gravity="start|center_vertical"
             android:text="Costo Medio: 17.00 CUC "
@@ -69,6 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
+            android:layout_weight="15"
             android:gravity="center|right"
             android:text="#####"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -79,11 +83,11 @@
             android:id="@+id/textUM"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="bottom|left"
+            android:gravity="center"
             android:paddingLeft="10dp"
             android:text="UM"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/color_fondo_resaltado"
+            android:textColor="@color/secundario"
             android:textStyle="italic" />
 
         <TextView
@@ -91,6 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
+            android:layout_weight="15"
             android:gravity="center"
             android:text="(+150)" />
 

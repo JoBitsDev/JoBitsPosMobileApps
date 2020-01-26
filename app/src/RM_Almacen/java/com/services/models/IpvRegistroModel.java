@@ -14,7 +14,7 @@ import java.util.Date;
  * 
  */
 
-public class IpvRegistro implements Serializable {
+public class IpvRegistroModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,14 +29,14 @@ public class IpvRegistro implements Serializable {
     private Float final1;
     private Float finalReal;
 
-    public IpvRegistro() {
+    public IpvRegistroModel() {
     }
 
-    public IpvRegistro(IpvRegistroPK ipvRegistroPK) {
+    public IpvRegistroModel(IpvRegistroPK ipvRegistroPK) {
         this.ipvRegistroPK = ipvRegistroPK;
     }
 
-    public IpvRegistro(String ipvinsumocodInsumo, String ipvcocinacodCocina, Date fecha) {
+    public IpvRegistroModel(String ipvinsumocodInsumo, String ipvcocinacodCocina, Date fecha) {
         this.ipvRegistroPK = new IpvRegistroPK(ipvinsumocodInsumo, ipvcocinacodCocina, fecha);
     }
 
@@ -114,10 +114,10 @@ public class IpvRegistro implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof IpvRegistro)) {
+        if (!(object instanceof IpvRegistroModel)) {
             return false;
         }
-        IpvRegistro other = (IpvRegistro) object;
+        IpvRegistroModel other = (IpvRegistroModel) object;
         if ((this.ipvRegistroPK == null && other.ipvRegistroPK != null) || (this.ipvRegistroPK != null && !this.ipvRegistroPK.equals(other.ipvRegistroPK))) {
             return false;
         }
@@ -126,7 +126,7 @@ public class IpvRegistro implements Serializable {
 
     @Override
     public String toString() {
-        return "com.restmanager.IpvRegistro[ ipvRegistroPK=" + ipvRegistroPK + " ]";
+        return "com.restmanager.IpvRegistroModel[ ipvRegistroPK=" + ipvRegistroPK + " ]";
     }
 
 }
