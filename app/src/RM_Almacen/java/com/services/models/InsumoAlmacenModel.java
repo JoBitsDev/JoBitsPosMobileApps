@@ -1,10 +1,13 @@
 package com.services.models;
 
-public class InsumoAlmacenModel implements Comparable<InsumoAlmacenModel>{
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
+public class InsumoAlmacenModel implements Comparable<InsumoAlmacenModel> {
 
 
     protected InsumoAlmacenPKModel insumoAlmacenPKModel;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+
     private Float cantidad;
     private Float valorMonetario;
     private InsumoModel insumoModel;
@@ -26,11 +29,12 @@ public class InsumoAlmacenModel implements Comparable<InsumoAlmacenModel>{
     public InsumoAlmacenModel() {
     }
 
-
+    @JsonGetter("insumoAlmacenPK")
     public InsumoAlmacenPKModel getInsumoAlmacenPKModel() {
         return insumoAlmacenPKModel;
     }
 
+    @JsonSetter("insumoAlmacenPK")
     public void setInsumoAlmacenPKModel(InsumoAlmacenPKModel insumoAlmacenPKModel) {
         this.insumoAlmacenPKModel = insumoAlmacenPKModel;
     }
@@ -55,10 +59,12 @@ public class InsumoAlmacenModel implements Comparable<InsumoAlmacenModel>{
         return insumoAlmacenPKModel.getAlmacencodAlmacen();
     }
 
+    @JsonGetter("insumo")
     public InsumoModel getInsumoModel() {
         return insumoModel;
     }
 
+    @JsonSetter("insumo")
     public void setInsumoModel(InsumoModel insumoModel) {
         this.insumoModel = insumoModel;
     }
@@ -85,7 +91,7 @@ public class InsumoAlmacenModel implements Comparable<InsumoAlmacenModel>{
 
     @Override
     public String toString() {
-        return "(" + getCodAlmacen() +") " + insumoModel;
+        return "(" + getCodAlmacen() + ") " + insumoModel;
     }
 
     /**
