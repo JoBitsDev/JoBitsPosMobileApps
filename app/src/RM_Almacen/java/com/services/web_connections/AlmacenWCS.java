@@ -1,10 +1,12 @@
 package com.services.web_connections;
 
+import com.services.models.IpvRegistro;
 import com.utils.exception.*;
 import com.utils.EnvironmentVariables;
 import com.services.models.InsumoAlmacenModel;
 import com.services.parsers.InsumoAlmacenXMLParser;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -183,4 +185,7 @@ public class AlmacenWCS extends SimpleWebConnectionService {
         return true;
     }
 
+    public List<IpvRegistro> getIPVRegistro(String codCocina){
+        return new ArrayList<IpvRegistro>();
+    }
 }
