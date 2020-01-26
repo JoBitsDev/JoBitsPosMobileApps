@@ -83,7 +83,7 @@
             android:paddingLeft="10dp"
             android:text="UM"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/color_fondo_resaltado"
+            android:textColor="@color/secundario"
             android:textStyle="italic" />
 
         <TextView
