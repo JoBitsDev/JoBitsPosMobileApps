@@ -30,7 +30,8 @@ public class AlmacenWCS extends SimpleWebConnectionService {
             SALIDA = "SALIDA",
             MERMA = "MERMAR",
             LISTA_IPV = "IPVS-DE-INSUMO",
-            FILTRAR = "FILTRAR";
+            FILTRAR = "FILTRAR",
+            REGISTRO_IPVS = "REGISTRO-IPVS";
 
     /**
      * Usuario que lo esta usando.
@@ -182,7 +183,8 @@ public class AlmacenWCS extends SimpleWebConnectionService {
         return true;
     }
 
-    public List<IpvRegistroModel> getIPVRegistro(String codCocina){
-        return new ArrayList<IpvRegistroModel>();
+    public List<IpvRegistroModel> getIPVRegistro(String codCocina) throws Exception {
+        String resp = connect(path + REGISTRO_IPVS + "?=ptoElab" + codCocina, null, super.TOKEN, HTTPMethod.GET);
+        return om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, IpvRegistroModel.class));
     }
 }
