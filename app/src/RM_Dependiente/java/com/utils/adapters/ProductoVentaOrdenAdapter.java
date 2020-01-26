@@ -13,7 +13,7 @@ import com.activities.R;
 import com.services.models.ProductoVentaModel;
 import com.services.models.ProductoVentaOrdenModel;
 import com.services.models.ProductovOrdenPKModel;
-import com.services.web_connections.OrdenWebConnectionService;
+import com.services.web_connections.OrdenWCS;
 import com.utils.EnvironmentVariables;
 
 import java.util.List;
@@ -90,7 +90,7 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         return objects.contains(p);
     }
 
-    public void increase(ProductoVentaModel p, OrdenWebConnectionService o) {
+    public void increase(ProductoVentaModel p, OrdenWCS o) {
         boolean existe = false;
         ProductoVentaOrdenModel pv = null;
         int i = 0;
@@ -114,7 +114,7 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         notifyDataSetChanged();
     }
 
-    public void increase(ProductoVentaModel p, OrdenWebConnectionService o, float ammount) {
+    public void increase(ProductoVentaModel p, OrdenWCS o, float ammount) {
         boolean existe = false;
         ProductoVentaOrdenModel pv = null;
         int i = 0;

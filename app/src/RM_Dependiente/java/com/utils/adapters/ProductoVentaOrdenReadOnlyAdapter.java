@@ -6,14 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.activities.R;
-import com.services.models.ProductoVentaModel;
 import com.services.models.ProductoVentaOrdenModel;
-import com.services.models.ProductovOrdenPKModel;
-import com.services.web_connections.OrdenWebConnectionService;
 
 import java.util.List;
 

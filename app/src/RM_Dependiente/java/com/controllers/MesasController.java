@@ -4,23 +4,12 @@ import android.app.Activity;
 
 import com.activities.R;
 import com.services.models.MesaModel;
-import com.services.models.ProductoVentaModel;
-import com.services.models.ProductoVentaOrdenModel;
-import com.services.models.SeccionModel;
 import com.services.parsers.MesaXMlParser;
-import com.services.parsers.ProductoVentaOrdenXMLParser;
-import com.services.parsers.ProductoVentaXMlParser;
-import com.services.parsers.SeccionXMlParser;
-import com.services.web_connections.CartaWebConnectionService;
-import com.services.web_connections.MesaWebConnectionService;
-import com.services.web_connections.OrdenWebConnectionService;
-import com.utils.EnvironmentVariables;
+import com.services.web_connections.AreaWCS;
+import com.services.web_connections.CartaWCS;
+import com.services.web_connections.OrdenWCS;
 import com.utils.adapters.MesaAdapter;
-import com.utils.adapters.ProductoVentaOrdenAdapter;
-import com.utils.exception.NoConnectionException;
-import com.utils.exception.ServerErrorException;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -31,9 +20,8 @@ import java.util.List;
  */
 public class MesasController extends BaseController {
 
-    private static final String urlMesas = "http://" + EnvironmentVariables.getIP() + ":" + EnvironmentVariables.getPORT() + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.mesa";
     private String user;
-    private OrdenWebConnectionService ordenWCService = null;
+    private OrdenWCS ordenWCService = null;
 
     public String getUser() {
         return user;
@@ -55,7 +43,7 @@ public class MesasController extends BaseController {
     }
 
     public void starService(String codMesa) {
-        ordenWCService = new OrdenWebConnectionService(codMesa, user);
+        ordenWCService = new OrdenWCS(codMesa, user);
     }
 
     public void setCodOrden(String cod_orden) {
@@ -67,10 +55,10 @@ public class MesasController extends BaseController {
     }
 
     public String getNombreRest() {
-        return new CartaWebConnectionService().getNombreRest();
+        return new CartaWCS().getNombreRest();
     }
 
     public String[] getAreas() throws Exception {
-        return new MesaWebConnectionService(user, null).getAreasName();
+        return new AreaWCS(user, null).getAreasName();
     }
 }

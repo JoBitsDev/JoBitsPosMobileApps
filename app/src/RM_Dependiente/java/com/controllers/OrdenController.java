@@ -1,25 +1,14 @@
 package com.controllers;
 
 import com.services.models.MesaModel;
-import com.services.models.OrdenModel;
 import com.services.models.ProductoVentaModel;
 import com.services.models.ProductoVentaOrdenModel;
 import com.services.models.SeccionModel;
-import com.services.parsers.MesaXMlParser;
-import com.services.parsers.ProductoVentaXMlParser;
-import com.services.parsers.ProductoVentaOrdenXMLParser;
-import com.services.parsers.SeccionXMlParser;
-import com.services.web_connections.OrdenWebConnectionService;
-import com.services.web_connections.PersonalWebConnectionServiceService;
+import com.services.web_connections.OrdenWCS;
 import com.utils.EnvironmentVariables;
-import com.utils.adapters.ProductoVentaOrdenAdapter;
-import com.utils.exception.NoConnectionException;
-import com.utils.exception.ServerErrorException;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Capa: Controllers
@@ -33,15 +22,15 @@ public class OrdenController extends BaseController {
             urlProducts_ = "http://" + EnvironmentVariables.getIP() + ":" + EnvironmentVariables.getPORT() + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.productoventa/PRODUCTS_",
             urlListProducts_ = "http://" + EnvironmentVariables.getIP() + ":" + EnvironmentVariables.getPORT() + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.orden/LISTPRODUCTS_";
 
-    private OrdenWebConnectionService ordenWCService = null;
+    private OrdenWCS ordenWCService = null;
 
     public OrdenController starService(String codOrden, String codMesa, String usuarioTrabajador) {
-        ordenWCService = new OrdenWebConnectionService(codOrden, codMesa, usuarioTrabajador);
+        ordenWCService = new OrdenWCS(codOrden, codMesa, usuarioTrabajador);
         return this;
     }
 
     public OrdenController starService(String codMesa, String usuarioTrabajador) {
-        ordenWCService = new OrdenWebConnectionService(codMesa, usuarioTrabajador);
+        ordenWCService = new OrdenWCS(codMesa, usuarioTrabajador);
         return this;
     }
 
