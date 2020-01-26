@@ -53,7 +53,7 @@ public class MesaAdapter extends ArrayAdapter<MesaModel> {
         String est = objects.get(position).getEstado();
         int c;
         if (est.compareToIgnoreCase(EnvironmentVariables.ESTADO_MESA_VACIA) == 0) {
-            c = Color.GREEN;
+            c = Color.parseColor("#ebf3e2");
         } else {
             if (est.equals(EnvironmentVariables.ESTADO_MESA_ESPERANDO_CONFIRMACION)) {
                 c = Color.BLUE;
