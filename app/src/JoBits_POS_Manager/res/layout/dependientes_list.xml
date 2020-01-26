@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <EditText
+        <TextView
             android:id="@+id/editTextUsuario"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
             android:textColor="@color/primario"
             android:textSize="@dimen/textSizeNormal" />
 
-        <EditText
+        <TextView
             android:id="@+id/editTextOrden"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
             android:textColor="@color/primario"
             android:textSize="@dimen/textSizeNormal" />
 
-        <EditText
+        <TextView
             android:id="@+id/editTextMonto"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
             android:textColor="@color/primario"
             android:textSize="@dimen/textSizeNormal" />
 
-        <EditText
+        <TextView
             android:id="@+id/editTextPago"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
