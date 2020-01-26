@@ -26,7 +26,7 @@
             android:layout_height="match_parent"
             android:layout_weight="9"
             android:baselineAligned="false"
-            android:gravity="fill"
+            android:gravity="top"
             android:text="Órdenes Atendidas"
             android:textColor="@color/primario"
             android:textSize="@dimen/textSizeNormal" />
