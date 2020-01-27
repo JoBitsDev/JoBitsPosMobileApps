@@ -146,6 +146,30 @@ public class PantallaPrincipalActivity extends BaseActivity {
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
+        listViewAreas.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return onTabChangeTouchEvent(event);
+            }
+        });
+        listViewDependientes.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return onTabChangeTouchEvent(event);
+            }
+        });
+        listViewGeneral.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return onTabChangeTouchEvent(event);
+            }
+        });
+        listViewPtoElaboracion.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return onTabChangeTouchEvent(event);
+            }
+        });
     }
 
     @Override
@@ -225,35 +249,44 @@ public class PantallaPrincipalActivity extends BaseActivity {
     }
 
     private boolean onTabChangeTouchEvent(MotionEvent event) {
-        float currentX = 0;
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                lastX = event.getX();
-                break;
-            case MotionEvent.ACTION_UP:
-                currentX = event.getX();
-                boolean dirRight = Math.abs(lastX - currentX) > 200;
-                switchTab(dirRight);
-                break;
+        try {
+            float currentX = 0;
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    lastX = event.getX();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    currentX = event.getX();
+                    boolean dirRight = Math.abs(lastX - currentX) > 200;
+                    switchTab(dirRight);
+                    return dirRight;
+            }
+            return false;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+            return false;
         }
-        return false;
     }
 
+    private boolean switchTab(boolean change) {
+        try {
+            if (change) {
+                if (host.getCurrentTab() == 1) {
+                    host.setCurrentTab(0);
+                } else {
+                    host.setCurrentTab(1);
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+            return false;
+        }
+    }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
         return onTabChangeTouchEvent(event);
-    }
-
-    private boolean switchTab(boolean change) {
-        if (change) {
-            if (host.getCurrentTab() == 1) {
-                host.setCurrentTab(0);
-            } else {
-                host.setCurrentTab(1);
-            }
-        }
-        return false;
     }
 
     /**
