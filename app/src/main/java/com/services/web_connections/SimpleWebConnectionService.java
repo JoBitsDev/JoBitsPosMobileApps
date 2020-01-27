@@ -45,9 +45,9 @@ public class SimpleWebConnectionService {
     protected String
             ip,
             port,
-            path,
-            resp = null;
+            path;
 
+    private String resp;
     /**
      * Coneccion.
      */
