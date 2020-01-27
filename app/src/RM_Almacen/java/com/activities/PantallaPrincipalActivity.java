@@ -196,6 +196,19 @@ public class PantallaPrincipalActivity extends BaseActivity {
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
+
+        listView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return onTabChangeTouchEvent(event);
+            }
+        });
+        listViewIPV.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return onTabChangeTouchEvent(event);
+            }
+        });
     }
 
     /**
@@ -689,36 +702,10 @@ public class PantallaPrincipalActivity extends BaseActivity {
         }
     }
 
-    private boolean onTabChangeTouchEvent(MotionEvent event) {
-        float currentX = 0;
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                lastX = event.getX();
-                break;
-            case MotionEvent.ACTION_UP:
-                currentX = event.getX();
-                boolean dirRight = Math.abs(lastX - currentX) > 200;
-                switchTab(dirRight);
-                break;
-        }
-        return false;
-    }
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
         return onTabChangeTouchEvent(event);
-    }
-
-    private boolean switchTab(boolean change) {
-        if (change) {
-            if (host.getCurrentTab() == 1) {
-                host.setCurrentTab(0);
-            } else {
-                host.setCurrentTab(1);
-            }
-        }
-        return false;
     }
 
     private String formatDate(Date date) {
@@ -729,5 +716,41 @@ public class PantallaPrincipalActivity extends BaseActivity {
         //Formateo el mes obtenido: antepone el 0 si son menores de 10
         String mesFormateado = (mesActual < 10) ? "0" + String.valueOf(mesActual) : String.valueOf(mesActual);
         return diaFormateado + "/" + mesFormateado + "/" + date.getYear();
+    }
+
+    private boolean onTabChangeTouchEvent(MotionEvent event) {
+        try {
+            float currentX = 0;
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    lastX = event.getX();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    currentX = event.getX();
+                    boolean dirRight = Math.abs(lastX - currentX) > 200;
+                    switchTab(dirRight);
+                    return dirRight;
+            }
+            return false;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+            return false;
+        }
+    }
+
+    private boolean switchTab(boolean change) {
+        try {
+            if (change) {
+                if (host.getCurrentTab() == 1) {
+                    host.setCurrentTab(0);
+                } else {
+                    host.setCurrentTab(1);
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+            return false;
+        }
     }
 }
