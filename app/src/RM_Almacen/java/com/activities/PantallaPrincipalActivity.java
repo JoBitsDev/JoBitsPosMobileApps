@@ -17,6 +17,7 @@ import com.utils.loading.LoadingHandler;
 import com.utils.loading.LoadingProcess;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,7 +42,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     /**
      * Textos con el usuario y el almacen
      */
-    private TextView userText, almacenText;
+    private TextView userText, almacenText, pickDate;
 
     /**
      * Cuadro de texto de busqueda.
@@ -104,6 +105,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
             userText = (TextView) findViewById(R.id.textUser);
             userText.setText(getBundle().getString(String.valueOf(R.string.user)));
+            pickDate = (TextView) findViewById(R.id.textViewFechaServidor);
+            pickDate.setText(formatDate(ipvRegistroModelList.get(0).getIpvRegistroPK().getFecha()));
 
             controller = new PantallaPrincipalController(userText.getText().toString());
             searchText = (EditText) findViewById(R.id.editText);
@@ -263,8 +266,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
             new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
                 @Override
                 public Void process() throws Exception {
-                    filterAdapter = new FilterAdapter(act, R.layout.spinner_item_list, controller.getCocinasNames());
-                    filterAdapterIPV = new FilterAdapterIPV(act, R.layout.spinner_item_list, controller.getCocinasNames());
+                    filterAdapter = new FilterAdapter(act, R.layout.simple_spinner_dropdow_item, controller.getCocinasNames());
+                    filterAdapterIPV = new FilterAdapterIPV(act, R.layout.simple_spinner_dropdow_item, controller.getCocinasNames());
                     ipVsAdapter = new IPVsAdapter(act, R.layout.list_ipvs, ipvRegistroModelList);
                     almacenInsumoAdapter = new AlmacenInsumoAdapter(act, R.id.listaInsumos, controller.getPrimerAlmacen());
                     return null;
@@ -704,5 +707,13 @@ public class PantallaPrincipalActivity extends BaseActivity {
         }
         return false;
     }
-
+    private String formatDate(Date date){
+        //Esta variable lo que realiza es aumentar en uno el mes ya que comienza desde 0 = enero
+        final int mesActual = date.getMonth()+ 1;
+        //Formateo el día obtenido: antepone el 0 si son menores de 10
+        String diaFormateado = (date.getDay() < 10) ? "0" + String.valueOf(date.getDay()) : String.valueOf(date.getDay());
+        //Formateo el mes obtenido: antepone el 0 si son menores de 10
+        String mesFormateado = (mesActual < 10) ? "0" + String.valueOf(mesActual) : String.valueOf(mesActual);
+        return diaFormateado + "/" + mesFormateado + "/" + date.getYear();
+    }
 }

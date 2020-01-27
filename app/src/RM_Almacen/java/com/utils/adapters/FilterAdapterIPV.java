@@ -16,7 +16,7 @@ public class FilterAdapterIPV {
         this.context = context;
         this.resource = resource;
         this.filtros = new String[filtros.length + 1];
-        this.filtros[0] = "";
+        this.filtros[0] = "Seleccione...";
         System.arraycopy(filtros, 0, this.filtros, 1, filtros.length);
     }
 
