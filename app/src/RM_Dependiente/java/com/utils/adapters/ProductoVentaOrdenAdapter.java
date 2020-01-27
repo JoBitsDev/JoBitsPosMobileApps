@@ -13,7 +13,7 @@ import com.activities.R;
 import com.services.models.ProductoVentaModel;
 import com.services.models.ProductoVentaOrdenModel;
 import com.services.models.ProductovOrdenPKModel;
-import com.services.web_connections.OrdenWebConnectionService;
+import com.services.web_connections.OrdenWCS;
 import com.utils.EnvironmentVariables;
 
 import java.util.List;
@@ -66,9 +66,9 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         }
 
         holder.precioVenta.setTextColor(c);
-        holder.nombreProducto.setText(objects.get(position).getProductoVentaModel().getNombre());
+        holder.nombreProducto.setText(objects.get(position).getProductoVenta().getNombre());
         holder.precioVenta.setText(
-                objects.get(position).getProductoVentaModel().getPrecioVenta() *
+                objects.get(position).getProductoVenta().getPrecioVenta() *
                         objects.get(position).getCantidad() + EnvironmentVariables.MONEDA_PRINCIPAL);
         holder.cantidad.setText("x " + String.valueOf(objects.get(position).getCantidad()));
         holder.adjunto.setTag(position);
@@ -90,13 +90,13 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         return objects.contains(p);
     }
 
-    public void increase(ProductoVentaModel p, OrdenWebConnectionService o) {
+    public void increase(ProductoVentaModel p, OrdenWCS o) {
         boolean existe = false;
         ProductoVentaOrdenModel pv = null;
         int i = 0;
         for (; i < objects.size() && !existe; i++) {
             pv = objects.get(i);
-            existe = pv.getProductoVentaModel().equals(p);
+            existe = pv.getProductoVenta().equals(p);
 
         }
         if (existe) {
@@ -106,21 +106,21 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         } else {
             ProductovOrdenPKModel pk = new ProductovOrdenPKModel(p.getPCod(), o.getCodOrden());
             pv = new ProductoVentaOrdenModel(pk);
-            pv.setProductoVentaModel(p);
+            pv.setProductoVenta(p);
             pv.setCantidad(1);
-            pv.setEnviadosACocina((float) 0);
+            pv.setEnviadosacocina((float) 0);
             objects.add(pv);
         }
         notifyDataSetChanged();
     }
 
-    public void increase(ProductoVentaModel p, OrdenWebConnectionService o, float ammount) {
+    public void increase(ProductoVentaModel p, OrdenWCS o, float ammount) {
         boolean existe = false;
         ProductoVentaOrdenModel pv = null;
         int i = 0;
         for (; i < objects.size() && !existe; i++) {
             pv = objects.get(i);
-            existe = pv.getProductoVentaModel().equals(p);
+            existe = pv.getProductoVenta().equals(p);
         }
         if (existe) {
             i--;
@@ -130,9 +130,9 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         } else {
             ProductovOrdenPKModel pk = new ProductovOrdenPKModel(p.getPCod(), o.getCodOrden());
             pv = new ProductoVentaOrdenModel(pk);
-            pv.setProductoVentaModel(p);
+            pv.setProductoVenta(p);
             pv.setCantidad(ammount);
-            pv.setEnviadosACocina((float) 0);
+            pv.setEnviadosacocina((float) 0);
             objects.add(pv);
         }
         notifyDataSetChanged();
@@ -145,7 +145,7 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         int i = 0;
         for (; i < objects.size() && !existe; i++) {
             pv = objects.get(i);
-            existe = pv.getProductoVentaModel().getPCod().equals(p.getPCod());
+            existe = pv.getProductoVenta().getPCod().equals(p.getPCod());
         }
         if (existe) {
             i--;

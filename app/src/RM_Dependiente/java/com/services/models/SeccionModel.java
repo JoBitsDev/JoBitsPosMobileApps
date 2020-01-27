@@ -5,6 +5,8 @@
  */
 package com.services.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,8 @@ public class SeccionModel implements Serializable, Comparable<SeccionModel>{
     private static final long serialVersionUID = 1L;
     private String nombreSeccion;
     private String descripcion;
-    private String cartacodCarta;
+
+    @JsonIgnore
     private List<ProductoVentaModel> productos = new ArrayList<ProductoVentaModel>();
 
     public SeccionModel() {
@@ -30,7 +33,6 @@ public class SeccionModel implements Serializable, Comparable<SeccionModel>{
 
     public SeccionModel(String nombreSeccion, String cartacodCarta) {
         this.nombreSeccion = nombreSeccion;
-        this.cartacodCarta = cartacodCarta;
     }
 
     public String getNombreSeccion() {
@@ -48,15 +50,6 @@ public class SeccionModel implements Serializable, Comparable<SeccionModel>{
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-
-    public String getCartacodCarta() {
-        return cartacodCarta;
-    }
-
-    public void setCartacodCarta(String cartacodCarta) {
-        this.cartacodCarta = cartacodCarta;
-    }
-
 
     public List<ProductoVentaModel> getProductos() {
         return productos;

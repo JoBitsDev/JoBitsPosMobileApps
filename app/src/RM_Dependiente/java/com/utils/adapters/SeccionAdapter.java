@@ -139,8 +139,7 @@ public class SeccionAdapter extends ArrayAdapter<SeccionModel> implements Filter
                     constraint = constraint.toString().toLowerCase();
                     for (int i = 0; i < secciones.size(); i++) {
                         boolean contain = false;
-                        SeccionModel aux = new SeccionModel(secciones.get(i).getNombreSeccion(),
-                                secciones.get(i).getCartacodCarta());
+                        SeccionModel aux = new SeccionModel(secciones.get(i).getNombreSeccion());
                         for (int j = 0; j < secciones.get(i).getProductos().size(); j++) {
                             String data = secciones.get(i).getProductos().get(j).getNombre();
                             if (data.toLowerCase().contains(constraint.toString())) {
