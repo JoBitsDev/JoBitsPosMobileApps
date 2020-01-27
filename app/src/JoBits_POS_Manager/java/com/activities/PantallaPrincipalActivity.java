@@ -242,7 +242,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
             return false;
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
-            return false;
         }
         return false;
     }
@@ -268,17 +267,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
     public boolean onTouchEvent(MotionEvent event) {
 
         return onTabChangeTouchEvent(event);
-    }
-
-    private boolean switchTab(boolean change) {
-        if (change) {
-            if (host.getCurrentTab() == 1) {
-                host.setCurrentTab(0);
-            } else {
-                host.setCurrentTab(1);
-            }
-        }
-        return false;
     }
 
     /**
