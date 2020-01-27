@@ -1,9 +1,6 @@
 package com.services.web_connections;
 
 import com.services.models.OrdenModel;
-import com.utils.EnvironmentVariables;
-import com.services.parsers.OrdenXMLParser;
-
 
 import java.util.*;
 
@@ -24,8 +21,12 @@ public class OrdenWCS extends SimpleWebConnectionService {
             SET_DE_LA_CASA = "SET-DE-LA-CASA",
             ENVIAR_COCINA = "ENVIAR-COCINA",
             MOVER_MESA = "MOVER-MESA",
-            ADD_NOTA = "ADD_NOTA",
-            GET_NOTA = "GET_NOTA";
+            ADD_NOTA = "ADD-NOTA",
+            GET_NOTA = "GET-NOTA",
+            ADD_COMENSAL = "ADD-COMENSAL",
+            GET_COMENSAL = "GET-COMENSAL",
+            CEDER_ORDEN = "CEDER-ORDEN",
+            VALIDATE = "VALIDATE";
 
     boolean deLaCasa = false;
 
@@ -128,32 +129,36 @@ public class OrdenWCS extends SimpleWebConnectionService {
 
     public String getNota(String pCod) throws Exception {
         String URL = path + GET_NOTA + "?codOrden=" + this.codOrden + "&codProd=" + pCod;
-        String resp = connect(path + GET_NOTA, null, super.TOKEN, HTTPMethod.GET);
+        String resp = connect(URL, null, super.TOKEN, HTTPMethod.GET);
         return om.readValue(resp, om.getTypeFactory().constructArrayType(String.class));
     }
 
     public String getComensal(String pCod) throws Exception {
-        return connect(path + "GETCOMENSAL_" + getCodOrden() + "_" + pCod);
+        String URL = path + GET_COMENSAL + "?codProd=" + this.codOrden + "?codProd=" + pCod;
+        String resp = connect(URL, null, super.TOKEN, HTTPMethod.GET);
+        return om.readValue(resp, om.getTypeFactory().constructArrayType(String.class));
     }
 
     public boolean addComensal(String pCod, String comensal) throws Exception {
-        return connect(path + "ADDCOMENSAL_" + getCodOrden() + "_" + pCod + "_" + comensal).equals(EnvironmentVariables.PETITION_TRUE);
-    }
-
-    public String menuInfantil(int entrante, int plato_fuerte, int liquido, int postre, String menuinfantil_nota) throws Exception {
-        return connect(path + "MENUINFANTIL_" + getCodOrden() + "_" + entrante + "_" + plato_fuerte + "_" + postre + "_" + liquido + "_" + menuinfantil_nota);
+        HashMap<String, Object> hm = new HashMap<String, Object>();
+        hm.put("codOrden", this.codOrden);
+        hm.put("codProd", pCod);
+        hm.put("comensal", comensal);
+        connect(path + ADD_COMENSAL, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
+        return true;
     }
 
     public boolean cederAUsuario(String usuario) throws Exception {
-        return connect(path + "CEDERORDEN_" + getCodOrden() + "_" + usuario).equals(EnvironmentVariables.PETITION_TRUE);
-    }
-
-    public boolean isMine() throws Exception {
-        return connect(path + "ISMINE_" + getCodMesa() + "_" + getUsuarioTrabajador()).equals(EnvironmentVariables.PETITION_TRUE);
+        HashMap<String, Object> hm = new HashMap<String, Object>();
+        hm.put("codOrden", this.codOrden);
+        hm.put("usuario", usuario);
+        connect(path + CEDER_ORDEN, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
+        return true;
     }
 
     public boolean validate() throws Exception {
-        return connect(path + "ISVALID_" + getCodOrden()).equals(EnvironmentVariables.PETITION_TRUE);
+        connect(path + VALIDATE, this.codOrden, super.TOKEN, HTTPMethod.POST);
+        return true;
     }
 
     public boolean isDeLaCasa() {
