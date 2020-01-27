@@ -184,7 +184,7 @@ public class AlmacenWCS extends SimpleWebConnectionService {
     }
 
     public List<IpvRegistroModel> getIPVRegistro(String codCocina) throws Exception {
-        String resp = connect(path + REGISTRO_IPVS + "?=ptoElab" + codCocina, null, super.TOKEN, HTTPMethod.GET);
+        String resp = connect(path + REGISTRO_IPVS + "?ptoElab=" + codCocina, null, super.TOKEN, HTTPMethod.GET);
         return om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, IpvRegistroModel.class));
     }
 }

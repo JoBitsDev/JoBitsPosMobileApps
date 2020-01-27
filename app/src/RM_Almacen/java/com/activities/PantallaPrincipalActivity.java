@@ -254,7 +254,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             new LoadingHandler<IPVsAdapter>(act, new LoadingProcess<IPVsAdapter>() {
                 @Override
                 public IPVsAdapter process() throws Exception {
-                    return controller.getIPVAdapter(act, R.id.listViewIPVs, spinnerFiltrar.getSelectedItem().toString());
+                    return controller.getIPVAdapter(act, R.id.listViewIPVs);
                 }
 
                 @Override
@@ -268,7 +268,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             new LoadingHandler<IPVsAdapter>(act, new LoadingProcess<IPVsAdapter>() {
                 @Override
                 public IPVsAdapter process() throws Exception {
-                    return controller.getIPVAdapter(act, R.id.listViewIPVs, spinnerFiltrar.getSelectedItem().toString());
+                    return controller.getIPVAdapter(act, R.id.listViewIPVs, spinnerFiltrarIPV.getSelectedItem().toString());
                 }
 
                 @Override

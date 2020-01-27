@@ -155,7 +155,9 @@ public class PantallaPrincipalController extends BaseController {
     public AlmacenInsumoAdapter getAdapter(Context c, int listaInsumos, String filtros) throws Exception {
         return new AlmacenInsumoAdapter(c, listaInsumos, filterBy(filtros));
     }
-
+    public IPVsAdapter getIPVAdapter(Context c, int ipvRegisro) throws Exception {
+        return new IPVsAdapter(c, ipvRegisro, almacenWCS.getIPVRegistro(""));
+    }
     public IPVsAdapter getIPVAdapter(Context c, int ipvRegisro, String codCocina) throws Exception {
         return new IPVsAdapter(c, ipvRegisro, almacenWCS.getIPVRegistro(codCocina));
     }
