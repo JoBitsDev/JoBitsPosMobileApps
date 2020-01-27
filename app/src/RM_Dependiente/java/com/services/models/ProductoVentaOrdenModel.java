@@ -5,36 +5,31 @@
  */
 package com.services.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
+
 /**
- *
  * @author Jorge
  */
 
 public class ProductoVentaOrdenModel implements Serializable {
 
+    private static final long serialVersionUID = 1L;
 
     private Float enviadosACocina;
 
-    private static final long serialVersionUID = 1L;
-
+    @JsonProperty("productovOrdenPK")
     protected ProductovOrdenPKModel productovOrdenPKModel;
 
     private float cantidad;
 
+    @JsonBackReference
     private OrdenModel ordenModel;
-
     private ProductoVentaModel productoVentaModel;
+    private int numeroComensal;
 
-    public int getNumero_comensal() {
-        return numero_comensal;
-    }
-
-    public void setNumero_comensal(int numero_comensal) {
-        this.numero_comensal = numero_comensal;
-    }
-
-    private int numero_comensal;
 
     public ProductoVentaOrdenModel() {
     }
@@ -50,6 +45,14 @@ public class ProductoVentaOrdenModel implements Serializable {
 
     public ProductoVentaOrdenModel(String productoVentapCod, String ordencodOrden) {
         this.productovOrdenPKModel = new ProductovOrdenPKModel(productoVentapCod, ordencodOrden);
+    }
+
+    public int getNumeroComensal() {
+        return numeroComensal;
+    }
+
+    public void setNumeroComensal(int numeroComensal) {
+        this.numeroComensal = numeroComensal;
     }
 
     public ProductovOrdenPKModel getProductovOrdenPKModel() {
@@ -85,7 +88,6 @@ public class ProductoVentaOrdenModel implements Serializable {
     }
 
 
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -96,7 +98,7 @@ public class ProductoVentaOrdenModel implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ProductoVentaOrdenModel) ) {
+        if (!(object instanceof ProductoVentaOrdenModel)) {
             return false;
         }
         ProductoVentaOrdenModel other = (ProductoVentaOrdenModel) object;
@@ -119,5 +121,5 @@ public class ProductoVentaOrdenModel implements Serializable {
         this.enviadosACocina = enviadosACocina;
     }
 
-    
+
 }

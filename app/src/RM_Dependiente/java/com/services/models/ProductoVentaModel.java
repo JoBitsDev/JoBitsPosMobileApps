@@ -18,8 +18,6 @@ public class ProductoVentaModel implements Serializable,Comparable<ProductoVenta
     private String nombre;
     private float precioVenta;
     private String descripcion;
-    private String cocinacodCocina;
-    private String seccionnombreSeccion;
     private float cantidad = 1;
 
     public ProductoVentaModel() {
@@ -37,11 +35,9 @@ public class ProductoVentaModel implements Serializable,Comparable<ProductoVenta
 
     public ProductoVentaModel(String cocinacodCocina, String nombre, String pCod,
                               float precioVenta, String seccionnombreSeccion) {
-        this.cocinacodCocina = cocinacodCocina;
         this.nombre = nombre;
         this.pCod = pCod;
         this.precioVenta = precioVenta;
-        this.seccionnombreSeccion = seccionnombreSeccion;
     }
 
     public void setCantidad(float cantidad) {
@@ -79,32 +75,6 @@ public class ProductoVentaModel implements Serializable,Comparable<ProductoVenta
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public String getCocinacodCocina() {
-        return cocinacodCocina;
-    }
-
-    public void setCocinacodCocina(String cocinacodCocina) {
-        this.cocinacodCocina = cocinacodCocina;
-    }
-
-    public String getSeccionnombreSeccion() {
-        return seccionnombreSeccion;
-    }
-
-    public void setSeccionnombreSeccion(String seccionnombreSeccion) {
-        this.seccionnombreSeccion = seccionnombreSeccion;
-    }
-
-
-    public void restarCantidad() {
-        if(cantidad-1 >= 0)
-            cantidad--;
-    }
-
-    public void sumarCantida() {
-        cantidad++;
     }
 
     public float getCantidad() {
