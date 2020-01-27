@@ -6,14 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.activities.R;
-import com.services.models.ProductoVentaModel;
 import com.services.models.ProductoVentaOrdenModel;
-import com.services.models.ProductovOrdenPKModel;
-import com.services.web_connections.OrdenWebConnectionService;
 
 import java.util.List;
 
@@ -48,9 +44,9 @@ public class ProductoVentaOrdenReadOnlyAdapter extends ArrayAdapter<ProductoVent
             holder = (ViewHolder) item.getTag();
         }
         holder.precioVenta.setTextColor(c);
-        holder.nombreProducto.setText(objects.get(position).getProductoVentaModel().getNombre());
+        holder.nombreProducto.setText(objects.get(position).getProductoVenta().getNombre());
         holder.precioVenta.setText(String.valueOf(
-                objects.get(position).getProductoVentaModel().getPrecioVenta() *
+                objects.get(position).getProductoVenta().getPrecioVenta() *
                         objects.get(position).getCantidad()));
         holder.cantidad.setText(String.valueOf(objects.get(position).getCantidad()));
         return (item);

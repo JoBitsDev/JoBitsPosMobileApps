@@ -84,6 +84,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             año = calendar.get(Calendar.YEAR);
 
             editTextShowDate = (EditText) findViewById(R.id.editTextDatePicker);
+            editTextShowDate.setText(formatDate());
             imageButtonDatePicker = (ImageButton) findViewById(R.id.imageButtonDatePicker);
             imageButtonActualizar = (ImageButton) findViewById(R.id.buttonActualizar);
             listViewGeneral = (ListView) findViewById(R.id.listViewGeneral);
@@ -145,6 +146,30 @@ public class PantallaPrincipalActivity extends BaseActivity {
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
         }
+        listViewAreas.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return onTabChangeTouchEvent(event);
+            }
+        });
+        listViewDependientes.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return onTabChangeTouchEvent(event);
+            }
+        });
+        listViewGeneral.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return onTabChangeTouchEvent(event);
+            }
+        });
+        listViewPtoElaboracion.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return onTabChangeTouchEvent(event);
+            }
+        });
     }
 
     @Override
@@ -163,7 +188,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
      * Método para actualizar las listas de datos.
      */
 
-    public void actualizar(final String fecha){
+    public void actualizar(final String fecha) {
         new LoadingHandler<VentaResumenModel>(act, new LoadingProcess<VentaResumenModel>() {
             @Override
             public VentaResumenModel process() throws Exception {
@@ -224,35 +249,48 @@ public class PantallaPrincipalActivity extends BaseActivity {
     }
 
     private boolean onTabChangeTouchEvent(MotionEvent event) {
-        float currentX = 0;
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                lastX = event.getX();
-                break;
-            case MotionEvent.ACTION_UP:
-                currentX = event.getX();
-                boolean dirRight = Math.abs(lastX - currentX) > 200;
-                switchTab(dirRight);
-                break;
+        try {
+            float currentX = 0;
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    lastX = event.getX();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    currentX = event.getX();
+                    boolean dirRight = false;
+                    if (Math.abs(lastX - currentX) > 200) {//mayor derecha menor izquierda
+                        dirRight = true;
+                    }
+                    switchTab(dirRight);
+                    return dirRight;
+            }
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
         }
         return false;
+    }
+
+    private boolean switchTab(boolean change) {
+        try {
+            if (host.getCurrentTab() == 3 && change == true || host.getCurrentTab() == 0 && change == false) {
+            } else {
+                if (change == true) {
+                    host.setCurrentTab(host.getCurrentTab() + 1);
+                } else {
+                    host.setCurrentTab(host.getCurrentTab() - 1);
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+            return false;
+        }
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
         return onTabChangeTouchEvent(event);
-    }
-
-    private boolean switchTab(boolean change) {
-        if (change) {
-            if (host.getCurrentTab() == 1) {
-                host.setCurrentTab(0);
-            } else {
-                host.setCurrentTab(1);
-            }
-        }
-        return false;
     }
 
     /**
@@ -274,7 +312,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
         }, año, mes, dia);
         recogerFecha.show();
     }
-    private String formatDate(){
+
+    private String formatDate() {
         //Esta variable lo que realiza es aumentar en uno el mes ya que comienza desde 0 = enero
         final int mesActual = mes + 1;
         //Formateo el día obtenido: antepone el 0 si son menores de 10

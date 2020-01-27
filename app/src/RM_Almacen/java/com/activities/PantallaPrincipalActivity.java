@@ -8,7 +8,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 
-import com.services.models.IpvRegistro;
+import com.services.models.IpvRegistroModel;
 import com.utils.adapters.*;
 import com.utils.exception.ExceptionHandler;
 import com.services.models.InsumoAlmacenModel;
@@ -17,6 +17,7 @@ import com.utils.loading.LoadingHandler;
 import com.utils.loading.LoadingProcess;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,7 +42,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     /**
      * Textos con el usuario y el almacen
      */
-    private TextView userText, almacenText;
+    private TextView userText, almacenText, pickDate;
 
     /**
      * Cuadro de texto de busqueda.
@@ -76,7 +77,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     private ImageButton imageButtonActualizar;
     private TabHost host;
     private float lastX;
-    List<IpvRegistro> ipvRegistroList;
+    List<IpvRegistroModel> ipvRegistroModelList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +105,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
             userText = (TextView) findViewById(R.id.textUser);
             userText.setText(getBundle().getString(String.valueOf(R.string.user)));
+            pickDate = (TextView) findViewById(R.id.textViewFechaServidor);
 
             controller = new PantallaPrincipalController(userText.getText().toString());
             searchText = (EditText) findViewById(R.id.editText);
@@ -115,8 +117,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             imageButtonActualizar = (ImageButton) findViewById(R.id.imageButtonActualizar);
             spinnerFiltrar = (Spinner) findViewById(R.id.filtrarBy);
             spinnerFiltrarIPV = (Spinner) findViewById(R.id.filtrarByIPV);
-            ipvRegistroList = new ArrayList<IpvRegistro>();
-
+            ipvRegistroModelList = new ArrayList<IpvRegistroModel>();
             initTab();
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
@@ -151,7 +152,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    ((IPVsAdapter)listViewIPV.getAdapter()).getFilter().filter(s.toString());
+                    ((IPVsAdapter) listViewIPV.getAdapter()).getFilter().filter(s.toString());
                 }
 
                 @Override
@@ -182,10 +183,30 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
                 }
             });
+
+            imageButtonActualizar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    actualizar(v);
+                }
+            });
             //TODO: faltan dos listener que estan directo en el xml
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
+
+        listView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return onTabChangeTouchEvent(event);
+            }
+        });
+        listViewIPV.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return onTabChangeTouchEvent(event);
+            }
+        });
     }
 
     /**
@@ -218,6 +239,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
                 @Override
                 public void post(AlmacenInsumoAdapter answer) {
+                    obtenerFecha();
                     listView.setAdapter(answer);
                 }
             });
@@ -228,33 +250,48 @@ public class PantallaPrincipalActivity extends BaseActivity {
     private void onSpinnerFiltrarItemSelectedIPV(View view) {
         if (spinnerFiltrarIPV.getSelectedItemPosition() == 0) {
 
-            new LoadingHandler<AlmacenInsumoAdapter>(act, new LoadingProcess<AlmacenInsumoAdapter>() {
+            new LoadingHandler<IPVsAdapter>(act, new LoadingProcess<IPVsAdapter>() {
                 @Override
-                public AlmacenInsumoAdapter process() throws Exception {
-                    return controller.getAdapter(act, R.id.listaInsumos);
+                public IPVsAdapter process() throws Exception {
+                    return controller.getIPVAdapter(act, R.id.listViewIPVs);
                 }
 
                 @Override
-                public void post(AlmacenInsumoAdapter answer) {
-                    listView.setAdapter(answer);
+                public void post(IPVsAdapter answer) {
+                    listViewIPV.setAdapter(answer);
                 }
             });
 
         } else {
 
-            new LoadingHandler<AlmacenInsumoAdapter>(act, new LoadingProcess<AlmacenInsumoAdapter>() {
+            new LoadingHandler<IPVsAdapter>(act, new LoadingProcess<IPVsAdapter>() {
                 @Override
-                public AlmacenInsumoAdapter process() throws Exception {
-                    return controller.getAdapter(act, R.id.listaInsumos, spinnerFiltrar.getSelectedItem().toString());
+                public IPVsAdapter process() throws Exception {
+                    return controller.getIPVAdapter(act, R.id.listViewIPVs, spinnerFiltrarIPV.getSelectedItem().toString());
+
                 }
 
                 @Override
-                public void post(AlmacenInsumoAdapter answer) {
-                    listView.setAdapter(answer);
+                public void post(IPVsAdapter answer) {
+                    listViewIPV.setAdapter(answer);
+                    obtenerFecha();
                 }
             });
         }
     }
+ private void obtenerFecha(){
+         new LoadingHandler<Date>(act, new LoadingProcess<Date>() {
+             @Override
+             public Date process() throws Exception {
+                return controller.getIPVRegistro(spinnerFiltrarIPV.getSelectedItem().toString()).get(0).getIpvRegistroPK().getFecha();
+             }
+
+             @Override
+             public void post(Date answer) {
+                 pickDate.setText(formatDate(answer));
+             }
+         });
+ }
 
     @Override
     protected void setAdapters() {
@@ -263,10 +300,10 @@ public class PantallaPrincipalActivity extends BaseActivity {
             new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
                 @Override
                 public Void process() throws Exception {
-                    filterAdapter = new FilterAdapter(act, android.R.layout.simple_spinner_dropdown_item, controller.getCocinasNames());
-                    filterAdapterIPV = new FilterAdapterIPV(act, android.R.layout.simple_spinner_dropdown_item, controller.getCocinasNames());
-                    ipVsAdapter = new IPVsAdapter(act, R.layout.list_ipvs, ipvRegistroList);
-                    almacenInsumoAdapter = new AlmacenInsumoAdapter(act,R.id.listaInsumos,controller.getPrimerAlmacen());
+                    filterAdapter = new FilterAdapter(act, R.layout.simple_spinner_dropdow_item, controller.getCocinasNames());
+                    filterAdapterIPV = new FilterAdapterIPV(act, R.layout.simple_spinner_dropdow_item, controller.getCocinasNames());
+                    ipVsAdapter = new IPVsAdapter(act, R.layout.list_ipvs, ipvRegistroModelList);
+                    almacenInsumoAdapter = new AlmacenInsumoAdapter(act, R.id.listaInsumos, controller.getPrimerAlmacen());
                     return null;
                 }
 
@@ -283,6 +320,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
+    }
+
+    public void actualizar(View view) {
+        onSpinnerFiltrarItemSelected(view);
+        onSpinnerFiltrarItemSelectedIPV(view);
     }
 
     @Override
@@ -336,7 +378,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
             @Override
             public void post(Boolean answer) {
                 if (answer) {
-                    Toast.makeText(getApplicationContext(), "Imprimiendo...", Toast.LENGTH_SHORT);
+                    showMessage("Imprimiendo...");
+                    //Toast.makeText(act, "Imprimiendo...", Toast.LENGTH_LONG);
                 } else {
                     ExceptionHandler.handleException(new Exception("Error imprimiendo"), act);
                 }
@@ -359,7 +402,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             @Override
             public void post(Boolean answer) {
                 if (answer) {
-                    Toast.makeText(getApplicationContext(), "Imprimiendo...", Toast.LENGTH_SHORT);
+                    showMessage("Imprimiendo...");
                 } else {
                     ExceptionHandler.handleException(new Exception("Error imprimiendo"), act);
                 }
@@ -437,6 +480,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 }
             }).create().show();
 
+            actualizar(v);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
@@ -553,7 +597,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                             }).create().show();
                 }
             });
-
+            actualizar(v);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
@@ -627,7 +671,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                             dialog.dismiss();
                         }
                     }).create().show();
-
+            actualizar(v);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
@@ -672,36 +716,55 @@ public class PantallaPrincipalActivity extends BaseActivity {
         }
     }
 
-    private boolean onTabChangeTouchEvent(MotionEvent event) {
-        float currentX = 0;
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                lastX = event.getX();
-                break;
-            case MotionEvent.ACTION_UP:
-                currentX = event.getX();
-                boolean dirRight = Math.abs(lastX - currentX) > 200;
-                switchTab(dirRight);
-                break;
-        }
-        return false;
-    }
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
         return onTabChangeTouchEvent(event);
     }
 
-    private boolean switchTab(boolean change) {
-        if (change) {
-            if (host.getCurrentTab() == 1) {
-                host.setCurrentTab(0);
-            } else {
-                host.setCurrentTab(1);
-            }
-        }
-        return false;
+    private String formatDate(Date date) {
+        //Esta variable lo que realiza es aumentar en uno el mes ya que comienza desde 0 = enero
+        final int mesActual = date.getMonth() + 1;
+        //Formateo el día obtenido: antepone el 0 si son menores de 10
+        String diaFormateado = (date.getDay() < 10) ? "0" + String.valueOf(date.getDay()) : String.valueOf(date.getDay());
+        //Formateo el mes obtenido: antepone el 0 si son menores de 10
+        String mesFormateado = (mesActual < 10) ? "0" + String.valueOf(mesActual) : String.valueOf(mesActual);
+        return diaFormateado + "/" + mesFormateado + "/" + (date.getYear()+1900);
     }
 
+    private boolean onTabChangeTouchEvent(MotionEvent event) {
+        try {
+            float currentX = 0;
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    lastX = event.getX();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    currentX = event.getX();
+                    boolean dirRight = Math.abs(lastX - currentX) > 200;
+                    switchTab(dirRight);
+                    return dirRight;
+            }
+            return false;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+            return false;
+        }
+    }
+
+    private boolean switchTab(boolean change) {
+        try {
+            if (change) {
+                if (host.getCurrentTab() == 1) {
+                    host.setCurrentTab(0);
+                } else {
+                    host.setCurrentTab(1);
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+            return false;
+        }
+    }
 }

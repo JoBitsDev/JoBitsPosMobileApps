@@ -1,25 +1,17 @@
 package com.controllers;
 
-import com.services.models.MesaModel;
-import com.services.models.OrdenModel;
 import com.services.models.ProductoVentaModel;
 import com.services.models.ProductoVentaOrdenModel;
 import com.services.models.SeccionModel;
-import com.services.parsers.MesaXMlParser;
-import com.services.parsers.ProductoVentaXMlParser;
-import com.services.parsers.ProductoVentaOrdenXMLParser;
-import com.services.parsers.SeccionXMlParser;
-import com.services.web_connections.OrdenWebConnectionService;
-import com.services.web_connections.PersonalWebConnectionServiceService;
+import com.services.web_connections.AreaWCS;
+import com.services.web_connections.OrdenWCS;
+import com.services.web_connections.PersonalWCS;
+import com.services.web_connections.ProductoWCS;
+import com.services.web_connections.SeccionWCS;
 import com.utils.EnvironmentVariables;
 import com.utils.adapters.ProductoVentaOrdenAdapter;
-import com.utils.exception.NoConnectionException;
-import com.utils.exception.ServerErrorException;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Capa: Controllers
@@ -29,39 +21,33 @@ import java.util.concurrent.ExecutionException;
  */
 public class OrdenController extends BaseController {
 
-    public static final String urlSeccion = "http://" + EnvironmentVariables.getIP() + ":" + EnvironmentVariables.getPORT() + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.seccion",
-            urlProducts_ = "http://" + EnvironmentVariables.getIP() + ":" + EnvironmentVariables.getPORT() + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.productoventa/PRODUCTS_",
-            urlListProducts_ = "http://" + EnvironmentVariables.getIP() + ":" + EnvironmentVariables.getPORT() + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.orden/LISTPRODUCTS_";
+    public static final String urlListProducts_ = "http://" + EnvironmentVariables.getIP() + ":" + EnvironmentVariables.getPORT() + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.orden/LISTPRODUCTS_";
 
-    private OrdenWebConnectionService ordenWCService = null;
+    private OrdenWCS ordenWCService = null;
 
-    public OrdenController starService(String codOrden, String codMesa, String usuarioTrabajador) {
-        ordenWCService = new OrdenWebConnectionService(codOrden, codMesa, usuarioTrabajador);
+    public OrdenController starService(String codOrden, String codMesa) throws Exception {
+        ordenWCService = new OrdenWCS(codOrden, codMesa);
         return this;
     }
 
-    public OrdenController starService(String codMesa, String usuarioTrabajador) {
-        ordenWCService = new OrdenWebConnectionService(codMesa, usuarioTrabajador);
+    public OrdenController starService(String codMesa) throws Exception {
+        ordenWCService = new OrdenWCS(codMesa);
         return this;
     }
 
-    public List<SeccionModel> getSecciones() {//TODO: Ordenamiento en el server
-        List<SeccionModel> list = new SeccionXMlParser().fetch(urlSeccion);
-        Collections.sort(list);
-        return list;
+    public List<SeccionModel> getSecciones() throws Exception {
+        return new SeccionWCS().getSecciones();
     }
 
-    public List<ProductoVentaModel> getProductos(String codMesa) {//TODO: Ordenamiento en el server
-        List<ProductoVentaModel> list = new ProductoVentaXMlParser().fetch(urlProducts_ + codMesa);
-        Collections.sort(list);
-        return list;
+    public List<ProductoVentaModel> getProductos(String codMesa) throws Exception {
+        return new ProductoWCS().getProducts(codMesa);
     }
 
-    public List<ProductoVentaOrdenModel> getProductoVentaOrden(String codOrden) {
-        return new ProductoVentaOrdenXMLParser(codOrden).fetch(urlListProducts_ + codOrden);
+    public List<ProductoVentaOrdenModel> getProductoVentaOrden(String codOrden) throws Exception {
+        return ordenWCService.findOrden(codOrden).getProductoVentaOrdenList();
     }
 
-    public List<ProductoVentaOrdenModel> getProductoVentaOrden() {
+    public List<ProductoVentaOrdenModel> getProductoVentaOrden() throws Exception {
         String codOrden = ordenWCService.getCodOrden();
         return getProductoVentaOrden(codOrden);
     }
@@ -79,34 +65,23 @@ public class OrdenController extends BaseController {
     }
 
     public String getNota(ProductoVentaOrdenModel pVO) throws Exception {
-        return ordenWCService.getNota(pVO.getProductoVentaModel().getPCod());
+        return ordenWCService.getNota(pVO.getProductoVenta().getPCod());
     }
 
     public String getComensal(ProductoVentaOrdenModel pVO) throws Exception {
-        return ordenWCService.getComensal(pVO.getProductoVentaModel().getPCod());
+        return ordenWCService.getComensal(pVO.getProductoVenta().getPCod());
     }
 
     public boolean addComensal(ProductoVentaOrdenModel pVO, String comensal) throws Exception {
-        return ordenWCService.addComensal(pVO.getProductoVentaModel().getPCod(), comensal);
+        return ordenWCService.addComensal(pVO.getProductoVenta().getPCod(), comensal);
     }
 
     public boolean moverAMesa(String codMesa) throws Exception {
         return ordenWCService.moverAMesa(codMesa);
     }
 
-    public String[] getMesas() {
-        String url = "http://" + EnvironmentVariables.getIP() + ":" + EnvironmentVariables.getPORT() + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.mesa/MOSTRARVACIAS";
-
-        final List<MesaModel> mesaModels = new MesaXMlParser().fetch(url);
-
-        Collections.sort(mesaModels);//TODO: Ordenamiento en el servidor
-
-        String[] codMesas = new String[mesaModels.size()];
-        for (int i = 0; i < mesaModels.size(); i++) {
-            codMesas[i] = mesaModels.get(i).getCodMesa();
-        }
-
-        return codMesas;
+    public String[] getMesas() throws Exception {
+        return new AreaWCS().findVacias(ordenWCService.getCodMesa());
     }
 
     public boolean addProducto(ProductoVentaModel lastClickedMenu) throws Exception {
@@ -129,8 +104,8 @@ public class OrdenController extends BaseController {
         return ordenWCService.removeProducto(productoVentaModel.getPCod());
     }
 
-    public boolean finishOrden(boolean deLaCasa) throws Exception {
-        return ordenWCService.finishOrden(deLaCasa);
+    public boolean finishOrden() throws Exception {
+        return ordenWCService.finishOrden();
     }
 
     public boolean sendToKitchen() throws Exception {
@@ -147,9 +122,7 @@ public class OrdenController extends BaseController {
     }
 
     public String[] getUsuariosActivos() throws Exception {
-        String[] usuarios = new PersonalWebConnectionServiceService().getUsuariosActivos();
-        Arrays.sort(usuarios);//TODO: que el server lo devuelva ordenado
-        return usuarios;
+        return new PersonalWCS().getPersonalTrabajando();
     }
 
     public boolean setDeLaCasa(boolean resp) throws Exception {

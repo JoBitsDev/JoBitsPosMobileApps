@@ -1,11 +1,15 @@
 
 package com.services.models;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+
 /**
- *
  * @author Jorge
  */
 
@@ -14,11 +18,12 @@ public class OrdenModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String codOrden;
-    private Integer hora;
     private boolean deLaCasa;
     private Float porciento;
     private Float gananciaXporciento;
-    private Collection<ProductoVentaOrdenModel> productoVentaOrdenModelCollection;
+
+    @JsonManagedReference
+    private ArrayList<ProductoVentaOrdenModel> productoVentaOrdenList;
 
     private MesaModel mesacodMesaModel;
 
@@ -34,20 +39,20 @@ public class OrdenModel implements Serializable {
         this.deLaCasa = deLaCasa;
     }
 
+    public boolean isDeLaCasa() {
+        return deLaCasa;
+    }
+
+    public ArrayList<ProductoVentaOrdenModel> getProductoVentaOrdenList() {
+        return productoVentaOrdenList;
+    }
+
     public String getCodOrden() {
         return codOrden;
     }
 
     public void setCodOrden(String codOrden) {
         this.codOrden = codOrden;
-    }
-
-    public Integer getHora() {
-        return hora;
-    }
-
-    public void setHora(Integer hora) {
-        this.hora = hora;
     }
 
     public boolean getDeLaCasa() {
@@ -74,26 +79,18 @@ public class OrdenModel implements Serializable {
         this.gananciaXporciento = gananciaXporciento;
     }
 
-
-    public void setProductoVentaOrdenModelCollection(Collection<ProductoVentaOrdenModel> productoVentaOrdenModelCollection) {
-        this.productoVentaOrdenModelCollection = productoVentaOrdenModelCollection;
+    public void setProductoVentaOrdenList(ArrayList<ProductoVentaOrdenModel> productoVentaOrdenList) {
+        this.productoVentaOrdenList = productoVentaOrdenList;
     }
 
-
-
+    @JsonGetter("mesacodMesa")
     public MesaModel getMesacodMesaModel() {
         return mesacodMesaModel;
     }
 
+    @JsonSetter("mesacodMesa")
     public void setMesacodMesaModel(MesaModel mesacodMesaModel) {
         this.mesacodMesaModel = mesacodMesaModel;
-    }
-
-
-    
-    public void addProducto(String codProducto){
-        ArrayList<ProductoVentaModel> p = new ArrayList(productoVentaOrdenModelCollection);
-        //TODO: falta esto por hacer
     }
 
     @Override
@@ -102,8 +99,7 @@ public class OrdenModel implements Serializable {
         hash += (codOrden != null ? codOrden.hashCode() : 0);
         return hash;
     }
-    
-    
+
 
     @Override
     public boolean equals(Object object) {
@@ -122,5 +118,5 @@ public class OrdenModel implements Serializable {
     public String toString() {
         return "com.restManager.OrdenActivity[ codOrden=" + codOrden + " ]";
     }
-    
+
 }

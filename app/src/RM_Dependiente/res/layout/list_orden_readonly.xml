@@ -19,6 +19,7 @@
             android:paddingRight="10dp"
             android:text="Nombre"
             android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/texto_primario"
             android:textSize="@dimen/textSizeLarge" />
 
     </LinearLayout>
@@ -40,6 +41,7 @@
             android:paddingLeft="20dp"
             android:text="Cantidad"
             android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/cantidades"
             android:textSize="@dimen/textSizeNormal"
             android:textStyle="bold" />
 

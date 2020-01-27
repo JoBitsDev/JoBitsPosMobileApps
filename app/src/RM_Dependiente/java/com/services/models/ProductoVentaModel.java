@@ -8,46 +8,19 @@ package com.services.models;
 import java.io.Serializable;
 
 /**
- *
  * @author Jorge
  */
-public class ProductoVentaModel implements Serializable,Comparable<ProductoVentaModel> {
+public class ProductoVentaModel implements Serializable, Comparable<ProductoVentaModel> {
 
     private static final long serialVersionUID = 1L;
     private String pCod;
     private String nombre;
     private float precioVenta;
     private String descripcion;
-    private String cocinacodCocina;
-    private String seccionnombreSeccion;
-    private float cantidad = 1;
+    private SeccionModel seccionnombreSeccion;
 
     public ProductoVentaModel() {
     }
-
-    public ProductoVentaModel(String pCod) {
-        this.pCod = pCod;
-    }
-
-    public ProductoVentaModel(String pCod, String nombre, float precioVenta) {
-        this.pCod = pCod;
-        this.nombre = nombre;
-        this.precioVenta = precioVenta;
-    }
-
-    public ProductoVentaModel(String cocinacodCocina, String nombre, String pCod,
-                              float precioVenta, String seccionnombreSeccion) {
-        this.cocinacodCocina = cocinacodCocina;
-        this.nombre = nombre;
-        this.pCod = pCod;
-        this.precioVenta = precioVenta;
-        this.seccionnombreSeccion = seccionnombreSeccion;
-    }
-
-    public void setCantidad(float cantidad) {
-        this.cantidad = cantidad;
-    }
-
 
     public String getPCod() {
         return pCod;
@@ -69,6 +42,14 @@ public class ProductoVentaModel implements Serializable,Comparable<ProductoVenta
         return precioVenta;
     }
 
+    public String getpCod() {
+        return pCod;
+    }
+
+    public void setpCod(String pCod) {
+        this.pCod = pCod;
+    }
+
     public void setPrecioVenta(float precioVenta) {
         this.precioVenta = precioVenta;
     }
@@ -81,34 +62,12 @@ public class ProductoVentaModel implements Serializable,Comparable<ProductoVenta
         this.descripcion = descripcion;
     }
 
-    public String getCocinacodCocina() {
-        return cocinacodCocina;
-    }
-
-    public void setCocinacodCocina(String cocinacodCocina) {
-        this.cocinacodCocina = cocinacodCocina;
-    }
-
-    public String getSeccionnombreSeccion() {
+    public SeccionModel getSeccionnombreSeccion() {
         return seccionnombreSeccion;
     }
 
-    public void setSeccionnombreSeccion(String seccionnombreSeccion) {
+    public void setSeccionnombreSeccion(SeccionModel seccionnombreSeccion) {
         this.seccionnombreSeccion = seccionnombreSeccion;
-    }
-
-
-    public void restarCantidad() {
-        if(cantidad-1 >= 0)
-            cantidad--;
-    }
-
-    public void sumarCantida() {
-        cantidad++;
-    }
-
-    public float getCantidad() {
-        return cantidad;
     }
 
     @Override
@@ -138,13 +97,5 @@ public class ProductoVentaModel implements Serializable,Comparable<ProductoVenta
     @Override
     public int compareTo(ProductoVentaModel another) {
         return nombre.compareToIgnoreCase(another.nombre);
-    }
-
-    public void increaceAmount() {
-        cantidad++;
-    }
-
-    public void decreaseAmmount() {
-        cantidad--;
     }
 }

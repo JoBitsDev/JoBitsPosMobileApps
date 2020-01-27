@@ -1,10 +1,10 @@
 package com.services.web_connections;
 
+import com.services.models.IpvRegistroModel;
 import com.utils.exception.*;
-import com.utils.EnvironmentVariables;
 import com.services.models.InsumoAlmacenModel;
-import com.services.parsers.InsumoAlmacenXMLParser;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,7 +30,8 @@ public class AlmacenWCS extends SimpleWebConnectionService {
             SALIDA = "SALIDA",
             MERMA = "MERMAR",
             LISTA_IPV = "IPVS-DE-INSUMO",
-            FILTRAR = "FILTRAR";
+            FILTRAR = "FILTRAR",
+            REGISTRO_IPVS = "REGISTRO-IPVS";
 
     /**
      * Usuario que lo esta usando.
@@ -81,7 +82,7 @@ public class AlmacenWCS extends SimpleWebConnectionService {
     public String darEntrada(InsumoAlmacenModel i, float cantidad, float monto) throws Exception {
         HashMap<String, Object> hm = new HashMap<String, Object>();
         hm.put("almacenCod", i.getCodAlmacen());
-        hm.put("insumonCod", i.getInsumoAlmacenPKModel().getInsumocodInsumo());
+        hm.put("insumoCod", i.getInsumoAlmacenPKModel().getInsumocodInsumo());
         hm.put("cantidad", cantidad);
         hm.put("monto", monto);
         return connect(path + ENTRADA, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
@@ -99,7 +100,7 @@ public class AlmacenWCS extends SimpleWebConnectionService {
     public String darSalida(InsumoAlmacenModel i, float cantidad, String codPtoElaboracion) throws Exception {
         HashMap<String, Object> hm = new HashMap<String, Object>();
         hm.put("almacenCod", i.getCodAlmacen());
-        hm.put("insumonCod", i.getInsumoAlmacenPKModel().getInsumocodInsumo());
+        hm.put("insumoCod", i.getInsumoAlmacenPKModel().getInsumocodInsumo());
         hm.put("cantidad", cantidad);
         hm.put("destino", codPtoElaboracion);
         return connect(path + SALIDA, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
@@ -143,8 +144,7 @@ public class AlmacenWCS extends SimpleWebConnectionService {
     public String[] getCocinasNamesForIPV(String codInsumo) throws Exception {
         String URL = path + LISTA_IPV + "?insumoCod=" + codInsumo;
         String resp = connect(URL, null, super.TOKEN, HTTPMethod.GET);
-        List<String> list = om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, String.class));
-        return (String[]) list.toArray();
+        return om.readValue(resp, om.getTypeFactory().constructArrayType(String.class));
     }
 
     /**
@@ -183,4 +183,8 @@ public class AlmacenWCS extends SimpleWebConnectionService {
         return true;
     }
 
+    public List<IpvRegistroModel> getIPVRegistro(String codCocina) throws Exception {
+        String resp = connect(path + REGISTRO_IPVS + "?ptoElab=" + codCocina, null, super.TOKEN, HTTPMethod.GET);
+        return om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, IpvRegistroModel.class));
+    }
 }

@@ -9,8 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+
 import com.activities.R;
-import com.services.models.IpvRegistro;
+import com.services.models.IpvRegistroModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,13 +26,13 @@ import java.util.List;
 public class IPVsAdapter extends ArrayAdapter<String> implements Filterable {
 
     private Context context;
-    private List<IpvRegistro> objects, displayedObjects;
+    private List<IpvRegistroModel> objects, displayedObjects;
 
     /**
      * Constructor
      */
 
-    public IPVsAdapter(Context context, int textViewResourceId, List<IpvRegistro> objects) {
+    public IPVsAdapter(Context context, int textViewResourceId, List<IpvRegistroModel> objects) {
         super(context, textViewResourceId);
         this.context = context;
         this.objects = objects;
@@ -70,15 +71,17 @@ public class IPVsAdapter extends ArrayAdapter<String> implements Filterable {
             holder.disponibles = (TextView) item.findViewById(R.id.editTextDisponible);
             holder.consumidos = (TextView) item.findViewById(R.id.editTextCosumido);
             holder.finals = (TextView) item.findViewById(R.id.editTextFinal);
+            holder.nombre = (TextView) item.findViewById(R.id.textViewNombre);
             item.setTag(holder);
         } else {
             holder = (ViewHolder) item.getTag();
         }
-        holder.inicio.setText(displayedObjects.get(position).getInicio()+"");
-        holder.entrada.setText(displayedObjects.get(position).getEntrada()+"");
-        holder.disponibles.setText(displayedObjects.get(position).getDisponible()+"");
-        holder.consumidos.setText(displayedObjects.get(position).getConsumo()+"");
-        holder.finals.setText(displayedObjects.get(position).getFinal1()+"");
+        holder.inicio.setText(displayedObjects.get(position).getInicio() + "");
+        holder.entrada.setText(displayedObjects.get(position).getEntrada() + "");
+        holder.disponibles.setText(displayedObjects.get(position).getDisponible() + "");
+        holder.consumidos.setText(displayedObjects.get(position).getConsumo() + "");
+        holder.finals.setText(displayedObjects.get(position).getFinal1() + "");
+        holder.nombre.setText(displayedObjects.get(position).getIpvRegistroPK().getIpvinsumocodInsumo());
         return (item);
     }
 
@@ -100,17 +103,17 @@ public class IPVsAdapter extends ArrayAdapter<String> implements Filterable {
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
 
-                displayedObjects = (List<IpvRegistro>) results.values; // has the filtered values
+                displayedObjects = (List<IpvRegistroModel>) results.values; // has the filtered values
                 notifyDataSetChanged();  // notifies the data with new filtered values
             }
 
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();        // Holds the results of a filtering operation in values
-                List<IpvRegistro> filteredArrList = new ArrayList<IpvRegistro>();
+                List<IpvRegistroModel> filteredArrList = new ArrayList<IpvRegistroModel>();
 
                 if (objects == null) {
-                    objects = new ArrayList<IpvRegistro>(displayedObjects); // saves the original data in mOriginalValues
+                    objects = new ArrayList<IpvRegistroModel>(displayedObjects); // saves the original data in mOriginalValues
                 }
 
                 /********
@@ -125,10 +128,10 @@ public class IPVsAdapter extends ArrayAdapter<String> implements Filterable {
                     results.values = objects;
                 } else {
                     constraint = constraint.toString().toLowerCase();
-                    for (IpvRegistro i : objects) {
+                    for (IpvRegistroModel i : objects) {
                         String data = i.getIpvRegistroPK().getIpvinsumocodInsumo();
                         if (data.toLowerCase().contains(constraint.toString())) {
-                           filteredArrList.add(i);
+                            filteredArrList.add(i);
                         }
                     }
                     // set the Filtered result to return
@@ -150,6 +153,7 @@ public class IPVsAdapter extends ArrayAdapter<String> implements Filterable {
                 entrada,
                 disponibles,
                 consumidos,
-                finals;
+                finals,
+                nombre;
     }
 }

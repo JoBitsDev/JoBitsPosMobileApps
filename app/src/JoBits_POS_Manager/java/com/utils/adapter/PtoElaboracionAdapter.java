@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.activities.R;
 import com.services.models.PuntoElaboracionListModel;
+import com.utils.EnvironmentVariables;
 
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class PtoElaboracionAdapter extends ArrayAdapter<PuntoElaboracionListMode
         }
         holder.codigoPto.setText(puntoElaboracionListModels.get(position).getCodigo());
         holder.nombrePto.setText(puntoElaboracionListModels.get(position).getNombre());
-        holder.montoPto.setText(puntoElaboracionListModels.get(position).getMonto()+"");
+        holder.montoPto.setText(puntoElaboracionListModels.get(position).getMonto() + EnvironmentVariables.MONEDA_PRINCIPAL);
         return (item);
     }
 
