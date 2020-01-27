@@ -21,7 +21,8 @@ public class CartaWCS extends SimpleWebConnectionService {
     }
 
     public String getNombreRest() throws Exception {
-        return connect(path + NOMBRE, null, super.TOKEN, HTTPMethod.GET);
+        String resp = connect(path + NOMBRE, null, super.TOKEN, HTTPMethod.GET);
+        return om.readValue(resp, String.class);
     }
 
 
