@@ -264,10 +264,10 @@ public class PantallaPrincipalActivity extends BaseActivity {
                     switchTab(dirRight);
                     return dirRight;
             }
-            return false;
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
+        return false;
     }
 
     private boolean switchTab(boolean change) {
