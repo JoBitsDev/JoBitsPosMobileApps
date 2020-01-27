@@ -4,7 +4,6 @@ import android.app.Activity;
 
 import com.activities.R;
 import com.services.models.MesaModel;
-import com.services.parsers.MesaXMlParser;
 import com.services.web_connections.AreaWCS;
 import com.services.web_connections.CartaWCS;
 import com.services.web_connections.OrdenWCS;
@@ -31,18 +30,18 @@ public class MesasController extends BaseController {
         this.user = user;
     }
 
-    public MesaAdapter getData(String selectedArea, Activity act) {
+    public MesaAdapter getData(String selectedArea, Activity act) throws Exception {
         List<MesaModel> mesaModels;
-        if (selectedArea != null) {
-            mesaModels = new MesaXMlParser().fetch(urlMesas + "/AREA_" + selectedArea);
+        if (selectedArea == null) {
+            mesaModels = new  AreaWCS().findMesas();//    MesaXMlParser().fetch(urlMesas + "/AREA_" + selectedArea);
         } else {
-            mesaModels = new MesaXMlParser().fetch(urlMesas);
+            mesaModels = new  AreaWCS().findMesas(selectedArea);//new MesaXMlParser().fetch(urlMesas);
         }
         MesaAdapter adaptador = new MesaAdapter(act, R.id.listaMesas, mesaModels, user);
         return adaptador;
     }
 
-    public void starService(String codMesa) {
+    public void starService(String codMesa) throws Exception {
         ordenWCService = new OrdenWCS(codMesa, user);
     }
 
@@ -54,11 +53,11 @@ public class MesasController extends BaseController {
         return ordenWCService.validate();
     }
 
-    public String getNombreRest() {
+    public String getNombreRest() throws Exception {
         return new CartaWCS().getNombreRest();
     }
 
     public String[] getAreas() throws Exception {
-        return new AreaWCS(user, null).getAreasName();
+        return new AreaWCS().getAreasName();
     }
 }
