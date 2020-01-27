@@ -118,8 +118,8 @@ public class OrdenController extends BaseController {
         return ordenWCService.removeProducto(productoVentaModel.getPCod());
     }
 
-    public boolean finishOrden(boolean deLaCasa) throws Exception {
-        return ordenWCService.finishOrden(deLaCasa);
+    public boolean finishOrden() throws Exception {
+        return ordenWCService.finishOrden();
     }
 
     public boolean sendToKitchen() throws Exception {

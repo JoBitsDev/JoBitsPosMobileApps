@@ -894,7 +894,7 @@ public class OrdenActivity extends BaseActivity {
             new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
                 @Override
                 public Boolean process() throws Exception {
-                    return controller.finishOrden(deLaCasaCheckBox.isChecked());
+                    return controller.finishOrden();
                 }
 
                 @Override
