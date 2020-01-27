@@ -185,6 +185,13 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
                 }
             });
+
+            imageButtonActualizar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    actualizar(v);
+                }
+            });
             //TODO: faltan dos listener que estan directo en el xml
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
@@ -286,6 +293,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
+    }
+
+    public void actualizar(View view) {
+        onSpinnerFiltrarItemSelected(view);
+        onSpinnerFiltrarItemSelectedIPV(view);
     }
 
     @Override
@@ -441,6 +453,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 }
             }).create().show();
 
+            actualizar(v);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
@@ -557,7 +570,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                             }).create().show();
                 }
             });
-
+            actualizar(v);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
@@ -631,7 +644,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                             dialog.dismiss();
                         }
                     }).create().show();
-
+            actualizar(v);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
@@ -707,9 +720,10 @@ public class PantallaPrincipalActivity extends BaseActivity {
         }
         return false;
     }
-    private String formatDate(Date date){
+
+    private String formatDate(Date date) {
         //Esta variable lo que realiza es aumentar en uno el mes ya que comienza desde 0 = enero
-        final int mesActual = date.getMonth()+ 1;
+        final int mesActual = date.getMonth() + 1;
         //Formateo el día obtenido: antepone el 0 si son menores de 10
         String diaFormateado = (date.getDay() < 10) ? "0" + String.valueOf(date.getDay()) : String.valueOf(date.getDay());
         //Formateo el mes obtenido: antepone el 0 si son menores de 10

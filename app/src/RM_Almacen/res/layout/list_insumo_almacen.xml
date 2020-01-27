@@ -33,8 +33,8 @@
 
         <ImageButton
             android:id="@+id/entradaButton"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="fill"
             android:layout_weight="40"
             android:background="@null"
@@ -44,16 +44,15 @@
 
         <ImageButton
             android:id="@+id/salidaButton"
-            android:layout_width="@dimen/listButtons"
+            android:layout_width="40dp"
             android:layout_height="match_parent"
             android:layout_gravity="fill"
-            android:layout_marginLeft="5dp"
             android:layout_weight="40"
             android:background="@null"
             android:onClick="onSalidaRebajaClick"
             android:scaleType="fitCenter"
             android:src="@drawable/salida"
-            tools:layout_width="0dp" />
+            tools:layout_width="wrap_content" />
 
 
         <TextView

@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+
 import com.activities.R;
 import com.services.models.IpvRegistroModel;
 
@@ -70,15 +71,17 @@ public class IPVsAdapter extends ArrayAdapter<String> implements Filterable {
             holder.disponibles = (TextView) item.findViewById(R.id.editTextDisponible);
             holder.consumidos = (TextView) item.findViewById(R.id.editTextCosumido);
             holder.finals = (TextView) item.findViewById(R.id.editTextFinal);
+            holder.nombre = (TextView) item.findViewById(R.id.textViewNombre);
             item.setTag(holder);
         } else {
             holder = (ViewHolder) item.getTag();
         }
-        holder.inicio.setText(displayedObjects.get(position).getInicio()+"");
-        holder.entrada.setText(displayedObjects.get(position).getEntrada()+"");
-        holder.disponibles.setText(displayedObjects.get(position).getDisponible()+"");
-        holder.consumidos.setText(displayedObjects.get(position).getConsumo()+"");
-        holder.finals.setText(displayedObjects.get(position).getFinal1()+"");
+        holder.inicio.setText(displayedObjects.get(position).getInicio() + "");
+        holder.entrada.setText(displayedObjects.get(position).getEntrada() + "");
+        holder.disponibles.setText(displayedObjects.get(position).getDisponible() + "");
+        holder.consumidos.setText(displayedObjects.get(position).getConsumo() + "");
+        holder.finals.setText(displayedObjects.get(position).getFinal1() + "");
+        holder.nombre.setText(displayedObjects.get(position).getIpvRegistroPK().getIpvinsumocodInsumo());
         return (item);
     }
 
@@ -128,7 +131,7 @@ public class IPVsAdapter extends ArrayAdapter<String> implements Filterable {
                     for (IpvRegistroModel i : objects) {
                         String data = i.getIpvRegistroPK().getIpvinsumocodInsumo();
                         if (data.toLowerCase().contains(constraint.toString())) {
-                           filteredArrList.add(i);
+                            filteredArrList.add(i);
                         }
                     }
                     // set the Filtered result to return
@@ -150,6 +153,7 @@ public class IPVsAdapter extends ArrayAdapter<String> implements Filterable {
                 entrada,
                 disponibles,
                 consumidos,
-                finals;
+                finals,
+                nombre;
     }
 }
