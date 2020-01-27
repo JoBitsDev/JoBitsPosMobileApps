@@ -8,10 +8,9 @@ package com.services.models;
 import java.io.Serializable;
 
 /**
- *
  * @author Jorge
  */
-public class ProductoVentaModel implements Serializable,Comparable<ProductoVentaModel> {
+public class ProductoVentaModel implements Serializable, Comparable<ProductoVentaModel> {
 
     private static final long serialVersionUID = 1L;
     private String pCod;
@@ -19,31 +18,14 @@ public class ProductoVentaModel implements Serializable,Comparable<ProductoVenta
     private float precioVenta;
     private String descripcion;
     private float cantidad = 1;
+    private String seccionnombreSeccion;
 
     public ProductoVentaModel() {
-    }
-
-    public ProductoVentaModel(String pCod) {
-        this.pCod = pCod;
-    }
-
-    public ProductoVentaModel(String pCod, String nombre, float precioVenta) {
-        this.pCod = pCod;
-        this.nombre = nombre;
-        this.precioVenta = precioVenta;
-    }
-
-    public ProductoVentaModel(String cocinacodCocina, String nombre, String pCod,
-                              float precioVenta, String seccionnombreSeccion) {
-        this.nombre = nombre;
-        this.pCod = pCod;
-        this.precioVenta = precioVenta;
     }
 
     public void setCantidad(float cantidad) {
         this.cantidad = cantidad;
     }
-
 
     public String getPCod() {
         return pCod;
@@ -79,6 +61,14 @@ public class ProductoVentaModel implements Serializable,Comparable<ProductoVenta
 
     public float getCantidad() {
         return cantidad;
+    }
+
+    public String getSeccionnombreSeccion() {
+        return seccionnombreSeccion;
+    }
+
+    public void setSeccionnombreSeccion(String seccionnombreSeccion) {
+        this.seccionnombreSeccion = seccionnombreSeccion;
     }
 
     @Override
