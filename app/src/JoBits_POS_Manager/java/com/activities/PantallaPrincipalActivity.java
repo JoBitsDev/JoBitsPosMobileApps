@@ -224,18 +224,44 @@ public class PantallaPrincipalActivity extends BaseActivity {
     }
 
     private boolean onTabChangeTouchEvent(MotionEvent event) {
-        float currentX = 0;
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                lastX = event.getX();
-                break;
-            case MotionEvent.ACTION_UP:
-                currentX = event.getX();
-                boolean dirRight = Math.abs(lastX - currentX) > 200;
-                switchTab(dirRight);
-                break;
+        try {
+            float currentX = 0;
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    lastX = event.getX();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    currentX = event.getX();
+                    boolean dirRight = false;
+                    if (Math.abs(lastX - currentX) > 200) {//mayor derecha menor izquierda
+                        dirRight = true;
+                    }
+                    switchTab(dirRight);
+                    return dirRight;
+            }
+            return false;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+            return false;
         }
         return false;
+    }
+
+    private boolean switchTab(boolean change) {
+        try {
+            if (host.getCurrentTab() == 3 && change == true || host.getCurrentTab() == 0 && change == false) {
+            } else {
+                if (change == true) {
+                    host.setCurrentTab(host.getCurrentTab() + 1);
+                } else {
+                    host.setCurrentTab(host.getCurrentTab() - 1);
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+            return false;
+        }
     }
 
     @Override
