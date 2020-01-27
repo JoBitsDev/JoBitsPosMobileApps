@@ -106,7 +106,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
             userText = (TextView) findViewById(R.id.textUser);
             userText.setText(getBundle().getString(String.valueOf(R.string.user)));
             pickDate = (TextView) findViewById(R.id.textViewFechaServidor);
-            pickDate.setText(formatDate(ipvRegistroModelList.get(0).getIpvRegistroPK().getFecha()));
 
             controller = new PantallaPrincipalController(userText.getText().toString());
             searchText = (EditText) findViewById(R.id.editText);
@@ -119,7 +118,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
             spinnerFiltrar = (Spinner) findViewById(R.id.filtrarBy);
             spinnerFiltrarIPV = (Spinner) findViewById(R.id.filtrarByIPV);
             ipvRegistroModelList = new ArrayList<IpvRegistroModel>();
-
             initTab();
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
@@ -241,6 +239,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
                 @Override
                 public void post(AlmacenInsumoAdapter answer) {
+                    obtenerFecha();
                     listView.setAdapter(answer);
                 }
             });
@@ -269,15 +268,30 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 @Override
                 public IPVsAdapter process() throws Exception {
                     return controller.getIPVAdapter(act, R.id.listViewIPVs, spinnerFiltrarIPV.getSelectedItem().toString());
+
                 }
 
                 @Override
                 public void post(IPVsAdapter answer) {
                     listViewIPV.setAdapter(answer);
+                    obtenerFecha();
                 }
             });
         }
     }
+ private void obtenerFecha(){
+         new LoadingHandler<Date>(act, new LoadingProcess<Date>() {
+             @Override
+             public Date process() throws Exception {
+                return controller.getIPVRegistro(spinnerFiltrarIPV.getSelectedItem().toString()).get(0).getIpvRegistroPK().getFecha();
+             }
+
+             @Override
+             public void post(Date answer) {
+                 pickDate.setText(formatDate(answer));
+             }
+         });
+ }
 
     @Override
     protected void setAdapters() {
@@ -715,7 +729,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         String diaFormateado = (date.getDay() < 10) ? "0" + String.valueOf(date.getDay()) : String.valueOf(date.getDay());
         //Formateo el mes obtenido: antepone el 0 si son menores de 10
         String mesFormateado = (mesActual < 10) ? "0" + String.valueOf(mesActual) : String.valueOf(mesActual);
-        return diaFormateado + "/" + mesFormateado + "/" + date.getYear();
+        return diaFormateado + "/" + mesFormateado + "/" + (date.getYear()+1900);
     }
 
     private boolean onTabChangeTouchEvent(MotionEvent event) {

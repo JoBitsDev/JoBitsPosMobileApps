@@ -161,4 +161,7 @@ public class PantallaPrincipalController extends BaseController {
     public IPVsAdapter getIPVAdapter(Context c, int ipvRegisro, String codCocina) throws Exception {
         return new IPVsAdapter(c, ipvRegisro, almacenWCS.getIPVRegistro(codCocina));
     }
+    public List<IpvRegistroModel> getIPVRegistro(String codCocina) throws Exception {
+        return almacenWCS.getIPVRegistro(codCocina);
+    }
 }

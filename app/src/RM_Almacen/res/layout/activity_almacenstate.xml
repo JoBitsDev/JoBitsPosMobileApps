@@ -176,6 +176,7 @@
                             android:clickable="false"
                             android:gravity="center"
                             android:hint="@string/formato_fecha"
+                            android:textColor="@color/texto_primario"
                             android:textColorHint="@color/texto_primario"
                             android:textSize="@dimen/textSizeMedium" />
 
