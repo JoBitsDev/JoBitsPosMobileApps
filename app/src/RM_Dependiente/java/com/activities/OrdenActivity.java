@@ -392,8 +392,8 @@ public class OrdenActivity extends BaseActivity {
 
                 new LoadingHandler<List<ProductoVentaOrdenModel>>(act, new LoadingProcess<List<ProductoVentaOrdenModel>>() {
                     @Override
-                    public List<ProductoVentaOrdenModel> process() {
-                        return controller.starService(codOrden, mesa, dependiente).getProductoVentaOrden(codOrden);
+                    public List<ProductoVentaOrdenModel> process() throws Exception {
+                        return controller.starService(codOrden, mesa).getProductoVentaOrden(codOrden);
                     }
 
                     @Override
@@ -473,7 +473,7 @@ public class OrdenActivity extends BaseActivity {
     private void initMenu(final String codMesa) {
         new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
             @Override
-            public Void process() {
+            public Void process() throws Exception {
                 secciones = controller.getSecciones();
                 productos = controller.getProductos(codMesa);
                 return null;
@@ -738,7 +738,7 @@ public class OrdenActivity extends BaseActivity {
     public void moverAMesa() {//TODO: terminar esto
         new LoadingHandler<String[]>(act, new LoadingProcess<String[]>() {
             @Override
-            public String[] process() {
+            public String[] process() throws Exception {
                 return controller.getMesas();
             }
 
