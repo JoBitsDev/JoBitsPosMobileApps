@@ -44,9 +44,9 @@ public class ProductoVentaOrdenReadOnlyAdapter extends ArrayAdapter<ProductoVent
             holder = (ViewHolder) item.getTag();
         }
         holder.precioVenta.setTextColor(c);
-        holder.nombreProducto.setText(objects.get(position).getProductoVentaModel().getNombre());
+        holder.nombreProducto.setText(objects.get(position).getProductoVenta().getNombre());
         holder.precioVenta.setText(String.valueOf(
-                objects.get(position).getProductoVentaModel().getPrecioVenta() *
+                objects.get(position).getProductoVenta().getPrecioVenta() *
                         objects.get(position).getCantidad()));
         holder.cantidad.setText(String.valueOf(objects.get(position).getCantidad()));
         return (item);

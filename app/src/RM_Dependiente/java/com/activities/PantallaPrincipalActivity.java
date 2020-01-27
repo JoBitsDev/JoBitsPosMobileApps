@@ -160,8 +160,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void continuar(final MesaModel m) throws NoExistingException {
-        try {
+    private void continuar(final MesaModel m) {
             final Bundle data = new Bundle();
             data.putString(String.valueOf(R.string.mesa), m.getCodMesa());
 
@@ -228,10 +227,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
                     }
                 }
             });
-
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, act);
-        }
     }
 
     public void onCambiarAreaButtonClick(View view) {//Cambia de area

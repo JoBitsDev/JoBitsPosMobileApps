@@ -18,7 +18,7 @@ public class ProductoVentaOrdenModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Float enviadosACocina;
+    private Float enviadosacocina;
 
     @JsonProperty("productovOrdenPK")
     protected ProductovOrdenPKModel productovOrdenPKModel;
@@ -27,7 +27,7 @@ public class ProductoVentaOrdenModel implements Serializable {
 
     @JsonBackReference
     private OrdenModel ordenModel;
-    private ProductoVentaModel productoVentaModel;
+    private ProductoVentaModel productoVenta;
     private int numeroComensal;
 
 
@@ -79,12 +79,12 @@ public class ProductoVentaOrdenModel implements Serializable {
         this.ordenModel = ordenModel;
     }
 
-    public ProductoVentaModel getProductoVentaModel() {
-        return productoVentaModel;
+    public ProductoVentaModel getProductoVenta() {
+        return productoVenta;
     }
 
-    public void setProductoVentaModel(ProductoVentaModel productoVentaModel) {
-        this.productoVentaModel = productoVentaModel;
+    public void setProductoVenta(ProductoVentaModel productoVenta) {
+        this.productoVenta = productoVenta;
     }
 
 
@@ -102,7 +102,7 @@ public class ProductoVentaOrdenModel implements Serializable {
             return false;
         }
         ProductoVentaOrdenModel other = (ProductoVentaOrdenModel) object;
-        if (productoVentaModel.getPCod().equals(other.getProductoVentaModel().getPCod()) && ordenModel.getCodOrden().equals(other.getOrdenModel().getCodOrden())) {
+        if (productoVenta.getPCod().equals(other.getProductoVenta().getPCod()) && ordenModel.getCodOrden().equals(other.getOrdenModel().getCodOrden())) {
             return true;
         }
         return false;
@@ -113,12 +113,12 @@ public class ProductoVentaOrdenModel implements Serializable {
         return "com.restManager.ProductoVentaOrdenModel[ productovOrdenPKModel=" + productovOrdenPKModel + " ]";
     }
 
-    public Float getEnviadosACocina() {
-        return enviadosACocina;
+    public Float getEnviadosacocina() {
+        return enviadosacocina;
     }
 
-    public void setEnviadosACocina(Float enviadosACocina) {
-        this.enviadosACocina = enviadosACocina;
+    public void setEnviadosacocina(Float enviadosacocina) {
+        this.enviadosacocina = enviadosacocina;
     }
 
 

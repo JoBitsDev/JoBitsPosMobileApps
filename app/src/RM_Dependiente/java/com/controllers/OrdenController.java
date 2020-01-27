@@ -1,6 +1,5 @@
 package com.controllers;
 
-import com.services.models.MesaModel;
 import com.services.models.ProductoVentaModel;
 import com.services.models.ProductoVentaOrdenModel;
 import com.services.models.SeccionModel;
@@ -12,8 +11,6 @@ import com.services.web_connections.SeccionWCS;
 import com.utils.EnvironmentVariables;
 import com.utils.adapters.ProductoVentaOrdenAdapter;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -68,15 +65,15 @@ public class OrdenController extends BaseController {
     }
 
     public String getNota(ProductoVentaOrdenModel pVO) throws Exception {
-        return ordenWCService.getNota(pVO.getProductoVentaModel().getPCod());
+        return ordenWCService.getNota(pVO.getProductoVenta().getPCod());
     }
 
     public String getComensal(ProductoVentaOrdenModel pVO) throws Exception {
-        return ordenWCService.getComensal(pVO.getProductoVentaModel().getPCod());
+        return ordenWCService.getComensal(pVO.getProductoVenta().getPCod());
     }
 
     public boolean addComensal(ProductoVentaOrdenModel pVO, String comensal) throws Exception {
-        return ordenWCService.addComensal(pVO.getProductoVentaModel().getPCod(), comensal);
+        return ordenWCService.addComensal(pVO.getProductoVenta().getPCod(), comensal);
     }
 
     public boolean moverAMesa(String codMesa) throws Exception {

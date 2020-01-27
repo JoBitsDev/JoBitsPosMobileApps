@@ -17,14 +17,9 @@ public class ProductoVentaModel implements Serializable, Comparable<ProductoVent
     private String nombre;
     private float precioVenta;
     private String descripcion;
-    private float cantidad = 1;
-    private String seccionnombreSeccion;
+    private SeccionModel seccionnombreSeccion;
 
     public ProductoVentaModel() {
-    }
-
-    public void setCantidad(float cantidad) {
-        this.cantidad = cantidad;
     }
 
     public String getPCod() {
@@ -47,6 +42,14 @@ public class ProductoVentaModel implements Serializable, Comparable<ProductoVent
         return precioVenta;
     }
 
+    public String getpCod() {
+        return pCod;
+    }
+
+    public void setpCod(String pCod) {
+        this.pCod = pCod;
+    }
+
     public void setPrecioVenta(float precioVenta) {
         this.precioVenta = precioVenta;
     }
@@ -59,15 +62,11 @@ public class ProductoVentaModel implements Serializable, Comparable<ProductoVent
         this.descripcion = descripcion;
     }
 
-    public float getCantidad() {
-        return cantidad;
-    }
-
-    public String getSeccionnombreSeccion() {
+    public SeccionModel getSeccionnombreSeccion() {
         return seccionnombreSeccion;
     }
 
-    public void setSeccionnombreSeccion(String seccionnombreSeccion) {
+    public void setSeccionnombreSeccion(SeccionModel seccionnombreSeccion) {
         this.seccionnombreSeccion = seccionnombreSeccion;
     }
 
@@ -98,13 +97,5 @@ public class ProductoVentaModel implements Serializable, Comparable<ProductoVent
     @Override
     public int compareTo(ProductoVentaModel another) {
         return nombre.compareToIgnoreCase(another.nombre);
-    }
-
-    public void increaceAmount() {
-        cantidad++;
-    }
-
-    public void decreaseAmmount() {
-        cantidad--;
     }
 }

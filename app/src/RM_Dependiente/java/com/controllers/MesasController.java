@@ -41,8 +41,8 @@ public class MesasController extends BaseController {
         return adaptador;
     }
 
-    public void starService(String codMesa) throws Exception {
-        ordenWCService = new OrdenWCS(codMesa, user);
+    public void starService(String codMesa) {
+        ordenWCService = new OrdenWCS(codMesa);
     }
 
     public void setCodOrden(String cod_orden) {

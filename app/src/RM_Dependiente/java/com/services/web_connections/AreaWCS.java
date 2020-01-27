@@ -14,7 +14,7 @@ public class AreaWCS extends SimpleWebConnectionService {
     /**
      * Etiquetas a llamar.
      */
-    final String FIND_VACIAS = "FIND_VACIAS",
+    final String FIND_VACIAS = "FIND-VACIAS",
             FIND_ALL = "FIND-ALL",
             FIND_ALL_MESAS_AREA = "FIND-ALL-MESAS-AREA";
 

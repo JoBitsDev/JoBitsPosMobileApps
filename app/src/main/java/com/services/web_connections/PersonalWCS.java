@@ -38,9 +38,8 @@ public class PersonalWCS extends SimpleWebConnectionService {
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public String[] getPersonalTrabajando() throws Exception {
-        String[] result = {};
         String URL = path + PERSONAL_TRABAJANDO;
-        String ret = connect(URL, null, super.TOKEN, HTTPMethod.POST);
+        String resp = connect(URL, null, super.TOKEN, HTTPMethod.GET);
         return om.readValue(resp, om.getTypeFactory().constructArrayType(String.class));
     }
 }

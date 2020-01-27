@@ -20,7 +20,7 @@ public class OrdenWCS extends SimpleWebConnectionService {
             FINISH = "FINISH",
             SET_DE_LA_CASA = "SET-DE-LA-CASA",
             ENVIAR_COCINA = "ENVIAR-COCINA",
-            MOVER_MESA = "MOVER-MESA",
+            MOVER_MESA = "MOVER-A-MESA",
             ADD_NOTA = "ADD-NOTA",
             GET_NOTA = "GET-NOTA",
             ADD_COMENSAL = "ADD-COMENSAL",
@@ -50,7 +50,7 @@ public class OrdenWCS extends SimpleWebConnectionService {
 
     public String fetchCodOrden() throws Exception {
         String resp = connect(path + FETCH_NO_ORDEN, null, super.TOKEN, HTTPMethod.GET);
-        return this.codOrden = om.readValue(resp, om.getTypeFactory().constructArrayType(String.class));
+        return this.codOrden = om.readValue(resp, String.class);
     }
 
     public boolean initOrden() throws Exception {
@@ -130,13 +130,13 @@ public class OrdenWCS extends SimpleWebConnectionService {
     public String getNota(String pCod) throws Exception {
         String URL = path + GET_NOTA + "?codOrden=" + this.codOrden + "&codProd=" + pCod;
         String resp = connect(URL, null, super.TOKEN, HTTPMethod.GET);
-        return om.readValue(resp, om.getTypeFactory().constructArrayType(String.class));
+        return om.readValue(resp, String.class);
     }
 
     public String getComensal(String pCod) throws Exception {
-        String URL = path + GET_COMENSAL + "?codProd=" + this.codOrden + "?codProd=" + pCod;
+        String URL = path + GET_COMENSAL + "?codOrden=" + this.codOrden + "&codProd=" + pCod;
         String resp = connect(URL, null, super.TOKEN, HTTPMethod.GET);
-        return om.readValue(resp, om.getTypeFactory().constructArrayType(String.class));
+        return om.readValue(resp, String.class);
     }
 
     public boolean addComensal(String pCod, String comensal) throws Exception {
