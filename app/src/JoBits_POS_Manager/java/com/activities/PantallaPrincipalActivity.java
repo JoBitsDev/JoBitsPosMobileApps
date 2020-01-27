@@ -270,10 +270,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
     private boolean switchTab(boolean change) {
         try {
-            if (host.getCurrentTab() == 3 && change == true) {
-                host.setCurrentTab(0);
-            } else if (host.getCurrentTab() == 0 && change == false) {
-                host.setCurrentTab(3);
+            if (host.getCurrentTab() == 3 && change == true || host.getCurrentTab() == 0 && change == false) {
             } else {
                 if (change) {
                     host.setCurrentTab(host.getCurrentTab() + 1);
