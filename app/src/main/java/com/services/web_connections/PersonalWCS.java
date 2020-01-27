@@ -1,12 +1,8 @@
 package com.services.web_connections;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.utils.exception.*;
 
-import java.lang.reflect.Array;
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Capa: Services.
@@ -27,7 +23,7 @@ public class PersonalWCS extends SimpleWebConnectionService {
     /**
      * Peticion al servidor
      */
-    private String usuariosActivos = "MOSTRAR_PERSONAL_TRABAJANDO";
+    private String PERSONAL_TRABAJANDO = "MOSTRAR-PERSONAL-TRABAJANDO";
 
     public PersonalWCS() {
         super();
@@ -41,11 +37,10 @@ public class PersonalWCS extends SimpleWebConnectionService {
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public String[] getUsuariosActivos() throws Exception {
+    public String[] getPersonalTrabajando() throws Exception {
         String[] result = {};
-        String URL = path + usuariosActivos;
+        String URL = path + PERSONAL_TRABAJANDO;
         String ret = connect(URL, null, super.TOKEN, HTTPMethod.POST);
-        List<String> list = om.readValue(ret, om.getTypeFactory().constructCollectionType(List.class, String.class));
-        return (String[]) list.toArray();
+        return om.readValue(resp, om.getTypeFactory().constructArrayType(String.class));
     }
 }
