@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.activities.R;
 import com.services.models.DpteListModel;
+import com.utils.EnvironmentVariables;
 
 import java.util.List;
 
@@ -55,9 +56,9 @@ public class DependientesAdapter extends ArrayAdapter<DpteListModel> {
             holder = (ViewHolder) item.getTag();
         }
         holder.usuario.setText(dpteListModels.get(position).getUsuario());
-        holder.ordenesAtendidas.setText(dpteListModels.get(position).getOrdenesAtendidas()+"");
-        holder.monto.setText(dpteListModels.get(position).getMonto()+"");
-        holder.pagoVenta.setText(dpteListModels.get(position).getPagoPorVentas()+"");
+        holder.ordenesAtendidas.setText(dpteListModels.get(position).getOrdenesAtendidas() + "");
+        holder.monto.setText(dpteListModels.get(position).getMonto() + EnvironmentVariables.MONEDA_PRINCIPAL);
+        holder.pagoVenta.setText(dpteListModels.get(position).getPagoPorVentas() + EnvironmentVariables.MONEDA_PRINCIPAL);
         return (item);
     }
 

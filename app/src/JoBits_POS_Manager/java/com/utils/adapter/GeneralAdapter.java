@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.activities.R;
 import com.services.models.VentaResumenModel;
+import com.utils.EnvironmentVariables;
 
 import java.util.List;
 
@@ -56,12 +57,12 @@ public class GeneralAdapter extends ArrayAdapter<VentaResumenModel> {
         } else {
             holder = (ViewHolder) item.getTag();
         }
-        holder.ventaNeta.setText(ventaResumen.get(position).getVentaNeta() + "");
-        holder.total.setText(ventaResumen.get(position).getVentaTotal() + "");
-        holder.autorizos.setText(ventaResumen.get(position).getAutorizos() + "");
-        holder.salarios.setText(ventaResumen.get(position).getGastosSalario() + "");
-        holder.insumos.setText(ventaResumen.get(position).getGastosInsumo() + "");
-        holder.otros.setText(ventaResumen.get(position).getGastosOtros() + "");
+        holder.ventaNeta.setText(ventaResumen.get(position).getVentaNeta() + EnvironmentVariables.MONEDA_PRINCIPAL);
+        holder.total.setText(ventaResumen.get(position).getVentaTotal() + EnvironmentVariables.MONEDA_PRINCIPAL);
+        holder.autorizos.setText(ventaResumen.get(position).getAutorizos() + EnvironmentVariables.MONEDA_PRINCIPAL);
+        holder.salarios.setText(ventaResumen.get(position).getGastosSalario() + EnvironmentVariables.MONEDA_PRINCIPAL);
+        holder.insumos.setText(ventaResumen.get(position).getGastosInsumo() + EnvironmentVariables.MONEDA_PRINCIPAL);
+        holder.otros.setText(ventaResumen.get(position).getGastosOtros() + EnvironmentVariables.MONEDA_PRINCIPAL);
         return (item);
     }
 

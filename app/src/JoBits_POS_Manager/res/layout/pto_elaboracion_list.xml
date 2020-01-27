@@ -15,7 +15,7 @@
             android:layout_weight="20"
             android:orientation="horizontal">
 
-            <EditText
+            <TextView
                 android:id="@+id/editTextNombrePto"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
                 android:textColorHint="@color/texto_secundario"
                 android:textSize="@dimen/textSizeLarge" />
 
-            <EditText
+            <TextView
                 android:id="@+id/editTextCodigoPto"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -56,9 +56,9 @@
             android:gravity="center"
             android:text="Monto"
             android:textColor="@color/primario"
-            android:textSize="@dimen/textSizeMedium" />
+            android:textSize="@dimen/textSizeNormal" />
 
-        <EditText
+        <TextView
             android:id="@+id/editTextMontoPto"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
