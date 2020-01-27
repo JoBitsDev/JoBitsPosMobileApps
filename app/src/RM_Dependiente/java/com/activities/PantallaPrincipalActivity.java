@@ -61,7 +61,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             if (restNameLabel != null) {
                 new LoadingHandler<String>(act, new LoadingProcess<String>() {
                     @Override
-                    public String process() {
+                    public String process() throws Exception {
                         return controller.getNombreRest();
                     }
 
@@ -165,60 +165,69 @@ public class PantallaPrincipalActivity extends BaseActivity {
             final Bundle data = new Bundle();
             data.putString(String.valueOf(R.string.mesa), m.getCodMesa());
 
-            controller.starService(m.getCodMesa());
+            new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+                @Override
+                public Void process() throws Exception {
+                    controller.starService(m.getCodMesa());
+                    return null;
+                }
 
-            if (!m.getEstado().equals(EnvironmentVariables.ESTADO_MESA_VACIA)) {
+                @Override
+                public void post(Void value) {
+                    if (!m.getEstado().equals(EnvironmentVariables.ESTADO_MESA_VACIA)) {
 
-                final String cod_orden = m.getEstado().split(" ")[0];
-                data.putString(String.valueOf(R.string.user), m.getUsuario());
+                        final String cod_orden = m.getEstado().split(" ")[0];
+                        data.putString(String.valueOf(R.string.user), m.getUsuario());
 
-                controller.setCodOrden(cod_orden);
+                        controller.setCodOrden(cod_orden);
 
-                new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
-                    @Override
-                    public Boolean process() throws Exception {
-                        boolean res = controller.validate();
-                        if (!res) {
-                            throw new NoExistingException("La orden a acceder ya no se encuentra abierta");
-                        }
-                        return res;
-                    }
-
-                    @Override
-                    public void post(Boolean value) {
-                        if (value) {
-                            data.putString(String.valueOf(R.string.cod_Orden), cod_orden);
-
-                            if (!controller.getUser().equals(m.getUsuario())) {//si no es el usuario pide confirmacion
-                                AlertDialog.Builder builder = new AlertDialog.Builder(act);
-                                builder.setMessage("La mesa que quiere acceder " +
-                                        "la esta atendiendo otro camarero");
-                                builder.setNegativeButton("No entrar", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {//no entrar
-                                        dialog.dismiss();
-                                    }
-                                });
-                                builder.setPositiveButton("Entrar en modo solo lectura", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {//entrar en solo lectura
-                                        entrarSoloLectura(data);
-                                    }
-                                });
-                                builder.show();
-
-                            } else {
-                                data.putString(String.valueOf(R.string.user), controller.getUser());
-                                entrarMiOrden(data);
+                        new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
+                            @Override
+                            public Boolean process() throws Exception {
+                                boolean res = controller.validate();
+                                if (!res) {
+                                    throw new NoExistingException("La orden a acceder ya no se encuentra abierta");
+                                }
+                                return res;
                             }
-                        }
-                    }
-                });
 
-            } else {//es el usuario
-                data.putString(String.valueOf(R.string.user), controller.getUser());
-                entrarMiOrden(data);
-            }
+                            @Override
+                            public void post(Boolean value) {
+                                if (value) {
+                                    data.putString(String.valueOf(R.string.cod_Orden), cod_orden);
+
+                                    if (!controller.getUser().equals(m.getUsuario())) {//si no es el usuario pide confirmacion
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(act);
+                                        builder.setMessage("La mesa que quiere acceder " +
+                                                "la esta atendiendo otro camarero");
+                                        builder.setNegativeButton("No entrar", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {//no entrar
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                        builder.setPositiveButton("Entrar en modo solo lectura", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {//entrar en solo lectura
+                                                entrarSoloLectura(data);
+                                            }
+                                        });
+                                        builder.show();
+
+                                    } else {
+                                        data.putString(String.valueOf(R.string.user), controller.getUser());
+                                        entrarMiOrden(data);
+                                    }
+                                }
+                            }
+                        });
+
+                    } else {//es el usuario
+                        data.putString(String.valueOf(R.string.user), controller.getUser());
+                        entrarMiOrden(data);
+                    }
+                }
+            });
 
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
