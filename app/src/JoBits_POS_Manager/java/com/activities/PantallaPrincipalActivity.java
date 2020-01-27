@@ -188,7 +188,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
      * Método para actualizar las listas de datos.
      */
 
-    public void actualizar(final String fecha){
+    public void actualizar(final String fecha) {
         new LoadingHandler<VentaResumenModel>(act, new LoadingProcess<VentaResumenModel>() {
             @Override
             public VentaResumenModel process() throws Exception {
@@ -257,7 +257,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                     break;
                 case MotionEvent.ACTION_UP:
                     currentX = event.getX();
-                    boolean dirRight = Math.abs(lastX - currentX) > 200;
+                    boolean dirRight = Math.abs(lastX - currentX) > 200;//mayor derecha menor izquierda
                     switchTab(dirRight);
                     return dirRight;
             }
@@ -270,11 +270,15 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
     private boolean switchTab(boolean change) {
         try {
-            if (change) {
-                if (host.getCurrentTab() == 1) {
-                    host.setCurrentTab(0);
+            if (host.getCurrentTab() == 3 && change == true) {
+                host.setCurrentTab(0);
+            } else if (host.getCurrentTab() == 0 && change == false) {
+                host.setCurrentTab(3);
+            } else {
+                if (change) {
+                    host.setCurrentTab(host.getCurrentTab() + 1);
                 } else {
-                    host.setCurrentTab(1);
+                    host.setCurrentTab(host.getCurrentTab() - 1);
                 }
             }
             return true;
@@ -283,6 +287,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             return false;
         }
     }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
@@ -308,7 +313,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
         }, año, mes, dia);
         recogerFecha.show();
     }
-    private String formatDate(){
+
+    private String formatDate() {
         //Esta variable lo que realiza es aumentar en uno el mes ya que comienza desde 0 = enero
         final int mesActual = mes + 1;
         //Formateo el día obtenido: antepone el 0 si son menores de 10
