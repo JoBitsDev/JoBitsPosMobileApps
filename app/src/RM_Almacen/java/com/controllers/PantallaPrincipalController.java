@@ -2,15 +2,15 @@ package com.controllers;
 
 import android.content.Context;
 
-import com.activities.BaseActivity;
+import com.services.models.IpvRegistroModel;
 import com.services.web_connections.*;
 import com.services.models.InsumoAlmacenModel;
 import com.utils.adapters.AlmacenInsumoAdapter;
+import com.utils.adapters.IPVsAdapter;
 import com.utils.exception.NoConnectionException;
 import com.utils.exception.ServerErrorException;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Capa: Controllers
@@ -23,7 +23,7 @@ public class PantallaPrincipalController extends BaseController {
     /**
      * WCS del almacen.
      */
-    AlmacenWebConnectionService almacenWCService;
+    AlmacenWCS almacenWCS;
 
     /**
      * Constructor de la clase.
@@ -31,7 +31,7 @@ public class PantallaPrincipalController extends BaseController {
      * @param usuario para conocer el que hace las operaciones.
      */
     public PantallaPrincipalController(String usuario) {
-        almacenWCService = new AlmacenWebConnectionService(usuario, null);
+        almacenWCS = new AlmacenWCS(usuario, null);
     }
 
     /**
@@ -42,7 +42,7 @@ public class PantallaPrincipalController extends BaseController {
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public boolean imprimirTicketCompra() throws Exception {
-        return almacenWCService.imprimirTicketCompra();
+        return almacenWCS.imprimirTicketCompra();
     }
 
     /**
@@ -53,7 +53,7 @@ public class PantallaPrincipalController extends BaseController {
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public boolean imprimirEstadoActualAlmacen() throws Exception {
-        return almacenWCService.imprimirEstadoActualAlmacen();
+        return almacenWCS.imprimirEstadoActualAlmacen();
     }
 
     /**
@@ -66,7 +66,7 @@ public class PantallaPrincipalController extends BaseController {
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public void darEntrada(InsumoAlmacenModel i, float cantidad, float monto) throws Exception {
-        almacenWCService.darEntrada(i, cantidad, monto);
+        almacenWCS.darEntrada(i, cantidad, monto);
     }
 
     /**
@@ -79,7 +79,7 @@ public class PantallaPrincipalController extends BaseController {
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public void darSalida(InsumoAlmacenModel i, float cantidad, String codPtoElaboracion) throws Exception {
-        almacenWCService.darSalida(i, cantidad, codPtoElaboracion);
+        almacenWCS.darSalida(i, cantidad, codPtoElaboracion);
     }
 
     /**
@@ -92,7 +92,7 @@ public class PantallaPrincipalController extends BaseController {
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public void rebajar(InsumoAlmacenModel i, float cantidad, String razon) throws Exception {
-        almacenWCService.rebajar(i, cantidad, razon);
+        almacenWCS.rebajar(i, cantidad, razon);
     }
 
     /**
@@ -103,7 +103,7 @@ public class PantallaPrincipalController extends BaseController {
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public List<InsumoAlmacenModel> getPrimerAlmacen() throws Exception {
-        return almacenWCService.getPrimerAlmacen();
+        return almacenWCS.getPrimerAlmacen();
     }
 
     /**
@@ -115,7 +115,7 @@ public class PantallaPrincipalController extends BaseController {
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public String[] getCocinasNamesForIPV(String codInsumo) throws Exception {
-        return almacenWCService.getCocinasNamesForIPV(codInsumo);
+        return almacenWCS.getCocinasNamesForIPV(codInsumo);
     }
 
     /**
@@ -126,7 +126,7 @@ public class PantallaPrincipalController extends BaseController {
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public String[] getCocinasNames() throws Exception {
-        return new CocinaWebConnection().getCocinasNames();
+        return new CocinaWCS().getCocinasNames();
     }
 
     /**
@@ -135,8 +135,8 @@ public class PantallaPrincipalController extends BaseController {
      * @param codPtoElaboracion Codigo del punto de elaboracion.
      * @return Lista con los insumos filtrados.
      */
-    public List<InsumoAlmacenModel> filterBy(String codPtoElaboracion) {
-        return almacenWCService.filterBy(codPtoElaboracion);
+    public List<InsumoAlmacenModel> filterBy(String codPtoElaboracion) throws Exception {
+        return almacenWCS.filterBy(codPtoElaboracion);
     }
 
     /**
@@ -152,7 +152,16 @@ public class PantallaPrincipalController extends BaseController {
         return new AlmacenInsumoAdapter(c, listaInsumos, getPrimerAlmacen());
     }
 
-    public AlmacenInsumoAdapter getAdapter(Context c, int listaInsumos,String filtros) throws Exception {
+    public AlmacenInsumoAdapter getAdapter(Context c, int listaInsumos, String filtros) throws Exception {
         return new AlmacenInsumoAdapter(c, listaInsumos, filterBy(filtros));
+    }
+    public IPVsAdapter getIPVAdapter(Context c, int ipvRegisro) throws Exception {
+        return new IPVsAdapter(c, ipvRegisro, almacenWCS.getIPVRegistro(""));
+    }
+    public IPVsAdapter getIPVAdapter(Context c, int ipvRegisro, String codCocina) throws Exception {
+        return new IPVsAdapter(c, ipvRegisro, almacenWCS.getIPVRegistro(codCocina));
+    }
+    public List<IpvRegistroModel> getIPVRegistro(String codCocina) throws Exception {
+        return almacenWCS.getIPVRegistro(codCocina);
     }
 }

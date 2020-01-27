@@ -173,7 +173,7 @@ public class MainActivity extends BaseActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
-                }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
+                }).setPositiveButton(R.string.agregar_ubicacion, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 controller.agregarUbicacion(input.getText().toString());

@@ -8,10 +8,17 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 
+import com.services.models.IpvRegistroModel;
 import com.utils.adapters.*;
 import com.utils.exception.ExceptionHandler;
 import com.services.models.InsumoAlmacenModel;
 import com.controllers.PantallaPrincipalController;
+import com.utils.loading.LoadingHandler;
+import com.utils.loading.LoadingProcess;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Capa: Activities
@@ -30,16 +37,17 @@ public class PantallaPrincipalActivity extends BaseActivity {
      * Lista que muestra los productos en el almacen.
      */
     private ListView listView;
+    private ListView listViewIPV;
 
     /**
      * Textos con el usuario y el almacen
      */
-    private TextView userText, almacenText;
+    private TextView userText, almacenText, pickDate;
 
     /**
      * Cuadro de texto de busqueda.
      */
-    private EditText searchText;
+    private EditText searchText, searchTextIPV;
 
     /**
      * Radio Button para darle salida a producto.
@@ -56,12 +64,20 @@ public class PantallaPrincipalActivity extends BaseActivity {
     /**
      * Spinner para filtrar por cocina.
      */
-    private Spinner spinnerFiltrar;
+    private Spinner spinnerFiltrar, spinnerFiltrarIPV;
 
     /**
      * Adapter para el filtro.
      */
     private FilterAdapter filterAdapter;
+    private FilterAdapterIPV filterAdapterIPV;
+
+    private AlmacenInsumoAdapter almacenInsumoAdapter;
+    private IPVsAdapter ipVsAdapter;
+    private ImageButton imageButtonActualizar;
+    private TabHost host;
+    private float lastX;
+    List<IpvRegistroModel> ipvRegistroModelList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,19 +100,25 @@ public class PantallaPrincipalActivity extends BaseActivity {
     protected void initVarialbes() {
         try {
             listView = (ListView) findViewById(R.id.listaInsumos);
+            listViewIPV = (ListView) findViewById(R.id.listViewIPVs);
             almacenText = (TextView) findViewById(R.id.textViewNombreAlmacen);
 
             userText = (TextView) findViewById(R.id.textUser);
             userText.setText(getBundle().getString(String.valueOf(R.string.user)));
+            pickDate = (TextView) findViewById(R.id.textViewFechaServidor);
 
             controller = new PantallaPrincipalController(userText.getText().toString());
             searchText = (EditText) findViewById(R.id.editText);
+            searchTextIPV = (EditText) findViewById(R.id.editTextBuscarIPV);
             radioButtonSalida = (RadioButton) findViewById(R.id.radioButtonSalida);
             radioButtonRebaja = (RadioButton) findViewById(R.id.radioButtonRebaja);
             salidaButton = (ImageButton) findViewById(R.id.salidaButton);
             entradaButton = (ImageButton) findViewById(R.id.entradaButton);
+            imageButtonActualizar = (ImageButton) findViewById(R.id.imageButtonActualizar);
             spinnerFiltrar = (Spinner) findViewById(R.id.filtrarBy);
-            filterAdapter = new FilterAdapter(act, android.R.layout.simple_spinner_dropdown_item, controller.getCocinasNames());
+            spinnerFiltrarIPV = (Spinner) findViewById(R.id.filtrarByIPV);
+            ipvRegistroModelList = new ArrayList<IpvRegistroModel>();
+            initTab();
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
@@ -114,7 +136,23 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     ((AlmacenInsumoAdapter) listView.getAdapter()).getFilter().filter(s.toString());
+                }
 
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+
+            searchTextIPV.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    ((IPVsAdapter) listViewIPV.getAdapter()).getFilter().filter(s.toString());
                 }
 
                 @Override
@@ -133,10 +171,42 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 public void onNothingSelected(AdapterView<?> parent) {
                 }
             });
+
+            spinnerFiltrarIPV.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    onSpinnerFiltrarItemSelectedIPV(view);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+            imageButtonActualizar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    actualizar(v);
+                }
+            });
             //TODO: faltan dos listener que estan directo en el xml
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
+
+        listView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return onTabChangeTouchEvent(event);
+            }
+        });
+        listViewIPV.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return onTabChangeTouchEvent(event);
+            }
+        });
     }
 
     /**
@@ -145,25 +215,116 @@ public class PantallaPrincipalActivity extends BaseActivity {
      * @param view View de la aplicacion.
      */
     private void onSpinnerFiltrarItemSelected(View view) {
+        if (spinnerFiltrar.getSelectedItemPosition() == 0) {
+
+            new LoadingHandler<AlmacenInsumoAdapter>(act, new LoadingProcess<AlmacenInsumoAdapter>() {
+                @Override
+                public AlmacenInsumoAdapter process() throws Exception {
+                    return controller.getAdapter(act, R.id.listaInsumos);
+                }
+
+                @Override
+                public void post(AlmacenInsumoAdapter answer) {
+                    listView.setAdapter(answer);
+                }
+            });
+
+        } else {
+
+            new LoadingHandler<AlmacenInsumoAdapter>(act, new LoadingProcess<AlmacenInsumoAdapter>() {
+                @Override
+                public AlmacenInsumoAdapter process() throws Exception {
+                    return controller.getAdapter(act, R.id.listaInsumos, spinnerFiltrar.getSelectedItem().toString());
+                }
+
+                @Override
+                public void post(AlmacenInsumoAdapter answer) {
+                    obtenerFecha();
+                    listView.setAdapter(answer);
+                }
+            });
+
+        }
+    }
+
+    private void onSpinnerFiltrarItemSelectedIPV(View view) {
+        if (spinnerFiltrarIPV.getSelectedItemPosition() == 0) {
+
+            new LoadingHandler<IPVsAdapter>(act, new LoadingProcess<IPVsAdapter>() {
+                @Override
+                public IPVsAdapter process() throws Exception {
+                    return controller.getIPVAdapter(act, R.id.listViewIPVs);
+                }
+
+                @Override
+                public void post(IPVsAdapter answer) {
+                    listViewIPV.setAdapter(answer);
+                }
+            });
+
+        } else {
+
+            new LoadingHandler<IPVsAdapter>(act, new LoadingProcess<IPVsAdapter>() {
+                @Override
+                public IPVsAdapter process() throws Exception {
+                    return controller.getIPVAdapter(act, R.id.listViewIPVs, spinnerFiltrarIPV.getSelectedItem().toString());
+
+                }
+
+                @Override
+                public void post(IPVsAdapter answer) {
+                    listViewIPV.setAdapter(answer);
+                    obtenerFecha();
+                }
+            });
+        }
+    }
+ private void obtenerFecha(){
+         new LoadingHandler<Date>(act, new LoadingProcess<Date>() {
+             @Override
+             public Date process() throws Exception {
+                return controller.getIPVRegistro(spinnerFiltrarIPV.getSelectedItem().toString()).get(0).getIpvRegistroPK().getFecha();
+             }
+
+             @Override
+             public void post(Date answer) {
+                 pickDate.setText(formatDate(answer));
+             }
+         });
+ }
+
+    @Override
+    protected void setAdapters() {
         try {
-            if (spinnerFiltrar.getSelectedItemPosition() == 0) {
-                listView.setAdapter(controller.getAdapter(act, R.id.listaInsumos));
-            } else {
-                listView.setAdapter(controller.getAdapter(act, R.id.listaInsumos, spinnerFiltrar.getSelectedItem().toString()));
-            }
+
+            new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+                @Override
+                public Void process() throws Exception {
+                    filterAdapter = new FilterAdapter(act, R.layout.simple_spinner_dropdow_item, controller.getCocinasNames());
+                    filterAdapterIPV = new FilterAdapterIPV(act, R.layout.simple_spinner_dropdow_item, controller.getCocinasNames());
+                    ipVsAdapter = new IPVsAdapter(act, R.layout.list_ipvs, ipvRegistroModelList);
+                    almacenInsumoAdapter = new AlmacenInsumoAdapter(act, R.id.listaInsumos, controller.getPrimerAlmacen());
+                    return null;
+                }
+
+                @Override
+                public void post(Void answer) {
+                    spinnerFiltrar.setAdapter(filterAdapter.createAdapter());
+                    spinnerFiltrarIPV.setAdapter(filterAdapterIPV.createAdapter());
+                    listViewIPV.setAdapter(ipVsAdapter);
+                    listView.setAdapter(almacenInsumoAdapter);
+                }
+            });
+
+
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
     }
 
-    @Override
-    protected void setAdapters() {
-        try {
-            listView.setAdapter(controller.getAdapter(act, R.id.listaInsumos));
-            spinnerFiltrar.setAdapter(filterAdapter.createAdapter());
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, act);
-        }
+    public void actualizar(View view) {
+        onSpinnerFiltrarItemSelected(view);
+        onSpinnerFiltrarItemSelectedIPV(view);
     }
 
     @Override
@@ -187,9 +348,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
             int id = item.getItemId();
             switch (id) {
                 case R.id.action_imprimirEstado:
-                    return imprimirEstadoAlmacen();
+                    imprimirEstadoAlmacen();
+                    return true;
                 case R.id.action_ticket_compra:
-                    return imprimirTicketCompra();
+                    imprimirTicketCompra();
+                    return true;
                 default:
                     return super.onOptionsItemSelected(item);
             }
@@ -204,19 +367,24 @@ public class PantallaPrincipalActivity extends BaseActivity {
      *
      * @return true si se puede imprimir el ticket, false de lo contrario.
      */
-    private boolean imprimirTicketCompra() {
-        try {
-            boolean resp = controller.imprimirTicketCompra();
-            if (resp) {
-                Toast.makeText(getApplicationContext(), "Imprimiendo...", Toast.LENGTH_SHORT);
-            } else {
-                ExceptionHandler.handleException(new Exception("Error imprimiendo"), act);
+    private void imprimirTicketCompra() {
+        new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
+            @Override
+            public Boolean process() throws Exception {
+                return controller.imprimirTicketCompra();
+
             }
-            return resp;
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, act);
-            return false;
-        }
+
+            @Override
+            public void post(Boolean answer) {
+                if (answer) {
+                    showMessage("Imprimiendo...");
+                    //Toast.makeText(act, "Imprimiendo...", Toast.LENGTH_LONG);
+                } else {
+                    ExceptionHandler.handleException(new Exception("Error imprimiendo"), act);
+                }
+            }
+        });
     }
 
     /**
@@ -224,19 +392,22 @@ public class PantallaPrincipalActivity extends BaseActivity {
      *
      * @return true si se puede imprimir el ticket, false de lo contrario.
      */
-    private boolean imprimirEstadoAlmacen() {
-        try {
-            boolean resp = controller.imprimirEstadoActualAlmacen();
-            if (resp) {
-                showMessage("Imprimiendo...");
-            } else {
-                ExceptionHandler.handleException(new Exception("Error imprimiendo"), act);
+    private void imprimirEstadoAlmacen() {
+        new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
+            @Override
+            public Boolean process() throws Exception {
+                return controller.imprimirEstadoActualAlmacen();
             }
-            return resp;
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, act);
-            return false;
-        }
+
+            @Override
+            public void post(Boolean answer) {
+                if (answer) {
+                    showMessage("Imprimiendo...");
+                } else {
+                    ExceptionHandler.handleException(new Exception("Error imprimiendo"), act);
+                }
+            }
+        });
     }
 
     /**
@@ -286,26 +457,30 @@ public class PantallaPrincipalActivity extends BaseActivity {
                         }
                     }).setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            float cantidad = 0, monto = 0;
-                            try {
-                                cantidad = Float.parseFloat(input.getText().toString());
-                                monto = Float.parseFloat(amount.getText().toString());
+                        public void onClick(final DialogInterface dialog, int which) {
 
-                                controller.darEntrada(insumoModel, cantidad, monto);
-                            } catch (Exception e) {
-                                ExceptionHandler.handleException(e, act);
-                            }
+                            new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+                                @Override
+                                public Void process() throws Exception {
+                                    float cantidad = Float.parseFloat(input.getText().toString());
+                                    float monto = Float.parseFloat(amount.getText().toString());
+                                    controller.darEntrada(insumoModel, cantidad, monto);
+                                    return null;
+                                }
 
-                            updateListView(v);
-
-                            dialog.dismiss();
+                                @Override
+                                public void post(Void answer) {
+                                    updateListView(v);
+                                    dialog.dismiss();
+                                }
+                            });
                         }
                     }).create().show();
                     dialog.dismiss();
                 }
             }).create().show();
 
+            actualizar(v);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
@@ -357,62 +532,72 @@ public class PantallaPrincipalActivity extends BaseActivity {
         try {
             int pos = (Integer) v.getTag();
             final InsumoAlmacenModel i = ((InsumoAlmacenModel) listView.getAdapter().getItem(pos));
-            final String[] ipvs = getIPVData(i.getInsumoModel().getCodInsumo());
 
-            final EditText input = new EditText(v.getContext());
-            input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
-            input.setRawInputType(Configuration.KEYBOARD_12KEY);
+            new LoadingHandler<String[]>(act, new LoadingProcess<String[]>() {
+                @Override
+                public String[] process() throws Exception {
+                    return controller.getCocinasNamesForIPV(i.getInsumoModel().getCodInsumo());
+                }
 
-            new AlertDialog.Builder(v.getContext()).
-                    setView(input).
-                    setTitle("Salida a punto de elaboracion").
-                    setMessage("Introduzca la cantidad de " + i.getInsumoModel() + " a dar salida").
-                    setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    }).
-                    setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            new AlertDialog.Builder(v.getContext())
-                                    .setItems(ipvs, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            float cantidad = 0;
-                                            try {
-                                                cantidad = Float.parseFloat(input.getText().toString());
-                                            } catch (Exception e) {
-                                                ExceptionHandler.handleException(e, act);
-                                            }
-                                            if (cantidad > i.getCantidad()) {
-                                                Toast.makeText(v.getContext(), R.string.saldo_insuficiente, Toast.LENGTH_LONG);
-                                                dialog.dismiss();
-                                            } else {
-                                                try {
-                                                    controller.darSalida(i, cantidad, ipvs[which]);
-                                                } catch (Exception e) {
-                                                    ExceptionHandler.handleException(e, act);
+                @Override
+                public void post(final String[] ipvs) {
+                    final EditText input = new EditText(v.getContext());
+                    input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                    input.setRawInputType(Configuration.KEYBOARD_12KEY);
+
+                    new AlertDialog.Builder(v.getContext()).
+                            setView(input).
+                            setTitle("Salida a punto de elaboracion").
+                            setMessage("Introduzca la cantidad de " + i.getInsumoModel() + " a dar salida").
+                            setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).
+                            setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, final int which) {
+                                    new AlertDialog.Builder(v.getContext())
+                                            .setItems(ipvs, new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(final DialogInterface dialog, final int whichAct) {
+                                                    final float cantidad = Float.parseFloat(input.getText().toString());
+                                                    if (cantidad > i.getCantidad()) {
+                                                        Toast.makeText(v.getContext(), R.string.saldo_insuficiente, Toast.LENGTH_LONG);
+                                                        dialog.dismiss();
+                                                    } else {
+
+                                                        new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+                                                            @Override
+                                                            public Void process() throws Exception {
+                                                                controller.darSalida(i, cantidad, ipvs[whichAct]);
+                                                                return null;
+                                                            }
+
+                                                            @Override
+                                                            public void post(Void answer) {
+                                                                updateListView(v);
+                                                                dialog.dismiss();
+                                                            }
+                                                        });
+
+                                                    }
                                                 }
-
-                                                updateListView(v);
-
-                                                dialog.dismiss();
-                                            }
-                                        }
-                                    }).setTitle("Destino")
-                                    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                        }
-                                    }).
-                                    create().show();
-                            dialog.dismiss();
-                        }
-                    }).create().show();
-
+                                            }).setTitle("Destino")
+                                            .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                }
+                                            }).
+                                            create().show();
+                                    dialog.dismiss();
+                                }
+                            }).create().show();
+                }
+            });
+            actualizar(v);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
@@ -458,26 +643,26 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                         }
                                     }).setPositiveButton("Mermar", new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    float cantidad = 0;
-                                    try {
-                                        cantidad = Float.parseFloat(input.getText().toString());
-                                    } catch (Exception e) {
-                                        dialog.dismiss();
-                                    }
+                                public void onClick(final DialogInterface dialog, int which) {
+                                    final float cantidad = Float.parseFloat(input.getText().toString());
                                     if (cantidad > insumoModel.getCantidad()) {
                                         Toast.makeText(v.getContext(), R.string.saldo_insuficiente, Toast.LENGTH_LONG);
                                         dialog.dismiss();
                                     } else {
-                                        try {
-                                            controller.rebajar(insumoModel, cantidad, razon.getText().toString());
-                                        } catch (Exception e) {
-                                            ExceptionHandler.handleException(e, act);
-                                        }
+                                        new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+                                            @Override
+                                            public Void process() throws Exception {
+                                                controller.rebajar(insumoModel, cantidad, razon.getText().toString());
+                                                return null;
+                                            }
 
-                                        updateListView(v);
+                                            @Override
+                                            public void post(Void answer) {
+                                                updateListView(v);
+                                                dialog.dismiss();
+                                            }
+                                        });
 
-                                        dialog.dismiss();
                                     }
                                 }
 
@@ -486,7 +671,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                             dialog.dismiss();
                         }
                     }).create().show();
-
+            actualizar(v);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
@@ -507,4 +692,79 @@ public class PantallaPrincipalActivity extends BaseActivity {
         }
     }
 
+    private void initTab() {
+        try {
+            host = (TabHost) findViewById(R.id.tabHost);
+            if (host != null) {//TODO: por que este if??
+                host.setup();
+
+                TabHost.TabSpec spec = host.newTabSpec("Almacen");
+
+                //Tab 1
+                spec.setContent(R.id.Almacen);
+                spec.setIndicator("Almacen");
+                host.addTab(spec);
+
+                //Tab 2
+                spec = host.newTabSpec("IPVs");
+                spec.setContent(R.id.IPV);
+                spec.setIndicator("IPVs");
+                host.addTab(spec);
+            }
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        return onTabChangeTouchEvent(event);
+    }
+
+    private String formatDate(Date date) {
+        //Esta variable lo que realiza es aumentar en uno el mes ya que comienza desde 0 = enero
+        final int mesActual = date.getMonth() + 1;
+        //Formateo el día obtenido: antepone el 0 si son menores de 10
+        String diaFormateado = (date.getDay() < 10) ? "0" + String.valueOf(date.getDay()) : String.valueOf(date.getDay());
+        //Formateo el mes obtenido: antepone el 0 si son menores de 10
+        String mesFormateado = (mesActual < 10) ? "0" + String.valueOf(mesActual) : String.valueOf(mesActual);
+        return diaFormateado + "/" + mesFormateado + "/" + (date.getYear()+1900);
+    }
+
+    private boolean onTabChangeTouchEvent(MotionEvent event) {
+        try {
+            float currentX = 0;
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    lastX = event.getX();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    currentX = event.getX();
+                    boolean dirRight = Math.abs(lastX - currentX) > 200;
+                    switchTab(dirRight);
+                    return dirRight;
+            }
+            return false;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+            return false;
+        }
+    }
+
+    private boolean switchTab(boolean change) {
+        try {
+            if (change) {
+                if (host.getCurrentTab() == 1) {
+                    host.setCurrentTab(0);
+                } else {
+                    host.setCurrentTab(1);
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+            return false;
+        }
+    }
 }

@@ -25,22 +25,7 @@ public class EnvironmentVariables {
     /**
      * Path de inicio de las peticiones.
      */
-    public static String STARTPATH = "RM/rest/";
-
-    /**
-     * Valor devuelto por el servidor cuando la peticion devuelve true.
-     */
-    public static String PETITION_TRUE = "1";
-
-    /**
-     * Valor devuelto por el servidor cuando la peticion devuelve false.
-     */
-    public static String PETITION_FALSE = "0";
-
-    /**
-     * Valor devuelto por el servidor cuando la peticion devuelve un error.
-     */
-    public static String PETITION_ERROR = "-1";
+    public static String STARTPATH = "jobits/pos/";
 
     /**
      * Monedo principal a trabajar.

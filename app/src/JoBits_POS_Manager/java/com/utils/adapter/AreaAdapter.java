@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.activities.R;
 import com.services.models.AreaListModel;
+import com.utils.EnvironmentVariables;
 
 import java.util.List;
 
@@ -56,8 +57,8 @@ public class AreaAdapter extends ArrayAdapter<AreaListModel> {
         }
         holder.codigo.setText(areaListModels.get(position).getCod());
         holder.nombre.setText(areaListModels.get(position).getNombre());
-        holder.ventaNetaArea.setText(areaListModels.get(position).getVentaNeta()+"");
-        holder.ventaReal.setText(areaListModels.get(position).getVentaReal()+"");
+        holder.ventaNetaArea.setText(areaListModels.get(position).getVentaNeta() + EnvironmentVariables.MONEDA_PRINCIPAL);
+        holder.ventaReal.setText(areaListModels.get(position).getVentaReal() + EnvironmentVariables.MONEDA_PRINCIPAL);
         return (item);
     }
 
