@@ -21,8 +21,8 @@ android {
         }
         RM_Almacen {
             applicationId 'jobits.pos.almacen'
-            versionCode 7
-            versionName '1.1.1'
+            versionCode 8
+            versionName '2.0.0'
         }
         RM_Cocina {
             applicationId 'jobits.pos.cocina'
