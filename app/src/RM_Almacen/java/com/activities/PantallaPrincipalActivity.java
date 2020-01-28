@@ -16,6 +16,7 @@ import com.controllers.PantallaPrincipalController;
 import com.utils.loading.LoadingHandler;
 import com.utils.loading.LoadingProcess;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -283,7 +284,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
          new LoadingHandler<Date>(act, new LoadingProcess<Date>() {
              @Override
              public Date process() throws Exception {
-                return controller.getIPVRegistro(spinnerFiltrarIPV.getSelectedItem().toString()).get(0).getIpvRegistroPK().getFecha();
+                List<IpvRegistroModel> models = controller.getIPVRegistro(spinnerFiltrarIPV.getSelectedItem().toString());
+                if (models.isEmpty()){
+                    return new Date();
+                }
+                return models.get(0).getIpvRegistroPK().getFecha();
              }
 
              @Override
@@ -723,13 +728,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     }
 
     private String formatDate(Date date) {
-        //Esta variable lo que realiza es aumentar en uno el mes ya que comienza desde 0 = enero
-        final int mesActual = date.getMonth() + 1;
-        //Formateo el día obtenido: antepone el 0 si son menores de 10
-        String diaFormateado = (date.getDay() < 10) ? "0" + String.valueOf(date.getDay()) : String.valueOf(date.getDay());
-        //Formateo el mes obtenido: antepone el 0 si son menores de 10
-        String mesFormateado = (mesActual < 10) ? "0" + String.valueOf(mesActual) : String.valueOf(mesActual);
-        return diaFormateado + "/" + mesFormateado + "/" + (date.getYear()+1900);
+      return new SimpleDateFormat("dd'/'MM'/'yyyy").format(date);
     }
 
     private boolean onTabChangeTouchEvent(MotionEvent event) {
