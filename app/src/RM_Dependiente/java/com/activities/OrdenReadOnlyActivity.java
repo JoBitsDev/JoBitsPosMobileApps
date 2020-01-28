@@ -10,6 +10,8 @@ import com.services.models.ProductoVentaOrdenModel;
 import com.utils.EnvironmentVariables;
 import com.utils.adapters.ProductoVentaOrdenReadOnlyAdapter;
 import com.utils.exception.ExceptionHandler;
+import com.utils.loading.LoadingHandler;
+import com.utils.loading.LoadingProcess;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +31,26 @@ public class OrdenReadOnlyActivity extends BaseActivity {
 
         try {
             initVarialbes();
-            setAdapters();
-            addListeners();
-            actDeLaCasa();
+
+            final Bundle bundleExtra = getIntent().getExtras();
+
+            new LoadingHandler<Void>(act,new LoadingProcess<Void>() {
+                @Override
+                public Void process() throws Exception {
+                    controller.starService(bundleExtra.getString(String.valueOf(R.string.cod_Orden)), bundleExtra.getString(String.valueOf(R.string.mesa)));
+                    productosVOrden = new ArrayList<ProductoVentaOrdenModel>(controller.getProductoVentaOrden(bundleExtra.getString(String.valueOf(R.string.cod_Orden))));
+                    return null;
+                }
+
+                @Override
+                public void post(Void answer) {
+                    updateCosto();
+                    setAdapters();
+                    addListeners();
+                    actDeLaCasa();
+                }
+            });
+
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
@@ -59,10 +78,6 @@ public class OrdenReadOnlyActivity extends BaseActivity {
         dependiente.setText(bundleExtra.getString(String.valueOf(R.string.user)));//set el label con el dependiente
 
         ordenNo.setText(bundleExtra.getString(String.valueOf(R.string.cod_Orden)));//set el label de la orden
-
-        controller.starService(bundleExtra.getString(String.valueOf(R.string.cod_Orden)),bundleExtra.getString(String.valueOf(R.string.mesa)), bundleExtra.getString(String.valueOf(R.string.user)));
-        productosVOrden = new ArrayList<ProductoVentaOrdenModel>(controller.getProductoVentaOrden(bundleExtra.getString(String.valueOf(R.string.cod_Orden))));
-        updateCosto();
     }
 
     @Override
@@ -78,14 +93,14 @@ public class OrdenReadOnlyActivity extends BaseActivity {
         try {
             float tot = 0;
             for (ProductoVentaOrdenModel x : productosVOrden) {
-                tot += x.getProductoVentaModel().getPrecioVenta() * x.getCantidad();
+                tot += x.getProductoVenta().getPrecioVenta() * x.getCantidad();
             }
             if (EnvironmentVariables.MONEDA_PRINCIPAL.equals(EnvironmentVariables.MONEDA_PRINCIPAL)) {
-                totalPrincipal.setText(EnvironmentVariables.setDosLugaresDecimales(tot)+EnvironmentVariables.MONEDA_PRINCIPAL);
-                totalSecundaria.setText(EnvironmentVariables.setDosLugaresDecimales(tot / EnvironmentVariables.conversion)+EnvironmentVariables.MONEDA_SECUNDARIA);
+                totalPrincipal.setText(EnvironmentVariables.setDosLugaresDecimales(tot) + EnvironmentVariables.MONEDA_PRINCIPAL);
+                totalSecundaria.setText(EnvironmentVariables.setDosLugaresDecimales(tot / EnvironmentVariables.conversion) + EnvironmentVariables.MONEDA_SECUNDARIA);
             } else {
-                totalPrincipal.setText(EnvironmentVariables.setDosLugaresDecimales(tot)+EnvironmentVariables.MONEDA_PRINCIPAL);
-                totalSecundaria.setText(EnvironmentVariables.setDosLugaresDecimales(tot * EnvironmentVariables.conversion)+EnvironmentVariables.MONEDA_SECUNDARIA);
+                totalPrincipal.setText(EnvironmentVariables.setDosLugaresDecimales(tot) + EnvironmentVariables.MONEDA_PRINCIPAL);
+                totalSecundaria.setText(EnvironmentVariables.setDosLugaresDecimales(tot * EnvironmentVariables.conversion) + EnvironmentVariables.MONEDA_SECUNDARIA);
             }
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);

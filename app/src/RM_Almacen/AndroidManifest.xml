@@ -12,7 +12,9 @@
         <activity
             android:name="com.activities.PantallaPrincipalActivity"
             android:label="Almacen"
-            android:parentActivityName="com.activities.LoginActivity">
+            android:parentActivityName="com.activities.LoginActivity"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustNothing">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.activities.LoginActivity" />

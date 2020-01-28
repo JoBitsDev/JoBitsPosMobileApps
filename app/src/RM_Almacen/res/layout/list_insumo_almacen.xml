@@ -20,7 +20,8 @@
             android:gravity="center_vertical"
             android:text="Nombre"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="@dimen/titulos" />
+            android:textColor="@color/texto_primario"
+            android:textSize="@dimen/textSizeLarge" />
 
     </LinearLayout>
 
@@ -32,8 +33,8 @@
 
         <ImageButton
             android:id="@+id/entradaButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_gravity="fill"
             android:background="@null"
             android:onClick="onEntradaClick"
@@ -42,31 +43,33 @@
 
         <ImageButton
             android:id="@+id/salidaButton"
-            android:layout_width="@dimen/listButtons"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_gravity="fill"
-            android:layout_marginLeft="5dp"
             android:background="@null"
             android:onClick="onSalidaRebajaClick"
             android:scaleType="fitCenter"
             android:src="@drawable/salida"
-            tools:layout_width="40dp" />
+            tools:layout_width="50dp" />
 
 
         <TextView
             android:id="@+id/editPrecioPromedio"
-            android:layout_width="100dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="30"
             android:autoText="false"
             android:gravity="start|center_vertical"
             android:text="Costo Medio: 17.00 CUC "
-            android:textColor="@color/color_resaltado2" />
+            android:textColor="@color/secundario"
+            android:textSize="@dimen/textSizeNormal" />
 
         <TextView
             android:id="@+id/textCantidad"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
+            android:layout_weight="10"
             android:gravity="center|right"
             android:text="#####"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -75,20 +78,22 @@
 
         <TextView
             android:id="@+id/textUM"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:gravity="bottom|left"
+            android:layout_weight="5"
+            android:gravity="center"
             android:paddingLeft="10dp"
             android:text="UM"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/color_fondo_resaltado"
+            android:textColor="@color/secundario"
             android:textStyle="italic" />
 
         <TextView
             android:id="@+id/editTextStock"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
+            android:layout_weight="5"
             android:gravity="center"
             android:text="(+150)" />
 

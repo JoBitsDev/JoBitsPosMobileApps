@@ -2,7 +2,7 @@ package com.services.web_connections;
 
 import com.utils.exception.*;
 
-import java.util.concurrent.ExecutionException;
+import java.util.List;
 
 /**
  * Capa: Services.
@@ -13,19 +13,19 @@ import java.util.concurrent.ExecutionException;
  * @extends SimpleWebConnectionService ya que es un servicio.
  */
 
-public class PersonalWebConnectionServiceService extends SimpleWebConnectionService {
+public class PersonalWCS extends SimpleWebConnectionService {
 
     /**
      * Path a la peticion.
      */
-    private String P = "com.restmanager.personal/";
+    private String P = "login/";
 
     /**
      * Peticion al servidor
      */
-    private String usuariosActivos = "MOSTRAR_PERSONAL_TRABAJANDO";
+    private String PERSONAL_TRABAJANDO = "MOSTRAR-PERSONAL-TRABAJANDO";
 
-    public PersonalWebConnectionServiceService() {
+    public PersonalWCS() {
         super();
         path += P;
     }
@@ -37,13 +37,9 @@ public class PersonalWebConnectionServiceService extends SimpleWebConnectionServ
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public String[] getUsuariosActivos() throws Exception {
-        String[] result = {};
-        String ret = connect(path + usuariosActivos);
-
-        if (ret != null)
-            result = ret.substring(0, ret.length() - 1).split(",");
-
-        return result;
+    public String[] getPersonalTrabajando() throws Exception {
+        String URL = path + PERSONAL_TRABAJANDO;
+        String resp = connect(URL, null, super.TOKEN, HTTPMethod.GET);
+        return om.readValue(resp, om.getTypeFactory().constructArrayType(String.class));
     }
 }
