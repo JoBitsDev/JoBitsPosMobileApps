@@ -4,15 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/secundario"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginEnd="10dp">
 
 
     <TextView
         android:id="@+id/boxParent"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:textColor="@color/texto_secundario"
-        android:textSize="@dimen/subtitulos" />
+        android:textColor="@color/texto_primario"
+        android:textSize="@dimen/subtitulos"
+        android:layout_marginEnd="10dp"/>
 
 
 </LinearLayout>
