@@ -1,12 +1,12 @@
 <resources>
 
-    <color name="black_overlay">#66000000</color>
-    <color name="color_Fondo">#174B42</color>
-    <color name="color_Labels">#000000</color>
-    <color name="color_Buttons">#000000</color>
-    <color name="color_Fondo2">#c1f3fb</color>
-    <color name="alternativoparabotones">#007276</color>
-    <color name="selector_listas" >#FFCBCBCB</color>
-    <color name="color_resaltado">#980404</color>
+    <color name="primario">#ff9a00</color>
+    <color name="secundario">#e67500</color>
+    <color name="auxiliar">#2E6992</color>
+    <color name="especifico_app_primario">#fff5cb</color>>
+    <color name="fondo">#fff5cb</color>
+
+
+    <color name="texto_primario">#e67500</color>
 
 </resources>
