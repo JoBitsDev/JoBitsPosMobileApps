@@ -79,7 +79,7 @@
                 android:text="TextView" />
 
             <ImageButton
-                android:id="@+id/buttonrefresh"
+                android:id="@+id/buttonRefresh"
                 android:layout_width="81dp"
                 android:layout_height="73dp"
                 android:layout_alignParentEnd="true"

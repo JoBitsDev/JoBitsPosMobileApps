@@ -12,25 +12,19 @@ import java.util.concurrent.ExecutionException;
  * Created by Jorge on 19/1/19.
  */
 
-public class NotificationWebConnection extends SimpleWebConnectionService {
+public class NotificationWCS extends SimpleWebConnectionService {
 
     private ArrayList<String> codOrdenes = new ArrayList<String>();
     private final String P = "com.restmanager.notificacion/",
             notify = "NOTIFY_",
             fetchPendingOrders =  "PENDING_";
 
-
-    private String codCocina;
-
-
-
-    public NotificationWebConnection(String codCocina) {
+    public NotificationWCS() {
         super();
-        this.codCocina = codCocina;
     }
 
 
-    public List<ProductoVentaOrdenModel> fetchPendingOrders(){
+    public List<ProductoVentaOrdenModel> fetchPendingOrders(String codCocina){
         return new ProductoVentaOrdenXMLParser().fetch(path + P + fetchPendingOrders + codCocina);
     }
 

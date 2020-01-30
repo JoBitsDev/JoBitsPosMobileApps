@@ -10,19 +10,17 @@ import java.util.concurrent.ExecutionException;
  * Created by Jorge on 19/1/19.
  */
 
-public class CocinaWebConnection extends SimpleWebConnectionService {
+public class CocinaWCS extends SimpleWebConnectionService {
 
+    private final String P = "cocina/",
+            fetchNames = "NAMES";
 
-    private ArrayList<String> codOrdenes = new ArrayList<String>();
-    private final String P = "com.restmanager.cocina/",
-            fetchNames =  "NAMES";
-
-    public CocinaWebConnection() {
+    public CocinaWCS() {
         super();
     }
 
 
-    public String[] getCocinasNames(){
+    public String[] getCocinasNames() {
         try {
             return connect(path + P + fetchNames).split(",");
         } catch (ExecutionException e) {
@@ -30,7 +28,7 @@ public class CocinaWebConnection extends SimpleWebConnectionService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    return new String[0];
+        return new String[0];
     }
 
 
