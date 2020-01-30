@@ -95,7 +95,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     private void onListaChildClick(final int groupPosition, final int childPosition) {
         new LoadingHandler<String>(act, new LoadingProcess<String>() {
             @Override
-            public String process() {
+            public String process() throws Exception {
                 return controller.notificar((ProductoVentaOrdenModel)
                         (lista.getExpandableListAdapter()).getChild(groupPosition, childPosition));
             }
@@ -144,7 +144,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     public void onAddClick(final View view) {
         new LoadingHandler<String>(act, new LoadingProcess<String>() {
             @Override
-            public String process() {
+            public String process() throws Exception {
                 return controller.notificar((ProductoVentaOrdenModel)
                         lista.getAdapter().getItem((Integer) view.getTag()));
             }
@@ -166,7 +166,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     public void onCambiarAreaButtonClick(View view) {//Cambiar de area, de cocina
         new LoadingHandler<String[]>(act, new LoadingProcess<String[]>() {
             @Override
-            public String[] process() {
+            public String[] process() throws Exception {
                 return controller.getCocinasNames();
             }
 
@@ -194,7 +194,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         final String cocina = cocinaTrabajo;
         new LoadingHandler<MenuAdapter>(act, new LoadingProcess<MenuAdapter>() {
             @Override
-            public MenuAdapter process() {
+            public MenuAdapter process() throws Exception {
                 if (!cocinaTrabajo.equals("-")) {
                     pedidos = controller.fetchPendingOrders(cocina);
                 }
