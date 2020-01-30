@@ -17,15 +17,15 @@ import java.util.List;
  */
 public class CocinaController extends BaseController {
 
-    public String notificar(ProductoVentaOrdenModel po) {
+    public String notificar(ProductoVentaOrdenModel po) throws Exception {
         return new NotificationWCS().notificar(po);
     }
 
-    public String[] getCocinasNames() {
+    public String[] getCocinasNames() throws Exception {
         return new CocinaWCS().getCocinasNames();
     }
 
-    public List<ProductoVentaOrdenModel> fetchPendingOrders(String cocinaTrabajo) {
+    public List<ProductoVentaOrdenModel> fetchPendingOrders(String cocinaTrabajo) throws Exception {
         return new NotificationWCS().fetchPendingOrders(cocinaTrabajo);
     }
 
