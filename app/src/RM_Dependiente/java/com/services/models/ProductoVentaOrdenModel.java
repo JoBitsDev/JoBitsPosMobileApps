@@ -20,7 +20,7 @@ public class ProductoVentaOrdenModel implements Serializable {
 
     private Float enviadosacocina;
 
-    @JsonProperty("productovOrdenPK")
+    @JsonProperty("productoVentaOrdenPK")
     protected ProductovOrdenPKModel productovOrdenPKModel;
 
     private float cantidad;
