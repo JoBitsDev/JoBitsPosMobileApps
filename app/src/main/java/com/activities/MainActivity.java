@@ -1,6 +1,7 @@
 package com.activities;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -13,10 +14,21 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.controllers.MainController;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.services.models.ConfigModel;
 import com.services.notifications.ReceiverNotificationService;
+import com.utils.EnvironmentVariables;
 import com.utils.exception.ExceptionHandler;
 import com.utils.loading.LoadingHandler;
 import com.utils.loading.LoadingProcess;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 
 /**
  * Capa: Activities
@@ -64,10 +76,30 @@ public class MainActivity extends BaseActivity {
             addListeners();
 
             updateConnectionText();
+            loadConfig();
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
     }
+
+    private void loadConfig() {
+        ConfigModel model;
+        try {
+            FileInputStream fis = openFileInput(EnvironmentVariables.CONFIG_PATH);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            model = (ConfigModel) ois.readObject();
+            fis.close();
+            ois.close();
+            controller.setCfg(model);
+        } catch (Exception e) {
+            try {
+                controller.setCfg(new ConfigModel());
+                controller.guardarCFG(openFileOutput(EnvironmentVariables.CONFIG_PATH, Context.MODE_PRIVATE));
+            } catch (Exception ex) {
+            }
+        }
+    }
+
 
     @Override
     protected void onResume() {
@@ -149,11 +181,15 @@ public class MainActivity extends BaseActivity {
 
         new AlertDialog.Builder(act).
                 setTitle(R.string.cambiar_ubicacion).
-                setSingleChoiceItems(ubicaciones, -1, new DialogInterface.OnClickListener() {
+                setSingleChoiceItems(ubicaciones, controller.getCfg().getSelected(), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialog, final int which) {
-                        controller.changeUbication(which);
-                        updateConnectionText();
+                        try {
+                            controller.setSelected(which);
+                            controller.guardarCFG(openFileOutput(EnvironmentVariables.CONFIG_PATH, Context.MODE_PRIVATE));
+                            updateConnectionText();
+                        } catch (Exception e) {
+                        }
                         dialog.dismiss();
                     }
                 }).setNeutralButton(R.string.cancelar, new DialogInterface.OnClickListener() {
@@ -165,20 +201,39 @@ public class MainActivity extends BaseActivity {
     }
 
     private void agregarUbicacion() {
-        final EditText input = new EditText(act);
+        String ubicaciones[] = controller.getAllUbicaciones();
         new AlertDialog.Builder(act).
-                setView(input).
-                setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+                setTitle(R.string.cambiar_ubicacion).
+                setSingleChoiceItems(ubicaciones, controller.getCfg().getSelected(), new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(final DialogInterface dialog, final int which) {
+                        int posicAReemplazar = which;
+                        new AlertDialog.Builder(act).
+                                setView(R.layout.cambiar_ubicacion_dialog).
+                                setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).setPositiveButton(R.string.agregar_ubicacion, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //controller.agregarUbicacion(input.getText().toString());
+                            }
+                        }).create().show();
+
+
+
+
                         dialog.dismiss();
                     }
-                }).setPositiveButton(R.string.agregar_ubicacion, new DialogInterface.OnClickListener() {
+                }).setNeutralButton(R.string.cancelar, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                controller.agregarUbicacion(input.getText().toString());
+                dialog.dismiss();
             }
         }).create().show();
+
     }
 
     /**
