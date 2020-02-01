@@ -3,105 +3,134 @@ package com.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ExpandableListView;
-import android.widget.TextClock;
-import android.widget.TextView;
+import android.view.*;
+import android.widget.*;
 
+import com.controllers.CocinaController;
 import com.services.models.ProductoVentaOrdenModel;
-import com.services.web_connections.CocinaWebConnection;
-import com.services.web_connections.CartaWebConnection;
-import com.services.web_connections.NotificationWebConnection;
+import com.services.web_connections.*;
+import com.utils.adapters.MenuAdapter;
+import com.utils.exception.ExceptionHandler;
+import com.utils.loading.LoadingHandler;
+import com.utils.loading.LoadingProcess;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-
+import java.util.*;
 
 public class PantallaPrincipalActivity extends BaseActivity {
 
-    String user, cocinaTrabajo;
-    TextClock clock;
-    TextView labelRestName,labelCocinaName,labelUsuario;
-    ExpandableListView lista;
-    List<ProductoVentaOrdenModel> pedidos = new ArrayList<ProductoVentaOrdenModel>();
-    PantallaPrincipalActivity l;
-
+    private CocinaController controller;
+    private String user, cocinaTrabajo;
+    private int wichCocina;
+    private TextView labelRestName, labelCocinaName, labelUsuario;
+    private ExpandableListView lista;
+    private Button cambiarAreaButton;
+    private ImageButton refreshButton;
+    private List<ProductoVentaOrdenModel> pedidos = new ArrayList<ProductoVentaOrdenModel>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pantalla_principal);
 
-        labelRestName = (TextView) findViewById(R.id.textViewNombreRest);
-        labelCocinaName = (TextView) findViewById(R.id.textViewNombreCocina);
-        labelUsuario = (TextView) findViewById(R.id.labelUsuario);
-        lista = (ExpandableListView) findViewById(R.id.listaMesas);
-
-
-
-        if (labelRestName != null) {
-            labelRestName.setText(new CartaWebConnection().getNombreRest());
-        }
-
-        l = this;
-
-
-
-
-        user = getIntent().getExtras().getString(String.valueOf(R.string.user));
-        cocinaTrabajo = getIntent().getExtras().getString(String.valueOf(R.string.cocina_cod));
-
-        labelUsuario.setText(user);
-
-
-        if(cocinaTrabajo == null){
-        cocinaTrabajo = "-";
-        }
-            labelCocinaName.setText(cocinaTrabajo);
-
+        initVarialbes();
+        addListeners();
+        onCambiarAreaButtonClick();
         configurarTabla();
+    }
 
-        findViewById(R.id.buttonCambiarArea).setOnClickListener(new View.OnClickListener() {
+
+    @Override
+    void initVarialbes() {
+        try {
+            controller = new CocinaController();
+            cambiarAreaButton = (Button) findViewById(R.id.buttonCambiarArea);
+            refreshButton = (ImageButton) findViewById(R.id.buttonRefresh);
+            labelRestName = (TextView) findViewById(R.id.textViewNombreRest);
+            labelCocinaName = (TextView) findViewById(R.id.textViewNombreCocina);
+            labelCocinaName.setText("");
+            labelUsuario = (TextView) findViewById(R.id.labelUsuario);
+            lista = (ExpandableListView) findViewById(R.id.listaMesas);
+            wichCocina = 0;
+
+            if (labelRestName != null) {
+                new LoadingHandler<String>(act, new LoadingProcess<String>() {
+                    @Override
+                    public String process() throws Exception {
+                        return controller.getNombreRest();
+                    }
+
+                    @Override
+                    public void post(String answer) {
+                        labelRestName.setText(answer);
+                    }
+                });
+            }
+
+            user = getIntent().getExtras().getString(String.valueOf(R.string.user));
+            cocinaTrabajo = getIntent().getExtras().getString(String.valueOf(R.string.cocina_cod));
+
+            labelUsuario.setText(user);
+
+
+            if (cocinaTrabajo == null) {
+                cocinaTrabajo = "-";
+            }
+            labelCocinaName.setText(cocinaTrabajo);
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+        }
+    }
+
+    @Override
+    void addListeners() {
+        cambiarAreaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                seleccionarCocina(v);
+                onCambiarAreaButtonClick();
             }
         });
-        findViewById(R.id.buttonrefresh).setOnClickListener(new View.OnClickListener() {
+
+        refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refrescar(v);
+                onRefreshButtonClick(v);
             }
         });
 
         lista.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                String ret = new NotificationWebConnection(cocinaTrabajo).notificar((ProductoVentaOrdenModel)
-                        (lista.getExpandableListAdapter()).getChild(groupPosition,childPosition));
-                new AlertDialog.Builder(l).
-                        setMessage(ret).
+                onListaChildClick(groupPosition, childPosition);
+                return true;
+            }
+        });
+    }
+
+    private void onListaChildClick(final int groupPosition, final int childPosition) {
+        new LoadingHandler<String>(act, new LoadingProcess<String>() {
+            @Override
+            public String process() throws Exception {
+                return controller.notificar((ProductoVentaOrdenModel)
+                        (lista.getExpandableListAdapter()).getChild(groupPosition, childPosition));
+            }
+
+            @Override
+            public void post(String answer) {
+                new AlertDialog.Builder(act).setMessage(answer).
                         setOnDismissListener(new DialogInterface.OnDismissListener() {
                             @Override
                             public void onDismiss(DialogInterface dialog) {
                                 configurarTabla();
                             }
                         }).create().show();
-                return true;
             }
         });
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         configurarTabla();
-
     }
 
     @Override
@@ -126,69 +155,79 @@ public class PantallaPrincipalActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void onAddClick(View view) {
-        String ret = new NotificationWebConnection(cocinaTrabajo).notificar((ProductoVentaOrdenModel)
-                lista.getAdapter().getItem((Integer) view.getTag()));
-        new AlertDialog.Builder(this).
-                setMessage(ret).
-                setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        configurarTabla();
-                    }
-                }).create().show();
+    public void onAddClick(final View view) {
+        new LoadingHandler<String>(act, new LoadingProcess<String>() {
+            @Override
+            public String process() throws Exception {
+                return controller.notificar((ProductoVentaOrdenModel)
+                        lista.getAdapter().getItem((Integer) view.getTag()));
+            }
 
+            @Override
+            public void post(String answer) {
+                new AlertDialog.Builder(act).
+                        setMessage(answer).
+                        setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                configurarTabla();
+                            }
+                        }).create().show();
+            }
+        });
     }
 
-    public void seleccionarCocina(View view){
-        final String[] nombreCocinas = new CocinaWebConnection().getCocinasNames();
-        Arrays.sort(nombreCocinas);
-       if(cocinaTrabajo == null){
-           cocinaTrabajo = nombreCocinas[0];
-       }
-        new AlertDialog.Builder(this).
-                setTitle(R.string.seleccionar_cocina).
-                setSingleChoiceItems(nombreCocinas, 1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        cocinaTrabajo = nombreCocinas[which];
-                        dialog.dismiss();
-                        configurarTabla();
-                        labelCocinaName.setText(cocinaTrabajo);
-                    }
-                }).
-                create().
-                show();
+    public void onCambiarAreaButtonClick() {//Cambiar de area, de cocina
+        new LoadingHandler<String[]>(act, new LoadingProcess<String[]>() {
+            @Override
+            public String[] process() throws Exception {
+                return controller.getCocinasNames();
+            }
 
+            @Override
+            public void post(final String[] answer) {
+                if (cocinaTrabajo == null) {
+                    cocinaTrabajo = answer[0];
+                }
+                new AlertDialog.Builder(act).
+                        setTitle(R.string.seleccionar_cocina).
+                        setSingleChoiceItems(answer, wichCocina, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                cocinaTrabajo = answer[which];
+                                wichCocina = which;
+                                dialog.dismiss();
+                                configurarTabla();
+                                labelCocinaName.setText(cocinaTrabajo);
+                            }
+                        }).create().show();
+            }
+        });
     }
 
     public void configurarTabla() {
-        showProgressDialog();
-        lista.post(new Runnable() {
+        final String cocina = cocinaTrabajo;
+        new LoadingHandler<MenuAdapter>(act, new LoadingProcess<MenuAdapter>() {
             @Override
-            public void run() {
-                lista.setAdapter(getData());
-                hideProgressDialog();
+            public MenuAdapter process() throws Exception {
+                if (!cocinaTrabajo.equals("-")) {
+                    pedidos = controller.fetchPendingOrders(cocina);
+                }
+                if (pedidos == null) {
+                    pedidos = new ArrayList<ProductoVentaOrdenModel>();
+                }
+                return new MenuAdapter(act, pedidos);
+            }
+
+            @Override
+            public void post(MenuAdapter answer) {
+                lista.setAdapter(answer);
             }
         });
 
-
     }
 
-
-    private com.utils.adapters.MenuAdapter getData() {
-        if (!cocinaTrabajo.equals("-")){
-        pedidos = new NotificationWebConnection(cocinaTrabajo).fetchPendingOrders();
-        }
-        if(pedidos == null){
-            pedidos = new ArrayList<ProductoVentaOrdenModel>();
-        }
-        com.utils.adapters.MenuAdapter adaptador = new com.utils.adapters.MenuAdapter(l, pedidos);
-        return adaptador;
-
-    }
-
-    public void refrescar(View view){
+    public void onRefreshButtonClick(View view) {//refrescar
         configurarTabla();
     }
 

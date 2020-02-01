@@ -18,7 +18,7 @@
             android:paddingRight="20dp"
             android:text="Cantidad"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textSize="@dimen/precio"
+            android:textSize="@dimen/textSizeNormal"
             android:textStyle="bold" />
 
         <TextView
@@ -31,7 +31,7 @@
             android:paddingRight="10dp"
             android:text="Nombre"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="@dimen/titulos" />
+            android:textSize="@dimen/textSizeLarge" />
 
 
     </LinearLayout>
@@ -43,21 +43,21 @@
 
         <TextView
             android:id="@+id/textViewNota"
-            android:layout_width="wrap_content"
+            android:layout_width="508dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="10"
             android:gravity="left"
             android:text="(Nota)"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/color_resaltado"
+            android:textColor="@color/auxiliar"
             android:textSize="18sp"
             android:textStyle="italic" />
 
-
         <ImageButton
             android:id="@+id/addButton"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
             android:longClickable="true"
             android:onClick="onAddClick"
             android:src="@drawable/timbre_de_hotel"
