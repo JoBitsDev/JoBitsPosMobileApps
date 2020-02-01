@@ -5,16 +5,18 @@
  */
 package com.services.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
+
 /**
- *
  * @author Jorge
  */
 
 public class ProductoVentaOrdenModel implements Serializable {
 
 
-    private Float enviadosACocina;
+    private Float enviadosacocina;
 
     private static final long serialVersionUID = 1L;
 
@@ -26,15 +28,7 @@ public class ProductoVentaOrdenModel implements Serializable {
 
     private ProductoVentaModel productoVenta;
 
-    public int getNumero_comensal() {
-        return numero_comensal;
-    }
-
-    public void setNumero_comensal(int numero_comensal) {
-        this.numero_comensal = numero_comensal;
-    }
-
-    private int numero_comensal;
+    private int numeroComensal;
 
     private MesaModel m;
 
@@ -45,6 +39,15 @@ public class ProductoVentaOrdenModel implements Serializable {
 
     public ProductoVentaOrdenModel(ProductoVentaOrdenPKModel productovOrdenPK) {
         this.productovOrdenPK = productovOrdenPK;
+    }
+
+
+    public int getNumeroComensal() {
+        return numeroComensal;
+    }
+
+    public void setNumeroComensal(int numero_comensal) {
+        this.numeroComensal = numero_comensal;
     }
 
     public ProductoVentaOrdenModel(ProductoVentaOrdenPKModel productovOrdenPK, float cantidad) {
@@ -118,7 +121,7 @@ public class ProductoVentaOrdenModel implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ProductoVentaOrdenModel) ) {
+        if (!(object instanceof ProductoVentaOrdenModel)) {
             return false;
         }
         ProductoVentaOrdenModel other = (ProductoVentaOrdenModel) object;
@@ -133,12 +136,12 @@ public class ProductoVentaOrdenModel implements Serializable {
         return "com.restManager.ProductoVentaOrdenModel[ productovOrdenPKModel=" + productovOrdenPK + " ]";
     }
 
-    public Float getEnviadosACocina() {
-        return enviadosACocina;
+    public Float getEnviadosacocina() {
+        return enviadosacocina;
     }
 
-    public void setEnviadosACocina(Float enviadosACocina) {
-        this.enviadosACocina = enviadosACocina;
+    public void setEnviadosacocina(Float enviadosacocina) {
+        this.enviadosacocina = enviadosacocina;
     }
-    
+
 }
