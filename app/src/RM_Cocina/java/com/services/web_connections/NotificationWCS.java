@@ -1,14 +1,10 @@
 package com.services.web_connections;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.services.models.ProductoVentaOrdenModel;
 
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class NotificationWCS extends SimpleWebConnectionService {
 
@@ -29,7 +25,7 @@ public class NotificationWCS extends SimpleWebConnectionService {
 
     public String notificar(ProductoVentaOrdenModel po) throws Exception {
         HashMap<String, Object> hm = new HashMap<String, Object>();
-        hm.put("codOrden", po.getProductovOrdenPK().getOrdencodOrden());
+        hm.put("codOrden", po.getProductoVentaOrdenPK().getOrdencodOrden());
         hm.put("codProducto", po.getProductoVenta().getPCod());
         String resp = connect(path + NOTIFY, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
         return om.readValue(resp, String.class);

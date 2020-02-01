@@ -5,13 +5,16 @@
  */
 package com.services.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 
 /**
- *
  * @author Jorge
  */
-public class ProductoVentaModel implements Serializable,Comparable<ProductoVentaModel> {
+@JsonIgnoreProperties(ignoreUnknown = true)
+
+public class ProductoVentaModel implements Serializable, Comparable<ProductoVentaModel> {
 
     private static final long serialVersionUID = 1L;
     private String pCod;
@@ -19,7 +22,7 @@ public class ProductoVentaModel implements Serializable,Comparable<ProductoVenta
     private float precioVenta;
     private String descripcion;
     private String cocinacodCocina;
-    private String seccionnombreSeccion;
+    private SeccionModel seccionnombreSeccion;
     private int cantidad = 1;
 
     public ProductoVentaModel() {
@@ -33,15 +36,6 @@ public class ProductoVentaModel implements Serializable,Comparable<ProductoVenta
         this.pCod = pCod;
         this.nombre = nombre;
         this.precioVenta = precioVenta;
-    }
-
-    public ProductoVentaModel(String cocinacodCocina, String nombre, String pCod,
-                              float precioVenta, String seccionnombreSeccion) {
-        this.cocinacodCocina = cocinacodCocina;
-        this.nombre = nombre;
-        this.pCod = pCod;
-        this.precioVenta = precioVenta;
-        this.seccionnombreSeccion = seccionnombreSeccion;
     }
 
     public void setCantidad(int cantidad) {
@@ -89,17 +83,28 @@ public class ProductoVentaModel implements Serializable,Comparable<ProductoVenta
         this.cocinacodCocina = cocinacodCocina;
     }
 
-    public String getSeccionnombreSeccion() {
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public String getpCod() {
+        return pCod;
+    }
+
+    public void setpCod(String pCod) {
+        this.pCod = pCod;
+    }
+
+    public SeccionModel getSeccionnombreSeccion() {
         return seccionnombreSeccion;
     }
 
-    public void setSeccionnombreSeccion(String seccionnombreSeccion) {
+    public void setSeccionnombreSeccion(SeccionModel seccionnombreSeccion) {
         this.seccionnombreSeccion = seccionnombreSeccion;
     }
 
-
     public void restarCantidad() {
-        if(cantidad-1 >= 0)
+        if (cantidad - 1 >= 0)
             cantidad--;
     }
 
