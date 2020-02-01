@@ -1,5 +1,7 @@
 package com.services.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -7,7 +9,7 @@ import java.util.*;
  *
  * @author Jorge
  */
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OrdenModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -17,7 +19,7 @@ public class OrdenModel implements Serializable {
     private boolean deLaCasa;
     private Float porciento;
     private Float gananciaXporciento;
-    private Collection<ProductoVentaOrdenModel> productovOrdenCollection;
+    private Collection<ProductoVentaOrdenModel> productoVentaOrdenList;
 
     private MesaModel mesacodMesa;
 
@@ -74,8 +76,8 @@ public class OrdenModel implements Serializable {
     }
 
 
-    public void setProductovOrdenCollection(Collection<ProductoVentaOrdenModel> productovOrdenCollection) {
-        this.productovOrdenCollection = productovOrdenCollection;
+    public void setProductoVentaOrdenList(Collection<ProductoVentaOrdenModel> productoVentaOrdenList) {
+        this.productoVentaOrdenList = productoVentaOrdenList;
     }
 
 
@@ -91,7 +93,7 @@ public class OrdenModel implements Serializable {
 
     
     public void addProducto(String codProducto){
-        ArrayList<ProductoVentaModel> p = new ArrayList(productovOrdenCollection);
+        ArrayList<ProductoVentaModel> p = new ArrayList(productoVentaOrdenList);
         //TODO: falta esto por hacer
     }
 
