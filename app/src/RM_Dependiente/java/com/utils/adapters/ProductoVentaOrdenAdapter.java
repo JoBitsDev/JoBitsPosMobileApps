@@ -10,9 +10,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.activities.R;
-import com.services.models.ProductoVentaModel;
-import com.services.models.ProductoVentaOrdenModel;
-import com.services.models.ProductovOrdenPKModel;
+import com.services.models.*;
+import com.services.web_connections.OrdenWCS;
 import com.utils.EnvironmentVariables;
 
 import java.util.List;
@@ -23,8 +22,8 @@ import java.util.List;
  */
 public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenModel> {
     public final int c = Color.GREEN;
-    List<ProductoVentaOrdenModel> objects;
-    Activity context;
+    private List<ProductoVentaOrdenModel> objects;
+    private Activity context;
     boolean read_only = false;
     private View.OnLongClickListener listener;
 
