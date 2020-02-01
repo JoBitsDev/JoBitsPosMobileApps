@@ -90,6 +90,8 @@ public class LoadingHandler<T> extends AsyncTask<Void, Void, T> {
             mProgressDialog = new ProgressDialog(activity);
             mProgressDialog.setMessage("Cargando ...");
             mProgressDialog.setIndeterminate(true);
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.setCanceledOnTouchOutside(false);
         }
 
         mProgressDialog.show();
