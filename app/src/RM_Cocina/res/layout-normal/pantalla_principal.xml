@@ -2,23 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/color_Fondo2"
+    android:background="@color/especifico_app_primario"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.activities.LoginActivity">
-
-    <ImageButton
-        android:id="@+id/buttonRefresh"
-        android:layout_width="57dp"
-        android:layout_height="46dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="0dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/refrescar" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -34,6 +23,16 @@
             android:layout_height="0dp"
             android:layout_weight="3">
 
+            <ImageButton
+                android:id="@+id/imageButton2"
+                android:layout_width="66dp"
+                android:layout_height="45dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@color/primario"
+                android:scaleType="fitXY"
+                android:src="@drawable/empty_user" />
+
             <TextView
                 android:id="@+id/textView12"
                 android:layout_width="wrap_content"
@@ -42,8 +41,8 @@
                 android:layout_centerHorizontal="true"
                 android:text="@string/estadoMesas"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/color_Labels"
-                android:textSize="@dimen/subtitulos" />
+                android:textColor="@color/texto_primario"
+                android:textSize="@dimen/textSizeLarge" />
 
             <TextView
                 android:id="@+id/labelUsuario"
@@ -51,21 +50,24 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="64dp"
+                android:layout_marginTop="45dp"
                 android:text="@string/user"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/color_Labels"
-                android:textSize="@dimen/subtitulos" />
+                android:textColor="@color/texto_primario"
+                android:textSize="@dimen/textSizeMedium" />
 
             <TextView
                 android:id="@+id/textViewNombreCocina"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginRight="3dp"
-                android:text="@string/cocina_cod" />
+                android:layout_marginTop="45dp"
+                android:layout_marginRight="10dp"
+                android:text="Cocina"
+                android:textColor="@color/texto_primario"
+                android:textSize="@dimen/textSizeMedium" />
 
         </RelativeLayout>
 
@@ -90,7 +92,19 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginEnd="61dp"
                 android:layout_toStartOf="@+id/textViewNombreRest"
-                android:text="@string/label_cambiar_area" />
+                android:layout_weight="50"
+                android:background="@color/especifico_app_primario"
+                android:text="@string/label_cambiar_area"
+                android:textColor="@color/texto_primario"
+                android:textSize="@dimen/textSizeMedium" />
+
+            <ImageButton
+                android:id="@+id/buttonrefresh"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="40"
+                android:background="@color/especifico_app_primario"
+                android:src="@drawable/refrescarhdpi" />
 
         </LinearLayout>
     </LinearLayout>
