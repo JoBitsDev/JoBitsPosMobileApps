@@ -16,8 +16,8 @@ android {
     productFlavors {
         RM_Dependiente {
             applicationId 'jobits.pos.dpte'
-            versionCode 21
-            versionName '2.0.1'
+            versionCode 22
+            versionName '2.1.0'
         }
         RM_Almacen {
             applicationId 'jobits.pos.almacen'

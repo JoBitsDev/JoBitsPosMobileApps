@@ -6,6 +6,7 @@
 package com.services.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
@@ -13,7 +14,7 @@ import java.io.Serializable;
 /**
  * @author Jorge
  */
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductoVentaOrdenModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
