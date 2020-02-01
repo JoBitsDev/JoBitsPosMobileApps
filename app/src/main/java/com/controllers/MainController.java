@@ -45,6 +45,11 @@ public class MainController extends BaseController {
         }
     }
 
+    public void editarUbicacion(int pos, UbicacionModel ub) {
+        cfg.getUbicaciones()[pos] = ub;
+        setSelected(pos);
+    }
+
     public void cambiarUbicacion() {
         EnvironmentVariables.setUbicacionActual(cfg.getSelectedUbicacion());
     }

@@ -1,6 +1,7 @@
 package com.activities;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.controllers.MainController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.services.models.ConfigModel;
+import com.services.models.UbicacionModel;
 import com.services.notifications.ReceiverNotificationService;
 import com.utils.EnvironmentVariables;
 import com.utils.exception.ExceptionHandler;
@@ -207,25 +209,37 @@ public class MainActivity extends BaseActivity {
                 setSingleChoiceItems(ubicaciones, controller.getCfg().getSelected(), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialog, final int which) {
-                        int posicAReemplazar = which;
-                        new AlertDialog.Builder(act).
-                                setView(R.layout.cambiar_ubicacion_dialog).
-                                setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                }).setPositiveButton(R.string.agregar_ubicacion, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //controller.agregarUbicacion(input.getText().toString());
-                            }
-                        }).create().show();
-
-
-
-
                         dialog.dismiss();
+
+
+                        final int posicAReemplazar = which;
+
+                        final Dialog d = new Dialog(act);
+                        d.setContentView(R.layout.cambiar_ubicacion_dialog);
+                        
+                        final EditText nombre = (EditText) d.findViewById(R.id.nombre);
+                        final EditText ip = (EditText) d.findViewById(R.id.ip);
+                        final EditText puerto = (EditText) d.findViewById(R.id.puerto);
+                        final Button button = (Button) d.findViewById(R.id.ok);
+
+                        d.setTitle("Editar Ubicación");
+                        button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                d.dismiss();
+                                try {
+                                    String n = nombre.getText().toString();
+                                    String i = ip.getText().toString();
+                                    String p = puerto.getText().toString();
+                                    controller.editarUbicacion(posicAReemplazar, new UbicacionModel(n, i, p));
+                                    controller.guardarCFG(openFileOutput(EnvironmentVariables.CONFIG_PATH, Context.MODE_PRIVATE));
+                                    updateConnectionText();
+                                } catch (Exception e) {
+                                    ExceptionHandler.handleException(e, act);
+                                }
+                            }
+                        });
+                        d.show();
                     }
                 }).setNeutralButton(R.string.cancelar, new DialogInterface.OnClickListener() {
             @Override
