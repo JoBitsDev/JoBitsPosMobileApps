@@ -11,7 +11,7 @@
         android:layout_weight="25"
         android:gravity="center"
         android:hint="Nombre"
-        android:textColor="@color/texto_primario"
+        android:textColor="@color/secundario"
         android:textSize="@dimen/textSizeLarge" />
 
     <LinearLayout

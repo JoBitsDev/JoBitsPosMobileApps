@@ -58,9 +58,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="30"
-            android:autoText="false"
             android:gravity="start|center_vertical"
-            android:text="Costo Medio: 17.00 CUC "
+            android:text="Costo Medio: xx.xx CUC "
             android:textColor="@color/secundario"
             android:textSize="@dimen/textSizeNormal" />
 
