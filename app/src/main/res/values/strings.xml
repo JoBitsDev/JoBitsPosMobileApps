@@ -29,7 +29,7 @@
 
     <string name="dayClosedError">La caja debe comenzar el dia \nde trabajo para acceder a las ordenes</string>
     <string name="cambiar_ubicacion">Cambiar ubicación</string>
-    <string name="agregar_ubicacion">Agregar ubicación</string>
+    <string name="editar_ubicacion">Editar ubicación</string>
     <string name="formato_fecha">dd/mm/yyyy</string>
 
     <string name="formato_hora">00:00:00</string>

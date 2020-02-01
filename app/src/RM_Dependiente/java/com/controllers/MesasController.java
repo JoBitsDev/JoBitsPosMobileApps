@@ -5,8 +5,6 @@ import android.app.Activity;
 import com.activities.R;
 import com.services.models.MesaModel;
 import com.services.web_connections.AreaWCS;
-import com.services.web_connections.CartaWCS;
-import com.services.web_connections.OrdenWCS;
 import com.utils.adapters.MesaAdapter;
 
 import java.util.List;

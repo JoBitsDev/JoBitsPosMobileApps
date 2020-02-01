@@ -38,7 +38,7 @@
             android:layout_marginBottom="50dp"
             android:background="#ffffff"
             android:gravity="center_vertical"
-            android:hint="username"
+            android:hint="usuario"
             android:inputType="text"
             android:maxLines="1"
             android:textSize="@dimen/textSizeNormal" />
@@ -53,7 +53,7 @@
             android:ems="4"
             android:enabled="true"
             android:gravity="center_vertical"
-            android:hint="password"
+            android:hint="contraseña"
             android:inputType="numberPassword"
             android:maxLines="1"
             android:textSize="@dimen/textSizeNormal" />
