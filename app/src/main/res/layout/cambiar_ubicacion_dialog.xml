@@ -29,4 +29,10 @@
         android:ems="4"
         android:hint="Puerto"
         android:inputType="number" />
+
+    <Button
+        android:id="@+id/ok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Editar" />
 </LinearLayout>
