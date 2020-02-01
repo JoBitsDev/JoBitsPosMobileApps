@@ -26,9 +26,7 @@
                 android:id="@+id/textViewNombreRest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="false"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentBottom="false"
                 android:layout_centerInParent="false"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="false"
@@ -63,11 +61,11 @@
 
             <ImageButton
                 android:id="@+id/imageButton"
-                android:layout_width="116dp"
-                android:layout_height="96dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:background="@color/primario"
+                android:background="@color/especifico_app_primario"
                 android:scaleType="fitXY"
                 android:src="@drawable/empty_user" />
 
@@ -82,10 +80,11 @@
 
             <ImageButton
                 android:id="@+id/buttonRefresh"
-                android:layout_width="81dp"
-                android:layout_height="73dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
+                android:scaleType="fitXY"
                 android:background="@color/especifico_app_primario"
                 android:src="@drawable/refrescarhdpi" />
 
@@ -112,7 +111,6 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginEnd="61dp"
                 android:layout_toStartOf="@+id/textViewNombreRest"
-                android:background="@color/especifico_app_primario"
                 android:clickable="true"
                 android:text="@string/label_cambiar_area"
                 android:textColor="@color/texto_primario"

@@ -31,7 +31,7 @@
         android:clickable="true"
         android:enabled="true"
         android:text="Iniciar sesión"
-        android:textColor="@color/botones_fondo"
+        android:textColor="@color/texto_primario"
         android:textSize="@dimen/textSizeNormal" />
 
     <TextView
