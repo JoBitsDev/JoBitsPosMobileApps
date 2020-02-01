@@ -1,12 +1,7 @@
 package com.controllers;
 
-import com.services.models.ProductoVentaModel;
-import com.services.models.ProductoVentaOrdenModel;
-import com.services.models.SeccionModel;
-import com.services.web_connections.AreaWCS;
-import com.services.web_connections.PersonalWCS;
-import com.services.web_connections.ProductoWCS;
-import com.services.web_connections.SeccionWCS;
+import com.services.models.*;
+import com.services.web_connections.*;
 import com.utils.EnvironmentVariables;
 import com.utils.adapters.ProductoVentaOrdenAdapter;
 
