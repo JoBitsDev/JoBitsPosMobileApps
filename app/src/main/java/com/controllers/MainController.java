@@ -1,7 +1,14 @@
 package com.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.services.models.ConfigModel;
 import com.services.models.UbicacionModel;
 import com.utils.EnvironmentVariables;
+import com.utils.exception.ExceptionHandler;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 
 /**
  * Capa: Controllers
@@ -11,21 +18,47 @@ import com.utils.EnvironmentVariables;
  */
 public class MainController extends BaseController {
 
-    private UbicacionModel[] ubicaciones = new UbicacionModel[]{new UbicacionModel("A", "192.168.173.1", "8080"), new UbicacionModel("B", "192.168.173.100", "8080"), new UbicacionModel("B", "192.168.173.2", "8080"), new UbicacionModel("B", "192.168.173.103", "8080")};
+    private ConfigModel cfg;
+
+    public ConfigModel getCfg() {
+        return cfg;
+    }
+
+    public void setCfg(ConfigModel cfg) {
+        this.cfg = cfg;
+        cambiarUbicacion();
+    }
+
+    public void setSelected(int wich) {
+        cfg.setSelected(wich);
+        cambiarUbicacion();
+    }
+
+    public void guardarCFG(FileOutputStream fileOutputStream) {
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(fileOutputStream);
+            oos.writeObject(cfg);
+            fileOutputStream.close();
+            oos.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void editarUbicacion(int pos, UbicacionModel ub) {
+        cfg.getUbicaciones()[pos] = ub;
+        setSelected(pos);
+    }
+
+    public void cambiarUbicacion() {
+        EnvironmentVariables.setUbicacionActual(cfg.getSelectedUbicacion());
+    }
 
     public String[] getAllUbicaciones() {
-        String[] arr = new String[ubicaciones.length];
-        for (int i = 0; i < ubicaciones.length; i++) {
-            arr[i] = ubicaciones[i].getNombre() + ": " + ubicaciones[i].getIp();
+        String resp[] = new String[cfg.getUbicaciones().length];
+        for (int i = 0; i < resp.length; i++) {
+            resp[i] = cfg.getUbicaciones()[i].getNombre() + ": " + cfg.getUbicaciones()[i].getIp();
         }
-        return arr;
-    }
-
-    public void agregarUbicacion(String s) {
-
-    }
-
-    public void changeUbication(int wich) {
-        EnvironmentVariables.setUbicacionActual(ubicaciones[wich]);
+        return resp;
     }
 }

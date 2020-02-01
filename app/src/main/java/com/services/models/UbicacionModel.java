@@ -1,6 +1,8 @@
 package com.services.models;
 
-public class UbicacionModel {
+import java.io.Serializable;
+
+public class UbicacionModel implements Serializable {
 
     private String nombre;
     private String ip;
@@ -18,6 +20,10 @@ public class UbicacionModel {
 
     public static UbicacionModel getDefaultUbicacion() {
         return new UbicacionModel(NOMBRE_XD, IP_XD, PUERTO_XD);
+    }
+
+    public static UbicacionModel[] getDefaultArrayUbicaciones() {
+        return new UbicacionModel[]{new UbicacionModel(NOMBRE_XD, IP_XD, PUERTO_XD), new UbicacionModel(NOMBRE_XD, IP_XD, PUERTO_XD), new UbicacionModel(NOMBRE_XD, IP_XD, PUERTO_XD), new UbicacionModel(NOMBRE_XD, IP_XD, PUERTO_XD)};
     }
 
     public String getNombre() {

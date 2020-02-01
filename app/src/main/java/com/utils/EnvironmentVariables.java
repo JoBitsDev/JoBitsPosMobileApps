@@ -19,6 +19,7 @@ public class EnvironmentVariables {
      * Puerto para que la notificacion se conecte con el servidor.
      */
     public static final int SOCKET_PORT = 8888;
+    public static final String CONFIG_PATH = "config.json";
 
     private static UbicacionModel ubicacionActual = UbicacionModel.getDefaultUbicacion();
 
