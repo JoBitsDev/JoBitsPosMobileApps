@@ -10,7 +10,7 @@
     tools:context="com.activities.LoginActivity">
 
     <ImageButton
-        android:id="@+id/buttonrefresh"
+        android:id="@+id/buttonRefresh"
         android:layout_width="57dp"
         android:layout_height="46dp"
         android:layout_alignParentEnd="true"
