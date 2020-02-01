@@ -49,7 +49,17 @@ public class PantallaPrincipalActivity extends BaseActivity {
             lista = (ExpandableListView) findViewById(R.id.listaMesas);
 
             if (labelRestName != null) {
-                labelRestName.setText(controller.getNombreRest());
+                new LoadingHandler<String>(act, new LoadingProcess<String>() {
+                    @Override
+                    public String process() throws Exception {
+                        return controller.getNombreRest();
+                    }
+
+                    @Override
+                    public void post(String answer) {
+                        labelRestName.setText(answer);
+                    }
+                });
             }
 
             user = getIntent().getExtras().getString(String.valueOf(R.string.user));
