@@ -5,6 +5,8 @@
  */
 package com.services.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -12,13 +14,12 @@ import java.util.*;
  *
  * @author Jorge
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SeccionModel implements Serializable, Comparable<SeccionModel>{
 
     private static final long serialVersionUID = 1L;
     private String nombreSeccion;
     private String descripcion;
-    private String cartacodCarta;
-    private List<ProductoVentaModel> productos = new ArrayList<ProductoVentaModel>();
 
     public SeccionModel() {
     }
@@ -29,7 +30,6 @@ public class SeccionModel implements Serializable, Comparable<SeccionModel>{
 
     public SeccionModel(String nombreSeccion, String cartacodCarta) {
         this.nombreSeccion = nombreSeccion;
-        this.cartacodCarta = cartacodCarta;
     }
 
     public String getNombreSeccion() {
@@ -46,23 +46,6 @@ public class SeccionModel implements Serializable, Comparable<SeccionModel>{
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public String getCartacodCarta() {
-        return cartacodCarta;
-    }
-
-    public void setCartacodCarta(String cartacodCarta) {
-        this.cartacodCarta = cartacodCarta;
-    }
-
-
-    public List<ProductoVentaModel> getProductos() {
-        return productos;
-    }
-
-    public void setProductos(List<ProductoVentaModel> productos) {
-        this.productos = productos;
     }
 
     @Override
@@ -92,11 +75,5 @@ public class SeccionModel implements Serializable, Comparable<SeccionModel>{
     @Override
     public int compareTo(SeccionModel another) {
         return nombreSeccion.compareTo(another.nombreSeccion);
-    }
-
-    public void addProducto(ProductoVentaModel x) {
-        if(!productos.contains(x)){
-            productos.add(x);
-        }
     }
 }
