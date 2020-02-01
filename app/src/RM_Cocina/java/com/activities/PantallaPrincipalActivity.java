@@ -20,6 +20,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
     private CocinaController controller;
     private String user, cocinaTrabajo;
+    private int wichCocina;
     private TextView labelRestName, labelCocinaName, labelUsuario;
     private ExpandableListView lista;
     private Button cambiarAreaButton;
@@ -33,6 +34,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
         initVarialbes();
         addListeners();
+        onCambiarAreaButtonClick();
         configurarTabla();
     }
 
@@ -45,8 +47,10 @@ public class PantallaPrincipalActivity extends BaseActivity {
             refreshButton = (ImageButton) findViewById(R.id.buttonRefresh);
             labelRestName = (TextView) findViewById(R.id.textViewNombreRest);
             labelCocinaName = (TextView) findViewById(R.id.textViewNombreCocina);
+            labelCocinaName.setText("");
             labelUsuario = (TextView) findViewById(R.id.labelUsuario);
             lista = (ExpandableListView) findViewById(R.id.listaMesas);
+            wichCocina = 0;
 
             if (labelRestName != null) {
                 new LoadingHandler<String>(act, new LoadingProcess<String>() {
@@ -82,7 +86,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         cambiarAreaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onCambiarAreaButtonClick(v);
+                onCambiarAreaButtonClick();
             }
         });
 
@@ -173,7 +177,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         });
     }
 
-    public void onCambiarAreaButtonClick(View view) {//Cambiar de area, de cocina
+    public void onCambiarAreaButtonClick() {//Cambiar de area, de cocina
         new LoadingHandler<String[]>(act, new LoadingProcess<String[]>() {
             @Override
             public String[] process() throws Exception {
@@ -187,10 +191,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 }
                 new AlertDialog.Builder(act).
                         setTitle(R.string.seleccionar_cocina).
-                        setSingleChoiceItems(answer, 1, new DialogInterface.OnClickListener() {
+                        setSingleChoiceItems(answer, wichCocina, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 cocinaTrabajo = answer[which];
+                                wichCocina = which;
                                 dialog.dismiss();
                                 configurarTabla();
                                 labelCocinaName.setText(cocinaTrabajo);
