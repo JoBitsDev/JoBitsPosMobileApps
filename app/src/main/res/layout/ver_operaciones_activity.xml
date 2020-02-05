@@ -10,6 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="10"
+        android:clickable="false"
+        android:editable="false"
         android:gravity="center"
         android:text="Operaciones Realizadas"
         android:textColor="@color/texto_primario"
@@ -141,6 +143,7 @@
         android:id="@+id/listViewOperaciones"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="130" />
+        android:layout_weight="130"
+        android:clickable="false" />
 
 </LinearLayout>

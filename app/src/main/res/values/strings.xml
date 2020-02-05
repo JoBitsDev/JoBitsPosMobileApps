@@ -8,6 +8,7 @@
     <string name="title_activity_login">Iniciar Sesión</string>
 
     <string name="title_activity_about">Sobre</string>
+    <string name="title_activity_operaciones">Operaciones Realizadas</string>
 
     <string name="user">Nombre de usuario</string>
     <string name="errorAlAutenticar">Nombre de usuario o contraseña incorrecta</string>
