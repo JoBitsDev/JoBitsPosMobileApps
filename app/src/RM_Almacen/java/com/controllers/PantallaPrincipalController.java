@@ -3,10 +3,12 @@ package com.controllers;
 import android.content.Context;
 
 import com.services.models.IpvRegistroModel;
+import com.services.models.TransaccionModel;
 import com.services.web_connections.*;
 import com.services.models.InsumoAlmacenModel;
 import com.utils.adapters.AlmacenInsumoAdapter;
 import com.utils.adapters.IPVsAdapter;
+import com.utils.adapters.OperacionesAdapter;
 import com.utils.exception.NoConnectionException;
 import com.utils.exception.ServerErrorException;
 
@@ -27,11 +29,9 @@ public class PantallaPrincipalController extends BaseController {
 
     /**
      * Constructor de la clase.
-     *
-     * @param usuario para conocer el que hace las operaciones.
      */
-    public PantallaPrincipalController(String usuario) {
-        almacenWCS = new AlmacenWCS(usuario, null);
+    public PantallaPrincipalController() {
+        almacenWCS = new AlmacenWCS(null);
     }
 
     /**
@@ -155,13 +155,24 @@ public class PantallaPrincipalController extends BaseController {
     public AlmacenInsumoAdapter getAdapter(Context c, int listaInsumos, String filtros) throws Exception {
         return new AlmacenInsumoAdapter(c, listaInsumos, filterBy(filtros));
     }
+
     public IPVsAdapter getIPVAdapter(Context c, int ipvRegisro) throws Exception {
         return new IPVsAdapter(c, ipvRegisro, almacenWCS.getIPVRegistro(""));
     }
+
     public IPVsAdapter getIPVAdapter(Context c, int ipvRegisro, String codCocina) throws Exception {
         return new IPVsAdapter(c, ipvRegisro, almacenWCS.getIPVRegistro(codCocina));
     }
+
     public List<IpvRegistroModel> getIPVRegistro(String codCocina) throws Exception {
         return almacenWCS.getIPVRegistro(codCocina);
+    }
+
+    public OperacionesAdapter getOperacionesAdapter(Context c, int listaOperaciones) throws Exception {
+        return new OperacionesAdapter(c, listaOperaciones, getOperacionesRealizadas());
+    }
+
+    private List<TransaccionModel> getOperacionesRealizadas() throws Exception {
+        return almacenWCS.getOperacionesRealizadas();
     }
 }
