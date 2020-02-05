@@ -31,7 +31,8 @@ public class AlmacenWCS extends SimpleWebConnectionService {
             MERMA = "MERMAR",
             LISTA_IPV = "IPVS-DE-INSUMO",
             FILTRAR = "FILTRAR",
-            REGISTRO_IPVS = "REGISTRO-IPVS";
+            REGISTRO_IPVS = "REGISTRO-IPVS",
+            AGREGAR_INSUMO = "AGREGAR_INSUMO";
 
     /**
      * Usuario que lo esta usando.
@@ -186,5 +187,14 @@ public class AlmacenWCS extends SimpleWebConnectionService {
     public List<IpvRegistroModel> getIPVRegistro(String codCocina) throws Exception {
         String resp = connect(path + REGISTRO_IPVS + "?ptoElab=" + codCocina, null, super.TOKEN, HTTPMethod.GET);
         return om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, IpvRegistroModel.class));
+    }
+
+    public boolean agregarInsumo(String nombre, float est, String um) throws Exception {
+        HashMap<String, Object> hm = new HashMap<String, Object>();
+        hm.put("insumoNombre", nombre);
+        hm.put("estimacionStock", est);
+        hm.put("um", um);
+        connect(path + AGREGAR_INSUMO, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
+        return true;
     }
 }

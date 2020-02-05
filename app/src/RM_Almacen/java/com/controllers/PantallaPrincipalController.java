@@ -155,13 +155,21 @@ public class PantallaPrincipalController extends BaseController {
     public AlmacenInsumoAdapter getAdapter(Context c, int listaInsumos, String filtros) throws Exception {
         return new AlmacenInsumoAdapter(c, listaInsumos, filterBy(filtros));
     }
+
     public IPVsAdapter getIPVAdapter(Context c, int ipvRegisro) throws Exception {
         return new IPVsAdapter(c, ipvRegisro, almacenWCS.getIPVRegistro(""));
     }
+
     public IPVsAdapter getIPVAdapter(Context c, int ipvRegisro, String codCocina) throws Exception {
         return new IPVsAdapter(c, ipvRegisro, almacenWCS.getIPVRegistro(codCocina));
     }
+
     public List<IpvRegistroModel> getIPVRegistro(String codCocina) throws Exception {
         return almacenWCS.getIPVRegistro(codCocina);
+    }
+
+    public boolean agregarInsumo(String nombre, float est, String um) throws Exception {
+        almacenWCS.agregarInsumo(nombre, est, um);
+        return true;
     }
 }
