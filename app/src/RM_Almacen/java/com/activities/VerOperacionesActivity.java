@@ -7,7 +7,15 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import com.controllers.PantallaPrincipalController;
+import com.services.models.TransaccionModel;
+import com.utils.adapters.AlmacenInsumoAdapter;
+import com.utils.adapters.OperacionesAdapter;
 import com.utils.exception.ExceptionHandler;
+import com.utils.loading.LoadingHandler;
+import com.utils.loading.LoadingProcess;
+
+import java.util.List;
 
 /**
  * Capa: Activities
@@ -20,6 +28,7 @@ public class VerOperacionesActivity extends BaseActivity {
     private EditText editTextBuscar;
     private ImageButton buttonActualizar;
     private ListView listViewOperaciones;
+    private PantallaPrincipalController controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +51,7 @@ public class VerOperacionesActivity extends BaseActivity {
             editTextBuscar = (EditText) findViewById(R.id.editTextBuscar);
             buttonActualizar = (ImageButton) findViewById(R.id.imageButtonActualizar);
             listViewOperaciones = (ListView) findViewById(R.id.listViewOperaciones);
+            controller = new PantallaPrincipalController();
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
@@ -69,5 +79,19 @@ public class VerOperacionesActivity extends BaseActivity {
 
     @Override
     protected void setAdapters() {
+    }
+
+    private void actualizar() {
+        new LoadingHandler<OperacionesAdapter>(act, new LoadingProcess<OperacionesAdapter>() {
+            @Override
+            public OperacionesAdapter process() throws Exception {
+                return controller.getOperacionesAdapter(act, R.id.listViewOperaciones);
+            }
+
+            @Override
+            public void post(OperacionesAdapter answer) {
+                listViewOperaciones.setAdapter(answer);
+            }
+        });
     }
 }

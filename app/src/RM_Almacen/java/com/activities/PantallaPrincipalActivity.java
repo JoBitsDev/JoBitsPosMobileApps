@@ -108,7 +108,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             userText.setText(getBundle().getString(String.valueOf(R.string.user)));
             pickDate = (TextView) findViewById(R.id.textViewFechaServidor);
 
-            controller = new PantallaPrincipalController(userText.getText().toString());
+            controller = new PantallaPrincipalController();
             searchText = (EditText) findViewById(R.id.editText);
             searchTextIPV = (EditText) findViewById(R.id.editTextBuscarIPV);
             radioButtonSalida = (RadioButton) findViewById(R.id.radioButtonSalida);
