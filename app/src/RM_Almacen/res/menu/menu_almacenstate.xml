@@ -4,4 +4,9 @@
         android:orderInCategory="100" android:showAsAction="never" />
     <item android:id="@+id/action_ticket_compra" android:title="@string/imprimir_ticket_compra"
         android:orderInCategory="100" android:showAsAction="never" />
+    <item
+        android:id="@+id/action_listar_operaciones"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/listar_operaciones" />
 </menu>

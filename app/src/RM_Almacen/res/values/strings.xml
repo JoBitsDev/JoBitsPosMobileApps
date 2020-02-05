@@ -8,6 +8,7 @@
     <string name="saldo_insuficiente">No hay suficiente saldo para extraer</string>
     <string name="imprimir_estado_almacen">Imprimir estado actual almacén</string>
     <string name="imprimir_ticket_compra">Imprimir ticket para compras</string>
+    <string name="listar_operaciones">Ver operaciones realizadas</string>
     <string name="version">Version 1.1.1</string>
     <string name="buscar">Buscar...</string>
 

@@ -358,6 +358,9 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 case R.id.action_ticket_compra:
                     imprimirTicketCompra();
                     return true;
+                case R.id.action_listar_operaciones:
+
+                    return true;
                 default:
                     return super.onOptionsItemSelected(item);
             }

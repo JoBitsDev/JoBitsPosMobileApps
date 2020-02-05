@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primario"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:gravity="center"
+        android:text="Operaciones Realizadas"
+        android:textColor="@color/texto_primario"
+        android:textSize="@dimen/textSizeLarge" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/editTextBuscar"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:layout_weight="15"
+            android:background="@color/especifico_app_primario"
+            android:ems="10"
+            android:hint="@string/buscar"
+            android:inputType="textPersonName"
+            android:textColor="@color/color_Buttons"
+            android:textSize="@dimen/textSizeMedium"
+            android:visibility="visible" />
+
+        <ImageButton
+            android:id="@+id/imageButtonActualizar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:background="@color/especifico_app_primario"
+            android:src="@drawable/refrescarhdpi" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/editTextFecha"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="20"
+            android:gravity="center"
+            android:text="Fecha"
+            android:textColor="@color/texto_primario"
+            android:textSize="@dimen/textSizeNormal" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/especifico_app_primario" />
+
+        <TextView
+            android:id="@+id/editTextHora"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="20"
+            android:gravity="center"
+            android:text="Hora"
+            android:textColor="@color/texto_primario"
+            android:textSize="@dimen/textSizeNormal" />
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/especifico_app_primario" />
+
+        <TextView
+            android:id="@+id/editTextInsumo"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="30"
+            android:gravity="center"
+            android:text="Insumo"
+            android:textColor="@color/texto_primario"
+            android:textSize="@dimen/textSizeNormal" />
+
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/especifico_app_primario" />
+
+        <TextView
+            android:id="@+id/editTextCant"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="20"
+            android:gravity="center"
+            android:text="Cantidad"
+            android:textColor="@color/texto_primario"
+            android:textSize="@dimen/textSizeNormal" />
+
+        <View
+            android:id="@+id/divider4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/especifico_app_primario" />
+
+        <TextView
+            android:id="@+id/editTextTipoOp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="30"
+            android:gravity="center"
+            android:text="Tipo de Operación"
+            android:textColor="@color/texto_primario"
+            android:textSize="@dimen/textSizeNormal" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider5"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/especifico_app_primario" />
+
+    <ListView
+        android:id="@+id/listViewOperaciones"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="130" />
+
+</LinearLayout>
