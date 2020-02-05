@@ -32,7 +32,7 @@ public class AlmacenWCS extends SimpleWebConnectionService {
             LISTA_IPV = "IPVS-DE-INSUMO",
             FILTRAR = "FILTRAR",
             REGISTRO_IPVS = "REGISTRO-IPVS",
-            OPERACIONES_REALIZDAS = "OPERACIONES-REALIZDAS";
+            OPERACIONES_REALIZADAS = "OPERACIONES-REALIZADAS";
 
     /**
      * Usuario que lo esta usando.
@@ -189,7 +189,7 @@ public class AlmacenWCS extends SimpleWebConnectionService {
     }
 
     public List<TransaccionModel> getOperacionesRealizadas() throws Exception {
-        String resp = connect(path + OPERACIONES_REALIZDAS, null, super.TOKEN, HTTPMethod.GET);
+        String resp = connect(path + OPERACIONES_REALIZADAS, null, super.TOKEN, HTTPMethod.GET);
         return om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, TransaccionModel.class));
     }
 }
