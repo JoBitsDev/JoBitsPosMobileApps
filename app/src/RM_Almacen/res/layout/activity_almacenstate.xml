@@ -8,7 +8,6 @@
     android:background="@color/especifico_app_primario"
     tools:context="com.activities.PantallaPrincipalActivity">
 
-
     <TabHost
         android:id="@+id/tabHost"
         android:layout_width="match_parent"
@@ -148,6 +147,13 @@
                                 android:text="@string/user"
                                 android:textColor="@color/color_Labels"
                                 android:textSize="@dimen/precio" />
+
+                            <Button
+                                android:id="@+id/butonAgregarInsumo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Agregar insumo" />
 
                         </LinearLayout>
 
@@ -330,6 +336,8 @@
             </FrameLayout>
         </LinearLayout>
     </TabHost>
+
+
 
 
 </RelativeLayout>
