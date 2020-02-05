@@ -1,5 +1,6 @@
 package com.activities;
 
+import android.app.Dialog;
 import android.text.*;
 import android.view.*;
 import android.widget.*;
@@ -76,6 +77,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     private AlmacenInsumoAdapter almacenInsumoAdapter;
     private IPVsAdapter ipVsAdapter;
     private ImageButton imageButtonActualizar;
+    private Button agregarInsumo;
     private TabHost host;
     private float lastX;
     List<IpvRegistroModel> ipvRegistroModelList;
@@ -116,6 +118,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             salidaButton = (ImageButton) findViewById(R.id.salidaButton);
             entradaButton = (ImageButton) findViewById(R.id.entradaButton);
             imageButtonActualizar = (ImageButton) findViewById(R.id.imageButtonActualizar);
+            agregarInsumo = (Button) findViewById(R.id.butonAgregarInsumo);
             spinnerFiltrar = (Spinner) findViewById(R.id.filtrarBy);
             spinnerFiltrarIPV = (Spinner) findViewById(R.id.filtrarByIPV);
             ipvRegistroModelList = new ArrayList<IpvRegistroModel>();
@@ -182,6 +185,13 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
 
+                }
+            });
+
+            agregarInsumo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onAgregarInsumoClick();
                 }
             });
 
@@ -280,23 +290,24 @@ public class PantallaPrincipalActivity extends BaseActivity {
             });
         }
     }
- private void obtenerFecha(){
-         new LoadingHandler<Date>(act, new LoadingProcess<Date>() {
-             @Override
-             public Date process() throws Exception {
+
+    private void obtenerFecha() {
+        new LoadingHandler<Date>(act, new LoadingProcess<Date>() {
+            @Override
+            public Date process() throws Exception {
                 List<IpvRegistroModel> models = controller.getIPVRegistro(spinnerFiltrarIPV.getSelectedItem().toString());
-                if (models.isEmpty()){
+                if (models.isEmpty()) {
                     return new Date();
                 }
                 return models.get(0).getIpvRegistroPK().getFecha();
-             }
+            }
 
-             @Override
-             public void post(Date answer) {
-                 pickDate.setText(formatDate(answer));
-             }
-         });
- }
+            @Override
+            public void post(Date answer) {
+                pickDate.setText(formatDate(answer));
+            }
+        });
+    }
 
     @Override
     protected void setAdapters() {
@@ -435,7 +446,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
             new AlertDialog.Builder(v.getContext()).
                     setView(input).
-                    setTitle("Entrada de InsumoModel").
+                    setTitle("Entrada de Insumo").
                     setMessage("Introduzca la cantidad de " + insumoModel.getInsumoModel() + " a dar entrada").
                     setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
                         @Override
@@ -489,6 +500,46 @@ public class PantallaPrincipalActivity extends BaseActivity {
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
+    }
+
+    private void onAgregarInsumoClick() {
+        final Dialog d = new Dialog(act);
+        d.setContentView(R.layout.agregar_insumo_dialog);
+        final EditText nombre = (EditText) d.findViewById(R.id.nombreInsumo);
+        final EditText estimacion = (EditText) d.findViewById(R.id.estimacionStock);
+        final Spinner um = (Spinner) d.findViewById(R.id.insummoUM);
+        final Button button = (Button) d.findViewById(R.id.ok);
+        d.setTitle("Insertar nuevo insumo");//TODO arreglar Strings para los values del xml
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                d.dismiss();
+                try {
+                    String n = nombre.getText().toString();
+                    float est = Float.parseFloat(estimacion.getText().toString());
+                    String u = (String) um.getSelectedItem();
+                    insertarNuevoInsumo(n, est, u);
+                } catch (Exception e) {
+                    ExceptionHandler.handleException(e, act);
+                }
+            }
+        });
+        d.show();
+    }
+
+    private void insertarNuevoInsumo(final String n, final float est, final String u) {
+        new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+            @Override
+            public Void process() throws Exception {
+                controller.agregarInsumo(n, est, u);
+                return null;
+            }
+
+            @Override
+            public void post(Void ans) {
+                setAdapters();//update all
+            }
+        });
     }
 
     private void updateListView(View v) {
@@ -728,7 +779,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     }
 
     private String formatDate(Date date) {
-      return new SimpleDateFormat("dd'/'MM'/'yyyy").format(date);
+        return new SimpleDateFormat("dd'/'MM'/'yyyy").format(date);
     }
 
     private boolean onTabChangeTouchEvent(MotionEvent event) {
