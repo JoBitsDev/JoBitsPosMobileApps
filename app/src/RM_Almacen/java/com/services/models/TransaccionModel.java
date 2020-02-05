@@ -1,5 +1,7 @@
 package com.services.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -9,6 +11,7 @@ import java.util.Date;
  * @author Jorge
  *
  */
+@JsonIgnoreProperties
 public class TransaccionModel implements Serializable {
 
 

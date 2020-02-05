@@ -108,7 +108,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             userText.setText(getBundle().getString(String.valueOf(R.string.user)));
             pickDate = (TextView) findViewById(R.id.textViewFechaServidor);
 
-            controller = new PantallaPrincipalController(userText.getText().toString());
+            controller = new PantallaPrincipalController();
             searchText = (EditText) findViewById(R.id.editText);
             searchTextIPV = (EditText) findViewById(R.id.editTextBuscarIPV);
             radioButtonSalida = (RadioButton) findViewById(R.id.radioButtonSalida);
@@ -280,23 +280,24 @@ public class PantallaPrincipalActivity extends BaseActivity {
             });
         }
     }
- private void obtenerFecha(){
-         new LoadingHandler<Date>(act, new LoadingProcess<Date>() {
-             @Override
-             public Date process() throws Exception {
+
+    private void obtenerFecha() {
+        new LoadingHandler<Date>(act, new LoadingProcess<Date>() {
+            @Override
+            public Date process() throws Exception {
                 List<IpvRegistroModel> models = controller.getIPVRegistro(spinnerFiltrarIPV.getSelectedItem().toString());
-                if (models.isEmpty()){
+                if (models.isEmpty()) {
                     return new Date();
                 }
                 return models.get(0).getIpvRegistroPK().getFecha();
-             }
+            }
 
-             @Override
-             public void post(Date answer) {
-                 pickDate.setText(formatDate(answer));
-             }
-         });
- }
+            @Override
+            public void post(Date answer) {
+                pickDate.setText(formatDate(answer));
+            }
+        });
+    }
 
     @Override
     protected void setAdapters() {
@@ -731,7 +732,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     }
 
     private String formatDate(Date date) {
-      return new SimpleDateFormat("dd'/'MM'/'yyyy").format(date);
+        return new SimpleDateFormat("dd'/'MM'/'yyyy").format(date);
     }
 
     private boolean onTabChangeTouchEvent(MotionEvent event) {

@@ -10,6 +10,8 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 import com.activities.R;
+import com.services.models.TransaccionModel;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,15 +21,15 @@ import java.util.List;
  *
  * @extends de ArrayAdapter para poder implementar un nuevo adapter basado en el modelo
  */
-public class OperacionesAdapter extends ArrayAdapter<String> implements Filterable {
+public class OperacionesAdapter extends ArrayAdapter<TransaccionModel> implements Filterable {
     private Context context;
-    private List<String> objects, displayedObjects;
+    private List<TransaccionModel> objects, displayedObjects;
 
     /**
      * Constructor
      */
 
-    public OperacionesAdapter(Context context, int textViewResourceId, List<String> objects) {
+    public OperacionesAdapter(Context context, int textViewResourceId, List<TransaccionModel> objects) {
         super(context, textViewResourceId);
         this.context = context;
         this.objects = objects;
@@ -40,8 +42,8 @@ public class OperacionesAdapter extends ArrayAdapter<String> implements Filterab
     }
 
     @Override
-    public String getItem(int position) {
-        return displayedObjects.get(position).toString();
+    public TransaccionModel getItem(int position) {
+        return displayedObjects.get(position);
     }
 
     /**
@@ -96,7 +98,7 @@ public class OperacionesAdapter extends ArrayAdapter<String> implements Filterab
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
 
-                displayedObjects = (List<String>) results.values; // has the filtered values
+                displayedObjects = (List<TransaccionModel>) results.values; // has the filtered values
                 notifyDataSetChanged();  // notifies the data with new filtered values
             }
 
@@ -106,7 +108,7 @@ public class OperacionesAdapter extends ArrayAdapter<String> implements Filterab
                 List<String> filteredArrList = new ArrayList<String>();
 
                 if (objects == null) {
-                    objects = new ArrayList<String>(displayedObjects); // saves the original data in mOriginalValues
+                    objects = new ArrayList<TransaccionModel>(displayedObjects); // saves the original data in mOriginalValues
                 }
 
                 /********
