@@ -3,6 +3,7 @@ package com.activities;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -29,6 +30,7 @@ public class VerOperacionesActivity extends BaseActivity {
     private ImageButton buttonActualizar;
     private ListView listViewOperaciones;
     private PantallaPrincipalController controller;
+    private OperacionesAdapter operacionesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +69,7 @@ public class VerOperacionesActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                ((OperacionesAdapter) listViewOperaciones.getAdapter()).getFilter().filter(s.toString());
             }
 
             @Override
@@ -75,10 +77,33 @@ public class VerOperacionesActivity extends BaseActivity {
 
             }
         });
+        buttonActualizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actualizar();
+            }
+        });
     }
 
     @Override
     protected void setAdapters() {
+        try {
+
+            new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+                @Override
+                public Void process() throws Exception {
+                    operacionesAdapter = new OperacionesAdapter(act, R.layout.lista_operaciones, controller.getOperacionesRealizadas());
+                    return null;
+                }
+
+                @Override
+                public void post(Void answer) {
+                    listViewOperaciones.setAdapter(operacionesAdapter);
+                }
+            });
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+        }
     }
 
     private void actualizar() {

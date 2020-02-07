@@ -172,7 +172,7 @@ public class PantallaPrincipalController extends BaseController {
         return new OperacionesAdapter(c, listaOperaciones, getOperacionesRealizadas());
     }
 
-    private List<TransaccionModel> getOperacionesRealizadas() throws Exception {
+    public List<TransaccionModel> getOperacionesRealizadas() throws Exception {
         return almacenWCS.getOperacionesRealizadas();
     }
 }
