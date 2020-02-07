@@ -2,6 +2,8 @@ package com.utils;
 
 import com.services.models.UbicacionModel;
 
+import java.text.SimpleDateFormat;
+
 /**
  * Clase: Utils
  * Clase que contiene las variables de ambiente predefinidas para la aplicacion, como ip, puerto, moneda y demas.
@@ -22,6 +24,9 @@ public class EnvironmentVariables {
     public static final String CONFIG_PATH = "config.json";
 
     private static UbicacionModel ubicacionActual = UbicacionModel.getDefaultUbicacion();
+
+    public static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yy");
+    public static SimpleDateFormat HOUR_FORMAT = new SimpleDateFormat("hh:mm a");
 
     /**
      * Path de inicio de las peticiones.
