@@ -1,6 +1,7 @@
 package com.services.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.utils.EnvironmentVariables;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -8,8 +9,8 @@ import java.util.Date;
 
 /**
  * FirstDream
- * @author Jorge
  *
+ * @author Jorge
  */
 @JsonIgnoreProperties
 public class TransaccionModel implements Serializable {
@@ -84,5 +85,11 @@ public class TransaccionModel implements Serializable {
         this.insumocodInsumo = insumocodInsumo;
     }
 
-
+    @Override
+    public String toString() {
+        return EnvironmentVariables.DATE_FORMAT.format(getFecha()) + " " +
+                " " + EnvironmentVariables.HOUR_FORMAT.format(getHora()) +
+                " " + getInsumocodInsumo().getNombre() +
+                " " + getCantidad() + getDescripcion();
+    }
 }
