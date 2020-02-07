@@ -78,7 +78,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         new LoadingHandler<List<DetallesVentasModel>>(act, new LoadingProcess<List<DetallesVentasModel>>() {
             @Override
             public List<DetallesVentasModel> process() throws Exception {
-                return resumenVentasController.getDetallesPorDependientes("16/01/2020","prueba");
+                return resumenVentasController.getDetallesPorDependientes("16/01/2020", "prueba");
             }
 
             @Override
@@ -270,12 +270,14 @@ public class PantallaPrincipalActivity extends BaseActivity {
                     break;
                 case MotionEvent.ACTION_UP:
                     currentX = event.getX();
-                    boolean dirRight = false;
-                    if (Math.abs(lastX - currentX) > 200) {//mayor derecha menor izquierda
-                        dirRight = true;
+                    if (lastX - currentX > 200) {//mayor derecha menor izquierda
+                        switchTab(true);
+                        return true;
+                    } else if (lastX - currentX < -200) {
+                        switchTab(false);
+                        return true;
                     }
-                    switchTab(dirRight);
-                    return dirRight;
+                    return false;
             }
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
@@ -283,16 +285,17 @@ public class PantallaPrincipalActivity extends BaseActivity {
         return false;
     }
 
-    private boolean switchTab(boolean change) {
+    private boolean switchTab(boolean right) {
         try {
-            if (host.getCurrentTab() == 3 && change == true || host.getCurrentTab() == 0 && change == false) {
+            int tab = host.getCurrentTab();
+            if (right) {
+                tab++;
             } else {
-                if (change == true) {
-                    host.setCurrentTab(host.getCurrentTab() + 1);
-                } else {
-                    host.setCurrentTab(host.getCurrentTab() - 1);
-                }
+                tab--;
+                tab += 4;
             }
+            tab %= 4;
+            host.setCurrentTab(tab);
             return true;
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
