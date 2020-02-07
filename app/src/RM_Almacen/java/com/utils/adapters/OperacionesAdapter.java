@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.activities.R;
 import com.services.models.TransaccionModel;
+import com.utils.EnvironmentVariables;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,11 +74,11 @@ public class OperacionesAdapter extends ArrayAdapter<TransaccionModel> implement
         } else {
             holder = (ViewHolder) item.getTag();
         }
-        holder.fecha.setText(displayedObjects.get(position).getFecha()+"");
-        holder.hora.setText(displayedObjects.get(position).getFecha()+"");
+        holder.fecha.setText(EnvironmentVariables.DATE_FORMAT.format(displayedObjects.get(position).getFecha()));
+        holder.hora.setText(EnvironmentVariables.HOUR_FORMAT.format(displayedObjects.get(position).getHora()));
         holder.insumo.setText(displayedObjects.get(position).getInsumocodInsumo().getNombre());
-        holder.cant.setText(displayedObjects.get(position).getCantidad()+"");
-        holder.tipoOperacion.setText(displayedObjects.get(position).getNoTransaccion());
+        holder.cant.setText(displayedObjects.get(position).getCantidad() + "");
+        holder.tipoOperacion.setText(displayedObjects.get(position).getDescripcion() + "");
         return (item);
     }
 
@@ -125,7 +126,7 @@ public class OperacionesAdapter extends ArrayAdapter<TransaccionModel> implement
                 } else {
                     constraint = constraint.toString().toLowerCase();
                     for (TransaccionModel i : objects) {
-                        String data = i.getInsumocodInsumo().getNombre();
+                        String data = i.toString();
                         if (data.toLowerCase().contains(constraint.toString())) {
                             filteredArrList.add(i);
                         }
