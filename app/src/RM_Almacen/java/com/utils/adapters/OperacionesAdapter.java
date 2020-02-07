@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+
 import com.activities.R;
 import com.services.models.TransaccionModel;
 
@@ -19,7 +20,7 @@ import java.util.List;
  * Capa: Adapter
  * Clase adapter de la lista de operaciones realizadas encargada de manejar la vista de la lista.
  *
- * @extends de ArrayAdapter para poder implementar un nuevo adapter basado en el modelo
+ * @extends de ArrayAdapter para poder implementar un nuevo adapter basado en el modelo TransaccionModel
  */
 public class OperacionesAdapter extends ArrayAdapter<TransaccionModel> implements Filterable {
     private Context context;
@@ -72,11 +73,11 @@ public class OperacionesAdapter extends ArrayAdapter<TransaccionModel> implement
         } else {
             holder = (ViewHolder) item.getTag();
         }
-        holder.fecha.setText("");
-        holder.hora.setText("");
-        holder.insumo.setText("");
-        holder.cant.setText("");
-        holder.tipoOperacion.setText("");
+        holder.fecha.setText(displayedObjects.get(position).getFecha()+"");
+        holder.hora.setText(displayedObjects.get(position).getFecha()+"");
+        holder.insumo.setText(displayedObjects.get(position).getInsumocodInsumo().getNombre());
+        holder.cant.setText(displayedObjects.get(position).getCantidad()+"");
+        holder.tipoOperacion.setText(displayedObjects.get(position).getNoTransaccion());
         return (item);
     }
 
@@ -105,7 +106,7 @@ public class OperacionesAdapter extends ArrayAdapter<TransaccionModel> implement
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();        // Holds the results of a filtering operation in values
-                List<String> filteredArrList = new ArrayList<String>();
+                List<TransaccionModel> filteredArrList = new ArrayList<TransaccionModel>();
 
                 if (objects == null) {
                     objects = new ArrayList<TransaccionModel>(displayedObjects); // saves the original data in mOriginalValues
@@ -123,12 +124,12 @@ public class OperacionesAdapter extends ArrayAdapter<TransaccionModel> implement
                     results.values = objects;
                 } else {
                     constraint = constraint.toString().toLowerCase();
-                  //  for (IpvRegistroModel i : objects) {
-                 ///       String data = i.getIpvRegistroPK().getIpvinsumocodInsumo();
-                //        if (data.toLowerCase().contains(constraint.toString())) {
-                //            filteredArrList.add(i);
-              //          }
-               //     }
+                    for (TransaccionModel i : objects) {
+                        String data = i.getInsumocodInsumo().getNombre();
+                        if (data.toLowerCase().contains(constraint.toString())) {
+                            filteredArrList.add(i);
+                        }
+                    }
                     // set the Filtered result to return
                     results.count = filteredArrList.size();
                     results.values = filteredArrList;
