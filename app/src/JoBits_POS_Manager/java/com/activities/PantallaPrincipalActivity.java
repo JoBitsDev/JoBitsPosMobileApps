@@ -14,6 +14,7 @@ import android.widget.TabHost;
 
 import com.controllers.ResumenVentasController;
 import com.services.models.AreaListModel;
+import com.services.models.DetallesVentasModel;
 import com.services.models.DpteListModel;
 import com.services.models.PuntoElaboracionListModel;
 import com.services.models.VentaResumenModel;
@@ -73,6 +74,18 @@ public class PantallaPrincipalActivity extends BaseActivity {
         addListeners();
         setAdapters();
         actualizar(formatDate());
+
+        new LoadingHandler<List<DetallesVentasModel>>(act, new LoadingProcess<List<DetallesVentasModel>>() {
+            @Override
+            public List<DetallesVentasModel> process() throws Exception {
+                return resumenVentasController.getDetallesPorDependientes("16/01/2020","prueba");
+            }
+
+            @Override
+            public void post(List<DetallesVentasModel> answer) {
+                int a = 0;
+            }
+        });
     }
 
     @Override
