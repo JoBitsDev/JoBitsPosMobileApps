@@ -1,5 +1,6 @@
 package com.activities;
 
+import android.content.Intent;
 import android.text.*;
 import android.view.*;
 import android.widget.*;
@@ -360,7 +361,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                     imprimirTicketCompra();
                     return true;
                 case R.id.action_listar_operaciones:
-
+                    openOperacionesRealizadas();
                     return true;
                 default:
                     return super.onOptionsItemSelected(item);
@@ -370,6 +371,12 @@ public class PantallaPrincipalActivity extends BaseActivity {
             return false;
         }
     }
+
+    public void openOperacionesRealizadas() {
+        Intent intent = new Intent(PantallaPrincipalActivity.this, VerOperacionesActivity.class);
+        startActivity(intent);
+    }
+
 
     /**
      * Manda a imprimir el ticket de compra.
