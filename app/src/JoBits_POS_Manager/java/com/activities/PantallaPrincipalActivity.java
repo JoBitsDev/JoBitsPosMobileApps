@@ -137,6 +137,13 @@ public class PantallaPrincipalActivity extends BaseActivity {
                     pickDate();
                 }
             });
+            
+            editTextShowDate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pickDate();
+                }
+            });
 
             imageButtonActualizar.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -237,7 +244,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         new LoadingHandler<List<DetallesVentasModel>>(act, new LoadingProcess<List<DetallesVentasModel>>() {
             @Override
             public List<DetallesVentasModel> process() throws Exception {
-                return controller.getDetallesPor(formatDate());
+                return controller.getDetallesPor(editTextShowDate.getText().toString());
             }
 
             @Override
@@ -251,7 +258,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         new LoadingHandler<List<DetallesVentasModel>>(act, new LoadingProcess<List<DetallesVentasModel>>() {
             @Override
             public List<DetallesVentasModel> process() throws Exception {
-                return controller.getDetallesPorArea(formatDate(), cocina.getCodigo());
+                return controller.getDetallesPorArea(editTextShowDate.getText().toString(), cocina.getCodigo());
             }
 
             @Override
@@ -265,7 +272,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         new LoadingHandler<List<DetallesVentasModel>>(act, new LoadingProcess<List<DetallesVentasModel>>() {
             @Override
             public List<DetallesVentasModel> process() throws Exception {
-                return controller.getDetallesPorDependientes(formatDate(), usuario);
+                return controller.getDetallesPorDependientes(editTextShowDate.getText().toString(), usuario);
             }
 
             @Override
