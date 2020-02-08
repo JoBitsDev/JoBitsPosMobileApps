@@ -23,8 +23,8 @@
 
         <ImageView
             android:id="@+id/imageView6"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="50px"
+            android:layout_height="50px"
             android:layout_weight="1"
             android:src="@drawable/timbre_de_hotel" />
 
@@ -48,8 +48,8 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="50px"
+            android:layout_height="50px"
             android:layout_weight="1"
             android:src="@drawable/montoxxxhdpi" />
 
@@ -59,7 +59,6 @@
             android:layout_height="match_parent"
             android:layout_weight="15"
             android:ems="10"
-            android:gravity="center"
             android:hint="0.0 CUC"
             android:inputType="numberSigned"
             android:textColorHint="@color/texto_secundario"
@@ -67,8 +66,8 @@
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="50px"
+            android:layout_height="50px"
             android:layout_weight="1"
             android:src="@drawable/pagoxxxhdpi" />
 
@@ -78,7 +77,6 @@
             android:layout_height="match_parent"
             android:layout_weight="15"
             android:ems="10"
-            android:gravity="center"
             android:hint="0.0 CUC"
             android:inputType="numberSigned"
             android:textColorHint="@color/texto_secundario"

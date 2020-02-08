@@ -56,8 +56,8 @@
 
             <ImageView
                 android:id="@+id/imageView4"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="50px"
+                android:layout_height="50px"
                 android:layout_weight="1"
                 android:src="@drawable/realxxxhdpi" />
 
@@ -67,7 +67,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="15"
                 android:ems="10"
-                android:gravity="center"
                 android:hint="0.0 CUC"
                 android:inputType="numberSigned"
                 android:textColorHint="@color/texto_secundario"
@@ -75,8 +74,8 @@
 
             <ImageView
                 android:id="@+id/imageView5"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="50px"
+                android:layout_height="50px"
                 android:layout_weight="1"
                 android:src="@drawable/netaxxxhdpi" />
 
@@ -86,7 +85,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="15"
                 android:ems="10"
-                android:gravity="center"
                 android:hint="0.0 CUC"
                 android:inputType="numberSigned"
                 android:textColorHint="@color/texto_secundario"
