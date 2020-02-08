@@ -1,6 +1,8 @@
 package com.services.models;
 
-public class DetallesVentasModel {
+import java.io.Serializable;
+
+public class DetallesVentasModel implements Serializable {
     private String nombreProducto;
     private String productoCod;
     private float cantidad;
