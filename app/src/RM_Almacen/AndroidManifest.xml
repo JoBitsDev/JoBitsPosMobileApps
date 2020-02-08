@@ -24,6 +24,7 @@
             android:name="com.activities.VerOperacionesActivity"
             android:label="@string/title_activity_operaciones"
             android:parentActivityName="com.activities.PantallaPrincipalActivity"
+            android:windowSoftInputMode="adjustNothing"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
