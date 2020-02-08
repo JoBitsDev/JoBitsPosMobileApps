@@ -11,16 +11,17 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Nombre"
-        android:inputType="text" />
+        android:inputType="text"
+        android:maxLength="100" />
 
     <Spinner
         android:id="@+id/insummoUM"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:drawable/btn_dropdown"
-        android:hint="U/M"
-        android:entries="@array/umList"
         android:alwaysDrawnWithCache="true"
+        android:background="@android:drawable/btn_dropdown"
+        android:entries="@array/umList"
+        android:hint="U/M"
         android:spinnerMode="dropdown" />
 
     <EditText
@@ -29,7 +30,8 @@
         android:layout_height="wrap_content"
         android:ems="4"
         android:hint="Estimacion de Stock"
-        android:inputType="number" />
+        android:inputType="number"
+        android:maxLength="10" />
 
     <Button
         android:id="@+id/ok"
