@@ -144,7 +144,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Agregar insumo" />
+                                android:hapticFeedbackEnabled="true"
+                                android:text="Agregar insumo"
+                                android:textColor="@color/texto_primario" />
 
                         </LinearLayout>
 
@@ -327,8 +329,6 @@
             </FrameLayout>
         </LinearLayout>
     </TabHost>
-
-
 
 
 </RelativeLayout>
