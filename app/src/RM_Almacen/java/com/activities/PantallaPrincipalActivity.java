@@ -1,5 +1,6 @@
 package com.activities;
 
+import android.content.Intent;
 import android.app.Dialog;
 import android.text.*;
 import android.view.*;
@@ -108,7 +109,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
             pickDate = (TextView) findViewById(R.id.textViewFechaServidor);
 
-            controller = new PantallaPrincipalController(String.valueOf(R.string.user));
+            controller = new PantallaPrincipalController();
             searchText = (EditText) findViewById(R.id.editText);
             searchTextIPV = (EditText) findViewById(R.id.editTextBuscarIPV);
             radioButtonSalida = (RadioButton) findViewById(R.id.radioButtonSalida);
@@ -367,6 +368,9 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 case R.id.action_ticket_compra:
                     imprimirTicketCompra();
                     return true;
+                case R.id.action_listar_operaciones:
+                    openOperacionesRealizadas();
+                    return true;
                 default:
                     return super.onOptionsItemSelected(item);
             }
@@ -375,6 +379,12 @@ public class PantallaPrincipalActivity extends BaseActivity {
             return false;
         }
     }
+
+    public void openOperacionesRealizadas() {
+        Intent intent = new Intent(PantallaPrincipalActivity.this, VerOperacionesActivity.class);
+        startActivity(intent);
+    }
+
 
     /**
      * Manda a imprimir el ticket de compra.

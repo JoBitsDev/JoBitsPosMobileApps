@@ -3,10 +3,12 @@ package com.controllers;
 import android.content.Context;
 
 import com.services.models.IpvRegistroModel;
+import com.services.models.TransaccionModel;
 import com.services.web_connections.*;
 import com.services.models.InsumoAlmacenModel;
 import com.utils.adapters.AlmacenInsumoAdapter;
 import com.utils.adapters.IPVsAdapter;
+import com.utils.adapters.OperacionesAdapter;
 import com.utils.exception.NoConnectionException;
 import com.utils.exception.ServerErrorException;
 
@@ -27,11 +29,9 @@ public class PantallaPrincipalController extends BaseController {
 
     /**
      * Constructor de la clase.
-     *
-     * @param usuario para conocer el que hace las operaciones.
      */
-    public PantallaPrincipalController(String usuario) {
-        almacenWCS = new AlmacenWCS(usuario, null);
+    public PantallaPrincipalController() {
+        almacenWCS = new AlmacenWCS(null);
     }
 
     /**
@@ -166,6 +166,14 @@ public class PantallaPrincipalController extends BaseController {
 
     public List<IpvRegistroModel> getIPVRegistro(String codCocina) throws Exception {
         return almacenWCS.getIPVRegistro(codCocina);
+    }
+
+    public OperacionesAdapter getOperacionesAdapter(Context c, int listaOperaciones) throws Exception {
+        return new OperacionesAdapter(c, listaOperaciones, getOperacionesRealizadas());
+    }
+
+    public List<TransaccionModel> getOperacionesRealizadas() throws Exception {
+        return almacenWCS.getOperacionesRealizadas();
     }
 
     public boolean agregarInsumo(String nombre, float est, String um) throws Exception {

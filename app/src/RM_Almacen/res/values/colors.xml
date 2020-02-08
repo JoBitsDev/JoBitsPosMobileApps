@@ -13,6 +13,9 @@
     <color name="primario">#345065</color>
     <color name="auxiliar">#3E6F91</color>
     <color name="secundario">#3498db</color>
+    <color name="entrada">#234c29</color>
+    <color name="salida">#4c2323</color>
+    <color name="rebaja">#31234c</color>
     <color name="especifico_app_primario">#243f4f</color>
 
 </resources>

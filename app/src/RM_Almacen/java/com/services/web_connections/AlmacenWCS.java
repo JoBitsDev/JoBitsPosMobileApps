@@ -1,10 +1,10 @@
 package com.services.web_connections;
 
 import com.services.models.IpvRegistroModel;
+import com.services.models.TransaccionModel;
 import com.utils.exception.*;
 import com.services.models.InsumoAlmacenModel;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,6 +33,8 @@ public class AlmacenWCS extends SimpleWebConnectionService {
             FILTRAR = "FILTRAR",
             REGISTRO_IPVS = "REGISTRO-IPVS",
             AGREGAR_INSUMO = "AGREGAR-INSUMO";
+            REGISTRO_IPVS = "REGISTRO-IPVS",
+            OPERACIONES_REALIZADAS = "OPERACIONES-REALIZADAS";
 
     /**
      * Usuario que lo esta usando.
@@ -52,9 +54,8 @@ public class AlmacenWCS extends SimpleWebConnectionService {
      * @param user       Usuario que lo esta usando.
      * @param codAlmacen Codigo del almacen que se esta trabajando.
      */
-    public AlmacenWCS(String user, String codAlmacen) {
+    public AlmacenWCS(String codAlmacen) {
         super();
-        this.user = user;
         this.codAlmacen = codAlmacen;
         path += P;
     }
@@ -187,6 +188,11 @@ public class AlmacenWCS extends SimpleWebConnectionService {
     public List<IpvRegistroModel> getIPVRegistro(String codCocina) throws Exception {
         String resp = connect(path + REGISTRO_IPVS + "?ptoElab=" + codCocina, null, super.TOKEN, HTTPMethod.GET);
         return om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, IpvRegistroModel.class));
+    }
+
+    public List<TransaccionModel> getOperacionesRealizadas() throws Exception {
+        String resp = connect(path + OPERACIONES_REALIZADAS, null, super.TOKEN, HTTPMethod.GET);
+        return om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, TransaccionModel.class));
     }
 
     public boolean agregarInsumo(String nombre, float est, String um) throws Exception {
