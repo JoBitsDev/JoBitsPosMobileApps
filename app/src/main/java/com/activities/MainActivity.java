@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.controllers.MainController;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.services.models.ConfigModel;
 import com.services.models.UbicacionModel;
 import com.services.notifications.ReceiverNotificationService;
@@ -24,13 +23,8 @@ import com.utils.exception.ExceptionHandler;
 import com.utils.loading.LoadingHandler;
 import com.utils.loading.LoadingProcess;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 
 /**
  * Capa: Activities
@@ -171,8 +165,8 @@ public class MainActivity extends BaseActivity {
             case R.id.cambiar_ubicacion:
                 cambiarUbicacion();
                 return true;
-            case R.id.agregar_ubicacion:
-                agregarUbicacion();
+            case R.id.editar_ubicacion:
+                editarUbicacion();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -202,7 +196,7 @@ public class MainActivity extends BaseActivity {
         }).create().show();
     }
 
-    private void agregarUbicacion() {
+    private void editarUbicacion() {
         String ubicaciones[] = controller.getAllUbicaciones();
         new AlertDialog.Builder(act).
                 setTitle(R.string.cambiar_ubicacion).
@@ -216,7 +210,7 @@ public class MainActivity extends BaseActivity {
 
                         final Dialog d = new Dialog(act);
                         d.setContentView(R.layout.cambiar_ubicacion_dialog);
-                        
+
                         final EditText nombre = (EditText) d.findViewById(R.id.nombre);
                         final EditText ip = (EditText) d.findViewById(R.id.ip);
                         final EditText puerto = (EditText) d.findViewById(R.id.puerto);

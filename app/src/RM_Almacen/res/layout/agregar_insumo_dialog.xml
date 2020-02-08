@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <EditText
+        android:id="@+id/nombreInsumo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Nombre"
+        android:inputType="text"
+        android:maxLength="100" />
+
+    <Spinner
+        android:id="@+id/insummoUM"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alwaysDrawnWithCache="true"
+        android:background="@android:drawable/btn_dropdown"
+        android:entries="@array/umList"
+        android:hint="U/M"
+        android:spinnerMode="dropdown" />
+
+    <EditText
+        android:id="@+id/estimacionStock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="4"
+        android:hint="Estimacion de Stock"
+        android:inputType="number"
+        android:maxLength="10" />
+
+    <Button
+        android:id="@+id/ok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Crear" />
+</LinearLayout>
