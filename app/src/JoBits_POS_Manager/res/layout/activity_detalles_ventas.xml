@@ -16,7 +16,8 @@
         android:gravity="center"
         android:text="Ventas Detalladas"
         android:textColor="@color/primario"
-        android:textSize="@dimen/textSizeLarge" />
+        android:textSize="@dimen/textSizeLarge"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textViewBy"
