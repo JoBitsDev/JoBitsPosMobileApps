@@ -514,7 +514,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 d.dismiss();
                 try {
                     String n = nombre.getText().toString();
-                    float est = Float.parseFloat(estimacion.getText().toString());
+                    float est = Float.parseFloat(estimacion.getText().toString().isEmpty() ? "0" : estimacion.getText().toString());
                     String u = (String) um.getSelectedItem();
                     insertarNuevoInsumo(n, est, u);
                 } catch (Exception e) {
