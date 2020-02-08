@@ -137,7 +137,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                     pickDate();
                 }
             });
-            
+
             editTextShowDate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
