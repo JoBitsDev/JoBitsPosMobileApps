@@ -44,7 +44,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     /**
      * Textos con el usuario y el almacen
      */
-    private TextView userText, almacenText, pickDate;
+    private TextView almacenText, pickDate;
 
     /**
      * Cuadro de texto de busqueda.
@@ -529,6 +529,9 @@ public class PantallaPrincipalActivity extends BaseActivity {
         new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
             @Override
             public Void process() throws Exception {
+                if (n.isEmpty() || est < 0) {
+                    throw new NullPointerException("Error en los datos de entrada");
+                }
                 controller.agregarInsumo(n, est, u);
                 return null;
             }
