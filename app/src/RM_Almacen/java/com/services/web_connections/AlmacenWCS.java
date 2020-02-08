@@ -32,8 +32,7 @@ public class AlmacenWCS extends SimpleWebConnectionService {
             LISTA_IPV = "IPVS-DE-INSUMO",
             FILTRAR = "FILTRAR",
             REGISTRO_IPVS = "REGISTRO-IPVS",
-            AGREGAR_INSUMO = "AGREGAR-INSUMO";
-            REGISTRO_IPVS = "REGISTRO-IPVS",
+            AGREGAR_INSUMO = "AGREGAR-INSUMO",
             OPERACIONES_REALIZADAS = "OPERACIONES-REALIZADAS";
 
     /**
