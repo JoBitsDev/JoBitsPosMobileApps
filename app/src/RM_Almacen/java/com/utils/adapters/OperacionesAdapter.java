@@ -88,7 +88,9 @@ public class OperacionesAdapter extends ArrayAdapter<TransaccionModel> implement
     }
 
     private int getColor(View v, TransaccionModel obj) {
-        if (obj.getDescripcion().toLowerCase().contains("entrada")) {
+        if (obj.getDescripcion() == null) {
+            return v.getResources().getColor(R.color.rebaja);
+        } else if (obj.getDescripcion().toLowerCase().contains("entrada")) {
             return v.getResources().getColor(R.color.entrada);
         } else if (obj.getDescripcion().toLowerCase().contains("salida")) {
             return v.getResources().getColor(R.color.salida);
