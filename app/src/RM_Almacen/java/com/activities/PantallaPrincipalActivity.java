@@ -106,11 +106,9 @@ public class PantallaPrincipalActivity extends BaseActivity {
             listViewIPV = (ListView) findViewById(R.id.listViewIPVs);
             almacenText = (TextView) findViewById(R.id.textViewNombreAlmacen);
 
-            userText = (TextView) findViewById(R.id.textUser);
-            userText.setText(getBundle().getString(String.valueOf(R.string.user)));
             pickDate = (TextView) findViewById(R.id.textViewFechaServidor);
 
-            controller = new PantallaPrincipalController(userText.getText().toString());
+            controller = new PantallaPrincipalController(String.valueOf(R.string.user));
             searchText = (EditText) findViewById(R.id.editText);
             searchTextIPV = (EditText) findViewById(R.id.editTextBuscarIPV);
             radioButtonSalida = (RadioButton) findViewById(R.id.radioButtonSalida);
