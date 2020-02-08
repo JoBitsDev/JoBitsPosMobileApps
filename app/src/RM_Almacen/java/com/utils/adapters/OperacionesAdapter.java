@@ -1,6 +1,7 @@
 package com.utils.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.activities.R;
@@ -65,11 +67,13 @@ public class OperacionesAdapter extends ArrayAdapter<TransaccionModel> implement
             item = inflater.inflate(R.layout.lista_operaciones, null);
 
             holder = new ViewHolder();
+            holder.back = (LinearLayout) item.findViewById(R.id.fila);
             holder.fecha = (TextView) item.findViewById(R.id.editTextFecha);
             holder.hora = (TextView) item.findViewById(R.id.editTextHora);
             holder.insumo = (TextView) item.findViewById(R.id.editTextInsumo);
             holder.cant = (TextView) item.findViewById(R.id.editTextCant);
             holder.tipoOperacion = (TextView) item.findViewById(R.id.editTextTipoOp);
+
             item.setTag(holder);
         } else {
             holder = (ViewHolder) item.getTag();
@@ -79,9 +83,21 @@ public class OperacionesAdapter extends ArrayAdapter<TransaccionModel> implement
         holder.insumo.setText(displayedObjects.get(position).getInsumocodInsumo().getNombre());
         holder.cant.setText(displayedObjects.get(position).getCantidad() + "");
         holder.tipoOperacion.setText(displayedObjects.get(position).getDescripcion() + "");
+        holder.back.setBackgroundColor(getColor(item, displayedObjects.get(position)));
         return (item);
     }
 
+    private int getColor(View v, TransaccionModel obj) {
+        if (obj.getDescripcion() == null) {
+            return v.getResources().getColor(R.color.rebaja);
+        } else if (obj.getDescripcion().toLowerCase().contains("entrada")) {
+            return v.getResources().getColor(R.color.entrada);
+        } else if (obj.getDescripcion().toLowerCase().contains("salida")) {
+            return v.getResources().getColor(R.color.salida);
+        } else {
+            return v.getResources().getColor(R.color.rebaja);
+        }
+    }
 
     /**
      * <p>Returns a filter that can be used to constrain data with a filtering
@@ -151,5 +167,6 @@ public class OperacionesAdapter extends ArrayAdapter<TransaccionModel> implement
                 insumo,
                 cant,
                 tipoOperacion;
+        LinearLayout back;
     }
 }

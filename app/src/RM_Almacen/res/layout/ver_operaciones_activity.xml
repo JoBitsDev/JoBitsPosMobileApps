@@ -40,7 +40,7 @@
         <ImageButton
             android:id="@+id/imageButtonActualizar"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="3"
             android:background="@color/especifico_app_primario"
             android:src="@drawable/refrescarhdpi" />
@@ -58,29 +58,12 @@
             android:layout_height="match_parent"
             android:layout_weight="20"
             android:gravity="center"
-            android:text="Fecha"
+            android:text="Fecha y Hora"
             android:textColor="@color/texto_primario"
             android:textSize="@dimen/textSizeNormal" />
 
         <View
             android:id="@+id/divider"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/especifico_app_primario" />
-
-        <TextView
-            android:id="@+id/editTextHora"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="20"
-            android:gravity="center"
-            android:text="Hora"
-            android:textColor="@color/texto_primario"
-            android:textSize="@dimen/textSizeNormal" />
-
-        <View
-            android:id="@+id/divider2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
