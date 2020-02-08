@@ -20,7 +20,7 @@
             <TextView
                 android:id="@+id/editTextFecha"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="20"
                 android:gravity="center"
                 android:hint="Fecha"
@@ -30,7 +30,7 @@
             <TextView
                 android:id="@+id/editTextHora"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="20"
                 android:gravity="center"
                 android:hint="Hora"
@@ -50,7 +50,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="30"
-            android:gravity="center"
+            android:gravity="clip_horizontal|center|center_horizontal"
             android:hint="Disponible"
             android:textColor="@color/texto_primario"
             android:textSize="@dimen/textSizeMedium" />
