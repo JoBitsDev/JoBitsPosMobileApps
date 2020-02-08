@@ -7,7 +7,7 @@
     <LinearLayout
         android:id="@+id/fila"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:layout_weight="20"
         android:orientation="horizontal">
 
@@ -48,7 +48,7 @@
         <TextView
             android:id="@+id/editTextInsumo"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="30"
             android:gravity="center"
             android:hint="Disponible"
@@ -82,7 +82,7 @@
         <TextView
             android:id="@+id/editTextTipoOp"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="30"
             android:gravity="center"
             android:hint="Tipo Op"
