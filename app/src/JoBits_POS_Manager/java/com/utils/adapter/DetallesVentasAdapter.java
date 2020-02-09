@@ -105,7 +105,7 @@ public class DetallesVentasAdapter extends ArrayAdapter<DetallesVentasModel> {
         Collections.sort(objects, new Comparator<DetallesVentasModel>() {
             @Override
             public int compare(DetallesVentasModel first, DetallesVentasModel second) {
-                return (int) (first.getCantidad() - second.getCantidad());
+                return -1 * (int) (first.getCantidad() - second.getCantidad());
             }
         });
     }
@@ -116,7 +116,7 @@ public class DetallesVentasAdapter extends ArrayAdapter<DetallesVentasModel> {
             public int compare(DetallesVentasModel first, DetallesVentasModel second) {
                 float f = Float.parseFloat(first.getPrecioVenta().split(" ")[0]);
                 float s = Float.parseFloat(second.getPrecioVenta().split(" ")[0]);
-                return (int) (f - s);
+                return -1 * (int) (f - s);
             }
         });
     }
@@ -127,7 +127,7 @@ public class DetallesVentasAdapter extends ArrayAdapter<DetallesVentasModel> {
             public int compare(DetallesVentasModel first, DetallesVentasModel second) {
                 float f = Float.parseFloat(first.getMontoVenta().split(" ")[0]);
                 float s = Float.parseFloat(second.getMontoVenta().split(" ")[0]);
-                return (int) (f - s);
+                return -1 * (int) (f - s);
             }
         });
     }
