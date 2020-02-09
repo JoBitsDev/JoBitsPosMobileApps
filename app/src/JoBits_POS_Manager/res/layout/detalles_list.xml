@@ -15,7 +15,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="30"
-            android:gravity="center"
             android:hint="Producto"
             android:textColor="@color/primario"
             android:textSize="@dimen/textSizeMedium" />
