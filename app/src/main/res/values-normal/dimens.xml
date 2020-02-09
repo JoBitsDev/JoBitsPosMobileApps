@@ -13,6 +13,6 @@
     <dimen name="textSizeSmall">10dp</dimen>
     <dimen name="textSizeNormal">10dp</dimen>
     <dimen name="textSizeMedium">15dp</dimen>
-    <dimen name="textSizeExact20">10dp</dimen>
+    <dimen name="textSizeExact20">20dp</dimen>
     <dimen name="textSizeTitle">35dp</dimen>
 </resources>

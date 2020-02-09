@@ -1,6 +1,5 @@
 package com.services.web_connections;
 
-import com.services.models.ProductoVentaModel;
 import com.services.models.SeccionModel;
 
 import java.util.List;

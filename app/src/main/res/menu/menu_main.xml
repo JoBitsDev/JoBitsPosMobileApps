@@ -8,7 +8,7 @@
         android:title="@string/cambiar_ubicacion" />
 
     <item
-        android:id="@+id/agregar_ubicacion"
+        android:id="@+id/editar_ubicacion"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/editar_ubicacion" />
