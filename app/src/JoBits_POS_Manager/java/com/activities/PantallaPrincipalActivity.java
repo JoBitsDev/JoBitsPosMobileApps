@@ -426,6 +426,9 @@ public class PantallaPrincipalActivity extends BaseActivity {
         DatePickerDialog recogerFecha = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                año = year;
+                mes= month;
+                dia=dayOfMonth;
                 //Esta variable lo que realiza es aumentar en uno el mes ya que comienza desde 0 = enero
                 final int mesActual = month + 1;
                 //Formateo el día obtenido: antepone el 0 si son menores de 10
@@ -437,10 +440,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
             }
         }, año, mes, dia);
         recogerFecha.show();
-        
-        dia=recogerFecha.getDatePicker().getDayOfMonth();
-        mes =recogerFecha.getDatePicker().getMonth();
-        año=recogerFecha.getDatePicker().getYear();
     }
 
     private String formatDate() {
