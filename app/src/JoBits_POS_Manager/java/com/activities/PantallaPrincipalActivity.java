@@ -258,7 +258,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         new LoadingHandler<List<DetallesVentasModel>>(act, new LoadingProcess<List<DetallesVentasModel>>() {
             @Override
             public List<DetallesVentasModel> process() throws Exception {
-                return controller.getDetallesPorArea(editTextShowDate.getText().toString(), cocina.getCodigo());
+                return controller.getDetallesPorCocina(editTextShowDate.getText().toString(), cocina.getCodigo());
             }
 
             @Override
