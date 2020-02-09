@@ -10,7 +10,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.activities.R;
-import com.services.models.ProductoVentaOrdenModel;
 
 import java.util.List;
 

@@ -1,11 +1,14 @@
 package com.activities;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -14,6 +17,7 @@ import android.widget.TabHost;
 
 import com.controllers.ResumenVentasController;
 import com.services.models.AreaListModel;
+import com.services.models.DetallesVentasModel;
 import com.services.models.DpteListModel;
 import com.services.models.PuntoElaboracionListModel;
 import com.services.models.VentaResumenModel;
@@ -25,6 +29,7 @@ import com.utils.exception.ExceptionHandler;
 import com.utils.loading.LoadingHandler;
 import com.utils.loading.LoadingProcess;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -41,7 +46,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
     private DependientesAdapter dependientesAdapter;
     private GeneralAdapter generalAdapter;
     private PtoElaboracionAdapter ptoElaboracionAdapter;
-    private ResumenVentasController resumenVentasController;
+
+    private ResumenVentasController controller;
 
     private List<VentaResumenModel> ventaResumenModels;
     private List<AreaListModel> areaListModels;
@@ -73,6 +79,18 @@ public class PantallaPrincipalActivity extends BaseActivity {
         addListeners();
         setAdapters();
         actualizar(formatDate());
+
+        new LoadingHandler<List<DetallesVentasModel>>(act, new LoadingProcess<List<DetallesVentasModel>>() {
+            @Override
+            public List<DetallesVentasModel> process() throws Exception {
+                return controller.getDetallesPorDependientes("16/01/2020", "prueba");
+            }
+
+            @Override
+            public void post(List<DetallesVentasModel> answer) {
+                int a = 0;
+            }
+        });
     }
 
     @Override
@@ -102,7 +120,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             dependientesAdapter = new DependientesAdapter(this, R.layout.dependientes_list, dpteListModels);
             ptoElaboracionAdapter = new PtoElaboracionAdapter(this, R.layout.pto_elaboracion_list, puntoElaboracionListModels);
 
-            resumenVentasController = new ResumenVentasController();
+            controller = new ResumenVentasController();
 
             initTab();
         } catch (Exception e) {
@@ -114,6 +132,13 @@ public class PantallaPrincipalActivity extends BaseActivity {
     void addListeners() {
         try {
             imageButtonDatePicker.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pickDate();
+                }
+            });
+
+            editTextShowDate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     pickDate();
@@ -170,6 +195,91 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 return onTabChangeTouchEvent(event);
             }
         });
+
+        listViewAreas.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                onListViewAreasLongClick(areaAdapter.getItem(position));
+                return false;//vrear la activityn detalles en ventas pasandole como extra lo
+            }
+        });
+        listViewDependientes.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                onListViewDependienteLongClick(dependientesAdapter.getItem(position).getUsuario());
+                return false;
+            }
+        });
+        listViewGeneral.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                onListViewGeneralLongClick();
+                return false;
+            }
+        });
+        listViewPtoElaboracion.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                onListViewPtoElabLongClick(ptoElaboracionAdapter.getItem(position));
+                return false;
+            }
+        });
+    }
+
+    private void onListViewAreasLongClick(final AreaListModel area) {
+        new LoadingHandler<List<DetallesVentasModel>>(act, new LoadingProcess<List<DetallesVentasModel>>() {
+            @Override
+            public List<DetallesVentasModel> process() throws Exception {
+                return controller.getDetallesPorArea(editTextShowDate.getText().toString(), area.getCod());
+            }
+
+            @Override
+            public void post(List<DetallesVentasModel> answer) {
+                verDetalles("Area: " + area.getNombre(), answer);
+            }
+        });
+    }
+
+    private void onListViewGeneralLongClick() {
+        new LoadingHandler<List<DetallesVentasModel>>(act, new LoadingProcess<List<DetallesVentasModel>>() {
+            @Override
+            public List<DetallesVentasModel> process() throws Exception {
+                return controller.getDetallesPor(editTextShowDate.getText().toString());
+            }
+
+            @Override
+            public void post(List<DetallesVentasModel> answer) {
+                verDetalles("General", answer);
+            }
+        });
+    }
+
+    private void onListViewPtoElabLongClick(final PuntoElaboracionListModel cocina) {
+        new LoadingHandler<List<DetallesVentasModel>>(act, new LoadingProcess<List<DetallesVentasModel>>() {
+            @Override
+            public List<DetallesVentasModel> process() throws Exception {
+                return controller.getDetallesPorCocina(editTextShowDate.getText().toString(), cocina.getCodigo());
+            }
+
+            @Override
+            public void post(List<DetallesVentasModel> answer) {
+                verDetalles("Cocina: " + cocina.getNombre(), answer);
+            }
+        });
+    }
+
+    private void onListViewDependienteLongClick(final String usuario) {
+        new LoadingHandler<List<DetallesVentasModel>>(act, new LoadingProcess<List<DetallesVentasModel>>() {
+            @Override
+            public List<DetallesVentasModel> process() throws Exception {
+                return controller.getDetallesPorDependientes(editTextShowDate.getText().toString(), usuario);
+            }
+
+            @Override
+            public void post(List<DetallesVentasModel> answer) {
+                verDetalles("Usuario: " + usuario, answer);
+            }
+        });
     }
 
     @Override
@@ -184,6 +294,19 @@ public class PantallaPrincipalActivity extends BaseActivity {
         }
     }
 
+    private void verDetalles(String by, List<DetallesVentasModel> list) {
+        try {
+            final Bundle data = new Bundle();
+            data.putSerializable("lista", (Serializable) list);
+            data.putString("by", by);
+            Intent launch = new Intent(act, DetallesVentasActivity.class);
+            launch.putExtras(data);
+            startActivity(launch);
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+        }
+    }
+
     /**
      * Método para actualizar las listas de datos.
      */
@@ -192,7 +315,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         new LoadingHandler<VentaResumenModel>(act, new LoadingProcess<VentaResumenModel>() {
             @Override
             public VentaResumenModel process() throws Exception {
-                return resumenVentasController.getResumenVentas(fecha);
+                return controller.getResumenVentas(fecha);
             }
 
             @Override
@@ -257,12 +380,14 @@ public class PantallaPrincipalActivity extends BaseActivity {
                     break;
                 case MotionEvent.ACTION_UP:
                     currentX = event.getX();
-                    boolean dirRight = false;
-                    if (Math.abs(lastX - currentX) > 200) {//mayor derecha menor izquierda
-                        dirRight = true;
+                    if (lastX - currentX > 200) {//mayor derecha menor izquierda
+                        switchTab(true);
+                        return true;
+                    } else if (lastX - currentX < -200) {
+                        switchTab(false);
+                        return true;
                     }
-                    switchTab(dirRight);
-                    return dirRight;
+                    return false;
             }
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
@@ -270,16 +395,17 @@ public class PantallaPrincipalActivity extends BaseActivity {
         return false;
     }
 
-    private boolean switchTab(boolean change) {
+    private boolean switchTab(boolean right) {
         try {
-            if (host.getCurrentTab() == 3 && change == true || host.getCurrentTab() == 0 && change == false) {
+            int tab = host.getCurrentTab();
+            if (right) {
+                tab++;
             } else {
-                if (change == true) {
-                    host.setCurrentTab(host.getCurrentTab() + 1);
-                } else {
-                    host.setCurrentTab(host.getCurrentTab() - 1);
-                }
+                tab--;
+                tab += 4;
             }
+            tab %= 4;
+            host.setCurrentTab(tab);
             return true;
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
@@ -300,6 +426,9 @@ public class PantallaPrincipalActivity extends BaseActivity {
         DatePickerDialog recogerFecha = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                año = year;
+                mes= month;
+                dia=dayOfMonth;
                 //Esta variable lo que realiza es aumentar en uno el mes ya que comienza desde 0 = enero
                 final int mesActual = month + 1;
                 //Formateo el día obtenido: antepone el 0 si son menores de 10

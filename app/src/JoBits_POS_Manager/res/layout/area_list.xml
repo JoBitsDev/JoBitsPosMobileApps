@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="50"
         android:orientation="vertical">
 
@@ -44,7 +45,7 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="61dp"
+        android:layout_height="0dp"
         android:layout_weight="50"
         android:orientation="vertical">
 
@@ -53,15 +54,12 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textViewReal"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="5"
-                android:gravity="center"
-                android:text="Venta Real:"
-                android:textColor="@color/primario"
-                android:textSize="@dimen/textSizeNormal" />
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="50px"
+                android:layout_height="50px"
+                android:layout_weight="1"
+                android:src="@drawable/realxxxhdpi" />
 
             <TextView
                 android:id="@+id/editTextReal"
@@ -69,21 +67,17 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="15"
                 android:ems="10"
-                android:gravity="center"
                 android:hint="0.0 CUC"
                 android:inputType="numberSigned"
                 android:textColorHint="@color/texto_secundario"
                 android:textSize="@dimen/textSizeLarge" />
 
-            <TextView
-                android:id="@+id/textViewNeta"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="5"
-                android:gravity="center"
-                android:text="Venta Neta:"
-                android:textColor="@color/primario"
-                android:textSize="@dimen/textSizeNormal" />
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="50px"
+                android:layout_height="50px"
+                android:layout_weight="1"
+                android:src="@drawable/netaxxxhdpi" />
 
             <TextView
                 android:id="@+id/editTextNeta"
@@ -91,7 +85,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="15"
                 android:ems="10"
-                android:gravity="center"
                 android:hint="0.0 CUC"
                 android:inputType="numberSigned"
                 android:textColorHint="@color/texto_secundario"

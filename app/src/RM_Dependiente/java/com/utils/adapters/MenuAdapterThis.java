@@ -9,8 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.activities.R;
-import com.services.models.ProductoVentaModel;
-import com.services.models.ProductoVentaOrdenModel;
 import com.services.models.SeccionModel;
 import com.utils.EnvironmentVariables;
 
