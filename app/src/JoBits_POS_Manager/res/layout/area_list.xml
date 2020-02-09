@@ -77,7 +77,7 @@
                 android:layout_width="50px"
                 android:layout_height="50px"
                 android:layout_weight="1"
-                android:src="@drawable/netaxxxhdpi" />
+                android:src="@drawable/ventaneta" />
 
             <TextView
                 android:id="@+id/editTextNeta"
