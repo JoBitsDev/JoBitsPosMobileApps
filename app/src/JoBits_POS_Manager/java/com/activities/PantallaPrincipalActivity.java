@@ -437,6 +437,10 @@ public class PantallaPrincipalActivity extends BaseActivity {
             }
         }, año, mes, dia);
         recogerFecha.show();
+        
+        dia=recogerFecha.getDatePicker().getDayOfMonth();
+        mes =recogerFecha.getDatePicker().getMonth();
+        año=recogerFecha.getDatePicker().getYear();
     }
 
     private String formatDate() {
