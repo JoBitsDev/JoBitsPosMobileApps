@@ -14,7 +14,7 @@
         <TextView
             android:id="@+id/editTextUsuario"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="20"
             android:ems="10"
             android:hint="Usuario"
@@ -57,7 +57,7 @@
         <TextView
             android:id="@+id/editTextMonto"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="15"
             android:ems="10"
             android:hint="0.0 CUC"
