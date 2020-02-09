@@ -6,7 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
 import com.activities.R;
+import com.services.models.DetallesVentasModel;
+
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -15,16 +20,16 @@ import java.util.List;
  *
  * @extends de ArrayAdapter para poder implementar un nuevo adapter basado en el modelo
  */
-public class DetallesVentasAdapter extends ArrayAdapter<String> {
+public class DetallesVentasAdapter extends ArrayAdapter<DetallesVentasModel> {
 
     private Context context;
-    private List<String> objects, displayedObjects;
+    private List<DetallesVentasModel> objects, displayedObjects;
 
     /**
      * Constructor
      */
 
-    public DetallesVentasAdapter(Context context, int textViewResourceId, List<String> objects) {
+    public DetallesVentasAdapter(Context context, int textViewResourceId, List<DetallesVentasModel> objects) {
         super(context, textViewResourceId);
         this.context = context;
         this.objects = objects;
@@ -37,7 +42,7 @@ public class DetallesVentasAdapter extends ArrayAdapter<String> {
     }
 
     @Override
-    public String getItem(int position) {
+    public DetallesVentasModel getItem(int position) {
         return displayedObjects.get(position);
     }
 
@@ -66,11 +71,65 @@ public class DetallesVentasAdapter extends ArrayAdapter<String> {
         } else {
             holder = (ViewHolder) item.getTag();
         }
-        holder.producto.setText("");
-        holder.cantidad.setText("");
-        holder.precio.setText("");
-        holder.monto.setText("");
+        DetallesVentasModel model = objects.get(position);
+        holder.producto.setText(model.getNombreProducto());
+        holder.cantidad.setText(model.getCantidad() + "");
+        holder.precio.setText(model.getPrecioVenta());
+        holder.monto.setText(model.getMontoVenta());
         return (item);
+    }
+
+    public DetallesVentasAdapter orderBy(String orden) {
+        if (orden.toLowerCase().contains("nombre")) {
+            orderByNombre();
+        } else if (orden.toLowerCase().contains("cantidad")) {
+            orderByCantidad();
+        } else if (orden.toLowerCase().contains("monto")) {
+            orderByMonto();
+        } else if (orden.toLowerCase().contains("precio")) {
+            orderByPrecio();
+        }
+        return this;
+    }
+
+    private void orderByNombre() {
+        Collections.sort(objects, new Comparator<DetallesVentasModel>() {
+            @Override
+            public int compare(DetallesVentasModel first, DetallesVentasModel second) {
+                return first.getNombreProducto().compareTo(second.getNombreProducto());
+            }
+        });
+    }
+
+    private void orderByCantidad() {
+        Collections.sort(objects, new Comparator<DetallesVentasModel>() {
+            @Override
+            public int compare(DetallesVentasModel first, DetallesVentasModel second) {
+                return (int) (first.getCantidad() - second.getCantidad());
+            }
+        });
+    }
+
+    private void orderByPrecio() {
+        Collections.sort(objects, new Comparator<DetallesVentasModel>() {
+            @Override
+            public int compare(DetallesVentasModel first, DetallesVentasModel second) {
+                float f = Float.parseFloat(first.getPrecioVenta().split(" ")[0]);
+                float s = Float.parseFloat(second.getPrecioVenta().split(" ")[0]);
+                return (int) (f - s);
+            }
+        });
+    }
+
+    private void orderByMonto() {
+        Collections.sort(objects, new Comparator<DetallesVentasModel>() {
+            @Override
+            public int compare(DetallesVentasModel first, DetallesVentasModel second) {
+                float f = Float.parseFloat(first.getMontoVenta().split(" ")[0]);
+                float s = Float.parseFloat(second.getMontoVenta().split(" ")[0]);
+                return (int) (f - s);
+            }
+        });
     }
 
     /**

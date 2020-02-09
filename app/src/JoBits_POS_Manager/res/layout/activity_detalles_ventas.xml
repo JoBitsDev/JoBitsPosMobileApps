@@ -18,6 +18,16 @@
         android:textColor="@color/primario"
         android:textSize="@dimen/textSizeLarge" />
 
+    <TextView
+        android:id="@+id/textViewBy"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="20"
+        android:gravity="center"
+        android:hint="De donde sale la lista"
+        android:textColor="@color/primario"
+        android:textSize="@dimen/textSizeMedium" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
