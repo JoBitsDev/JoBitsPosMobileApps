@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primario"
+    android:orientation="vertical"
+    tools:context="com.activities.CentroElaboracionActivity">
+
+    <TextView
+        android:id="@+id/textViewName"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:gravity="center"
+        android:text="Centro de Elaboración"
+        android:textColor="@color/texto_primario"
+        android:textSize="@dimen/textSizeLarge" />
+
+    <TabHost
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="150">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+            </TabWidget>
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/tab1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="10"
+                        android:gravity="right"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/buttonAgregarIngrediente"
+                            android:layout_width="145dp"
+                            android:layout_height="wrap_content"
+                            android:text="Agregar"
+                            android:textColor="@color/texto_primario"
+                            android:textSize="@dimen/textSizeMedium" />
+
+                    </LinearLayout>
+
+                    <ListView
+                        android:id="@+id/listViewIngrediente"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="50" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="10"
+                        android:gravity="right"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/buttonAgregarReceta"
+                            android:layout_width="145dp"
+                            android:layout_height="wrap_content"
+                            android:text="Agregar"
+                            android:textColor="@color/texto_primario"
+                            android:textSize="@dimen/textSizeMedium" />
+
+                    </LinearLayout>
+
+                    <ListView
+                        android:id="@+id/listViewReceta"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="50" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="10"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/buttonConfirmar"
+                            android:layout_width="145dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Confirmar"
+                            android:textColor="@color/texto_primario"
+                            android:textSize="@dimen/textSizeMedium" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ListView
+                        android:id="@+id/listViewSelecIng"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="100" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="10"
+                        android:gravity="right"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/buttonTerminar"
+                            android:layout_width="140"
+                            android:layout_height="wrap_content"
+                            android:text="Terminar"
+                            android:textColor="@color/texto_primario"
+                            android:textSize="@dimen/textSizeMedium" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+</LinearLayout>
