@@ -371,6 +371,9 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 case R.id.action_listar_operaciones:
                     openOperacionesRealizadas();
                     return true;
+                case R.id.action_centro_elaboracion:
+                    openCentroElaboracion();
+                    return true;
                 default:
                     return super.onOptionsItemSelected(item);
             }
@@ -382,6 +385,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
     public void openOperacionesRealizadas() {
         Intent intent = new Intent(PantallaPrincipalActivity.this, VerOperacionesActivity.class);
+        startActivity(intent);
+    }
+
+    public void openCentroElaboracion() {
+        Intent intent = new Intent(PantallaPrincipalActivity.this, CentroElaboracionActivity.class);
         startActivity(intent);
     }
 
