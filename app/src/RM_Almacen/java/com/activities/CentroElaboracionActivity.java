@@ -5,6 +5,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TabHost;
 
+import com.utils.adapters.CentroElaboracionAdapter;
+import com.utils.adapters.SelecElaboracionAdapter;
 import com.utils.exception.ExceptionHandler;
 
 /**
@@ -25,6 +27,8 @@ public class CentroElaboracionActivity extends BaseActivity {
     private Button buttonTerminar;
 
     private TabHost host;
+    private CentroElaboracionAdapter centroElaboracionAdapter;
+    private SelecElaboracionAdapter selecElaboracionAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
