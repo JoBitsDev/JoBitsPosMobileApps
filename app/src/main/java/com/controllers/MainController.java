@@ -1,14 +1,13 @@
 package com.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.services.models.ConfigModel;
 import com.services.models.UbicacionModel;
+import com.services.web_connections.CartaWCS;
 import com.utils.EnvironmentVariables;
-import com.utils.exception.ExceptionHandler;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
+import java.util.HashMap;
 
 /**
  * Capa: Controllers
@@ -27,6 +26,14 @@ public class MainController extends BaseController {
     public void setCfg(ConfigModel cfg) {
         this.cfg = cfg;
         cambiarUbicacion();
+    }
+
+    public void readInfo() throws Exception {
+        HashMap<String, Object> hm = new CartaWCS().readInfo();
+        EnvironmentVariables.NOMBRE_REST = (String) hm.get("nombre");
+        EnvironmentVariables.MONEDA_PRINCIPAL = (String) hm.get("monedaPrincipal");
+        EnvironmentVariables.MONEDA_SECUNDARIA = (String) hm.get("monedaSecundaria");
+        EnvironmentVariables.CAMBIO = (Integer) hm.get("cambio");
     }
 
     public void setSelected(int wich) {
