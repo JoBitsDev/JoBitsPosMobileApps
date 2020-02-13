@@ -820,10 +820,10 @@ public class OrdenActivity extends BaseActivity {
             }
             if (EnvironmentVariables.MONEDA_PRINCIPAL.equals(" MN")) {
                 totalPrincipalLabel.setText(EnvironmentVariables.setDosLugaresDecimales(tot) + EnvironmentVariables.MONEDA_PRINCIPAL);
-                totalSecundariaLabel.setText(EnvironmentVariables.setDosLugaresDecimales(tot / EnvironmentVariables.conversion) + EnvironmentVariables.MONEDA_SECUNDARIA);
+                totalSecundariaLabel.setText(EnvironmentVariables.setDosLugaresDecimales(tot / EnvironmentVariables.CAMBIO) + EnvironmentVariables.MONEDA_SECUNDARIA);
             } else {
                 totalPrincipalLabel.setText(EnvironmentVariables.setDosLugaresDecimales(tot) + EnvironmentVariables.MONEDA_PRINCIPAL);
-                totalSecundariaLabel.setText(EnvironmentVariables.setDosLugaresDecimales(tot * EnvironmentVariables.conversion) + EnvironmentVariables.MONEDA_SECUNDARIA);
+                totalSecundariaLabel.setText(EnvironmentVariables.setDosLugaresDecimales(tot * EnvironmentVariables.CAMBIO) + EnvironmentVariables.MONEDA_SECUNDARIA);
             }
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
