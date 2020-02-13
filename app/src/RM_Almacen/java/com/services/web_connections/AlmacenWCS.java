@@ -210,9 +210,7 @@ public class AlmacenWCS extends SimpleWebConnectionService {
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public List<InsumoAlmacenModel> getCombinacionesCon(List<InsumoAlmacenModel> lista) throws Exception {
-        HashMap<String, List<InsumoAlmacenModel>> hm = new HashMap<String, List<InsumoAlmacenModel>>();
-        hm.put("lista", lista);
-        String resp = connect(path + COMBINACIONES_CON, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
+        String resp = connect(path + COMBINACIONES_CON, om.writeValueAsString(lista), super.TOKEN, HTTPMethod.POST);
         return om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, InsumoAlmacenModel.class));
     }
 }
