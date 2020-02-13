@@ -22,6 +22,7 @@ public class EnvironmentVariables {
      */
     public static final int SOCKET_PORT = 8888;
     public static final String CONFIG_PATH = "config.json";
+    public static String NOMBRE_REST = "";
 
     private static UbicacionModel ubicacionActual = UbicacionModel.getDefaultUbicacion();
 
@@ -46,7 +47,7 @@ public class EnvironmentVariables {
     /**
      * Tasa de conversión de moneda principal a secundaria.
      */
-    public static int conversion = 24;
+    public static int CAMBIO = 24;
 
     /**
      * Redondea un valor a dos lugares despues de la coma.
