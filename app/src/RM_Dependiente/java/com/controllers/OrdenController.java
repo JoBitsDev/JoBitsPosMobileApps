@@ -82,12 +82,12 @@ public class OrdenController extends BaseController {
         return ordenWCService.addProducto(lastClickedMenu.getPCod());
     }
 
-    public void increasePoducto(ProductoVentaModel lastClickedMenu, ProductoVentaOrdenAdapter adapter) {
-        adapter.increase(lastClickedMenu, ordenWCService);//TODO capas mezcladas actulizando el adaptdor desde el controlador
-    }
-
     public boolean addProducto(ProductoVentaModel lastClickedMenu, float cantidad) throws Exception {
         return ordenWCService.addProducto(lastClickedMenu.getPCod(), cantidad);//TODO capas mezcladas actulizando el adaptdor desde el controlador
+    }
+
+    public void increasePoducto(ProductoVentaModel lastClickedMenu, ProductoVentaOrdenAdapter adapter) {
+        adapter.increase(lastClickedMenu, ordenWCService, 1);//TODO capas mezcladas actulizando el adaptdor desde el controlador
     }
 
     public void increasePoducto(ProductoVentaModel lastClickedMenu, ProductoVentaOrdenAdapter adapter, float cantidad) {
@@ -96,6 +96,18 @@ public class OrdenController extends BaseController {
 
     public boolean removeProducto(ProductoVentaModel productoVentaModel) throws Exception {
         return ordenWCService.removeProducto(productoVentaModel.getPCod());
+    }
+
+    public boolean removeProductoVarios(ProductoVentaModel productoVentaModel, float cant) throws Exception {
+        return ordenWCService.removeProducto(productoVentaModel.getPCod(), cant);
+    }
+
+    public void decresePoducto(ProductoVentaModel lastClickedMenu, ProductoVentaOrdenAdapter adapter) {
+        adapter.decrease(lastClickedMenu, 1);//TODO capas mezcladas actulizando el adaptdor desde el controlador
+    }
+
+    public void decresePoducto(ProductoVentaModel lastClickedMenu, ProductoVentaOrdenAdapter adapter, float cantidad) {
+        adapter.decrease(lastClickedMenu, cantidad);
     }
 
     public boolean finishOrden() throws Exception {

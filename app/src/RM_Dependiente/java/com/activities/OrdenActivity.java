@@ -21,6 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.controllers.OrdenController;
+import com.services.models.ProductoVentaModel;
+import com.services.models.ProductoVentaOrdenModel;
 import com.services.models.SeccionModel;
 import com.utils.EnvironmentVariables;
 import com.utils.adapters.MenuAdapterThis;
@@ -859,7 +861,7 @@ public class OrdenActivity extends BaseActivity {
                     public void post(Boolean value) {
                         if (value) {
                             ProductoVentaOrdenAdapter adapter = (ProductoVentaOrdenAdapter) listaOrden.getAdapter();
-                            adapter.decrease(lastClickedOrden.getProductoVenta());
+                            adapter.decrease(lastClickedOrden.getProductoVenta(), 1);
                             updateCosto();
                             Toast.makeText(act, lastClickedOrden.getProductoVenta().getNombre() + " removido del pedido.", Toast.LENGTH_SHORT).show();
                         } else {

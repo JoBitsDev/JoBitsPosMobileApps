@@ -88,29 +88,6 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         return objects.contains(p);
     }
 
-    public void increase(ProductoVentaModel p, OrdenWCS o) {
-        boolean existe = false;
-        ProductoVentaOrdenModel pv = null;
-        int i = 0;
-        for (; i < objects.size() && !existe; i++) {
-            pv = objects.get(i);
-            existe = pv.getProductoVenta().equals(p);
-
-        }
-        if (existe) {
-            i--;
-            pv.setCantidad(pv.getCantidad() + 1);
-            objects.set(i, pv);
-        } else {
-            ProductovOrdenPKModel pk = new ProductovOrdenPKModel(p.getPCod(), o.getCodOrden());
-            pv = new ProductoVentaOrdenModel(pk);
-            pv.setProductoVenta(p);
-            pv.setCantidad(1);
-            pv.setEnviadosacocina((float) 0);
-            objects.add(pv);
-        }
-        notifyDataSetChanged();
-    }
 
     public void increase(ProductoVentaModel p, OrdenWCS o, float ammount) {
         boolean existe = false;
@@ -136,7 +113,7 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         notifyDataSetChanged();
     }
 
-    public void decrease(ProductoVentaModel p) {
+    public void decrease(ProductoVentaModel p, float cant) {
 
         boolean existe = false;
         ProductoVentaOrdenModel pv = null;
@@ -147,8 +124,8 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         }
         if (existe) {
             i--;
-            if (pv.getCantidad() > 1) {
-                pv.setCantidad(pv.getCantidad() - 1);
+            if (pv.getCantidad() > cant) {
+                pv.setCantidad(pv.getCantidad() - cant);
                 objects.set(i, pv);
             } else {
                 objects.remove(i);
