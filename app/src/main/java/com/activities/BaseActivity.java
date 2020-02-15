@@ -1,6 +1,7 @@
 package com.activities;
 
 import android.app.*;
+import android.content.Context;
 import android.os.Bundle;
 
 /**
@@ -13,9 +14,19 @@ import android.os.Bundle;
  */
 public abstract class BaseActivity extends Activity {
 
-    protected BaseActivity act = this;
+    protected static BaseActivity act;
 
     private Bundle bundle;
+
+    public static Context getContext() {
+        return act.getApplicationContext();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        act = this;
+        super.onCreate(savedInstanceState);
+    }
 
     /**
      * Método abstracto a reimplementar para inicializar las variables del XML en el activity.
@@ -37,6 +48,7 @@ public abstract class BaseActivity extends Activity {
 
     /**
      * Get el bundle. Es usado por ejemplo en almacen para pasarle cosas al initVariables.
+     *
      * @return
      */
     public Bundle getBundle() {
@@ -45,6 +57,7 @@ public abstract class BaseActivity extends Activity {
 
     /**
      * Set el nuevo bundle.
+     *
      * @param bundle
      */
     public void setBundle(Bundle bundle) {
