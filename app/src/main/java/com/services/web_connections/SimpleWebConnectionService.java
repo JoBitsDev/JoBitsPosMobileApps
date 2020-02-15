@@ -87,6 +87,7 @@ public class SimpleWebConnectionService {
      * @throws Exception Si algo sale mal.
      */
     public String connect(final String urlToExcecute, final String body, final String token, HTTPMethod method) throws Exception {
+        deleteCache();
         CacheModel cache = checkCache(urlToExcecute);
         String resp;
         if (cache == null) {
@@ -111,6 +112,26 @@ public class SimpleWebConnectionService {
             oos.writeObject(cache);
             fos.close();
             oos.close();
+        } catch (Exception ex) {
+        }
+    }
+
+    private void deleteCache() {
+        try {
+            File general = BaseActivity.getContext().getDir("persistence",Context.MODE_PRIVATE);
+            File files[] = general.getAbsoluteFile().listFiles();
+            for (File f : files) {
+                FileInputStream fos = new FileInputStream(f);
+                ObjectInputStream ois = new ObjectInputStream(fos);
+                CacheModel cache = (CacheModel) ois.readObject();
+                if (cache != null) {
+                    if (cache.isVolatil()) {
+                        f.delete();
+                    }
+                }
+                fos.close();
+                ois.close();
+            }
         } catch (Exception ex) {
         }
     }
