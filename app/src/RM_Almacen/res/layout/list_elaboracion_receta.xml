@@ -29,7 +29,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="5"
-        android:onClick="onAddProductoClick"
+        android:onClick="onAddRecetaClick"
         android:text="+"
         android:textColor="@color/texto_primario"
         android:textSize="@dimen/textSizeMedium" />
@@ -39,7 +39,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="5"
-        android:onClick="onRemoveProductoClick"
+        android:onClick="onRemoveRecetaClick"
         android:text="-"
         android:textColor="@color/texto_primario"
         android:textSize="@dimen/textSizeMedium" />
