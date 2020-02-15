@@ -25,7 +25,8 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
     private List<ProductoVentaOrdenModel> objects;
     private Activity context;
     boolean read_only = false;
-    private View.OnLongClickListener listener;
+    private View.OnLongClickListener addListener;
+    private View.OnLongClickListener removeListener;
 
     public ProductoVentaOrdenAdapter(Activity context, int resource, List<ProductoVentaOrdenModel> objects) {
         super(context, resource, objects);
@@ -33,11 +34,20 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         this.objects = objects;
     }
 
-    public ProductoVentaOrdenAdapter(Activity context, int resource, List<ProductoVentaOrdenModel> objects, View.OnLongClickListener listener) {
-        super(context, resource, objects);
-        this.context = context;
-        this.objects = objects;
-        this.listener = listener;
+    public View.OnLongClickListener getAddListener() {
+        return addListener;
+    }
+
+    public void setAddListener(View.OnLongClickListener addListener) {
+        this.addListener = addListener;
+    }
+
+    public View.OnLongClickListener getRemoveListener() {
+        return removeListener;
+    }
+
+    public void setRemoveListener(View.OnLongClickListener removeListener) {
+        this.removeListener = removeListener;
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -56,7 +66,8 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
             holder.add = (ImageButton) item.findViewById(R.id.addButton);
             holder.remove = (ImageButton) item.findViewById(R.id.removeButton);
             holder.comensal = (ImageButton) item.findViewById(R.id.comensalButton);
-            holder.add.setOnLongClickListener(listener);
+            holder.add.setOnLongClickListener(addListener);
+            holder.remove.setOnLongClickListener(removeListener);
 
             item.setTag(holder);
         } else {
@@ -88,29 +99,6 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         return objects.contains(p);
     }
 
-    public void increase(ProductoVentaModel p, OrdenWCS o) {
-        boolean existe = false;
-        ProductoVentaOrdenModel pv = null;
-        int i = 0;
-        for (; i < objects.size() && !existe; i++) {
-            pv = objects.get(i);
-            existe = pv.getProductoVenta().equals(p);
-
-        }
-        if (existe) {
-            i--;
-            pv.setCantidad(pv.getCantidad() + 1);
-            objects.set(i, pv);
-        } else {
-            ProductovOrdenPKModel pk = new ProductovOrdenPKModel(p.getPCod(), o.getCodOrden());
-            pv = new ProductoVentaOrdenModel(pk);
-            pv.setProductoVenta(p);
-            pv.setCantidad(1);
-            pv.setEnviadosacocina((float) 0);
-            objects.add(pv);
-        }
-        notifyDataSetChanged();
-    }
 
     public void increase(ProductoVentaModel p, OrdenWCS o, float ammount) {
         boolean existe = false;
@@ -136,7 +124,7 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         notifyDataSetChanged();
     }
 
-    public void decrease(ProductoVentaModel p) {
+    public void decrease(ProductoVentaModel p, float cant) {
 
         boolean existe = false;
         ProductoVentaOrdenModel pv = null;
@@ -147,8 +135,8 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         }
         if (existe) {
             i--;
-            if (pv.getCantidad() > 1) {
-                pv.setCantidad(pv.getCantidad() - 1);
+            if (pv.getCantidad() > cant) {
+                pv.setCantidad(pv.getCantidad() - cant);
                 objects.set(i, pv);
             } else {
                 objects.remove(i);
