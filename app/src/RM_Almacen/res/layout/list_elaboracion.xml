@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal">
 
     <TextView
@@ -24,23 +25,25 @@
         android:textColorHint="@color/texto_secundario"
         android:textSize="@dimen/textSizeMedium" />
 
-    <Button
+    <ImageButton
         android:id="@+id/buttonMas"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="5"
-        android:onClick="onAddProductoClick"
-        android:text="+"
+        android:adjustViewBounds="false"
+        android:longClickable="true"
+        android:onClick="onAddRecetaClick"
         android:textColor="@color/texto_primario"
-        android:textSize="@dimen/textSizeMedium" />
+        android:textSize="@dimen/textSizeMedium"
+        tools:src="@android:drawable/ic_input_add" />
 
-    <Button
+    <ImageButton
         android:id="@+id/buttonMenos"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="5"
-        android:onClick="onRemoveProductoClick"
-        android:text="-"
+        android:onClick="onRemoveRecetaClick"
         android:textColor="@color/texto_primario"
-        android:textSize="@dimen/textSizeMedium" />
+        android:textSize="@dimen/textSizeMedium"
+        tools:src="@drawable/minus" />
 </LinearLayout>

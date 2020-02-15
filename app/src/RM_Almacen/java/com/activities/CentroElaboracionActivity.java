@@ -92,9 +92,13 @@ public class CentroElaboracionActivity extends BaseActivity {
         buttonAgregarIngrediente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getProductosDisponibles();
-                host.setCurrentTab(1);
-                isReceta = false;
+                if (listaInsumosSelec.size() != 0) {
+                    Toast.makeText(getApplicationContext(), "Cantidad màxima de productos alcanzada", Toast.LENGTH_SHORT).show();
+                } else {
+                    getProductosDisponibles();
+                    host.setCurrentTab(1);
+                    isReceta = false;
+                }
             }
         });
         buttonAgregarReceta.setOnClickListener(new View.OnClickListener() {
@@ -109,6 +113,7 @@ public class CentroElaboracionActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 addProductosCant(1, position);
+                host.setCurrentTab(0);
             }
         });
         listViewSelecIngrediente.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -154,6 +159,7 @@ public class CentroElaboracionActivity extends BaseActivity {
                     addProductosCant(Integer.parseInt(input.getText().toString()), position);
                 }
             }).create().show();
+            host.setCurrentTab(0);
             return true;
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
@@ -321,6 +327,7 @@ public class CentroElaboracionActivity extends BaseActivity {
             ExceptionHandler.handleException(e, act);
         }
     }
+
     public void onAddRecetaClick(View v) {
         try {
             InsumoAlmacenModel insumoAlmacenModel = ((InsumoAlmacenModel) listViewReceta.getAdapter().getItem((Integer) v.getTag()));
