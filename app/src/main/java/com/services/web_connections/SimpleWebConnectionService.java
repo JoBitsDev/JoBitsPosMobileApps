@@ -108,8 +108,8 @@ public class SimpleWebConnectionService {
     public String validateInfo(String urlToExcecute, String resp) {
         try {
             String sha = Utils.getSHA256(resp);
-            String answ = connect(path + "configuracion/CHECK-SHA?url=" + urlToExcecute + "&sha=" + sha, null, TOKEN, HTTPMethod.GET);
-            return om.readValue(answ, String.class);
+            String pathValidate = "http://" + ip + ":" + port + "/" + EnvironmentVariables.STARTPATH;
+            return connect(pathValidate + "configuracion/CHECK-SHA?url=" + urlToExcecute + "&sha=" + sha, null, TOKEN, HTTPMethod.GET);
         } catch (Exception e) {
             return "";
         }
