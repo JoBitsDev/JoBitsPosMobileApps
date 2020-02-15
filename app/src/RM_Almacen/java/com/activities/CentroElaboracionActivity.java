@@ -92,13 +92,13 @@ public class CentroElaboracionActivity extends BaseActivity {
         buttonAgregarIngrediente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  if (listaInsumosSelec.size() != 0) {
-               //     Toast.makeText(getApplicationContext(), "Cantidad màxima de productos alcanzada", Toast.LENGTH_SHORT).show();
-                //} else {
+                if (listaInsumosSelec.size() != 0) {
+                    Toast.makeText(getApplicationContext(), "Cantidad màxima de productos alcanzada", Toast.LENGTH_SHORT).show();
+                } else {
                     getProductosDisponibles();
                     host.setCurrentTab(1);
                     isReceta = false;
-            //    }
+                }
             }
         });
         buttonAgregarReceta.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +113,11 @@ public class CentroElaboracionActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 addProductosCant(1, position);
+                if (isReceta == false) {
+                    setListProductSelec();
+                } else {
+                    setListRecetaSelec();
+                }
                 host.setCurrentTab(0);
             }
         });
@@ -159,6 +164,11 @@ public class CentroElaboracionActivity extends BaseActivity {
                     addProductosCant(Integer.parseInt(input.getText().toString()), position);
                 }
             }).create().show();
+            if (isReceta == false) {
+                setListProductSelec();
+            } else {
+                setListRecetaSelec();
+            }
             host.setCurrentTab(0);
             return true;
         } catch (Exception e) {
