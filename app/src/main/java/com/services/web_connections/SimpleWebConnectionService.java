@@ -1,9 +1,15 @@
 package com.services.web_connections;
 
+import android.content.Context;
+
 import java.io.*;
 import java.net.URL;
 
+import com.activities.BaseActivity;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.services.models.CacheModel;
+import com.services.models.ConfigModel;
+import com.utils.Utils;
 import com.utils.exception.*;
 
 import java.net.HttpURLConnection;
@@ -38,6 +44,8 @@ public class SimpleWebConnectionService {
      * Tiempo maximo esperado para la respuesta del servidor.
      */
     public static final int MAX_RESPONSE_TIME = 3 * 1000;
+
+    public static final String DIR_CACHE = EnvironmentVariables.PERSISTENCE_PATH + "/";
 
     /**
      * Partes de la URL de las consultas.
@@ -79,6 +87,48 @@ public class SimpleWebConnectionService {
      * @throws Exception Si algo sale mal.
      */
     public String connect(final String urlToExcecute, final String body, final String token, HTTPMethod method) throws Exception {
+        CacheModel cache = checkCache(urlToExcecute);
+        String resp;
+        if (cache == null) {
+            resp = connectToServer(urlToExcecute, body, token, method);
+            saveResponse(urlToExcecute, resp);
+        } else {
+            resp = cache.getRespuesta();
+        }
+        return resp;
+        //return connectToServer(urlToExcecute, body, token, method);
+    }
+
+    private void saveResponse(String urlToExcecute, String resp) {
+        try {
+            FileOutputStream fos = BaseActivity.getContext().openFileOutput(getfileName(urlToExcecute), Context.MODE_PRIVATE);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            CacheModel cache = new CacheModel(urlToExcecute, resp, false);
+            oos.writeObject(cache);
+            fos.close();
+            oos.close();
+        } catch (Exception ex) {
+        }
+    }
+
+    private String getfileName(String urlToExcecute) {
+        return Utils.getSHA256(urlToExcecute) + ".nfo";
+    }
+
+    public CacheModel checkCache(final String urlToExcecute) {
+        CacheModel cache = null;
+        try {
+            FileInputStream fis = BaseActivity.getContext().openFileInput(getfileName(urlToExcecute));
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            cache = (CacheModel) ois.readObject();
+            fis.close();
+            ois.close();
+        } catch (Exception e) {
+        }
+        return cache;
+    }
+
+    public String connectToServer(final String urlToExcecute, final String body, final String token, HTTPMethod method) throws Exception {
         //Set up the connection
         URL url = new URL(urlToExcecute);
         con = (HttpURLConnection) url.openConnection();
@@ -109,7 +159,6 @@ public class SimpleWebConnectionService {
             }
             con.disconnect();
             input.close();
-            //os.close();
             return resp;
         } else {//Si no, lee el error y lo propaga
             BufferedReader input = new BufferedReader(
@@ -118,10 +167,8 @@ public class SimpleWebConnectionService {
             resp = input.readLine();
             input.close();
             con.disconnect();
-            //os.close();
             throw new ServerErrorException(resp);
         }
     }
-
 }
 
