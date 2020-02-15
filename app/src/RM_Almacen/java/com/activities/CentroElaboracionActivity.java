@@ -46,7 +46,7 @@ public class CentroElaboracionActivity extends BaseActivity {
     private SelecElaboracionAdapter selecElaboracionAdapter;
 
     private CentroElaboracionController controller;
-    private List<InsumoAlmacenModel> listaInsumosSelec;
+    private List<InsumoAlmacenModel> listaInsumosIngrediente;
     private List<InsumoAlmacenModel> listaInsumosReceta;
     private boolean isReceta;
 
@@ -77,7 +77,7 @@ public class CentroElaboracionActivity extends BaseActivity {
             buttonTerminar = (Button) findViewById(R.id.buttonTerminar);
 
             controller = new CentroElaboracionController();
-            listaInsumosSelec = new ArrayList<InsumoAlmacenModel>();
+            listaInsumosIngrediente = new ArrayList<InsumoAlmacenModel>();
             listaInsumosReceta = new ArrayList<InsumoAlmacenModel>();
             isReceta = false;
 
@@ -92,7 +92,7 @@ public class CentroElaboracionActivity extends BaseActivity {
         buttonAgregarIngrediente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listaInsumosSelec.size() != 0) {
+                if (listaInsumosIngrediente.size() != 0) {
                     Toast.makeText(getApplicationContext(), "Cantidad màxima de productos alcanzada", Toast.LENGTH_SHORT).show();
                 } else {
                     getProductosDisponibles();
@@ -104,7 +104,7 @@ public class CentroElaboracionActivity extends BaseActivity {
         buttonAgregarReceta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getCombinacionesCon(listaInsumosSelec);
+                getCombinacionesCon(listaInsumosIngrediente);
                 host.setCurrentTab(1);
                 isReceta = true;
             }
@@ -130,18 +130,38 @@ public class CentroElaboracionActivity extends BaseActivity {
         buttonTerminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isReceta == false) {
-                    setListProductSelec();
-                } else {
-                    setListRecetaSelec();
-                }
-                host.setCurrentTab(0);
+                onButtonTerminarClick();
             }
         });
+
         buttonConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                onButtonConfirmarClick();
+            }
+        });
+    }
 
+    private void onButtonTerminarClick() {
+        if (isReceta == false) {
+            setListProductSelec();
+        } else {
+            setListRecetaSelec();
+        }
+        host.setCurrentTab(0);
+    }
+
+    private void onButtonConfirmarClick() {
+        new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+            @Override
+            public Void process() throws Exception {
+                controller.transformar(listaInsumosIngrediente, listaInsumosReceta);
+                return null;
+            }
+
+            @Override
+            public void post(Void answer) {
+                listViewSelecIngrediente.setAdapter(selecElaboracionAdapter);
             }
         });
     }
@@ -180,15 +200,15 @@ public class CentroElaboracionActivity extends BaseActivity {
     private void addProductosCant(int cant, int position) {
         InsumoAlmacenModel insumo = (InsumoAlmacenModel) listViewSelecIngrediente.getItemAtPosition(position);
         if (isReceta == false) {
-            if (listaInsumosSelec.contains(insumo)) {
-                for (int i = 0; i < listaInsumosSelec.size(); i++) {
-                    if (listaInsumosSelec.get(i).equals(insumo)) {
-                        listaInsumosSelec.get(i).setCantidad(listaInsumosSelec.get(i).getCantidad() + cant);
+            if (listaInsumosIngrediente.contains(insumo)) {
+                for (int i = 0; i < listaInsumosIngrediente.size(); i++) {
+                    if (listaInsumosIngrediente.get(i).equals(insumo)) {
+                        listaInsumosIngrediente.get(i).setCantidad(listaInsumosIngrediente.get(i).getCantidad() + cant);
                     }
                 }
             } else {
                 insumo.setCantidad(insumo.getCantidad() + cant);
-                listaInsumosSelec.add(insumo);
+                listaInsumosIngrediente.add(insumo);
             }
         } else if (isReceta == true) {
             if (listaInsumosReceta.contains(insumo)) {
@@ -248,7 +268,7 @@ public class CentroElaboracionActivity extends BaseActivity {
             new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
                 @Override
                 public Void process() throws Exception {
-                    centroElaboracionAdapter = new CentroElaboracionAdapter(act, R.layout.list_elaboracion, listaInsumosSelec);
+                    centroElaboracionAdapter = new CentroElaboracionAdapter(act, R.layout.list_elaboracion, listaInsumosIngrediente);
                     return null;
                 }
 
@@ -308,9 +328,9 @@ public class CentroElaboracionActivity extends BaseActivity {
     public void onAddProductoClick(View v) {
         try {
             InsumoAlmacenModel insumoAlmacenModel = ((InsumoAlmacenModel) listViewIngredientes.getAdapter().getItem((Integer) v.getTag()));
-            for (int i = 0; i < listaInsumosSelec.size(); i++) {
-                if (listaInsumosSelec.get(i).equals(insumoAlmacenModel)) {
-                    listaInsumosSelec.get(i).setCantidad(listaInsumosSelec.get(i).getCantidad() + 1);
+            for (int i = 0; i < listaInsumosIngrediente.size(); i++) {
+                if (listaInsumosIngrediente.get(i).equals(insumoAlmacenModel)) {
+                    listaInsumosIngrediente.get(i).setCantidad(listaInsumosIngrediente.get(i).getCantidad() + 1);
                 }
             }
             setListProductSelec();
@@ -322,13 +342,13 @@ public class CentroElaboracionActivity extends BaseActivity {
     public void onRemoveProductoClick(View v) {
         try {
             InsumoAlmacenModel insumoAlmacenModel = ((InsumoAlmacenModel) listViewIngredientes.getAdapter().getItem((Integer) v.getTag()));
-            for (int i = 0; i < listaInsumosSelec.size(); i++) {
-                if (listaInsumosSelec.get(i).equals(insumoAlmacenModel)) {
-                    if (listaInsumosSelec.get(i).getCantidad() == 1) {
-                        listaInsumosSelec.remove(i);
+            for (int i = 0; i < listaInsumosIngrediente.size(); i++) {
+                if (listaInsumosIngrediente.get(i).equals(insumoAlmacenModel)) {
+                    if (listaInsumosIngrediente.get(i).getCantidad() == 1) {
+                        listaInsumosIngrediente.remove(i);
                         Toast.makeText(getApplicationContext(), "Producto eliminado.", Toast.LENGTH_SHORT).show();
                     } else {
-                        listaInsumosSelec.get(i).setCantidad(listaInsumosSelec.get(i).getCantidad() - 1);
+                        listaInsumosIngrediente.get(i).setCantidad(listaInsumosIngrediente.get(i).getCantidad() - 1);
                     }
                 }
             }
@@ -341,9 +361,9 @@ public class CentroElaboracionActivity extends BaseActivity {
     public void onAddRecetaClick(View v) {
         try {
             InsumoAlmacenModel insumoAlmacenModel = ((InsumoAlmacenModel) listViewReceta.getAdapter().getItem((Integer) v.getTag()));
-            for (int i = 0; i < listaInsumosSelec.size(); i++) {
-                if (listaInsumosSelec.get(i).equals(insumoAlmacenModel)) {
-                    listaInsumosSelec.get(i).setCantidad(listaInsumosSelec.get(i).getCantidad() + 1);
+            for (int i = 0; i < listaInsumosIngrediente.size(); i++) {
+                if (listaInsumosIngrediente.get(i).equals(insumoAlmacenModel)) {
+                    listaInsumosIngrediente.get(i).setCantidad(listaInsumosIngrediente.get(i).getCantidad() + 1);
                 }
             }
             setListProductSelec();
@@ -355,13 +375,13 @@ public class CentroElaboracionActivity extends BaseActivity {
     public void onRemoveRecetaClick(View v) {
         try {
             InsumoAlmacenModel insumoAlmacenModel = ((InsumoAlmacenModel) listViewReceta.getAdapter().getItem((Integer) v.getTag()));
-            for (int i = 0; i < listaInsumosSelec.size(); i++) {
-                if (listaInsumosSelec.get(i).equals(insumoAlmacenModel)) {
-                    if (listaInsumosSelec.get(i).getCantidad() == 1) {
-                        listaInsumosSelec.remove(i);
+            for (int i = 0; i < listaInsumosIngrediente.size(); i++) {
+                if (listaInsumosIngrediente.get(i).equals(insumoAlmacenModel)) {
+                    if (listaInsumosIngrediente.get(i).getCantidad() == 1) {
+                        listaInsumosIngrediente.remove(i);
                         Toast.makeText(getApplicationContext(), "Producto eliminado.", Toast.LENGTH_SHORT).show();
                     } else {
-                        listaInsumosSelec.get(i).setCantidad(listaInsumosSelec.get(i).getCantidad() - 1);
+                        listaInsumosIngrediente.get(i).setCantidad(listaInsumosIngrediente.get(i).getCantidad() - 1);
                     }
                 }
             }
