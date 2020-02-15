@@ -10,6 +10,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 
+import com.controllers.CentroElaboracionController;
 import com.services.models.IpvRegistroModel;
 import com.utils.adapters.*;
 import com.utils.exception.ExceptionHandler;
@@ -97,6 +98,24 @@ public class PantallaPrincipalActivity extends BaseActivity {
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
+
+        new LoadingHandler<List<InsumoAlmacenModel>>(act, new LoadingProcess<List<InsumoAlmacenModel>>() {
+            @Override
+            public List<InsumoAlmacenModel> process() throws Exception {
+                CentroElaboracionController cont = new CentroElaboracionController();
+                List<InsumoAlmacenModel> prod = cont.getProductosDisponibles();
+                List<InsumoAlmacenModel> filter = new ArrayList<InsumoAlmacenModel>();
+                filter.add(prod.get(0));
+                filter.add(prod.get(1));
+                List<InsumoAlmacenModel> comb = cont.getCombinacionesCon(filter);
+                return null;
+            }
+
+            @Override
+            public void post(List<InsumoAlmacenModel> answer) {
+
+            }
+        });
     }
 
 

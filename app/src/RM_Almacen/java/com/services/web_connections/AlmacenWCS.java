@@ -33,7 +33,8 @@ public class AlmacenWCS extends SimpleWebConnectionService {
             FILTRAR = "FILTRAR",
             REGISTRO_IPVS = "REGISTRO-IPVS",
             AGREGAR_INSUMO = "AGREGAR-INSUMO",
-            OPERACIONES_REALIZADAS = "OPERACIONES-REALIZADAS";
+            OPERACIONES_REALIZADAS = "OPERACIONES-REALIZADAS",
+            COMBINACIONES_CON = "COMBINACIONES-CON";
 
     /**
      * Usuario que lo esta usando.
@@ -201,5 +202,15 @@ public class AlmacenWCS extends SimpleWebConnectionService {
         hm.put("um", um);
         connect(path + AGREGAR_INSUMO, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
         return true;
+    }
+
+    /**
+     * @return Lista de los insumos.
+     * @throws ServerErrorException  si hay error en el servidor.
+     * @throws NoConnectionException si no hay coneccion con el servidor.
+     */
+    public List<InsumoAlmacenModel> getCombinacionesCon(List<InsumoAlmacenModel> lista) throws Exception {
+        String resp = connect(path + COMBINACIONES_CON, om.writeValueAsString(lista), super.TOKEN, HTTPMethod.POST);
+        return om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, InsumoAlmacenModel.class));
     }
 }
