@@ -37,17 +37,7 @@ public class CentroElaboracionController {
         return almWCS.getCombinacionesCon(lista);
     }
 
-    private void test() {
-        /*new LoadingHandler<List<InsumoAlmacenModel>>(act, new LoadingProcess<List<InsumoAlmacenModel>>() {
-            @Override
-            public List<InsumoAlmacenModel> process() throws Exception {
-                return controller.getCombinacionesCon(lista);
-            }
-
-            @Override
-            public void post(List<InsumoAlmacenModel> answer) {
-
-            }
-        });*/
+    public boolean transformar(List<InsumoAlmacenModel> ingredientes, List<InsumoAlmacenModel> receta) throws Exception {
+        return almWCS.transformar(ingredientes, receta);
     }
 }
