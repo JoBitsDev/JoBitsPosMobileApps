@@ -83,13 +83,14 @@ public class SimpleWebConnectionService {
      * @return String con el formato JSON.
      * @throws Exception Si algo sale mal.
      */
-    public String connect(final String urlToExcecute, final String body, final String token, HTTPMethod method) throws Exception {
-        if (method == HTTPMethod.GET) {//save
+    public String connect(final String urlToExcecute, final String body, final String token, final HTTPMethod method) throws Exception {
+        if (method == HTTPMethod.GET) {
             CacheModel cache = checkCache(urlToExcecute);
-            String resp;
+            String resp = "";
             if (cache == null) {
                 resp = connectToServer(urlToExcecute, body, token, method);
                 saveResponse(urlToExcecute, resp);
+                return resp;
             } else {
                 resp = cache.getRespuesta();
                 //verifico con el server
@@ -98,8 +99,8 @@ public class SimpleWebConnectionService {
                     resp = check;
                     saveResponse(urlToExcecute, resp);
                 }
+                return resp;
             }
-            return resp;
         } else {
             return connectToServer(urlToExcecute, body, token, method);
         }
@@ -109,7 +110,7 @@ public class SimpleWebConnectionService {
         try {
             String sha = Utils.getSHA256(resp);
             String pathValidate = "http://" + ip + ":" + port + "/" + EnvironmentVariables.STARTPATH;
-            return connect(pathValidate + "configuracion/CHECK-SHA?url=" + urlToExcecute + "&sha=" + sha, null, TOKEN, HTTPMethod.GET);
+            return connectToServer(pathValidate + "configuracion/CHECK-SHA?url=" + urlToExcecute + "&sha=" + sha, null, TOKEN, HTTPMethod.GET);
         } catch (Exception e) {
             return "";
         }
