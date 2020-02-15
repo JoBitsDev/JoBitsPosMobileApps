@@ -1,9 +1,6 @@
 package com.services.web_connections;
 
-import com.utils.EnvironmentVariables;
-
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
+import java.util.HashMap;
 
 /**
  * Created by Jorge on 2/8/18.
@@ -13,16 +10,16 @@ public class CartaWCS extends SimpleWebConnectionService {
 
 
     private String p = "carta/";
-    final String NOMBRE = "NOMBRE-REST";
+    final String INFO = "INFO";
 
     public CartaWCS() {
         super();
         path += p;
     }
 
-    public String getNombreRest() throws Exception {
-        String resp = connect(path + NOMBRE, null, super.TOKEN, HTTPMethod.GET);
-        return om.readValue(resp, String.class);
+    public HashMap<String,Object> readInfo() throws Exception {
+        String resp = connect(path + INFO, null, super.TOKEN, HTTPMethod.GET);
+        return om.readValue(resp, HashMap.class);
     }
 
 

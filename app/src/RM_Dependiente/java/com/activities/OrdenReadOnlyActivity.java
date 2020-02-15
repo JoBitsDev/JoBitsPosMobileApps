@@ -6,6 +6,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.controllers.OrdenController;
+import com.services.models.ProductoVentaOrdenModel;
 import com.utils.EnvironmentVariables;
 import com.utils.adapters.ProductoVentaOrdenReadOnlyAdapter;
 import com.utils.exception.ExceptionHandler;
@@ -96,10 +97,10 @@ public class OrdenReadOnlyActivity extends BaseActivity {
             }
             if (EnvironmentVariables.MONEDA_PRINCIPAL.equals(EnvironmentVariables.MONEDA_PRINCIPAL)) {
                 totalPrincipal.setText(EnvironmentVariables.setDosLugaresDecimales(tot) + EnvironmentVariables.MONEDA_PRINCIPAL);
-                totalSecundaria.setText(EnvironmentVariables.setDosLugaresDecimales(tot / EnvironmentVariables.conversion) + EnvironmentVariables.MONEDA_SECUNDARIA);
+                totalSecundaria.setText(EnvironmentVariables.setDosLugaresDecimales(tot / EnvironmentVariables.CAMBIO) + EnvironmentVariables.MONEDA_SECUNDARIA);
             } else {
                 totalPrincipal.setText(EnvironmentVariables.setDosLugaresDecimales(tot) + EnvironmentVariables.MONEDA_PRINCIPAL);
-                totalSecundaria.setText(EnvironmentVariables.setDosLugaresDecimales(tot * EnvironmentVariables.conversion) + EnvironmentVariables.MONEDA_SECUNDARIA);
+                totalSecundaria.setText(EnvironmentVariables.setDosLugaresDecimales(tot * EnvironmentVariables.CAMBIO) + EnvironmentVariables.MONEDA_SECUNDARIA);
             }
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
