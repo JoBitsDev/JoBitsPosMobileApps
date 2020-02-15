@@ -161,7 +161,7 @@ public class CentroElaboracionActivity extends BaseActivity {
         insumo.setCantidad(insumo.getCantidad() + cant);
         if (isReceta == false) {
             listaInsumosSelec.add(insumo);
-        } else {
+        } else if(isReceta==true){
             listaInsumosReceta.add(insumo);
         }
     }
