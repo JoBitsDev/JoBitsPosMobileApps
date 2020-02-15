@@ -42,6 +42,36 @@
                 android:layout_height="match_parent">
 
                 <LinearLayout
+                    android:id="@+id/tab2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ListView
+                        android:id="@+id/listViewSelecIng"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="100"
+                        android:background="@color/auxiliar" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="10"
+                        android:gravity="right"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/buttonTerminar"
+                            android:layout_width="145dp"
+                            android:layout_height="wrap_content"
+                            android:text="Terminar"
+                            android:textColor="@color/texto_primario"
+                            android:textSize="@dimen/textSizeMedium" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/tab1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -130,35 +160,6 @@
                             android:textSize="@dimen/textSizeMedium" />
                     </LinearLayout>
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/tab2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <ListView
-                        android:id="@+id/listViewSelecIng"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="100" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="10"
-                        android:gravity="right"
-                        android:orientation="vertical">
-
-                        <Button
-                            android:id="@+id/buttonTerminar"
-                            android:layout_width="145dp"
-                            android:layout_height="wrap_content"
-                            android:text="Terminar"
-                            android:textColor="@color/texto_primario"
-                            android:textSize="@dimen/textSizeMedium" />
-                    </LinearLayout>
                 </LinearLayout>
 
             </FrameLayout>
