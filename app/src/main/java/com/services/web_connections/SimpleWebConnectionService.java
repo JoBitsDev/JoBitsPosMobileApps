@@ -91,7 +91,11 @@ public class SimpleWebConnectionService {
         String resp;
         if (cache == null) {
             resp = connectToServer(urlToExcecute, body, token, method);
-            saveResponse(urlToExcecute, resp);
+
+            if (method == HTTPMethod.GET) {//save
+                saveResponse(urlToExcecute, resp);
+            }
+
         } else {
             resp = cache.getRespuesta();
         }
@@ -112,7 +116,7 @@ public class SimpleWebConnectionService {
     }
 
     private String getfileName(String urlToExcecute) {
-        return Utils.getSHA256(urlToExcecute) + ".nfo";
+        return EnvironmentVariables.PERSISTENCE_PATH + Utils.getSHA256(urlToExcecute) + ".nfo";
     }
 
     public CacheModel checkCache(final String urlToExcecute) {
