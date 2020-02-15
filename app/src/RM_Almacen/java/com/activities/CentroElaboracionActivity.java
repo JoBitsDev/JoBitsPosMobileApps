@@ -1,13 +1,27 @@
 package com.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.text.InputType;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TabHost;
 
+import com.controllers.CentroElaboracionController;
+import com.services.models.InsumoAlmacenModel;
 import com.utils.adapters.CentroElaboracionAdapter;
 import com.utils.adapters.SelecElaboracionAdapter;
 import com.utils.exception.ExceptionHandler;
+import com.utils.loading.LoadingHandler;
+import com.utils.loading.LoadingProcess;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Capa: Activities
@@ -30,6 +44,11 @@ public class CentroElaboracionActivity extends BaseActivity {
     private CentroElaboracionAdapter centroElaboracionAdapter;
     private SelecElaboracionAdapter selecElaboracionAdapter;
 
+    private CentroElaboracionController controller;
+    private List<InsumoAlmacenModel> listaInsumosSelec;
+    private List<InsumoAlmacenModel> listaInsumosReceta;
+    private boolean isReceta;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,14 +66,19 @@ public class CentroElaboracionActivity extends BaseActivity {
     @Override
     void initVarialbes() {
         try {
-            listViewIngredientes = (ListView)findViewById(R.id.listViewIngrediente);
+            listViewIngredientes = (ListView) findViewById(R.id.listViewIngrediente);
             listViewReceta = (ListView) findViewById(R.id.listViewReceta);
-            listViewSelecIngrediente = (ListView)findViewById(R.id.listViewSelecIng);
+            listViewSelecIngrediente = (ListView) findViewById(R.id.listViewSelecIng);
 
-            buttonAgregarIngrediente = (Button)findViewById(R.id.buttonAgregarIngrediente);
-            buttonAgregarReceta = (Button)findViewById(R.id.buttonAgregarReceta);
-            buttonConfirmar = (Button)findViewById(R.id.buttonConfirmar);
-            buttonTerminar = (Button)findViewById(R.id.buttonTerminar);
+            buttonAgregarIngrediente = (Button) findViewById(R.id.buttonAgregarIngrediente);
+            buttonAgregarReceta = (Button) findViewById(R.id.buttonAgregarReceta);
+            buttonConfirmar = (Button) findViewById(R.id.buttonConfirmar);
+            buttonTerminar = (Button) findViewById(R.id.buttonTerminar);
+
+            controller = new CentroElaboracionController();
+            listaInsumosSelec = new ArrayList<InsumoAlmacenModel>();
+            listaInsumosReceta = new ArrayList<InsumoAlmacenModel>();
+            isReceta = false;
 
             initTab();
         } catch (Exception e) {
@@ -64,12 +88,163 @@ public class CentroElaboracionActivity extends BaseActivity {
 
     @Override
     void addListeners() {
+        buttonAgregarIngrediente.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getProductosDisponibles();
+                host.setCurrentTab(1);
+                isReceta = false;
+            }
+        });
+        buttonAgregarReceta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getCombinacionesCon(listaInsumosSelec);
+                host.setCurrentTab(1);
+                isReceta = true;
+            }
+        });
+        listViewSelecIngrediente.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                addProductosCant(1, position);
+            }
+        });
+        listViewSelecIngrediente.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                return onListViewElabAddLongClick(view, position);
+            }
+        });
+        buttonTerminar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actualizarList();
+                host.setCurrentTab(0);
+            }
+        });
+        buttonConfirmar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
     }
 
-    @Override
-    protected void setAdapters() {
+    private boolean onListViewElabAddLongClick(final View v, final int position) {
+        try {
+            final EditText input = new EditText(v.getContext());
+            input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            input.setRawInputType(Configuration.KEYBOARD_12KEY);
+            new AlertDialog.Builder(v.getContext()).
+                    setView(input).
+                    setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    addProductosCant(Float.parseFloat(input.getText().toString()), position);
+                }
+            }).create().show();
+            return true;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+            return false;
+        }
+    }
 
+    private void addProductosCant(float cant, int position) {
+        InsumoAlmacenModel insumo = (InsumoAlmacenModel) listViewSelecIngrediente.getItemAtPosition(position);
+        insumo.setCantidad(insumo.getCantidad() + cant);
+        if (isReceta == false) {
+            listaInsumosSelec.add(insumo);
+        } else {
+            listaInsumosReceta.add(insumo);
+        }
+    }
+
+    private void getProductosDisponibles() {
+        try {
+            new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+                @Override
+                public Void process() throws Exception {
+                    selecElaboracionAdapter = new SelecElaboracionAdapter(act, R.layout.list_selec_elab, controller.getProductosDisponibles());
+                    return null;
+                }
+
+                @Override
+                public void post(Void answer) {
+                    listViewSelecIngrediente.setAdapter(selecElaboracionAdapter);
+                }
+            });
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+        }
+    }
+
+    private void getCombinacionesCon(final List<InsumoAlmacenModel> lista) {
+        try {
+            new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+                @Override
+                public Void process() throws Exception {
+                    selecElaboracionAdapter = new SelecElaboracionAdapter(act, R.layout.list_selec_elab, controller.getCombinacionesCon(lista));
+                    return null;
+                }
+
+                @Override
+                public void post(Void answer) {
+                    listViewSelecIngrediente.setAdapter(selecElaboracionAdapter);
+                }
+            });
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+        }
+    }
+
+    private void actualizarList() {
+        setListProductSelec();
+        setListRecetaSelec();
+    }
+
+    private void setListProductSelec() {
+        try {
+            new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+                @Override
+                public Void process() throws Exception {
+                    centroElaboracionAdapter = new CentroElaboracionAdapter(act, R.layout.list_elaboracion, listaInsumosSelec);
+                    return null;
+                }
+
+                @Override
+                public void post(Void answer) {
+                    listViewIngredientes.setAdapter(centroElaboracionAdapter);
+                }
+            });
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+        }
+    }
+
+    private void setListRecetaSelec() {
+        try {
+            new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+                @Override
+                public Void process() throws Exception {
+                    centroElaboracionAdapter = new CentroElaboracionAdapter(act, R.layout.list_elaboracion, listaInsumosReceta);
+                    return null;
+                }
+
+                @Override
+                public void post(Void answer) {
+                    listViewReceta.setAdapter(centroElaboracionAdapter);
+                }
+            });
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+        }
     }
 
     private void initTab() {
@@ -93,6 +268,26 @@ public class CentroElaboracionActivity extends BaseActivity {
             }
         } catch (Exception e) {
             ExceptionHandler.handleException(e, this);
+        }
+    }
+
+    public void onAddClick(View v) {
+        try {
+            InsumoAlmacenModel insumoAlmacenModel = ((InsumoAlmacenModel) listViewIngredientes.getAdapter().getItem((Integer) v.getTag()));
+            insumoAlmacenModel.setCantidad(insumoAlmacenModel.getCantidad() + 1);
+            actualizarList();
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+        }
+    }
+
+    public void onRemoveClick(View v) {
+        try {
+            InsumoAlmacenModel insumoAlmacenModel = ((InsumoAlmacenModel) listViewIngredientes.getAdapter().getItem((Integer) v.getTag()));
+            insumoAlmacenModel.setCantidad(insumoAlmacenModel.getCantidad() - 1);
+            actualizarList();
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
         }
     }
 }
