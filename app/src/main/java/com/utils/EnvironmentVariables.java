@@ -22,7 +22,7 @@ public class EnvironmentVariables {
      */
     public static final int SOCKET_PORT = 8888;
     public static final String CONFIG_PATH = "config.json";
-    public static final String PERSISTENCE_PATH = "persistence";
+    public static final String PERSISTENCE_PATH = "persistence\\";
     public static String NOMBRE_REST = "";
 
     private static UbicacionModel ubicacionActual = UbicacionModel.getDefaultUbicacion();
