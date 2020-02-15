@@ -310,6 +310,7 @@ public class CentroElaboracionActivity extends BaseActivity {
                 if (listaInsumosSelec.get(i).equals(insumoAlmacenModel)) {
                     if (listaInsumosSelec.get(i).getCantidad() == 1) {
                         listaInsumosSelec.remove(i);
+                        Toast.makeText(getApplicationContext(), "Producto eliminado.", Toast.LENGTH_SHORT).show();
                     } else {
                         listaInsumosSelec.get(i).setCantidad(listaInsumosSelec.get(i).getCantidad() - 1);
                     }
@@ -341,6 +342,7 @@ public class CentroElaboracionActivity extends BaseActivity {
                 if (listaInsumosSelec.get(i).equals(insumoAlmacenModel)) {
                     if (listaInsumosSelec.get(i).getCantidad() == 1) {
                         listaInsumosSelec.remove(i);
+                        Toast.makeText(getApplicationContext(), "Producto eliminado.", Toast.LENGTH_SHORT).show();
                     } else {
                         listaInsumosSelec.get(i).setCantidad(listaInsumosSelec.get(i).getCantidad() - 1);
                     }
