@@ -119,7 +119,11 @@ public class CentroElaboracionActivity extends BaseActivity {
         buttonTerminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                actualizarList();
+                if (isReceta == false) {
+                    setListProductSelec();
+                } else {
+                    setListRecetaSelec();
+                }
                 host.setCurrentTab(0);
             }
         });
@@ -146,7 +150,7 @@ public class CentroElaboracionActivity extends BaseActivity {
                     }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    addProductosCant(Float.parseFloat(input.getText().toString()), position);
+                    addProductosCant(Integer.parseInt(input.getText().toString()), position);
                 }
             }).create().show();
             return true;
@@ -156,13 +160,30 @@ public class CentroElaboracionActivity extends BaseActivity {
         }
     }
 
-    private void addProductosCant(float cant, int position) {
+    private void addProductosCant(int cant, int position) {
         InsumoAlmacenModel insumo = (InsumoAlmacenModel) listViewSelecIngrediente.getItemAtPosition(position);
-        insumo.setCantidad(insumo.getCantidad() + cant);
         if (isReceta == false) {
-            listaInsumosSelec.add(insumo);
-        } else if(isReceta==true){
-            listaInsumosReceta.add(insumo);
+            if (listaInsumosSelec.contains(insumo)) {
+                for (int i = 0; i < listaInsumosSelec.size(); i++) {
+                    if (listaInsumosSelec.get(i).equals(insumo)) {
+                        listaInsumosSelec.get(i).setCantidad(listaInsumosSelec.get(i).getCantidad() + cant);
+                    }
+                }
+            } else {
+                insumo.setCantidad(insumo.getCantidad() + cant);
+                listaInsumosSelec.add(insumo);
+            }
+        } else if (isReceta == true) {
+            if (listaInsumosReceta.contains(insumo)) {
+                for (int i = 0; i < listaInsumosReceta.size(); i++) {
+                    if (listaInsumosReceta.get(i).equals(insumo)) {
+                        listaInsumosReceta.get(i).setCantidad(listaInsumosReceta.get(i).getCantidad() + cant);
+                    }
+                }
+            } else {
+                insumo.setCantidad(insumo.getCantidad() + cant);
+                listaInsumosReceta.add(insumo);
+            }
         }
     }
 
@@ -274,8 +295,12 @@ public class CentroElaboracionActivity extends BaseActivity {
     public void onAddClick(View v) {
         try {
             InsumoAlmacenModel insumoAlmacenModel = ((InsumoAlmacenModel) listViewIngredientes.getAdapter().getItem((Integer) v.getTag()));
-            insumoAlmacenModel.setCantidad(insumoAlmacenModel.getCantidad() + 1);
-            actualizarList();
+            for (int i = 0; i < listaInsumosSelec.size(); i++) {
+                if (listaInsumosSelec.get(i).equals(insumoAlmacenModel)) {
+                    listaInsumosSelec.get(i).setCantidad(listaInsumosSelec.get(i).getCantidad() + 1);
+                }
+            }
+            setListProductSelec();
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
@@ -284,8 +309,16 @@ public class CentroElaboracionActivity extends BaseActivity {
     public void onRemoveClick(View v) {
         try {
             InsumoAlmacenModel insumoAlmacenModel = ((InsumoAlmacenModel) listViewIngredientes.getAdapter().getItem((Integer) v.getTag()));
-            insumoAlmacenModel.setCantidad(insumoAlmacenModel.getCantidad() - 1);
-            actualizarList();
+            for (int i = 0; i < listaInsumosSelec.size(); i++) {
+                if (listaInsumosSelec.get(i).equals(insumoAlmacenModel)) {
+                    if (listaInsumosSelec.get(i).getCantidad() == 1) {
+                        listaInsumosSelec.remove(i);
+                    } else {
+                        listaInsumosSelec.get(i).setCantidad(listaInsumosSelec.get(i).getCantidad() - 1);
+                    }
+                }
+            }
+            setListProductSelec();
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }

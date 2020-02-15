@@ -5,7 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
+
 import com.activities.R;
 import com.services.models.InsumoAlmacenModel;
 
@@ -62,13 +64,17 @@ public class CentroElaboracionAdapter extends ArrayAdapter<InsumoAlmacenModel> {
             holder = new ViewHolder();
             holder.nombre = (TextView) item.findViewById(R.id.textViewNombreInsumo);
             holder.cant = (TextView) item.findViewById(R.id.textViewCant);
-
+            holder.add = (Button) item.findViewById(R.id.buttonMas);
+            holder.remove = (Button) item.findViewById(R.id.buttonMenos);
             item.setTag(holder);
         } else {
             holder = (ViewHolder) item.getTag();
         }
         holder.nombre.setText(displayedObjects.get(position).getInsumoModel().getNombre());
-        holder.cant.setText(displayedObjects.get(position).getCantidad()+"");
+        holder.cant.setText(displayedObjects.get(position).getCantidad() + "");
+
+        holder.add.setTag(position);
+        holder.remove.setTag(position);
         return (item);
     }
 
@@ -79,5 +85,7 @@ public class CentroElaboracionAdapter extends ArrayAdapter<InsumoAlmacenModel> {
     static class ViewHolder {
         TextView nombre,
                 cant;
+        Button add,
+                remove;
     }
 }
