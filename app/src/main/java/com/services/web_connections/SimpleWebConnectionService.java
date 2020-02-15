@@ -1,14 +1,11 @@
 package com.services.web_connections;
 
-import android.content.Context;
-
 import java.io.*;
 import java.net.URL;
 
 import com.activities.BaseActivity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.services.models.CacheModel;
-import com.services.models.ConfigModel;
 import com.utils.Utils;
 import com.utils.exception.*;
 
@@ -87,39 +84,68 @@ public class SimpleWebConnectionService {
      * @throws Exception Si algo sale mal.
      */
     public String connect(final String urlToExcecute, final String body, final String token, HTTPMethod method) throws Exception {
-        deleteCache();
-        CacheModel cache = checkCache(urlToExcecute);
-        String resp;
-        if (cache == null) {
-            resp = connectToServer(urlToExcecute, body, token, method);
-
-            if (method == HTTPMethod.GET) {//save
+        if (method == HTTPMethod.GET) {//save
+            CacheModel cache = checkCache(urlToExcecute);
+            String resp;
+            if (cache == null) {
+                resp = connectToServer(urlToExcecute, body, token, method);
                 saveResponse(urlToExcecute, resp);
+            } else {
+                resp = cache.getRespuesta();
+                //verifico con el server
+                String check = validateInfo(urlToExcecute, resp);
+                if (!check.isEmpty()) {
+                    resp = check;
+                    saveResponse(urlToExcecute, resp);
+                }
             }
-
+            return resp;
         } else {
-            resp = cache.getRespuesta();
+            return connectToServer(urlToExcecute, body, token, method);
         }
-        return resp;
-        //return connectToServer(urlToExcecute, body, token, method);
+    }
+
+    public String validateInfo(String urlToExcecute, String resp) {
+        try {
+            String sha = Utils.getSHA256(resp);
+            String answ = connect(path + "configuracion/CHECK-SHA?url=" + urlToExcecute + "&sha=" + sha, null, TOKEN, HTTPMethod.GET);
+            return om.readValue(answ, String.class);
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    public CacheModel checkCache(final String urlToExcecute) {
+        CacheModel cache = null;
+        try {
+            FileInputStream fis = new FileInputStream(getFile(urlToExcecute));
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            cache = (CacheModel) ois.readObject();
+            fis.close();
+            ois.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return cache;
     }
 
     private void saveResponse(String urlToExcecute, String resp) {
         try {
-            FileOutputStream fos = BaseActivity.getContext().openFileOutput(getfileName(urlToExcecute), Context.MODE_PRIVATE);
+            FileOutputStream fos = new FileOutputStream(getFile(urlToExcecute));
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            CacheModel cache = new CacheModel(urlToExcecute, resp, false);
+            CacheModel cache = new CacheModel(urlToExcecute, resp, true);
             oos.writeObject(cache);
             fos.close();
             oos.close();
         } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
     private void deleteCache() {
         try {
-            File general = BaseActivity.getContext().getDir("persistence",Context.MODE_PRIVATE);
-            File files[] = general.getAbsoluteFile().listFiles();
+            File carpeta = new File(BaseActivity.getContext().getFilesDir(), EnvironmentVariables.PERSISTENCE_PATH);
+            File files[] = carpeta.listFiles();
             for (File f : files) {
                 FileInputStream fos = new FileInputStream(f);
                 ObjectInputStream ois = new ObjectInputStream(fos);
@@ -133,27 +159,24 @@ public class SimpleWebConnectionService {
                 ois.close();
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
-    private String getfileName(String urlToExcecute) {
-        return EnvironmentVariables.PERSISTENCE_PATH + Utils.getSHA256(urlToExcecute) + ".nfo";
-    }
-
-    public CacheModel checkCache(final String urlToExcecute) {
-        CacheModel cache = null;
-        try {
-            FileInputStream fis = BaseActivity.getContext().openFileInput(getfileName(urlToExcecute));
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            cache = (CacheModel) ois.readObject();
-            fis.close();
-            ois.close();
-        } catch (Exception e) {
+    private File getFile(String urlToExcecute) throws IOException {
+        File carpeta = new File(BaseActivity.getContext().getFilesDir(), EnvironmentVariables.PERSISTENCE_PATH);
+        File fichero = new File(carpeta, Utils.getSHA256(urlToExcecute) + ".nfo");
+        if (!carpeta.exists()) {
+            carpeta.mkdir();
         }
-        return cache;
+        if (!fichero.exists()) {
+            fichero.createNewFile();
+        }
+        return fichero;
     }
 
-    public String connectToServer(final String urlToExcecute, final String body, final String token, HTTPMethod method) throws Exception {
+    public String connectToServer(final String urlToExcecute, final String body,
+                                  final String token, HTTPMethod method) throws Exception {
         //Set up the connection
         URL url = new URL(urlToExcecute);
         con = (HttpURLConnection) url.openConnection();
