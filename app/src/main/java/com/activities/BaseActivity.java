@@ -14,17 +14,19 @@ import android.os.Bundle;
  */
 public abstract class BaseActivity extends Activity {
 
-    protected static BaseActivity act;
+    protected BaseActivity act = this;
 
     private Bundle bundle;
 
+    private static BaseActivity other;
+
     public static Context getContext() {
-        return act.getApplicationContext();
+        return other.getApplicationContext();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        act = this;
+        other = this;
         super.onCreate(savedInstanceState);
     }
 
