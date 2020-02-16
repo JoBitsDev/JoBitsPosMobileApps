@@ -199,6 +199,31 @@ public class CentroElaboracionActivity extends BaseActivity {
         }
     }
 
+    private int onLongClickListas(final View v) {
+        try {
+            final EditText input = new EditText(v.getContext());
+            input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            input.setRawInputType(Configuration.KEYBOARD_12KEY);
+            new AlertDialog.Builder(v.getContext()).
+                    setView(input).
+                    setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            }).create().show();
+            return Integer.parseInt(input.getText().toString());
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+            return 0;
+        }
+    }
+
     private void addProductosCant(int cant, int position) {
         InsumoAlmacenModel insumo = (InsumoAlmacenModel) listViewSelecIngrediente.getItemAtPosition(position);
         if (isReceta == false) {
@@ -274,13 +299,47 @@ public class CentroElaboracionActivity extends BaseActivity {
                     ingredientesAdapter.setAddListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
-
+                            final InsumoAlmacenModel insumoAlmacenModel = ((InsumoAlmacenModel) listViewIngredientes.getAdapter().getItem((Integer) v.getTag()));
+                            final EditText input = new EditText(v.getContext());
+                            input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                            input.setRawInputType(Configuration.KEYBOARD_12KEY);
+                            new AlertDialog.Builder(v.getContext()).
+                                    setView(input).
+                                    setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    addProducto(insumoAlmacenModel,Integer.parseInt(input.getText().toString()));
+                                }
+                            }).create().show();
+                            return true;
                         }
                     });
                     ingredientesAdapter.setRemoveListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
-
+                            final InsumoAlmacenModel insumoAlmacenModel = ((InsumoAlmacenModel) listViewIngredientes.getAdapter().getItem((Integer) v.getTag()));
+                            final EditText input = new EditText(v.getContext());
+                            input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                            input.setRawInputType(Configuration.KEYBOARD_12KEY);
+                            new AlertDialog.Builder(v.getContext()).
+                                    setView(input).
+                                    setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    removeProducto(insumoAlmacenModel,Integer.parseInt(input.getText().toString()));
+                                }
+                            }).create().show();
+                            return true;
                         }
                     });
                     return null;
@@ -305,13 +364,47 @@ public class CentroElaboracionActivity extends BaseActivity {
                     recetaAdapter.setAddListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
-
+                            final InsumoAlmacenModel insumoAlmacenModel = ((InsumoAlmacenModel) listViewIngredientes.getAdapter().getItem((Integer) v.getTag()));
+                            final EditText input = new EditText(v.getContext());
+                            input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                            input.setRawInputType(Configuration.KEYBOARD_12KEY);
+                            new AlertDialog.Builder(v.getContext()).
+                                    setView(input).
+                                    setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    addReceta(insumoAlmacenModel,Integer.parseInt(input.getText().toString()));
+                                }
+                            }).create().show();
+                            return true;
                         }
                     });
                     recetaAdapter.setRemoveListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
-
+                            final InsumoAlmacenModel insumoAlmacenModel = ((InsumoAlmacenModel) listViewIngredientes.getAdapter().getItem((Integer) v.getTag()));
+                            final EditText input = new EditText(v.getContext());
+                            input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                            input.setRawInputType(Configuration.KEYBOARD_12KEY);
+                            new AlertDialog.Builder(v.getContext()).
+                                    setView(input).
+                                    setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    removeReceta(insumoAlmacenModel,Integer.parseInt(input.getText().toString()));
+                                }
+                            }).create().show();
+                            return true;
                         }
                     });
 
@@ -355,67 +448,83 @@ public class CentroElaboracionActivity extends BaseActivity {
     public void onAddProductoClick(View v) {
         try {
             InsumoAlmacenModel insumoAlmacenModel = ((InsumoAlmacenModel) listViewIngredientes.getAdapter().getItem((Integer) v.getTag()));
-            for (int i = 0; i < listaInsumosIngrediente.size(); i++) {
-                if (listaInsumosIngrediente.get(i).equals(insumoAlmacenModel)) {
-                    listaInsumosIngrediente.get(i).setCantidad(listaInsumosIngrediente.get(i).getCantidad() + 1);
-                }
-            }
-            setListProductSelec();
+            addProducto(insumoAlmacenModel, 1);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
+    }
+
+    private void addProducto(InsumoAlmacenModel insumoAlmacenModel, int cant) {
+        for (int i = 0; i < listaInsumosIngrediente.size(); i++) {
+            if (listaInsumosIngrediente.get(i).equals(insumoAlmacenModel)) {
+                listaInsumosIngrediente.get(i).setCantidad(listaInsumosIngrediente.get(i).getCantidad() + cant);
+            }
+        }
+        setListProductSelec();
     }
 
     public void onRemoveProductoClick(View v) {
         try {
             InsumoAlmacenModel insumoAlmacenModel = ((InsumoAlmacenModel) listViewIngredientes.getAdapter().getItem((Integer) v.getTag()));
-            for (int i = 0; i < listaInsumosIngrediente.size(); i++) {
-                if (listaInsumosIngrediente.get(i).equals(insumoAlmacenModel)) {
-                    if (listaInsumosIngrediente.get(i).getCantidad() == 1) {
-                        listaInsumosIngrediente.remove(i);
-                        Toast.makeText(getApplicationContext(), "Producto eliminado.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        listaInsumosIngrediente.get(i).setCantidad(listaInsumosIngrediente.get(i).getCantidad() - 1);
-                    }
-                }
-            }
-            setListProductSelec();
+            removeProducto(insumoAlmacenModel, 1);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
+    }
+
+    private void removeProducto(InsumoAlmacenModel insumoAlmacenModel, int cant) {
+        for (int i = 0; i < listaInsumosIngrediente.size(); i++) {
+            if (listaInsumosIngrediente.get(i).equals(insumoAlmacenModel)) {
+                if (listaInsumosIngrediente.get(i).getCantidad() == 1 || listaInsumosIngrediente.get(i).getCantidad() - cant == 0) {
+                    listaInsumosIngrediente.remove(i);
+                    Toast.makeText(getApplicationContext(), "Producto eliminado.", Toast.LENGTH_SHORT).show();
+                } else {
+                    listaInsumosIngrediente.get(i).setCantidad(listaInsumosIngrediente.get(i).getCantidad() - cant);
+                }
+            }
+        }
+        setListProductSelec();
     }
 
     public void onAddRecetaClick(View v) {
         try {
             InsumoAlmacenModel insumoAlmacenModel = ((InsumoAlmacenModel) listViewReceta.getAdapter().getItem((Integer) v.getTag()));
-            for (int i = 0; i < listaInsumosIngrediente.size(); i++) {
-                if (listaInsumosIngrediente.get(i).equals(insumoAlmacenModel)) {
-                    listaInsumosIngrediente.get(i).setCantidad(listaInsumosIngrediente.get(i).getCantidad() + 1);
-                }
-            }
-            setListProductSelec();
+            addReceta(insumoAlmacenModel, 1);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
     }
 
+    private void addReceta(InsumoAlmacenModel insumoAlmacenModel, int cant) {
+        for (int i = 0; i < listaInsumosIngrediente.size(); i++) {
+            if (listaInsumosIngrediente.get(i).equals(insumoAlmacenModel)) {
+                listaInsumosIngrediente.get(i).setCantidad(listaInsumosIngrediente.get(i).getCantidad() + cant);
+            }
+        }
+        setListProductSelec();
+    }
+
     public void onRemoveRecetaClick(View v) {
         try {
             InsumoAlmacenModel insumoAlmacenModel = ((InsumoAlmacenModel) listViewReceta.getAdapter().getItem((Integer) v.getTag()));
-            for (int i = 0; i < listaInsumosIngrediente.size(); i++) {
-                if (listaInsumosIngrediente.get(i).equals(insumoAlmacenModel)) {
-                    if (listaInsumosIngrediente.get(i).getCantidad() == 1) {
-                        listaInsumosIngrediente.remove(i);
-                        Toast.makeText(getApplicationContext(), "Producto eliminado.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        listaInsumosIngrediente.get(i).setCantidad(listaInsumosIngrediente.get(i).getCantidad() - 1);
-                    }
-                }
-            }
-            setListProductSelec();
+            removeReceta(insumoAlmacenModel, 1);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
+    }
+
+    private void removeReceta(InsumoAlmacenModel insumoAlmacenModel, int cant) {
+        for (int i = 0; i < listaInsumosIngrediente.size(); i++) {
+            if (listaInsumosIngrediente.get(i).equals(insumoAlmacenModel)) {
+                if (listaInsumosIngrediente.get(i).getCantidad() == 1 || listaInsumosIngrediente.get(i).getCantidad() - cant == 0) {
+                    listaInsumosIngrediente.remove(i);
+                    Toast.makeText(getApplicationContext(), "Producto eliminado.", Toast.LENGTH_SHORT).show();
+                } else {
+                    listaInsumosIngrediente.get(i).setCantidad(listaInsumosIngrediente.get(i).getCantidad() - cant);
+                }
+            }
+        }
+        setListProductSelec();
     }
 
     @Override
