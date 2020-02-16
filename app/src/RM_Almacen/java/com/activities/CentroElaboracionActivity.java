@@ -183,7 +183,7 @@ public class CentroElaboracionActivity extends BaseActivity {
                     }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    addProductosCant(Integer.parseInt(input.getText().toString()), position);
+                    addProductosCant(Float.parseFloat(input.getText().toString()), position);
                 }
             }).create().show();
             if (isReceta == false) {
@@ -199,32 +199,7 @@ public class CentroElaboracionActivity extends BaseActivity {
         }
     }
 
-    private int onLongClickListas(final View v) {
-        try {
-            final EditText input = new EditText(v.getContext());
-            input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
-            input.setRawInputType(Configuration.KEYBOARD_12KEY);
-            new AlertDialog.Builder(v.getContext()).
-                    setView(input).
-                    setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            }).create().show();
-            return Integer.parseInt(input.getText().toString());
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, act);
-            return 0;
-        }
-    }
-
-    private void addProductosCant(int cant, int position) {
+    private void addProductosCant(float cant, int position) {
         InsumoAlmacenModel insumo = (InsumoAlmacenModel) listViewSelecIngrediente.getItemAtPosition(position);
         if (isReceta == false) {
             if (listaInsumosIngrediente.contains(insumo)) {
@@ -313,7 +288,7 @@ public class CentroElaboracionActivity extends BaseActivity {
                                     }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    addProducto(insumoAlmacenModel,Integer.parseInt(input.getText().toString()));
+                                    addProducto(insumoAlmacenModel,Float.parseFloat(input.getText().toString()));
                                 }
                             }).create().show();
                             return true;
@@ -336,7 +311,7 @@ public class CentroElaboracionActivity extends BaseActivity {
                                     }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    removeProducto(insumoAlmacenModel,Integer.parseInt(input.getText().toString()));
+                                    removeProducto(insumoAlmacenModel,Float.parseFloat(input.getText().toString()));
                                 }
                             }).create().show();
                             return true;
@@ -378,7 +353,7 @@ public class CentroElaboracionActivity extends BaseActivity {
                                     }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    addReceta(insumoAlmacenModel,Integer.parseInt(input.getText().toString()));
+                                    addReceta(insumoAlmacenModel,Float.parseFloat(input.getText().toString()));
                                 }
                             }).create().show();
                             return true;
@@ -401,7 +376,7 @@ public class CentroElaboracionActivity extends BaseActivity {
                                     }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    removeReceta(insumoAlmacenModel,Integer.parseInt(input.getText().toString()));
+                                    removeReceta(insumoAlmacenModel,Float.parseFloat(input.getText().toString()));
                                 }
                             }).create().show();
                             return true;
@@ -454,7 +429,7 @@ public class CentroElaboracionActivity extends BaseActivity {
         }
     }
 
-    private void addProducto(InsumoAlmacenModel insumoAlmacenModel, int cant) {
+    private void addProducto(InsumoAlmacenModel insumoAlmacenModel, float cant) {
         for (int i = 0; i < listaInsumosIngrediente.size(); i++) {
             if (listaInsumosIngrediente.get(i).equals(insumoAlmacenModel)) {
                 listaInsumosIngrediente.get(i).setCantidad(listaInsumosIngrediente.get(i).getCantidad() + cant);
@@ -472,7 +447,7 @@ public class CentroElaboracionActivity extends BaseActivity {
         }
     }
 
-    private void removeProducto(InsumoAlmacenModel insumoAlmacenModel, int cant) {
+    private void removeProducto(InsumoAlmacenModel insumoAlmacenModel, float cant) {
         for (int i = 0; i < listaInsumosIngrediente.size(); i++) {
             if (listaInsumosIngrediente.get(i).equals(insumoAlmacenModel)) {
                 if (listaInsumosIngrediente.get(i).getCantidad() == 1 || listaInsumosIngrediente.get(i).getCantidad() - cant == 0) {
@@ -495,13 +470,13 @@ public class CentroElaboracionActivity extends BaseActivity {
         }
     }
 
-    private void addReceta(InsumoAlmacenModel insumoAlmacenModel, int cant) {
+    private void addReceta(InsumoAlmacenModel insumoAlmacenModel, float cant) {
         for (int i = 0; i < listaInsumosIngrediente.size(); i++) {
             if (listaInsumosIngrediente.get(i).equals(insumoAlmacenModel)) {
                 listaInsumosIngrediente.get(i).setCantidad(listaInsumosIngrediente.get(i).getCantidad() + cant);
             }
         }
-        setListProductSelec();
+        setListRecetaSelec();
     }
 
     public void onRemoveRecetaClick(View v) {
@@ -513,7 +488,7 @@ public class CentroElaboracionActivity extends BaseActivity {
         }
     }
 
-    private void removeReceta(InsumoAlmacenModel insumoAlmacenModel, int cant) {
+    private void removeReceta(InsumoAlmacenModel insumoAlmacenModel, float cant) {
         for (int i = 0; i < listaInsumosIngrediente.size(); i++) {
             if (listaInsumosIngrediente.get(i).equals(insumoAlmacenModel)) {
                 if (listaInsumosIngrediente.get(i).getCantidad() == 1 || listaInsumosIngrediente.get(i).getCantidad() - cant == 0) {
@@ -524,7 +499,7 @@ public class CentroElaboracionActivity extends BaseActivity {
                 }
             }
         }
-        setListProductSelec();
+        setListRecetaSelec();
     }
 
     @Override
