@@ -24,6 +24,10 @@ public class CentroElaboracionRecetaAdapter extends ArrayAdapter<InsumoAlmacenMo
     private Context context;
     private List<InsumoAlmacenModel> objects, displayedObjects;
 
+
+    private View.OnLongClickListener addListener;
+    private View.OnLongClickListener removeListener;
+
     /**
      * Constructor
      */
@@ -66,6 +70,9 @@ public class CentroElaboracionRecetaAdapter extends ArrayAdapter<InsumoAlmacenMo
             holder.cant = (TextView) item.findViewById(R.id.textViewCant);
             holder.add = (Button) item.findViewById(R.id.buttonMas);
             holder.remove = (Button) item.findViewById(R.id.buttonMenos);
+
+            holder.add.setOnLongClickListener(addListener);
+            holder.remove.setOnLongClickListener(removeListener);
             item.setTag(holder);
         } else {
             holder = (ViewHolder) item.getTag();
@@ -76,6 +83,22 @@ public class CentroElaboracionRecetaAdapter extends ArrayAdapter<InsumoAlmacenMo
         holder.add.setTag(position);
         holder.remove.setTag(position);
         return (item);
+    }
+
+    public View.OnLongClickListener getAddListener() {
+        return addListener;
+    }
+
+    public void setAddListener(View.OnLongClickListener addListener) {
+        this.addListener = addListener;
+    }
+
+    public View.OnLongClickListener getRemoveListener() {
+        return removeListener;
+    }
+
+    public void setRemoveListener(View.OnLongClickListener removeListener) {
+        this.removeListener = removeListener;
     }
 
     /**

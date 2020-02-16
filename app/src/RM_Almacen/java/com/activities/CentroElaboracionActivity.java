@@ -43,8 +43,8 @@ public class CentroElaboracionActivity extends BaseActivity {
     private Button buttonTerminar;
 
     private TabHost host;
-    private CentroElaboracionAdapter centroElaboracionAdapter;
-    private CentroElaboracionRecetaAdapter centroElaboracionRecetaAdapter;
+    private CentroElaboracionAdapter ingredientesAdapter;
+    private CentroElaboracionRecetaAdapter recetaAdapter;
     private SelecElaboracionAdapter selecElaboracionAdapter;
 
     private CentroElaboracionController controller;
@@ -270,13 +270,25 @@ public class CentroElaboracionActivity extends BaseActivity {
             new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
                 @Override
                 public Void process() throws Exception {
-                    centroElaboracionAdapter = new CentroElaboracionAdapter(act, R.layout.list_elaboracion, listaInsumosIngrediente);
+                    ingredientesAdapter = new CentroElaboracionAdapter(act, R.layout.list_elaboracion, listaInsumosIngrediente);
+                    ingredientesAdapter.setAddListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+
+                        }
+                    });
+                    ingredientesAdapter.setRemoveListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+
+                        }
+                    });
                     return null;
                 }
 
                 @Override
                 public void post(Void answer) {
-                    listViewIngredientes.setAdapter(centroElaboracionAdapter);
+                    listViewIngredientes.setAdapter(ingredientesAdapter);
                 }
             });
         } catch (Exception e) {
@@ -289,13 +301,26 @@ public class CentroElaboracionActivity extends BaseActivity {
             new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
                 @Override
                 public Void process() throws Exception {
-                    centroElaboracionRecetaAdapter = new CentroElaboracionRecetaAdapter(act, R.layout.list_elaboracion_receta, listaInsumosReceta);
+                    recetaAdapter = new CentroElaboracionRecetaAdapter(act, R.layout.list_elaboracion_receta, listaInsumosReceta);
+                    recetaAdapter.setAddListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+
+                        }
+                    });
+                    recetaAdapter.setRemoveListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+
+                        }
+                    });
+
                     return null;
                 }
 
                 @Override
                 public void post(Void answer) {
-                    listViewReceta.setAdapter(centroElaboracionRecetaAdapter);
+                    listViewReceta.setAdapter(recetaAdapter);
                 }
             });
         } catch (Exception e) {
@@ -395,9 +420,9 @@ public class CentroElaboracionActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if(host.getCurrentTab()==0) {
+        if (host.getCurrentTab() == 0) {
             super.onBackPressed();
-        }else{
+        } else {
             host.setCurrentTab(0);
         }
     }
