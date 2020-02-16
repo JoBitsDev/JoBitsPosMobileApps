@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.controllers.CentroElaboracionController;
 import com.services.models.InsumoAlmacenModel;
 import com.utils.adapters.CentroElaboracionAdapter;
+import com.utils.adapters.CentroElaboracionRecetaAdapter;
 import com.utils.adapters.SelecElaboracionAdapter;
 import com.utils.exception.ExceptionHandler;
 import com.utils.loading.LoadingHandler;
@@ -43,6 +44,7 @@ public class CentroElaboracionActivity extends BaseActivity {
 
     private TabHost host;
     private CentroElaboracionAdapter centroElaboracionAdapter;
+    private CentroElaboracionRecetaAdapter centroElaboracionRecetaAdapter;
     private SelecElaboracionAdapter selecElaboracionAdapter;
 
     private CentroElaboracionController controller;
@@ -287,13 +289,13 @@ public class CentroElaboracionActivity extends BaseActivity {
             new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
                 @Override
                 public Void process() throws Exception {
-                    centroElaboracionAdapter = new CentroElaboracionAdapter(act, R.layout.list_elaboracion_receta, listaInsumosReceta);
+                    centroElaboracionRecetaAdapter = new CentroElaboracionRecetaAdapter(act, R.layout.list_elaboracion_receta, listaInsumosReceta);
                     return null;
                 }
 
                 @Override
                 public void post(Void answer) {
-                    listViewReceta.setAdapter(centroElaboracionAdapter);
+                    listViewReceta.setAdapter(centroElaboracionRecetaAdapter);
                 }
             });
         } catch (Exception e) {
