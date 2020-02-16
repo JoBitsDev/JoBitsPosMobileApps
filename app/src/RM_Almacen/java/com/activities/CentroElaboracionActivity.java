@@ -2,6 +2,7 @@ package com.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.InputType;
@@ -164,7 +165,8 @@ public class CentroElaboracionActivity extends BaseActivity {
             @Override
             public void post(Void answer) {
                 listViewSelecIngrediente.setAdapter(selecElaboracionAdapter);
-                onBackPressed();
+                Intent intent = new Intent(CentroElaboracionActivity.this, PantallaPrincipalActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -289,7 +291,7 @@ public class CentroElaboracionActivity extends BaseActivity {
                                     }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    addProducto(insumoAlmacenModel,Float.parseFloat(input.getText().toString()));
+                                    addProducto(insumoAlmacenModel, Float.parseFloat(input.getText().toString()));
                                 }
                             }).create().show();
                             return true;
@@ -312,7 +314,7 @@ public class CentroElaboracionActivity extends BaseActivity {
                                     }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    removeProducto(insumoAlmacenModel,Float.parseFloat(input.getText().toString()));
+                                    removeProducto(insumoAlmacenModel, Float.parseFloat(input.getText().toString()));
                                 }
                             }).create().show();
                             return true;
@@ -354,7 +356,7 @@ public class CentroElaboracionActivity extends BaseActivity {
                                     }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    addReceta(insumoAlmacenModel,Float.parseFloat(input.getText().toString()));
+                                    addReceta(insumoAlmacenModel, Float.parseFloat(input.getText().toString()));
                                 }
                             }).create().show();
                             return true;
@@ -377,7 +379,7 @@ public class CentroElaboracionActivity extends BaseActivity {
                                     }).setPositiveButton(R.string.agregar, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    removeReceta(insumoAlmacenModel,Float.parseFloat(input.getText().toString()));
+                                    removeReceta(insumoAlmacenModel, Float.parseFloat(input.getText().toString()));
                                 }
                             }).create().show();
                             return true;
