@@ -32,7 +32,7 @@ import java.io.ObjectInputStream;
  *
  * @extends BaseActivity ya que es una activity propia de la aplicacion.
  */
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity {//  |||||
 
     /**
      * Controller del MainActivity para manejar las peticiones a la capa inferior.
