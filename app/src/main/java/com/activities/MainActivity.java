@@ -5,8 +5,10 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +27,7 @@ import com.utils.loading.LoadingProcess;
 
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
+import java.util.Locale;
 
 /**
  * Capa: Activities
@@ -74,9 +77,18 @@ public class MainActivity extends BaseActivity {
             updateConnectionText();
             loadConfig();
             setUpInfo();
+            setUpLanguaje();
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
+    }
+
+    private void setUpLanguaje() {
+        Resources res = getApplicationContext().getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        android.content.res.Configuration conf = res.getConfiguration();
+        conf.setLocale(new Locale("es"));
+        res.updateConfiguration(conf, dm);
     }
 
     private void setUpInfo() {
