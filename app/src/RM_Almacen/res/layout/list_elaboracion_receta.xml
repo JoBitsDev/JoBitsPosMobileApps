@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal">
 
     <TextView
@@ -33,6 +33,7 @@
         android:adjustViewBounds="false"
         android:longClickable="true"
         android:onClick="onAddRecetaClick"
+        android:src="@android:drawable/ic_input_add"
         android:textColor="@color/texto_primario"
         android:textSize="@dimen/textSizeMedium"
         tools:src="@android:drawable/ic_input_add" />
@@ -43,6 +44,7 @@
         android:layout_height="match_parent"
         android:layout_weight="5"
         android:onClick="onRemoveRecetaClick"
+        android:src="@drawable/minus"
         android:textColor="@color/texto_primario"
         android:textSize="@dimen/textSizeMedium"
         tools:src="@drawable/minus" />
