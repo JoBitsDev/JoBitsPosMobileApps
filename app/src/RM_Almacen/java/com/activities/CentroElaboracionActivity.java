@@ -453,7 +453,7 @@ public class CentroElaboracionActivity extends BaseActivity {
     private void removeProducto(InsumoAlmacenModel insumoAlmacenModel, float cant) {
         for (int i = 0; i < listaInsumosIngrediente.size(); i++) {
             if (listaInsumosIngrediente.get(i).equals(insumoAlmacenModel)) {
-                if (listaInsumosIngrediente.get(i).getCantidad() == 1 || listaInsumosIngrediente.get(i).getCantidad() - cant == 0) {
+                if (listaInsumosIngrediente.get(i).getCantidad() <= 1 || listaInsumosIngrediente.get(i).getCantidad() - cant <= 0) {
                     listaInsumosIngrediente.remove(i);
                     Toast.makeText(getApplicationContext(), "Producto eliminado.", Toast.LENGTH_SHORT).show();
                 } else {
@@ -494,7 +494,7 @@ public class CentroElaboracionActivity extends BaseActivity {
     private void removeReceta(InsumoAlmacenModel insumoAlmacenModel, float cant) {
         for (int i = 0; i < listaInsumosReceta.size(); i++) {
             if (listaInsumosReceta.get(i).equals(insumoAlmacenModel)) {
-                if (listaInsumosReceta.get(i).getCantidad() == 1 || listaInsumosReceta.get(i).getCantidad() - cant == 0) {
+                if (listaInsumosReceta.get(i).getCantidad() <= 1 || listaInsumosReceta.get(i).getCantidad() - cant <= 0) {
                     listaInsumosReceta.remove(i);
                     Toast.makeText(getApplicationContext(), "Producto eliminado.", Toast.LENGTH_SHORT).show();
                 } else {
