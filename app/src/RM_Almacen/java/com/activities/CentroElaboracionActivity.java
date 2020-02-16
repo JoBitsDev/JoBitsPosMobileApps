@@ -92,13 +92,13 @@ public class CentroElaboracionActivity extends BaseActivity {
         buttonAgregarIngrediente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listaInsumosSelec.size() != 0) {
-                    Toast.makeText(getApplicationContext(), "Cantidad màxima de productos alcanzada", Toast.LENGTH_SHORT).show();
-                } else {
+              //  if (listaInsumosSelec.size() != 0) {
+               //     Toast.makeText(getApplicationContext(), "Cantidad màxima de productos alcanzada", Toast.LENGTH_SHORT).show();
+                //} else {
                     getProductosDisponibles();
                     host.setCurrentTab(1);
                     isReceta = false;
-                }
+            //    }
             }
         });
         buttonAgregarReceta.setOnClickListener(new View.OnClickListener() {
