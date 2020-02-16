@@ -118,6 +118,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setAdapters();
+    }
 
     @Override
     protected void initVarialbes() {
