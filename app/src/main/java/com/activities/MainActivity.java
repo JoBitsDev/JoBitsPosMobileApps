@@ -32,7 +32,7 @@ import java.io.ObjectInputStream;
  *
  * @extends BaseActivity ya que es una activity propia de la aplicacion.
  */
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity {//  |||||
 
     /**
      * Controller del MainActivity para manejar las peticiones a la capa inferior.
@@ -73,9 +73,25 @@ public class MainActivity extends BaseActivity {
 
             updateConnectionText();
             loadConfig();
+            setUpInfo();
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
+    }
+
+    private void setUpInfo() {
+        new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+            @Override
+            public Void process() throws Exception {
+                controller.readInfo();
+                return null;
+            }
+
+            @Override
+            public void post(Void value) {
+
+            }
+        });
     }
 
     private void loadConfig() {

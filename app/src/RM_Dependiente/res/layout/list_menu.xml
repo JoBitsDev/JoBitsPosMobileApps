@@ -9,9 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
-        android:textColor="@color/texto_primario"
         android:text="Nombre"
-        android:textSize="@dimen/textSizeNormal" />
+        android:textColor="@color/texto_primario"
+        android:textSize="@dimen/textSizeMedium" />
 
     <TextView
         android:id="@+id/textViewPrecio"
@@ -21,6 +21,6 @@
         android:layout_weight="1"
         android:text="Precio"
         android:textColor="@color/precios"
-        android:textSize="@dimen/textSizeNormal" />
+        android:textSize="@dimen/textSizeMedium" />
 
 </LinearLayout>

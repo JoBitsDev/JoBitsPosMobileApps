@@ -53,10 +53,6 @@ public class MesasController extends BaseController {
         return ordenWCService.validate();
     }
 
-    public String getNombreRest() throws Exception {
-        return new CartaWCS().getNombreRest();
-    }
-
     public String[] getAreas() throws Exception {
         return new AreaWCS().getAreasName();
     }

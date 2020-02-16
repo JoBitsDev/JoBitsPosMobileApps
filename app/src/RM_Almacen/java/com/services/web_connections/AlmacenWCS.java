@@ -2,6 +2,7 @@ package com.services.web_connections;
 
 import com.services.models.IpvRegistroModel;
 import com.services.models.TransaccionModel;
+import com.services.models.TransformacionModel;
 import com.utils.exception.*;
 import com.services.models.InsumoAlmacenModel;
 
@@ -33,7 +34,9 @@ public class AlmacenWCS extends SimpleWebConnectionService {
             FILTRAR = "FILTRAR",
             REGISTRO_IPVS = "REGISTRO-IPVS",
             AGREGAR_INSUMO = "AGREGAR-INSUMO",
-            OPERACIONES_REALIZADAS = "OPERACIONES-REALIZADAS";
+            OPERACIONES_REALIZADAS = "OPERACIONES-REALIZADAS",
+            COMBINACIONES_CON = "COMBINACIONES-CON",
+            TRANSFORMAR = "TRANSFORMAR";
 
     /**
      * Usuario que lo esta usando.
@@ -50,7 +53,6 @@ public class AlmacenWCS extends SimpleWebConnectionService {
     /**
      * Constructor del WCS.
      *
-     * @param user       Usuario que lo esta usando.
      * @param codAlmacen Codigo del almacen que se esta trabajando.
      */
     public AlmacenWCS(String codAlmacen) {
@@ -200,6 +202,22 @@ public class AlmacenWCS extends SimpleWebConnectionService {
         hm.put("estimacionStock", est);
         hm.put("um", um);
         connect(path + AGREGAR_INSUMO, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
+        return true;
+    }
+
+    /**
+     * @return Lista de los insumos.
+     * @throws ServerErrorException  si hay error en el servidor.
+     * @throws NoConnectionException si no hay coneccion con el servidor.
+     */
+    public List<InsumoAlmacenModel> getCombinacionesCon(List<InsumoAlmacenModel> lista) throws Exception {
+        String resp = connect(path + COMBINACIONES_CON, om.writeValueAsString(lista), super.TOKEN, HTTPMethod.POST);
+        return om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, InsumoAlmacenModel.class));
+    }
+
+    public boolean transformar(List<InsumoAlmacenModel> ingredientes, List<InsumoAlmacenModel> receta) throws Exception {
+        TransformacionModel tr = new TransformacionModel(receta, ingredientes);
+        connect(path + TRANSFORMAR, om.writeValueAsString(tr), super.TOKEN, HTTPMethod.POST);
         return true;
     }
 }
