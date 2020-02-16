@@ -390,4 +390,13 @@ public class CentroElaboracionActivity extends BaseActivity {
             ExceptionHandler.handleException(e, act);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        if(host.getCurrentTab()==0) {
+            super.onBackPressed();
+        }else{
+            host.setCurrentTab(0);
+        }
+    }
 }
