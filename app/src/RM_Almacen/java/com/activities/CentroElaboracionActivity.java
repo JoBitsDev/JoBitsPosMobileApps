@@ -41,7 +41,6 @@ public class CentroElaboracionActivity extends BaseActivity {
     private Button buttonAgregarIngrediente;
     private Button buttonAgregarReceta;
     private Button buttonConfirmar;
-    private Button buttonTerminar;
 
     private TabHost host;
     private CentroElaboracionAdapter ingredientesAdapter;
@@ -77,7 +76,6 @@ public class CentroElaboracionActivity extends BaseActivity {
             buttonAgregarIngrediente = (Button) findViewById(R.id.buttonAgregarIngrediente);
             buttonAgregarReceta = (Button) findViewById(R.id.buttonAgregarReceta);
             buttonConfirmar = (Button) findViewById(R.id.buttonConfirmar);
-            buttonTerminar = (Button) findViewById(R.id.buttonTerminar);
 
             controller = new CentroElaboracionController();
             listaInsumosIngrediente = new ArrayList<InsumoAlmacenModel>();
@@ -130,13 +128,7 @@ public class CentroElaboracionActivity extends BaseActivity {
                 return onListViewElabAddLongClick(view, position);
             }
         });
-        buttonTerminar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onButtonTerminarClick();
-            }
-        });
-
+        
         buttonConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
