@@ -164,6 +164,7 @@ public class CentroElaboracionActivity extends BaseActivity {
             @Override
             public void post(Void answer) {
                 listViewSelecIngrediente.setAdapter(selecElaboracionAdapter);
+                onBackPressed();
             }
         });
     }
@@ -339,7 +340,7 @@ public class CentroElaboracionActivity extends BaseActivity {
                     recetaAdapter.setAddListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
-                            final InsumoAlmacenModel insumoAlmacenModel = ((InsumoAlmacenModel) listViewIngredientes.getAdapter().getItem((Integer) v.getTag()));
+                            final InsumoAlmacenModel insumoAlmacenModel = ((InsumoAlmacenModel) listViewReceta.getAdapter().getItem((Integer) v.getTag()));
                             final EditText input = new EditText(v.getContext());
                             input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
                             input.setRawInputType(Configuration.KEYBOARD_12KEY);
@@ -362,7 +363,7 @@ public class CentroElaboracionActivity extends BaseActivity {
                     recetaAdapter.setRemoveListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
-                            final InsumoAlmacenModel insumoAlmacenModel = ((InsumoAlmacenModel) listViewIngredientes.getAdapter().getItem((Integer) v.getTag()));
+                            final InsumoAlmacenModel insumoAlmacenModel = ((InsumoAlmacenModel) listViewReceta.getAdapter().getItem((Integer) v.getTag()));
                             final EditText input = new EditText(v.getContext());
                             input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
                             input.setRawInputType(Configuration.KEYBOARD_12KEY);
@@ -471,9 +472,9 @@ public class CentroElaboracionActivity extends BaseActivity {
     }
 
     private void addReceta(InsumoAlmacenModel insumoAlmacenModel, float cant) {
-        for (int i = 0; i < listaInsumosIngrediente.size(); i++) {
-            if (listaInsumosIngrediente.get(i).equals(insumoAlmacenModel)) {
-                listaInsumosIngrediente.get(i).setCantidad(listaInsumosIngrediente.get(i).getCantidad() + cant);
+        for (int i = 0; i < listaInsumosReceta.size(); i++) {
+            if (listaInsumosReceta.get(i).equals(insumoAlmacenModel)) {
+                listaInsumosReceta.get(i).setCantidad(listaInsumosReceta.get(i).getCantidad() + cant);
             }
         }
         setListRecetaSelec();
@@ -489,13 +490,13 @@ public class CentroElaboracionActivity extends BaseActivity {
     }
 
     private void removeReceta(InsumoAlmacenModel insumoAlmacenModel, float cant) {
-        for (int i = 0; i < listaInsumosIngrediente.size(); i++) {
-            if (listaInsumosIngrediente.get(i).equals(insumoAlmacenModel)) {
-                if (listaInsumosIngrediente.get(i).getCantidad() == 1 || listaInsumosIngrediente.get(i).getCantidad() - cant == 0) {
-                    listaInsumosIngrediente.remove(i);
+        for (int i = 0; i < listaInsumosReceta.size(); i++) {
+            if (listaInsumosReceta.get(i).equals(insumoAlmacenModel)) {
+                if (listaInsumosReceta.get(i).getCantidad() == 1 || listaInsumosReceta.get(i).getCantidad() - cant == 0) {
+                    listaInsumosReceta.remove(i);
                     Toast.makeText(getApplicationContext(), "Producto eliminado.", Toast.LENGTH_SHORT).show();
                 } else {
-                    listaInsumosIngrediente.get(i).setCantidad(listaInsumosIngrediente.get(i).getCantidad() - cant);
+                    listaInsumosReceta.get(i).setCantidad(listaInsumosReceta.get(i).getCantidad() - cant);
                 }
             }
         }
