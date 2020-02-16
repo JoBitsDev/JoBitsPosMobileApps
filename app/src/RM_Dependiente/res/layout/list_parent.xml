@@ -10,9 +10,9 @@
     <TextView
         android:id="@+id/boxParent"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="match_parent"
         android:textColor="@color/texto_primario"
-        android:textSize="@dimen/textSizeMedium" />
+        android:textSize="35dp" />
 
 
 </LinearLayout>
