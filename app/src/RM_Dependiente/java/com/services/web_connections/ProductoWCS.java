@@ -15,7 +15,8 @@ public class ProductoWCS extends SimpleWebConnectionService {
     /**
      * Etiquetas a llamar.
      */
-    final String PRODUCTS = "PRODUCTS";
+    final String PRODUCTS = "PRODUCTS",
+            RESTANTES = "RESTANTES";
 
     public ProductoWCS() {
         super();
@@ -26,5 +27,10 @@ public class ProductoWCS extends SimpleWebConnectionService {
         String URL = path + PRODUCTS + "?codMesa=" + codMesa;
         String resp = connect(URL, null, super.TOKEN, HTTPMethod.GET);
         return om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, ProductoVentaModel.class));
+    }
+    public int getRestantes(String codProd) throws Exception {
+        String URL = path + RESTANTES + "?codProducto=" + codProd;
+        String resp = connect(URL, null, super.TOKEN, HTTPMethod.GET);
+        return om.readValue(resp, Integer.class);
     }
 }
