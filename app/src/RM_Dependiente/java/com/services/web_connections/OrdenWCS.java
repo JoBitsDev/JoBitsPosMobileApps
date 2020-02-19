@@ -187,7 +187,7 @@ public class OrdenWCS extends SimpleWebConnectionService {
         this.codMesa = codMesa;
     }
 
-    public int restante(String codProd) throws Exception {
+    public int getRestantes(String codProd) throws Exception {
         String URL = path + RESTANTES + "?codProd=" + codProd;
         String resp = connect(URL, null, super.TOKEN, HTTPMethod.GET);
         return om.readValue(resp, Integer.class);
