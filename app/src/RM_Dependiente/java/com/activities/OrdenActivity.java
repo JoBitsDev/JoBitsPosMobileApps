@@ -279,6 +279,20 @@ public class OrdenActivity extends BaseActivity {
         });
     }
 
+    private void getRestante(final ProductoVentaOrdenModel prod) {
+        new LoadingHandler<Integer>(act, new LoadingProcess<Integer>() {
+            @Override
+            public Integer process() throws Exception {
+                return controller.getRestantes(prod.getProductoVenta().getPCod());
+
+            }
+
+            @Override
+            public void post(Integer value) {
+                Toast.makeText(act,"Quedan minimo "+value+" de " +prod.getProductoVenta().getNombre(), Toast.LENGTH_SHORT).show();//TODO: como que error al autenticar??
+            }
+        });
+    }
 
     private void onSeccionClick(int position) {
         try {
