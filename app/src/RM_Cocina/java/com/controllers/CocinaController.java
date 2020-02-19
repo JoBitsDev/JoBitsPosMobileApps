@@ -11,7 +11,6 @@ import com.services.web_connections.NotificationWCS;
 import com.utils.adapters.IPVsAdapter;
 import com.utils.adapters.MenuAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

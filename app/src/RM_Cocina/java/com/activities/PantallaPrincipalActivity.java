@@ -11,8 +11,10 @@ import android.widget.*;
 import com.controllers.CocinaController;
 import com.services.models.IpvRegistroModel;
 import com.services.models.ProductoVentaOrdenModel;
+import com.services.models.ProductoVentaOrdenModel;
 import com.services.web_connections.*;
 import com.utils.adapters.IPVsAdapter;
+import com.utils.EnvironmentVariables;
 import com.utils.adapters.MenuAdapter;
 import com.utils.exception.ExceptionHandler;
 import com.utils.loading.LoadingHandler;
@@ -71,17 +73,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             pickDate = (TextView) findViewById(R.id.textViewFechaServidor);
 
             if (labelRestName != null) {
-                new LoadingHandler<String>(act, new LoadingProcess<String>() {
-                    @Override
-                    public String process() throws Exception {
-                        return controller.getNombreRest();
-                    }
-
-                    @Override
-                    public void post(String answer) {
-                        labelRestName.setText(answer);
-                    }
-                });
+                labelRestName.setText(EnvironmentVariables.NOMBRE_REST);
             }
 
             user = getIntent().getExtras().getString(String.valueOf(R.string.user));

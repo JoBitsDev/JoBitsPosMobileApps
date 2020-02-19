@@ -6,13 +6,13 @@ import java.util.HashMap;
  * Created by Jorge on 2/8/18.
  */
 
-public class CartaWCS extends SimpleWebConnectionService {
+public class GeneralWCS extends SimpleWebConnectionService {
 
 
-    private String p = "carta/";
+    private String p = "general/";
     final String INFO = "INFO";
 
-    public CartaWCS() {
+    public GeneralWCS() {
         super();
         path += p;
     }
@@ -21,6 +21,5 @@ public class CartaWCS extends SimpleWebConnectionService {
         String resp = connect(path + INFO, null, super.TOKEN, HTTPMethod.GET);
         return om.readValue(resp, HashMap.class);
     }
-
 
 }
