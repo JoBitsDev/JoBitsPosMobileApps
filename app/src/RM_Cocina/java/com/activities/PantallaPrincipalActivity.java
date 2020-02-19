@@ -313,7 +313,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         new LoadingHandler<Date>(act, new LoadingProcess<Date>() {
             @Override
             public Date process() throws Exception {
-                List<IpvRegistroModel> models = controller.getIPVRegistro(cocinaTrabajo);
+                List<IpvRegistroModel> models = controller.getIPVRegistroExistencias(cocinaTrabajo);
                 if (models.isEmpty()) {
                     return new Date();
                 }
