@@ -279,17 +279,17 @@ public class OrdenActivity extends BaseActivity {
         });
     }
 
-    private void getRestante(final ProductoVentaOrdenModel prod) {
+    private void getRestante(final ProductoVentaModel prod) {
         new LoadingHandler<Integer>(act, new LoadingProcess<Integer>() {
             @Override
             public Integer process() throws Exception {
-                return controller.getRestantes(prod.getProductoVenta().getPCod());
+                return controller.getRestantes(prod.getPCod());
 
             }
 
             @Override
             public void post(Integer value) {
-                Toast.makeText(act, "Quedan minimo " + value + " de " + prod.getProductoVenta().getNombre(), Toast.LENGTH_SHORT).show();//TODO: como que error al autenticar??
+                Toast.makeText(act, "Quedan minimo " + value + " de " + prod.getNombre(), Toast.LENGTH_SHORT).show();//TODO: como que error al autenticar??
             }
         });
     }
@@ -669,7 +669,7 @@ public class OrdenActivity extends BaseActivity {
 
     public void onViewRestantes(View v) {
         try {
-            ProductoVentaOrdenModel last = ((ProductoVentaOrdenModel) menuProductosListView.getAdapter().getItem((Integer) v.getTag()));
+            ProductoVentaModel last = ((ProductoVentaModel) menuProductosListView.getAdapter().getItem((Integer) v.getTag()));
             getRestante(last);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
