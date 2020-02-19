@@ -156,7 +156,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
     public void onSwitchClick() {
         final String orden = switchExistencia.isChecked() ? String.valueOf(R.string.ipv) : String.valueOf(R.string.exist);
-        final String change = switchExistencia.isChecked() ? "Vendidos" : "Cosumidos";
+        final String change = switchExistencia.isChecked() ? "Cosumidos" : "Vendidos";
         textViewToChange.setText(change);
 
         if (orden.equalsIgnoreCase(String.valueOf(R.string.ipv))) {

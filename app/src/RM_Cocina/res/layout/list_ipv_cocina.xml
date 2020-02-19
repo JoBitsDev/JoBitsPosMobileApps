@@ -27,15 +27,8 @@
             android:layout_weight="20"
             android:gravity="center"
             android:hint="Inicio"
-            android:textColor="@color/texto_primario"
+            android:textColor="@color/primario"
             android:textSize="@dimen/textSizeNormal" />
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/secundario" />
 
         <TextView
             android:id="@+id/editTextEntrada"
@@ -44,59 +37,38 @@
             android:layout_weight="20"
             android:gravity="center"
             android:hint="Entrada"
-            android:textColor="@color/texto_primario"
+            android:textColor="@color/primario"
             android:textSize="@dimen/textSizeNormal" />
-
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/secundario" />
 
         <TextView
             android:id="@+id/editTextDisponible"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="30"
+            android:layout_height="match_parent"
+            android:layout_weight="20"
             android:gravity="center"
             android:hint="Disponible"
-            android:textColor="@color/texto_primario"
-            android:textSize="@dimen/textSizeMedium" />
-
-        <View
-            android:id="@+id/divider3"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/secundario" />
+            android:textColor="@color/primario"
+            android:textSize="@dimen/textSizeNormal" />
 
         <TextView
             android:id="@+id/editTextCosumido"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="30"
+            android:layout_weight="20"
             android:gravity="center"
             android:hint="Cosumido"
-            android:textColor="@color/texto_primario"
-            android:textSize="@dimen/textSizeMedium" />
-
-        <View
-            android:id="@+id/divider4"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/secundario" />
+            android:textColor="@color/primario"
+            android:textSize="@dimen/textSizeNormal" />
 
         <TextView
             android:id="@+id/editTextFinal"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="20"
+            android:layout_weight="30"
             android:gravity="center"
             android:hint="Final"
-            android:textColor="@color/texto_primario"
-            android:textSize="@dimen/textSizeNormal" />
+            android:textColor="@color/secundario"
+            android:textSize="@dimen/textSizeMedium" />
 
     </LinearLayout>
 
