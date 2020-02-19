@@ -28,13 +28,14 @@ public class PantallaPrincipalActivity extends BaseActivity {
     private CocinaController controller;
     private String user, cocinaTrabajo;
     private int wichCocina;
-    private TextView labelRestName, labelCocinaName, labelUsuario, pickDate;
+    private TextView labelRestName, labelCocinaName, labelUsuario, pickDate, textViewToChange;
     private ExpandableListView lista;
     private Button cambiarAreaButton;
     private ImageButton refreshButton;
     private List<ProductoVentaOrdenModel> pedidos = new ArrayList<ProductoVentaOrdenModel>();
     private TabHost host;
     private float lastX;
+    private Switch switchExistencia;
     /**
      * Cuadro de texto de busqueda.
      */
@@ -52,6 +53,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         addListeners();
         onCambiarAreaButtonClick();
         configurarTabla();
+        onSwitchClick();
     }
 
 
@@ -71,6 +73,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
             searchTextIPV = (EditText) findViewById(R.id.editTextBuscarIPV);
             ipvRegistroModelList = new ArrayList<IpvRegistroModel>();
             pickDate = (TextView) findViewById(R.id.textViewFechaServidor);
+            switchExistencia = (Switch) findViewById(R.id.switchExisIPV);
+            textViewToChange = (TextView) findViewById(R.id.editTextCosumido);
 
             if (labelRestName != null) {
                 labelRestName.setText(EnvironmentVariables.NOMBRE_REST);
@@ -121,7 +125,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 onRefreshButtonClick(v);
-                actualizarListaIPVs(v);
+                onSwitchClick();
             }
         });
 
@@ -144,16 +148,24 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 return onTabChangeTouchEvent(event);
             }
         });
+        switchExistencia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSwitchClick();
+            }
+        });
     }
 
-    @Override
-    protected void setAdapters() {
-        try {
+    public void onSwitchClick() {
+        final String orden = switchExistencia.isChecked() ? String.valueOf(R.string.ipv) : String.valueOf(R.string.exist);
+        final String change = switchExistencia.isChecked() ? "Vendidos" : "Cosumidos";
+        textViewToChange.setText(change);
 
+        if (orden.equalsIgnoreCase(String.valueOf(R.string.ipv))) {
             new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
                 @Override
                 public Void process() throws Exception {
-                    ipVsAdapter = new IPVsAdapter(act, R.layout.list_ipv_cocina, ipvRegistroModelList);
+                    ipVsAdapter = new IPVsAdapter(act, R.layout.list_ipv_cocina, controller.getIPVRegistroIPVS(cocinaTrabajo));
                     return null;
                 }
 
@@ -162,26 +174,20 @@ public class PantallaPrincipalActivity extends BaseActivity {
                     listViewIPV.setAdapter(ipVsAdapter);
                 }
             });
-        } catch (Exception e) {
-            ExceptionHandler.handleException(e, act);
+        } else {
+            new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+                @Override
+                public Void process() throws Exception {
+                    ipVsAdapter = new IPVsAdapter(act, R.layout.list_ipv_cocina, controller.getIPVRegistroExistencias(cocinaTrabajo));
+                    return null;
+                }
+
+                @Override
+                public void post(Void answer) {
+                    listViewIPV.setAdapter(ipVsAdapter);
+                }
+            });
         }
-    }
-
-    private void actualizarListaIPVs(View view) {
-
-        new LoadingHandler<IPVsAdapter>(act, new LoadingProcess<IPVsAdapter>() {
-            @Override
-            public IPVsAdapter process() throws Exception {
-                return controller.getIPVAdapter(act, R.id.listViewIPVs, cocinaTrabajo);
-
-            }
-
-            @Override
-            public void post(IPVsAdapter answer) {
-                listViewIPV.setAdapter(answer);
-                obtenerFecha();
-            }
-        });
     }
 
     private void onListaChildClick(final int groupPosition, final int childPosition) {
