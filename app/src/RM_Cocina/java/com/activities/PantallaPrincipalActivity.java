@@ -313,6 +313,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
     public void onRefreshButtonClick(View view) {//refrescar
         configurarTabla();
+        onSwitchClick();
     }
 
     private void obtenerFecha() {
