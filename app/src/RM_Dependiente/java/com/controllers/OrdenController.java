@@ -138,7 +138,8 @@ public class OrdenController extends BaseController {
     public boolean isDeLaCasa() {
         return ordenWCService.isDeLaCasa();
     }
+
     public int getRestantes(String codProd) throws Exception {
-        return ordenWCService.getRestantes(codProd);
+        return new ProductoWCS().getRestantes(codProd);
     }
 }

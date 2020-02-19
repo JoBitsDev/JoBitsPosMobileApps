@@ -289,7 +289,7 @@ public class OrdenActivity extends BaseActivity {
 
             @Override
             public void post(Integer value) {
-                Toast.makeText(act, "Quedan minimo " + value + " de " + prod.getNombre(), Toast.LENGTH_SHORT).show();//TODO: como que error al autenticar??
+                Toast.makeText(act, "Quedan minimo " + value + " de " + prod.getNombre(), Toast.LENGTH_LONG).show();//TODO: como que error al autenticar??
             }
         });
     }
