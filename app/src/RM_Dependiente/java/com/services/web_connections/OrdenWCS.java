@@ -2,6 +2,7 @@ package com.services.web_connections;
 
 import com.services.models.OrdenModel;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -26,7 +27,8 @@ public class OrdenWCS extends SimpleWebConnectionService {
             ADD_COMENSAL = "ADD-COMENSAL",
             GET_COMENSAL = "GET-COMENSAL",
             CEDER_ORDEN = "CEDER-ORDEN",
-            VALIDATE = "VALIDATE";
+            VALIDATE = "VALIDATE",
+            RESTANTES = "RESTANTES";
 
     boolean deLaCasa = false;
 
@@ -185,4 +187,9 @@ public class OrdenWCS extends SimpleWebConnectionService {
         this.codMesa = codMesa;
     }
 
+    public int restante(String codProd) throws Exception {
+        String URL = path + RESTANTES + "?codProd=" + codProd;
+        String resp = connect(URL, null, super.TOKEN, HTTPMethod.GET);
+        return om.readValue(resp, Integer.class);
+    }
 }
