@@ -93,31 +93,6 @@
                     android:layout_height="match_parent">
 
                     <LinearLayout
-                        android:id="@+id/Estado"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/textView12"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/estadoMesas"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textColor="@color/texto_primario"
-                            android:textSize="@dimen/textSizeNormal" />
-
-                        <ExpandableListView
-                            android:id="@+id/listaMesas"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="20"
-                            android:choiceMode="singleChoice">
-
-                        </ExpandableListView>
-                    </LinearLayout>
-
-                    <LinearLayout
                         android:id="@+id/IPV"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -128,14 +103,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:orientation="horizontal">
-
-                            <Switch
-                                android:id="@+id/switchExisIPV"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_weight="10"
-                                android:textOff="IPVs"
-                                android:textOn="Existencia" />
 
                             <TextView
                                 android:id="@+id/textViewFechaServidor"
@@ -149,6 +116,14 @@
                                 android:textColor="@color/texto_primario"
                                 android:textColorHint="@color/texto_primario"
                                 android:textSize="@dimen/textSizeMedium" />
+
+                            <Switch
+                                android:id="@+id/switchExisIPV"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_weight="10"
+                                android:textOff="IPVs"
+                                android:textOn="Existencia" />
 
                         </LinearLayout>
 
@@ -195,7 +170,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:background="@color/especifico_app_primario" />
+                                android:background="@color/secundario" />
 
                             <TextView
                                 android:id="@+id/editTextEntrada"
@@ -212,7 +187,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:background="@color/especifico_app_primario" />
+                                android:background="@color/secundario" />
 
                             <TextView
                                 android:id="@+id/editTextDisponible"
@@ -228,7 +203,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:background="@color/especifico_app_primario" />
+                                android:background="@color/secundario" />
 
                             <TextView
                                 android:id="@+id/editTextCosumido"
@@ -245,7 +220,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:background="@color/especifico_app_primario" />
+                                android:background="@color/secundario" />
 
                             <TextView
                                 android:id="@+id/editTextFinal"
@@ -264,7 +239,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="3"
-                            android:background="@color/especifico_app_primario" />
+                            android:background="@color/secundario" />
 
                         <FrameLayout
                             android:layout_width="match_parent"
@@ -280,30 +255,55 @@
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:id="@+id/Estado"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView12"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/estadoMesas"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textColor="@color/texto_primario"
+                            android:textSize="@dimen/textSizeNormal" />
+
+                        <ExpandableListView
+                            android:id="@+id/listaMesas"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="20"
+                            android:choiceMode="singleChoice">
+
+                        </ExpandableListView>
+                    </LinearLayout>
+
                 </FrameLayout>
             </LinearLayout>
         </TabHost>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:orientation="vertical">
 
 
-            <Button
-                android:id="@+id/buttonCambiarArea"
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentBottom="true"
-                android:layout_marginEnd="61dp"
-                android:layout_toStartOf="@+id/textViewNombreRest"
-                android:clickable="true"
-                android:text="@string/label_cambiar_area"
-                android:textColor="@color/texto_primario"
-                android:textSize="@dimen/textSizeNormal" />
+        <Button
+            android:id="@+id/buttonCambiarArea"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="61dp"
+            android:layout_toStartOf="@+id/textViewNombreRest"
+            android:clickable="true"
+            android:text="@string/label_cambiar_area"
+            android:textColor="@color/texto_primario"
+            android:textSize="@dimen/textSizeNormal" />
 
-        </LinearLayout>
+    </LinearLayout>
     </LinearLayout>
 
