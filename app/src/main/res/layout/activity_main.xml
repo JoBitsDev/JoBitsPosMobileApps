@@ -40,7 +40,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:text="@string/version"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/texto_primario"
         android:textSize="@dimen/textSizeSmall" />
