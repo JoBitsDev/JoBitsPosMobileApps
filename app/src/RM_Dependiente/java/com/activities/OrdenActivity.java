@@ -57,7 +57,6 @@ public class OrdenActivity extends BaseActivity {
     private ProductoVentaOrdenAdapter productoVentaOrdenAdapter;
     private TabHost host;
     private float lastX;
-    private long doubleClickLastTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,18 +156,7 @@ public class OrdenActivity extends BaseActivity {
             menuProductosListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    if (doubleClickLastTime == 0) {
-                        doubleClickLastTime = System.currentTimeMillis();
-                        onMenuListViewClick(position);
-                    } else if (System.currentTimeMillis() - doubleClickLastTime < 300) {
-                        doubleClickLastTime = 0;
-                        getRestante(productosVentaOrden.get(position));
-                        lastClickedMenu = menuAdapter.getItem(position);
-                        removeProductosVarios(1);
-                    } else {
-                        doubleClickLastTime = System.currentTimeMillis();
-                        onMenuListViewClick(position);
-                    }
+                    onMenuListViewClick(position);
                 }
             });
 
@@ -674,6 +662,15 @@ public class OrdenActivity extends BaseActivity {
         try {
             lastClickedMenu = ((ProductoVentaOrdenModel) listaOrden.getAdapter().getItem((Integer) v.getTag())).getProductoVenta();
             addProductosVarios(1);
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+        }
+    }
+
+    public void onViewRestantes(View v) {
+        try {
+            ProductoVentaOrdenModel last = ((ProductoVentaOrdenModel) menuProductosListView.getAdapter().getItem((Integer) v.getTag()));
+            getRestante(last);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
