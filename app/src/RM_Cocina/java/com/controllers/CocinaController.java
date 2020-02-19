@@ -1,11 +1,9 @@
 package com.controllers;
 
-import com.services.web_connections.CartaWCS;
+import com.services.models.ProductoVentaOrdenModel;
 import com.services.web_connections.CocinaWCS;
 import com.services.web_connections.NotificationWCS;
-import com.utils.adapters.MenuAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +26,4 @@ public class CocinaController extends BaseController {
         return new NotificationWCS().fetchPendingOrders(cocinaTrabajo);
     }
 
-    public String getNombreRest() throws Exception {
-        return new CartaWCS().getNombreRest();
-    }
 }
