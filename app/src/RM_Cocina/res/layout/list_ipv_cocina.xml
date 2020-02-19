@@ -35,7 +35,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/especifico_app_primario" />
+            android:background="@color/secundario" />
 
         <TextView
             android:id="@+id/editTextEntrada"
@@ -52,7 +52,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/especifico_app_primario" />
+            android:background="@color/secundario" />
 
         <TextView
             android:id="@+id/editTextDisponible"
@@ -69,7 +69,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/especifico_app_primario" />
+            android:background="@color/secundario" />
 
         <TextView
             android:id="@+id/editTextCosumido"
@@ -86,7 +86,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/especifico_app_primario" />
+            android:background="@color/secundario" />
 
         <TextView
             android:id="@+id/editTextFinal"
@@ -105,5 +105,5 @@
         android:layout_width="match_parent"
         android:layout_height="5dp"
         android:layout_weight="1"
-        android:background="@color/especifico_app_primario" />
+        android:background="@color/secundario" />
 </LinearLayout>
