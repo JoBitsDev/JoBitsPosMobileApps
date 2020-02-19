@@ -5,7 +5,6 @@ import android.content.Context;
 import com.services.models.IpvRegistroModel;
 import com.services.models.ProductoVentaOrdenModel;
 import com.services.web_connections.AlmacenWCS;
-import com.services.web_connections.CartaWCS;
 import com.services.web_connections.CocinaWCS;
 import com.services.web_connections.NotificationWCS;
 import com.utils.adapters.IPVsAdapter;
@@ -45,9 +44,6 @@ public class CocinaController extends BaseController {
         return new NotificationWCS().fetchPendingOrders(cocinaTrabajo);
     }
 
-    public String getNombreRest() throws Exception {
-        return new CartaWCS().getNombreRest();
-    }
     public IPVsAdapter getIPVAdapter(Context c, int ipvRegisro) throws Exception {
         return new IPVsAdapter(c, ipvRegisro, almacenWCS.getIPVRegistro(""));
     }
