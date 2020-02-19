@@ -53,9 +53,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         addListeners();
         onCambiarAreaButtonClick();
         configurarTabla();
-        onSwitchClick();
     }
-
 
     @Override
     void initVarialbes() {
@@ -188,6 +186,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 }
             });
         }
+        obtenerFecha();
     }
 
     private void onListaChildClick(final int groupPosition, final int childPosition) {
@@ -282,6 +281,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                 wichCocina = which;
                                 dialog.dismiss();
                                 configurarTabla();
+                                onSwitchClick();
                                 labelCocinaName.setText(cocinaTrabajo);
                             }
                         }).create().show();
