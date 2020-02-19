@@ -5,11 +5,9 @@ import android.content.Context;
 import com.services.models.IpvRegistroModel;
 import com.services.models.ProductoVentaOrdenModel;
 import com.services.web_connections.AlmacenWCS;
-import com.services.web_connections.CartaWCS;
 import com.services.web_connections.CocinaWCS;
 import com.services.web_connections.NotificationWCS;
 import com.utils.adapters.IPVsAdapter;
-import com.utils.adapters.MenuAdapter;
 
 import java.util.List;
 
@@ -30,7 +28,7 @@ public class CocinaController extends BaseController {
      * Constructor de la clase.
      */
     public CocinaController() {
-        almacenWCS = new AlmacenWCS(null);
+        almacenWCS = new AlmacenWCS();
     }
 
     public String notificar(ProductoVentaOrdenModel po) throws Exception {
@@ -45,18 +43,19 @@ public class CocinaController extends BaseController {
         return new NotificationWCS().fetchPendingOrders(cocinaTrabajo);
     }
 
-    public String getNombreRest() throws Exception {
-        return new CartaWCS().getNombreRest();
-    }
     public IPVsAdapter getIPVAdapter(Context c, int ipvRegisro) throws Exception {
-        return new IPVsAdapter(c, ipvRegisro, almacenWCS.getIPVRegistro(""));
+        return new IPVsAdapter(c, ipvRegisro, almacenWCS.getIPVRegistroExistencias(""));
     }
 
     public IPVsAdapter getIPVAdapter(Context c, int ipvRegisro, String codCocina) throws Exception {
-        return new IPVsAdapter(c, ipvRegisro, almacenWCS.getIPVRegistro(codCocina));
+        return new IPVsAdapter(c, ipvRegisro, almacenWCS.getIPVRegistroExistencias(codCocina));
     }
 
-    public List<IpvRegistroModel> getIPVRegistro(String codCocina) throws Exception {
-        return almacenWCS.getIPVRegistro(codCocina);
+    public List<IpvRegistroModel> getIPVRegistroExistencias(String codCocina) throws Exception {
+        return almacenWCS.getIPVRegistroExistencias(codCocina);
+    }
+
+    public List<IpvRegistroModel> getIPVRegistroIPVS(String codCocina) throws Exception {
+        return almacenWCS.getIPVRegistroIPVS(codCocina);
     }
 }
