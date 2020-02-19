@@ -16,6 +16,11 @@ public class AlmacenWCS extends SimpleWebConnectionService {
      */
     final String P = "almacen/";
 
+    public AlmacenWCS() {
+        super();
+        path += P;
+    }
+
     /**
      * Etiquetas a llamar.
      */
