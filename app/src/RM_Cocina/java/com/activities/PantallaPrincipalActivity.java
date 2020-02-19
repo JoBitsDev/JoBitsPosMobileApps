@@ -188,6 +188,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 }
             });
         }
+        obtenerFecha();
     }
 
     private void onListaChildClick(final int groupPosition, final int childPosition) {
