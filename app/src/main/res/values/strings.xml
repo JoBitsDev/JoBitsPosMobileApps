@@ -4,7 +4,7 @@
     <string name="access_level">2</string>
 
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_turn_off_offline">Settings</string>
     <string name="title_activity_login">Iniciar Sesión</string>
 
     <string name="title_activity_about">Sobre</string>
@@ -35,5 +35,6 @@
     <string name="formato_fecha">dd/mm/yyyy</string>
 
     <string name="formato_hora">00:00:00</string>
+
 
 </resources>
