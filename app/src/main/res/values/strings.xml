@@ -27,6 +27,7 @@
         Si el error persiste contacte con soporte técnico.</string>
     <string name="timeoutError">La respuesta al servidor ha exedido el tiempo de espera.</string>
     <string name="networkOnMainThreadError">Ejecutado conneción al servidor en hilo principal.</string>
+    <string name="noCacheException">No hay conección con el servidor y la informacion requerida no se encuentra almacenada.</string>
 
     <string name="dayClosedError">La caja debe comenzar el dia \nde trabajo para acceder a las ordenes</string>
     <string name="cambiar_ubicacion">Cambiar ubicación</string>
