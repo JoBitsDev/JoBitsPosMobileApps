@@ -25,6 +25,8 @@ public class EnvironmentVariables {
     public static final String PERSISTENCE_PATH = "persistence";
     public static String NOMBRE_REST = "";
 
+    public static boolean ONLINE = true;
+
     private static UbicacionModel ubicacionActual = UbicacionModel.getDefaultUbicacion();
 
     public static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yy");
