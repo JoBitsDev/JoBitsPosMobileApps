@@ -76,7 +76,6 @@ public class MainActivity extends BaseActivity {
 
             updateConnectionText();
             loadConfig();
-            setUpInfo();
             setUpLanguaje();
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
@@ -290,20 +289,20 @@ public class MainActivity extends BaseActivity {
      *
      * @param v View de la aplicacion.
      */
-    private void onInitializeSesionButtOnClick(View v) {
+    private void onInitializeSesionButtOnClick(final View v) {
         new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
             @Override
-            public Boolean process() {
+            public Boolean process() throws Exception {
                 return controller.checkConnection();
             }
 
             @Override
             public void post(Boolean value) {
                 if (value) {
+                    setUpInfo();
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 } else {
-                    act.showMessage(act.getApplication().getApplicationContext().getResources().
-                            getText(R.string.noConnectionError).toString());
+                    manageNoConnection(getResources().getText(R.string.noConnectionError).toString());
                 }
             }
         });
@@ -315,7 +314,7 @@ public class MainActivity extends BaseActivity {
     private void updateConnectionText() {
         new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
             @Override
-            public Boolean process() {
+            public Boolean process() throws Exception {
                 return controller.checkConnection();
             }
 

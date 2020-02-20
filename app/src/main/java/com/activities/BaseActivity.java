@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.utils.EnvironmentVariables;
 import com.utils.exception.ExceptionHandler;
@@ -105,7 +106,7 @@ public abstract class BaseActivity extends Activity {
 
     public void setUpOffline() {
         EnvironmentVariables.ONLINE = false;
-        
+        Toast.makeText(this, "Usted a cambiado a modo offline.", Toast.LENGTH_LONG).show();
     }
 
     public void setUpOnline() {

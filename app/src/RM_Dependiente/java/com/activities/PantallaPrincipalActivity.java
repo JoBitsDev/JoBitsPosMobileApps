@@ -143,7 +143,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_turn_on_offline_mode) {
+            setUpOffline();
+            return true;
+        } else if (id == R.id.action_turn_off_offline_mode) {
+            setUpOnline();
             return true;
         }
 

@@ -572,17 +572,11 @@ public class OrdenActivity extends BaseActivity {
                 case R.id.cederACamarero:
                     cederACamarero();
                     break;
-                case R.id.action_settings:
-                    return true;
                 default:
                     super.onOptionsItemSelected(item);
                     break;
             }
 
-            //noinspection SimplifiableIfStatement
-            if (id == R.id.action_settings) {//TODO: wath??????? por que si esta el case puesto???
-                return true;
-            }
             return super.onOptionsItemSelected(item);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
