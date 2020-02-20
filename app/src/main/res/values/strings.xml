@@ -23,7 +23,7 @@
     <string name="necesarioOnline">Para realizar esta acción es necesario estar Online</string>
     <string name="serverError">A ocurrido un error procesando la petición al servidor:\n</string>
     <string name="unespectedError">Uppppsssss algo no funciona :(\n
-        Si el error persiste contacte con soporte técnico.</string>
+        Si el error persiste contacte con soporte técnico.\n</string>
     <string name="timeoutError">La respuesta al servidor ha exedido el tiempo de espera.</string>
     <string name="networkOnMainThreadError">Ejecutado conneción al servidor en hilo principal.</string>
     <string name="noCacheException">No hay conección con el servidor y la informacion requerida no se encuentra almacenada.</string>

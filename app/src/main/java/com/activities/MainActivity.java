@@ -76,7 +76,7 @@ public class MainActivity extends BaseActivity {//  |||||
             initVarialbes();
             addListeners();
 
-            updateConnectionText();
+            //updateConnectionText();
             loadConfig();
             setUpLanguaje();
         } catch (Exception e) {
@@ -91,6 +91,7 @@ public class MainActivity extends BaseActivity {//  |||||
         conf.setLocale(new Locale("es"));
         res.updateConfiguration(conf, dm);
     }
+
     private void loadConfig() {
         ConfigModel model;
         try {

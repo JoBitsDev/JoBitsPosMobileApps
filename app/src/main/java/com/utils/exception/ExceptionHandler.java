@@ -16,6 +16,7 @@ import com.activities.PantallaPrincipalActivity;
 import com.activities.R;
 import com.utils.EnvironmentVariables;
 
+import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeoutException;
 
@@ -56,8 +57,8 @@ public class ExceptionHandler {
     public static void handleException(Exception e, BaseActivity activity) {
         e.printStackTrace();
 
-        if (e instanceof NoConnectionException) {//no conection o timeout
-            handleNoConnectionException((NoConnectionException) e, activity);
+        if (e instanceof NoConnectionException || e instanceof ConnectException) {//no conection o timeout
+            handleNoConnectionException(e, activity);
         } else if (e instanceof ServerErrorException) {//error del server
             handleServerErrorException((ServerErrorException) e, activity);
         } else if (e instanceof NoExistingException) {
@@ -162,9 +163,8 @@ public class ExceptionHandler {
      * @param e        Excepcion a tratar, de tipo generico y se castea internamente para un tratamiento especializado de cada una.
      * @param activity Donde se lanzo la excepcion para poder notificar al usuario.
      */
-    private static void handleNoConnectionException(NoConnectionException e, final BaseActivity activity) {
-        final Context c = activity.getApplicationContext();
-        final View v = activity.findViewById(android.R.id.content).getRootView();
+    private static void handleNoConnectionException(Exception e, final BaseActivity activity) {
+         final View v = activity.findViewById(android.R.id.content).getRootView();
 
         //mensaje explicando que pasa
         String noConnectionErrorMessage = v.findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.noConnectionError).toString();
@@ -214,7 +214,7 @@ public class ExceptionHandler {
 
         //popup a mostrar
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setMessage(e.getMessage());
+        builder.setMessage(unespectedError + "" + e.getMessage());
         builder.setTitle(ExceptionHandler.POPUP_TITLE);
 
         builder.setNeutralButton(ExceptionHandler.POPUP_BUTTON_TEXT, new DialogInterface.OnClickListener() {
