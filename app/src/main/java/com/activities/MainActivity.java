@@ -76,7 +76,7 @@ public class MainActivity extends BaseActivity {//  |||||
             initVarialbes();
             addListeners();
 
-            //updateConnectionText();
+            updateConnectionText();
             loadConfig();
             setUpLanguaje();
         } catch (Exception e) {
