@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="firstdream.dpte.PantallaPrincipal">
+    <item android:id="@+id/action_turn_off_offline_mode" android:title="@string/action_turn_off_offline"
+        android:orderInCategory="100"/>
+    <item android:id="@+id/action_turn_on_offline_mode" android:title="@string/action_turn_on_offline"
+        android:orderInCategory="100"/>
+</menu>
