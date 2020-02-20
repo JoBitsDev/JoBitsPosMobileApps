@@ -16,8 +16,8 @@ public class CheckConnectionWCS extends SimpleWebConnectionService {
 
     public Boolean checkConnection() {
         try {
-            String resp = connect(URLCONN, null, null, HTTPMethod.GET);
-            return om.readValue(resp, Boolean.class);
+            connect(URLCONN, null, null, HTTPMethod.GET);
+            return true;
         } catch (Exception e) {
             return false;
         }
