@@ -84,25 +84,33 @@ public class SimpleWebConnectionService {
      * @throws Exception Si algo sale mal.
      */
     public String connect(final String urlToExcecute, final String body, final String token, final HTTPMethod method) throws Exception {
-        if (method == HTTPMethod.GET) {
-            CacheModel cache = checkCache(urlToExcecute);
-            String resp = "";
-            if (cache == null) {
-                resp = connectToServer(urlToExcecute, body, token, method);
-                saveResponse(urlToExcecute, resp);
-                return resp;
-            } else {
-                resp = cache.getRespuesta();
-                //verifico con el server
-                String check = validateInfo(urlToExcecute, resp);
-                if (!check.isEmpty()) {
-                    resp = check;
+        CacheModel cache = checkCache(urlToExcecute);
+        String resp = "";
+        if (EnvironmentVariables.ONLINE) {//esta online
+            if (method == HTTPMethod.GET) {
+                if (cache == null) {
+                    resp = connectToServer(urlToExcecute, body, token, method);//hay coneccion y no hay cache
                     saveResponse(urlToExcecute, resp);
+                    return resp;
+                } else {//tengo cache
+                    resp = cache.getRespuesta();
+                    //verifico con el server
+                    String check = validateInfo(urlToExcecute, resp);
+                    if (!check.isEmpty()) {
+                        resp = check;
+                        saveResponse(urlToExcecute, resp);
+                    }
+                    return resp;
                 }
-                return resp;
+            } else {
+                return connectToServer(urlToExcecute, body, token, method);
             }
-        } else {
-            return connectToServer(urlToExcecute, body, token, method);
+        } else {//no hay coneccion
+            if (cache == null) {
+                throw new NoCacheException();
+            } else {//tengo cache
+                return cache.getRespuesta();
+            }
         }
     }
 
