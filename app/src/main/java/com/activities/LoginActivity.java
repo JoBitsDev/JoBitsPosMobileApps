@@ -64,7 +64,6 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        user.setText("");
         pass.setText("");
         loginResult.setText("");
     }

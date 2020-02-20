@@ -9,4 +9,9 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/listar_operaciones" />
+    <item
+        android:id="@+id/action_centro_elaboracion"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/centro_elaboracion" />
 </menu>

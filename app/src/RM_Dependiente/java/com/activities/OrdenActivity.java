@@ -279,6 +279,20 @@ public class OrdenActivity extends BaseActivity {
         });
     }
 
+    private void getRestante(final ProductoVentaModel prod) {
+        new LoadingHandler<Integer>(act, new LoadingProcess<Integer>() {
+            @Override
+            public Integer process() throws Exception {
+                return controller.getRestantes(prod.getPCod());
+
+            }
+
+            @Override
+            public void post(Integer value) {
+                Toast.makeText(act, "Quedan minimo " + value + " de " + prod.getNombre(), Toast.LENGTH_LONG).show();//TODO: como que error al autenticar??
+            }
+        });
+    }
 
     private void onSeccionClick(int position) {
         try {
@@ -642,6 +656,15 @@ public class OrdenActivity extends BaseActivity {
         try {
             lastClickedMenu = ((ProductoVentaOrdenModel) listaOrden.getAdapter().getItem((Integer) v.getTag())).getProductoVenta();
             addProductosVarios(1);
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+        }
+    }
+
+    public void onViewRestantes(View v) {
+        try {
+            ProductoVentaModel last = ((ProductoVentaModel) menuProductosListView.getAdapter().getItem((Integer) v.getTag()));
+            getRestante(last);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }

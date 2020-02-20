@@ -53,6 +53,16 @@ public class EnvironmentVariables {
     public static int CAMBIO = 24;
 
     /**
+     *
+     */
+    public static int MAYOR = 3;
+
+    /**
+     *
+     */
+    public static int MINOR = 3;
+
+    /**
      * Redondea un valor a dos lugares despues de la coma.
      *
      * @param valorARedondear que se quiere redondear.

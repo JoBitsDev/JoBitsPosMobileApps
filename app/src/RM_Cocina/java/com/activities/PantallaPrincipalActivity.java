@@ -3,16 +3,24 @@ package com.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.*;
 import android.widget.*;
 
 import com.controllers.CocinaController;
+import com.services.models.IpvRegistroModel;
+import com.services.models.ProductoVentaOrdenModel;
+import com.services.models.ProductoVentaOrdenModel;
 import com.services.web_connections.*;
+import com.utils.adapters.IPVsAdapter;
+import com.utils.EnvironmentVariables;
 import com.utils.adapters.MenuAdapter;
 import com.utils.exception.ExceptionHandler;
 import com.utils.loading.LoadingHandler;
 import com.utils.loading.LoadingProcess;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class PantallaPrincipalActivity extends BaseActivity {
@@ -20,11 +28,21 @@ public class PantallaPrincipalActivity extends BaseActivity {
     private CocinaController controller;
     private String user, cocinaTrabajo;
     private int wichCocina;
-    private TextView labelRestName, labelCocinaName, labelUsuario;
+    private TextView labelRestName, labelCocinaName, labelUsuario, pickDate, textViewToChange;
     private ExpandableListView lista;
     private Button cambiarAreaButton;
     private ImageButton refreshButton;
     private List<ProductoVentaOrdenModel> pedidos = new ArrayList<ProductoVentaOrdenModel>();
+    private TabHost host;
+    private float lastX;
+    private Switch switchExistencia;
+    /**
+     * Cuadro de texto de busqueda.
+     */
+    private EditText searchTextIPV;
+    private IPVsAdapter ipVsAdapter;
+    List<IpvRegistroModel> ipvRegistroModelList;
+    private ListView listViewIPV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +54,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
         onCambiarAreaButtonClick();
         configurarTabla();
     }
-
 
     @Override
     void initVarialbes() {
@@ -50,19 +67,15 @@ public class PantallaPrincipalActivity extends BaseActivity {
             labelUsuario = (TextView) findViewById(R.id.labelUsuario);
             lista = (ExpandableListView) findViewById(R.id.listaMesas);
             wichCocina = 0;
+            listViewIPV = (ListView) findViewById(R.id.listViewIPVs);
+            searchTextIPV = (EditText) findViewById(R.id.editTextBuscarIPV);
+            ipvRegistroModelList = new ArrayList<IpvRegistroModel>();
+            pickDate = (TextView) findViewById(R.id.textViewFechaServidor);
+            switchExistencia = (Switch) findViewById(R.id.switchExisIPV);
+            textViewToChange = (TextView) findViewById(R.id.editTextCosumido);
 
             if (labelRestName != null) {
-                new LoadingHandler<String>(act, new LoadingProcess<String>() {
-                    @Override
-                    public String process() throws Exception {
-                        return controller.getNombreRest();
-                    }
-
-                    @Override
-                    public void post(String answer) {
-                        labelRestName.setText(answer);
-                    }
-                });
+                labelRestName.setText(EnvironmentVariables.NOMBRE_REST);
             }
 
             user = getIntent().getExtras().getString(String.valueOf(R.string.user));
@@ -75,6 +88,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 cocinaTrabajo = "-";
             }
             labelCocinaName.setText(cocinaTrabajo);
+            initTab();
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
@@ -82,6 +96,22 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
     @Override
     void addListeners() {
+        searchTextIPV.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                ((IPVsAdapter) listViewIPV.getAdapter()).getFilter().filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         cambiarAreaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,6 +123,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 onRefreshButtonClick(v);
+                onSwitchClick();
             }
         });
 
@@ -103,6 +134,59 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 return true;
             }
         });
+        lista.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return onTabChangeTouchEvent(event);
+            }
+        });
+        listViewIPV.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return onTabChangeTouchEvent(event);
+            }
+        });
+        switchExistencia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSwitchClick();
+            }
+        });
+    }
+
+    public void onSwitchClick() {
+        final String orden = switchExistencia.isChecked() ? String.valueOf(R.string.ipv) : String.valueOf(R.string.exist);
+        final String change = switchExistencia.isChecked() ? "Cosumidos" : "Vendidos";
+        textViewToChange.setText(change);
+
+        if (orden.equalsIgnoreCase(String.valueOf(R.string.ipv))) {
+            new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+                @Override
+                public Void process() throws Exception {
+                    ipVsAdapter = new IPVsAdapter(act, R.layout.list_ipv_cocina, controller.getIPVRegistroIPVS(cocinaTrabajo));
+                    return null;
+                }
+
+                @Override
+                public void post(Void answer) {
+                    listViewIPV.setAdapter(ipVsAdapter);
+                }
+            });
+        } else {
+            new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+                @Override
+                public Void process() throws Exception {
+                    ipVsAdapter = new IPVsAdapter(act, R.layout.list_ipv_cocina, controller.getIPVRegistroExistencias(cocinaTrabajo));
+                    return null;
+                }
+
+                @Override
+                public void post(Void answer) {
+                    listViewIPV.setAdapter(ipVsAdapter);
+                }
+            });
+        }
+        obtenerFecha();
     }
 
     private void onListaChildClick(final int groupPosition, final int childPosition) {
@@ -197,6 +281,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                 wichCocina = which;
                                 dialog.dismiss();
                                 configurarTabla();
+                                onSwitchClick();
                                 labelCocinaName.setText(cocinaTrabajo);
                             }
                         }).create().show();
@@ -228,6 +313,94 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
     public void onRefreshButtonClick(View view) {//refrescar
         configurarTabla();
+        onSwitchClick();
     }
 
+    private void obtenerFecha() {
+        new LoadingHandler<Date>(act, new LoadingProcess<Date>() {
+            @Override
+            public Date process() throws Exception {
+                List<IpvRegistroModel> models = controller.getIPVRegistroExistencias(cocinaTrabajo);
+                if (models.isEmpty()) {
+                    return new Date();
+                }
+                return models.get(0).getIpvRegistroPK().getFecha();
+            }
+
+            @Override
+            public void post(Date answer) {
+                pickDate.setText(formatDate(answer));
+            }
+        });
+    }
+
+    private void initTab() {
+        try {
+            host = (TabHost) findViewById(R.id.tabHost);
+            if (host != null) {//TODO: por que este if??
+                host.setup();
+
+                TabHost.TabSpec spec = host.newTabSpec("Estado");
+
+                //Tab 1
+                spec.setContent(R.id.Estado);
+                spec.setIndicator("Estado");
+                host.addTab(spec);
+
+                //Tab 2
+                spec = host.newTabSpec("IPVs");
+                spec.setContent(R.id.IPV);
+                spec.setIndicator("IPVs");
+                host.addTab(spec);
+            }
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, this);
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        return onTabChangeTouchEvent(event);
+    }
+
+    private String formatDate(Date date) {
+        return new SimpleDateFormat("dd'/'MM'/'yyyy").format(date);
+    }
+
+    private boolean onTabChangeTouchEvent(MotionEvent event) {
+        try {
+            float currentX = 0;
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    lastX = event.getX();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    currentX = event.getX();
+                    boolean dirRight = Math.abs(lastX - currentX) > 200;
+                    switchTab(dirRight);
+                    return dirRight;
+            }
+            return false;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+            return false;
+        }
+    }
+
+    private boolean switchTab(boolean change) {
+        try {
+            if (change) {
+                if (host.getCurrentTab() == 1) {
+                    host.setCurrentTab(0);
+                } else {
+                    host.setCurrentTab(1);
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            ExceptionHandler.handleException(e, act);
+            return false;
+        }
+    }
 }

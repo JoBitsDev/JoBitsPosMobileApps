@@ -43,6 +43,60 @@
                     android:background="@color/especifico_app_primario">
 
                     <LinearLayout
+                        android:id="@+id/menu"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/searchText"
+                            android:layout_width="match_parent"
+                            android:layout_height="78dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="Buscar..."
+                            android:inputType="textNoSuggestions|textFilter"
+                            android:textColor="@color/texto_primario"
+                            android:textSize="@dimen/precio" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <ListView
+                                android:id="@+id/menuPrincipalListView"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="4dp"
+                                android:layout_weight="2"
+                                android:choiceMode="singleChoice"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:scrollingCache="true"
+                                android:smoothScrollbar="true" />
+
+                            <ListView
+                                android:id="@+id/menuListView"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="10dp"
+                                android:layout_weight="4"
+                                android:choiceMode="singleChoice"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:scrollingCache="true"
+                                android:smoothScrollbar="true" />
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:id="@+id/ordenModel"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -253,60 +307,6 @@
 
 
                         </RelativeLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/menu"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <EditText
-                            android:id="@+id/searchText"
-                            android:layout_width="match_parent"
-                            android:layout_height="78dp"
-                            android:layout_alignParentTop="true"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentBottom="true"
-                            android:layout_weight="1"
-                            android:ems="10"
-                            android:hint="Buscar..."
-                            android:inputType="textNoSuggestions|textFilter"
-                            android:textColor="@color/texto_primario"
-                            android:textSize="@dimen/precio" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="horizontal">
-
-                            <ListView
-                                android:id="@+id/menuPrincipalListView"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginRight="4dp"
-                                android:layout_weight="1"
-                                android:choiceMode="singleChoice"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:scrollingCache="true"
-                                android:smoothScrollbar="true" />
-
-                            <ListView
-                                android:id="@+id/menuListView"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginLeft="10dp"
-                                android:layout_weight="4"
-                                android:choiceMode="singleChoice"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:scrollingCache="true"
-                                android:smoothScrollbar="true" />
-                        </LinearLayout>
-
 
                     </LinearLayout>
 

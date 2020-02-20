@@ -1,8 +1,5 @@
 <resources>
 
-
-    <string name="access_level">2</string>
-
     <string name="hello_world">Hello world!</string>
     <string name="action_turn_off_offline">Settings</string>
     <string name="title_activity_login">Iniciar Sesión</string>
@@ -17,6 +14,7 @@
     <string name="no_network">El dispositivo no está conectado al servidor</string>
     <string name="conexion_succesfull">La conexión con el servidor fue exitosa</string>
 
+    <string name="servidorNoCompatible">Servidor no compatible con la aplicación. Actualize la App.\n</string>
 
     <string name="cancelar">Cancelar</string>
     <string name="noConnectionError">No hay conexión con el servidor.

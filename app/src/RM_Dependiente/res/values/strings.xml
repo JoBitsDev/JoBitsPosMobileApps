@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">POS Dpte</string>
 
-    <string name="access_level">1</string>
-
     <string name="hello_world">Hello world!</string>
     <string name="action_turn_off_offline">Desactivar modo offline</string>
     <string name="action_turn_on_offline">Activar modo offline</string>
@@ -61,6 +59,5 @@
     <string name="cederACamarero">Ceder a camarero</string>
     <string name="seleccioneElUsuarioACeder">Seleccione el usuario a ceder la mesa</string>
     <string name="seleccionararea">Seleccionar Área</string>
-    <string name="version">Versión x.x.x</string>
 
 </resources>
