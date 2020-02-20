@@ -14,12 +14,8 @@ public class CheckConnectionWCS extends SimpleWebConnectionService {
      */
     private final String URLCONN = "http://" + EnvironmentVariables.getIP() + ":" + EnvironmentVariables.getPORT() + "/jobits";
 
-    public Boolean checkConnection() {
-        try {
-            connect(URLCONN, null, null, HTTPMethod.GET);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+    public Boolean checkConnection() throws Exception {
+        connect(URLCONN, null, null, HTTPMethod.GET);
+        return true;
     }
 }
