@@ -178,7 +178,7 @@ public class MainActivity extends BaseActivity {//  |||||
     public boolean onCreateOptionsMenu(Menu menu) {
         try {
             // Inflate the menuProductosListView; this adds items to the action bar if it is present.
-            getMenuInflater().inflate(R.menu.menu_main, menu);
+           // getMenuInflater().inflate(R.menu.menu_main, menu);
             return true;
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
