@@ -23,7 +23,7 @@ public class UbicacionModel implements Serializable {
     }
 
     public static UbicacionModel[] getDefaultArrayUbicaciones() {
-        return new UbicacionModel[]{new UbicacionModel(NOMBRE_XD, IP_XD, PUERTO_XD), new UbicacionModel(NOMBRE_XD, IP_XD, PUERTO_XD), new UbicacionModel(NOMBRE_XD, IP_XD, PUERTO_XD), new UbicacionModel(NOMBRE_XD, IP_XD, PUERTO_XD)};
+        return new UbicacionModel[]{new UbicacionModel(NOMBRE_XD, IP_XD, PUERTO_XD), new UbicacionModel(NOMBRE_XD, "192.168.172.2", PUERTO_XD), new UbicacionModel(NOMBRE_XD, "192.168.172.3", PUERTO_XD), new UbicacionModel(NOMBRE_XD, "192.168.172.4", PUERTO_XD)};
     }
 
     public String getNombre() {
