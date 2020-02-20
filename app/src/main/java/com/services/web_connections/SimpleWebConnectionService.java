@@ -114,14 +114,10 @@ public class SimpleWebConnectionService {
         }
     }
 
-    public String validateInfo(String urlToExcecute, String resp) {
-        try {
-            String sha = Utils.getSHA256(resp);
-            String pathValidate = "http://" + ip + ":" + port + "/" + EnvironmentVariables.STARTPATH;
-            return connectToServer(pathValidate + "configuracion/CHECK-SHA?url=" + urlToExcecute + "&sha=" + sha, null, TOKEN, HTTPMethod.GET);
-        } catch (Exception e) {
-            return "";
-        }
+    public String validateInfo(String urlToExcecute, String resp) throws Exception {
+        String sha = Utils.getSHA256(resp);
+        String pathValidate = "http://" + ip + ":" + port + "/" + EnvironmentVariables.STARTPATH;
+        return connectToServer(pathValidate + "configuracion/CHECK-SHA?url=" + urlToExcecute + "&sha=" + sha, null, TOKEN, HTTPMethod.GET);
     }
 
     public CacheModel checkCache(final String urlToExcecute) {
