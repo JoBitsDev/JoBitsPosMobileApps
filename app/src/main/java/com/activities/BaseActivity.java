@@ -2,7 +2,12 @@ package com.activities;
 
 import android.app.*;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+
+import com.utils.EnvironmentVariables;
+import com.utils.exception.ExceptionHandler;
 
 /**
  * Capa: Activities
@@ -83,6 +88,20 @@ public abstract class BaseActivity extends Activity {
         new AlertDialog.Builder(this).setMessage(message).create().show();
     }
 
+    public void manageNoConnection(String message) {//popup a mostrar
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message);
+        builder.setTitle(ExceptionHandler.POPUP_TITLE);
+
+        builder.setNeutralButton("Modo OF-LINE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {//comportamiento al clickear el boton
+                EnvironmentVariables.ONLINE = false;
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
 
     /*public void notificarError(Exception e) { Noficacion de error vieja, entes de procesarlo _todo con el ExceptionHandler.
         String noConnectionError = findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.noConnectionError).toString();
