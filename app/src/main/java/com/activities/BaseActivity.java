@@ -96,11 +96,21 @@ public abstract class BaseActivity extends Activity {
         builder.setNeutralButton("Modo OF-LINE", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {//comportamiento al clickear el boton
-                EnvironmentVariables.ONLINE = false;
+                setUpOffline();
                 dialog.dismiss();
             }
         });
         builder.create().show();
+    }
+
+    public void setUpOffline() {
+        EnvironmentVariables.ONLINE = false;
+        
+    }
+
+    public void setUpOnline() {
+        EnvironmentVariables.ONLINE = true;
+
     }
 
     /*public void notificarError(Exception e) { Noficacion de error vieja, entes de procesarlo _todo con el ExceptionHandler.
