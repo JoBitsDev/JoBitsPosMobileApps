@@ -1,10 +1,25 @@
 package com.utils.loading;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.activities.BaseActivity;
+import com.activities.PantallaPrincipalActivity;
+import com.activities.R;
+import com.controllers.LoginController;
+import com.services.models.UbicacionModel;
+import com.utils.EnvironmentVariables;
 import com.utils.exception.ExceptionHandler;
+import com.utils.exception.UnauthorizedException;
 /*
   new LoadingHandler<Boolean>(this, new LoadingProcess<Boolean>() {
        @Override
@@ -138,14 +153,74 @@ public class LoadingHandler<T> extends AsyncTask<Void, Void, T> {
     protected void onPostExecute(T t) {
         this.hideProgressDialog();
         try {
-            if (exc == null) {
+            if (exc == null) {//no hubo excepcion, sigo
                 process.post(get());
+            } else if (exc instanceof UnauthorizedException) {//hace falta autorizacion
+                autorizar();
             } else {
                 throw exc;
             }
         } catch (Exception e) {
             ExceptionHandler.handleException(e, activity);
         }
+    }
+
+    private void autorizar() {
+        final LoginController cont = new LoginController();
+        final String oldTOKEN = cont.getToken();
+
+        final Dialog d = new Dialog(activity);
+        d.setContentView(R.layout.login_dialog);
+
+        final EditText user = (EditText) d.findViewById(R.id.user);
+        final EditText pass = (EditText) d.findViewById(R.id.pass);
+        final Button button = (Button) d.findViewById(R.id.ok);
+
+        d.setTitle("Editar Ubicación");
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                d.dismiss();
+                try {
+                    final String usuario = user.getText().toString();
+                    final String contrasenna = pass.getText().toString();
+
+                    try {
+                        new LoadingHandler<Boolean>(activity, new LoadingProcess<Boolean>() {
+                            @Override
+                            public Boolean process() throws Exception {
+                                return cont.loginAction(usuario, contrasenna);
+                            }
+
+                            @Override
+                            public void post(Boolean value) {
+                                if (value) {
+                                    new LoadingHandler<T>(activity, new LoadingProcess<T>() {
+                                        @Override
+                                        public T process() throws Exception {
+                                            return (T) process.process();
+                                        }
+
+                                        @Override
+                                        public void post(T value) {
+                                            onPostExecute(value);
+                                            cont.setToken(oldTOKEN);
+                                        }
+                                    });
+                                }
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        cont.setToken(oldTOKEN);
+                    }
+
+                } catch (Exception e) {
+                    ExceptionHandler.handleException(e, activity);
+                }
+            }
+        });
+        d.show();
     }
 
 }
