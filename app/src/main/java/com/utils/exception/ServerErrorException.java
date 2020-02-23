@@ -12,10 +12,18 @@ import java.util.concurrent.ExecutionException;
  * @extends ExecutionException.
  */
 public class ServerErrorException extends ExecutionException {
-    public ServerErrorException(String message) {
+    private final int code;
+
+    public ServerErrorException(String message, int code) {
         super(message);
+        this.code = code;
     }
 
     public ServerErrorException() {
+        code = 0;
+    }
+
+    public int getCode() {
+        return code;
     }
 }

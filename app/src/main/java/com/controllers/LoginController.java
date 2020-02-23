@@ -11,6 +11,12 @@ import com.services.web_connections.LoginWCS;
  */
 public class LoginController extends BaseController {
 
+    private final LoginWCS loginWCS;
+
+    public LoginController() {
+        loginWCS = new LoginWCS();
+    }
+
     /**
      * Accion de logueo, trata de loguear este nombre de usuario con este contrasenna en el sistema.
      *
@@ -21,8 +27,14 @@ public class LoginController extends BaseController {
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public boolean loginAction(String username, String password) throws Exception {
-        LoginWCS login = new LoginWCS(username, password);
-        login.authenticate();
-        return true;
+        return loginWCS.authenticate(username,password);
+    }
+
+    public String getToken() {
+        return loginWCS.getToken();
+    }
+
+    public void setToken(String token) {
+        loginWCS.setToken(token);
     }
 }
