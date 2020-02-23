@@ -5,9 +5,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/detallesAutorizacion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Descripcion"
+        android:gravity="center"/>
 
     <EditText
-        android:id="@+id/nombre"
+        android:id="@+id/nombreUsuarioAutorizacion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -16,7 +22,7 @@
 
 
     <EditText
-        android:id="@+id/pass"
+        android:id="@+id/passAutorizacion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="4"
@@ -24,7 +30,7 @@
         android:inputType="numberPassword" />
 
     <Button
-        android:id="@+id/ok"
+        android:id="@+id/okAutorizacion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Aceptar" />
