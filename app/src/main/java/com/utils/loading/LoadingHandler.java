@@ -200,7 +200,14 @@ public class LoadingHandler<T> extends AsyncTask<Void, Void, T> {
                                 new LoadingHandler<T>(activity, new LoadingProcess<T>() {
                                     @Override
                                     public T process() throws Exception {
-                                        return (T) process.process();
+                                        T val = null;
+                                        try {
+                                            val = (T) process.process();
+                                        } catch (Exception e) {
+                                            d.dismiss();
+                                            throw e;
+                                        }
+                                        return val;
                                     }
 
                                     @Override
