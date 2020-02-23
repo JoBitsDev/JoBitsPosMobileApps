@@ -45,7 +45,7 @@ public class LoginWCS extends SimpleWebConnectionService {
         return TOKEN;
     }
 
-    public String setToken(String token) {
+    public void setToken(String token) {
         TOKEN = token;
     }
 }

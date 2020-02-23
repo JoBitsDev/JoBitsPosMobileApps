@@ -34,7 +34,7 @@ public class LoginController extends BaseController {
         return loginWCS.getToken();
     }
 
-    public String setToken(String token) {
+    public void setToken(String token) {
         loginWCS.setToken(token);
     }
 }
