@@ -1,25 +1,21 @@
 package com.utils.loading;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.activities.BaseActivity;
-import com.activities.PantallaPrincipalActivity;
 import com.activities.R;
 import com.controllers.LoginController;
-import com.services.models.UbicacionModel;
-import com.utils.EnvironmentVariables;
 import com.utils.exception.ExceptionHandler;
-import com.utils.exception.UnauthorizedException;
+import com.utils.exception.ServerErrorException;
+
+import java.net.HttpURLConnection;
 /*
   new LoadingHandler<Boolean>(this, new LoadingProcess<Boolean>() {
        @Override
@@ -155,8 +151,8 @@ public class LoadingHandler<T> extends AsyncTask<Void, Void, T> {
         try {
             if (exc == null) {//no hubo excepcion, sigo
                 process.post(get());
-            } else if (exc instanceof UnauthorizedException) {//hace falta autorizacion
-                autorizar();
+            } else if (exc instanceof ServerErrorException && ((ServerErrorException) exc).getCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {//hace falta autorizacion
+                autorizar((ServerErrorException) exc);
             } else {
                 throw exc;
             }
@@ -165,55 +161,60 @@ public class LoadingHandler<T> extends AsyncTask<Void, Void, T> {
         }
     }
 
-    private void autorizar() {
+    private void autorizar(ServerErrorException exc) {
         final LoginController cont = new LoginController();
         final String oldTOKEN = cont.getToken();
 
         final Dialog d = new Dialog(activity);
         d.setContentView(R.layout.login_dialog);
 
-        final EditText user = (EditText) d.findViewById(R.id.user);
-        final EditText pass = (EditText) d.findViewById(R.id.pass);
-        final Button button = (Button) d.findViewById(R.id.ok);
+        final TextView det = (TextView) d.findViewById(R.id.detallesAutorizacion);
+        final EditText user = (EditText) d.findViewById(R.id.nombreUsuarioAutorizacion);
+        final EditText pass = (EditText) d.findViewById(R.id.passAutorizacion);
+        final Button button = (Button) d.findViewById(R.id.okAutorizacion);
 
-        d.setTitle("Editar Ubicación");
+        d.setTitle("Autorizar usuario");
+        det.setText(exc.getMessage());
+        d.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                cont.setToken(oldTOKEN);
+            }
+        });
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                d.dismiss();
                 try {
                     final String usuario = user.getText().toString();
                     final String contrasenna = pass.getText().toString();
 
-                    try {
-                        new LoadingHandler<Boolean>(activity, new LoadingProcess<Boolean>() {
-                            @Override
-                            public Boolean process() throws Exception {
-                                return cont.loginAction(usuario, contrasenna);
+                    new LoadingHandler<Boolean>(activity, new LoadingProcess<Boolean>() {
+                        @Override
+                        public Boolean process() throws Exception {
+                            return cont.loginAction(usuario, contrasenna);
+                        }
+
+                        @Override
+                        public void post(Boolean value) {
+                            if (value) {
+                                new LoadingHandler<T>(activity, new LoadingProcess<T>() {
+                                    @Override
+                                    public T process() throws Exception {
+                                        return (T) process.process();
+                                    }
+
+                                    @Override
+                                    public void post(T value) {
+                                        process.post(value);
+                                        d.dismiss();
+                                    }
+                                });
+                            } else {
+                                d.dismiss();
                             }
+                        }
+                    });
 
-                            @Override
-                            public void post(Boolean value) {
-                                if (value) {
-                                    new LoadingHandler<T>(activity, new LoadingProcess<T>() {
-                                        @Override
-                                        public T process() throws Exception {
-                                            return (T) process.process();
-                                        }
-
-                                        @Override
-                                        public void post(T value) {
-                                            onPostExecute(value);
-                                            cont.setToken(oldTOKEN);
-                                        }
-                                    });
-                                }
-                            }
-                        });
-
-                    } catch (Exception e) {
-                        cont.setToken(oldTOKEN);
-                    }
 
                 } catch (Exception e) {
                     ExceptionHandler.handleException(e, activity);
