@@ -23,8 +23,8 @@ android {
         }
         RM_Almacen {
             applicationId 'jobits.pos.almacen'
-            versionCode 10
-            versionName '2.3.0'
+            versionCode 11
+            versionName '3.0.0'
             buildConfigField "Integer", "MAYOR_SERVER_VERSION", '4'
             buildConfigField "Integer", "MINOR_SERVER_VERSION", '0'
         }
