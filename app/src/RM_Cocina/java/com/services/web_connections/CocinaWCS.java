@@ -1,5 +1,6 @@
 package com.services.web_connections;
 
+
 public class CocinaWCS extends SimpleWebConnectionService {
 
     private final String P = "cocina/",
@@ -15,5 +16,4 @@ public class CocinaWCS extends SimpleWebConnectionService {
         String resp = connect(URL, null, super.TOKEN, HTTPMethod.GET);
         return om.readValue(resp, om.getTypeFactory().constructArrayType(String.class));
     }
-
 }

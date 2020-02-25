@@ -2,7 +2,7 @@ package com.controllers;
 
 import com.services.models.ConfigModel;
 import com.services.models.UbicacionModel;
-import com.services.web_connections.CartaWCS;
+import com.services.web_connections.GeneralWCS;
 import com.utils.EnvironmentVariables;
 
 import java.io.FileOutputStream;
@@ -29,11 +29,12 @@ public class MainController extends BaseController {
     }
 
     public void readInfo() throws Exception {
-        HashMap<String, Object> hm = new CartaWCS().readInfo();
+        HashMap<String, Object> hm = new GeneralWCS().readInfo();
         EnvironmentVariables.NOMBRE_REST = (String) hm.get("nombre");
         EnvironmentVariables.MONEDA_PRINCIPAL = (String) hm.get("monedaPrincipal");
         EnvironmentVariables.MONEDA_SECUNDARIA = (String) hm.get("monedaSecundaria");
-        EnvironmentVariables.CAMBIO = (Integer) hm.get("cambio");
+        EnvironmentVariables.MAYOR = (Integer) hm.get("majorVersion");
+        EnvironmentVariables.MINOR = (Integer) hm.get("minorVersion");
     }
 
     public void setSelected(int wich) {

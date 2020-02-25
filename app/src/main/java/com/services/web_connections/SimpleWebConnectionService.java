@@ -97,8 +97,8 @@ public class SimpleWebConnectionService {
             os.flush();
             os.close();
         }
-
-        if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {//si esta ok lee el JSON
+        int code = con.getResponseCode();
+        if (code == HttpURLConnection.HTTP_OK) {//si esta ok lee el JSON
             BufferedReader input = new BufferedReader(
                     new InputStreamReader(con.getInputStream()),
                     8192);
@@ -119,7 +119,7 @@ public class SimpleWebConnectionService {
             input.close();
             con.disconnect();
             //os.close();
-            throw new ServerErrorException(resp);
+            throw new ServerErrorException(resp, code);
         }
     }
 

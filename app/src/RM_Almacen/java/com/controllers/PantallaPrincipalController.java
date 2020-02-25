@@ -157,15 +157,15 @@ public class PantallaPrincipalController extends BaseController {
     }
 
     public IPVsAdapter getIPVAdapter(Context c, int ipvRegisro) throws Exception {
-        return new IPVsAdapter(c, ipvRegisro, almacenWCS.getIPVRegistro(""));
+        return new IPVsAdapter(c, ipvRegisro, almacenWCS.getRegistroExistencias(""));
     }
 
     public IPVsAdapter getIPVAdapter(Context c, int ipvRegisro, String codCocina) throws Exception {
-        return new IPVsAdapter(c, ipvRegisro, almacenWCS.getIPVRegistro(codCocina));
+        return new IPVsAdapter(c, ipvRegisro, almacenWCS.getRegistroExistencias(codCocina));
     }
 
     public List<IpvRegistroModel> getIPVRegistro(String codCocina) throws Exception {
-        return almacenWCS.getIPVRegistro(codCocina);
+        return almacenWCS.getRegistroExistencias(codCocina);
     }
 
     public OperacionesAdapter getOperacionesAdapter(Context c, int listaOperaciones) throws Exception {

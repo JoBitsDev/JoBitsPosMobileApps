@@ -16,23 +16,31 @@ android {
     productFlavors {
         RM_Dependiente {
             applicationId 'jobits.pos.dpte'
-            versionCode 22
-            versionName '2.2.0'
+            versionCode 23
+            versionName '3.0.0'
+            buildConfigField "Integer", "MAYOR_SERVER_VERSION", '4'
+            buildConfigField "Integer", "MINOR_SERVER_VERSION", '0'
         }
         RM_Almacen {
             applicationId 'jobits.pos.almacen'
             versionCode 10
             versionName '2.3.0'
+            buildConfigField "Integer", "MAYOR_SERVER_VERSION", '4'
+            buildConfigField "Integer", "MINOR_SERVER_VERSION", '0'
         }
         RM_Cocina {
             applicationId 'jobits.pos.cocina'
             versionCode 7
             versionName '2.0.0'
+            buildConfigField "Integer", "MAYOR_SERVER_VERSION", '4'
+            buildConfigField "Integer", "MINOR_SERVER_VERSION", '0'
         }
         JoBits_POS_Manager {
             applicationId 'jobits.pos.manager'
             versionCode 1
             versionName '1.0.0'
+            buildConfigField "Integer", "MAYOR_SERVER_VERSION", '4'
+            buildConfigField "Integer", "MINOR_SERVER_VERSION", '0'
         }
     }
     packagingOptions {
