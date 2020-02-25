@@ -2,7 +2,6 @@ package com.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.InputType;
@@ -128,7 +127,7 @@ public class CentroElaboracionActivity extends BaseActivity {
                 return onListViewElabAddLongClick(view, position);
             }
         });
-        
+
         buttonConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,8 +156,7 @@ public class CentroElaboracionActivity extends BaseActivity {
             @Override
             public void post(Void answer) {
                 listViewSelecIngrediente.setAdapter(selecElaboracionAdapter);
-                Intent intent = new Intent(CentroElaboracionActivity.this, PantallaPrincipalActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
     }
