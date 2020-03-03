@@ -115,7 +115,10 @@ public class SimpleWebConnectionService {
             BufferedReader input = new BufferedReader(
                     new InputStreamReader(con.getErrorStream()),
                     8192);
-            resp = input.readLine();
+            String linea;
+            while ((linea = input.readLine()) != null) {
+                resp += linea;
+            }
             input.close();
             con.disconnect();
             //os.close();
