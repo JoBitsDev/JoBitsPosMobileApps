@@ -3,6 +3,7 @@ package com.utils.loading;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.Button;
@@ -151,7 +152,9 @@ public class LoadingHandler<T> extends AsyncTask<Void, Void, T> {
         try {
             if (exc == null) {//no hubo excepcion, sigo
                 process.post(get());
-            } else if (exc instanceof ServerErrorException && ((ServerErrorException) exc).getCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {//hace falta autorizacion
+            } else if (exc instanceof ServerErrorException
+                    && (((ServerErrorException) exc).getCode() == HttpURLConnection.HTTP_FORBIDDEN
+                    || ((ServerErrorException) exc).getCode() == HttpURLConnection.HTTP_UNAUTHORIZED)) {//hace falta autorizacion
                 autorizar((ServerErrorException) exc);
             } else {
                 throw exc;
@@ -161,7 +164,7 @@ public class LoadingHandler<T> extends AsyncTask<Void, Void, T> {
         }
     }
 
-    private void autorizar(ServerErrorException exc) {
+    private void autorizar(final ServerErrorException exc) {
         final LoginController cont = new LoginController();
         final String oldTOKEN = cont.getToken();
 
@@ -173,12 +176,15 @@ public class LoadingHandler<T> extends AsyncTask<Void, Void, T> {
         final EditText pass = (EditText) d.findViewById(R.id.passAutorizacion);
         final Button button = (Button) d.findViewById(R.id.okAutorizacion);
 
-        d.setTitle("Autorizar usuario");
+        d.setTitle(exc.getCode() == HttpURLConnection.HTTP_FORBIDDEN ? "Autorizar acción de usuario" : "La sesión expiró. Autenticarse de nuevo");
+        det.setTextColor(exc.getCode() == HttpURLConnection.HTTP_FORBIDDEN ? Color.RED : Color.BLUE);
         det.setText(exc.getMessage());
         d.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                cont.setToken(oldTOKEN);
+                if (exc.getCode() == HttpURLConnection.HTTP_FORBIDDEN) {
+                    cont.setToken(oldTOKEN);
+                }
             }
         });
         button.setOnClickListener(new View.OnClickListener() {
