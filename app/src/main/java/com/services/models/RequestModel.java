@@ -7,12 +7,29 @@ public class RequestModel {
     private String body;
     private String token;
     private HTTPMethod method;
+    private RequestType type = RequestType.NORMAL;
 
     public RequestModel(String urlToExcecute, String body, String token, HTTPMethod method) {
         this.urlToExcecute = urlToExcecute;
         this.body = body;
         this.token = token;
         this.method = method;
+    }
+
+    public RequestModel(String urlToExcecute, String body, String token, HTTPMethod method, RequestType type) {
+        this.urlToExcecute = urlToExcecute;
+        this.body = body;
+        this.token = token;
+        this.method = method;
+        this.type = type;
+    }
+
+    public RequestType getType() {
+        return type;
+    }
+
+    public void setType(RequestType type) {
+        this.type = type;
     }
 
     public String getUrlToExcecute() {

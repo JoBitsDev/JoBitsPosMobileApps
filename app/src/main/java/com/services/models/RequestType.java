@@ -1,5 +1,5 @@
 package com.services.models;
 
 public enum RequestType {
-    CREATE_ORDEN, LOGIN;
+    CREATE_ORDEN, LOGIN, NORMAL;
 }
