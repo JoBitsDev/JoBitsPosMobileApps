@@ -7,10 +7,14 @@ import com.activities.BaseActivity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.services.models.CacheModel;
 import com.services.models.RequestModel;
+import com.services.models.RequestType;
 import com.utils.Utils;
 import com.utils.exception.*;
 
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import com.utils.EnvironmentVariables;
 
@@ -44,6 +48,8 @@ public class SimpleWebConnectionService {
     public static final int MAX_RESPONSE_TIME = 3 * 1000;
 
     public static final String DIR_CACHE = EnvironmentVariables.PERSISTENCE_PATH + "/";
+
+    protected ArrayList<RequestModel> cola = new ArrayList<RequestModel>();
 
     /**
      * Partes de la URL de las consultas.
@@ -226,6 +232,49 @@ public class SimpleWebConnectionService {
             con.disconnect();
             //os.close();
             throw new ServerErrorException(resp, code);
+        }
+    }
+
+    public ArrayList<RequestModel> getCola() {
+        return cola;
+    }
+
+    public void addRequest(RequestModel req) {
+        cola.add(req);
+    }
+
+    public void executeCola() {
+        try {
+            HashMap<String, String> llaves = new HashMap<String, String>();
+            for (Iterator<RequestModel> iterator = cola.iterator(); iterator.hasNext(); ) {
+                RequestModel req = iterator.next();
+                updateRequest(llaves, req);
+                if (req.getType() == RequestType.LOGIN) {
+                    String token = connect(req);
+                    llaves.put("TOKEN", token);
+                } else if (req.getType() == RequestType.CREATE_ORDEN) {
+                    String resp = connect(req);
+                    llaves.put("###", resp);
+                } else {
+                    connect(req);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateRequest(HashMap<String, String> llaves, RequestModel req) {
+        for (String key : llaves.keySet()) {
+            if (req.getBody() != null && req.getBody().contains(key)) {
+                req.setBody(req.getBody().replace(key, llaves.get(key)));
+            }
+            if (req.getToken() != null && req.getToken().contains(key)) {
+                req.setToken(req.getToken().replace(key, llaves.get(key)));
+            }
+            if (req.getUrlToExcecute() != null && req.getUrlToExcecute().contains(key)) {
+                req.setUrlToExcecute(req.getUrlToExcecute().replace(key, llaves.get(key)));
+            }
         }
     }
 }
