@@ -104,7 +104,9 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                ((IPVsAdapter) listViewIPV.getAdapter()).getFilter().filter(s.toString());
+                if (listViewIPV != null && listViewIPV.getAdapter() != null) {
+                    ((IPVsAdapter) listViewIPV.getAdapter()).getFilter().filter(s.toString());
+                }
             }
 
             @Override
@@ -213,6 +215,9 @@ public class PantallaPrincipalActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        initVarialbes();
+        addListeners();
+        //onCambiarAreaButtonClick();
         configurarTabla();
     }
 
