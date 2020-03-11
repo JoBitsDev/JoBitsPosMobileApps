@@ -18,7 +18,7 @@
             android:paddingRight="20dp"
             android:text="Cantidad"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textSize="@dimen/textSizeMedium"
+            android:textSize="@dimen/textSizeLarge"
             android:textStyle="bold" />
 
         <TextView
