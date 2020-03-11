@@ -6,6 +6,7 @@ import java.net.URL;
 import com.activities.BaseActivity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.services.models.CacheModel;
+import com.services.models.RequestModel;
 import com.utils.Utils;
 import com.utils.exception.*;
 
@@ -76,33 +77,30 @@ public class SimpleWebConnectionService {
      * Metodo a usar para la coneccion al servicio.
      * Manda por POST la peticion a la url con el body especifico y el token de segurdad en el header
      *
-     * @param urlToExcecute URL a ejecutar la peticion
-     * @param body          Cuerpo del mensaje, JSON con la info.
-     * @param token         Token de seguridad.
      * @return String con el formato JSON.
      * @throws Exception Si algo sale mal.
      */
-    public String connect(final String urlToExcecute, final String body, final String token, final HTTPMethod method) throws Exception {
-        CacheModel cache = checkCache(urlToExcecute);
+    public String connect(final RequestModel req) throws Exception {
+        CacheModel cache = checkCache(req.getUrlToExcecute());
         String resp = "";
         if (EnvironmentVariables.ONLINE) {//esta online
-            if (method == HTTPMethod.GET) {
+            if (req.getMethod() == HTTPMethod.GET) {
                 if (cache == null) {
-                    resp = connectToServer(urlToExcecute, body, token, method);//hay coneccion y no hay cache
-                    saveResponse(urlToExcecute, resp);
+                    resp = connectToServer(req.getUrlToExcecute(), req.getBody(), req.getToken(), req.getMethod());//hay coneccion y no hay cache
+                    saveResponse(req.getUrlToExcecute(), resp);
                     return resp;
                 } else {//tengo cache
                     resp = cache.getRespuesta();
                     //verifico con el server
-                    String check = validateInfo(urlToExcecute, resp);
+                    String check = validateInfo(req.getUrlToExcecute(), resp);
                     if (!check.isEmpty()) {
                         resp = check;
-                        saveResponse(urlToExcecute, resp);
+                        saveResponse(req.getUrlToExcecute(), resp);
                     }
                     return resp;
                 }
             } else {
-                return connectToServer(urlToExcecute, body, token, method);
+                return connectToServer(req.getUrlToExcecute(), req.getBody(), req.getToken(), req.getMethod());
             }
         } else {//no hay coneccion
             if (cache == null) {
