@@ -21,13 +21,9 @@ public class LoginWCS extends SimpleWebConnectionService {
 
     /**
      * Constructor del servicio, recive el usuario y la contrasenna de los que se van a logear.
-     *
-     * @param user usuario a autenticar.
-     * @param pass contrasenna del usuario.
      */
-    public LoginWCS(String user, String pass) {
+    public LoginWCS() {
         super();
-        credentials = new CredentialsModel(user, pass);
         this.login_URL = path + "login/AUTH";
     }
 
@@ -38,10 +34,18 @@ public class LoginWCS extends SimpleWebConnectionService {
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public boolean authenticate() throws Exception {
+    public boolean authenticate(String user, String pass) throws Exception {
+        credentials = new CredentialsModel(user, pass);
         String body = new ObjectMapper().writeValueAsString(credentials);
         TOKEN = connect(login_URL, body, null, HTTPMethod.POST);
         return true;
     }
 
+    public String getToken() {
+        return TOKEN;
+    }
+
+    public void setToken(String token) {
+        TOKEN = token;
+    }
 }

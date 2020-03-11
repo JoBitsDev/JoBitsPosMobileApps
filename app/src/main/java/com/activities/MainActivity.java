@@ -78,6 +78,7 @@ public class MainActivity extends BaseActivity {//  |||||
 
             updateConnectionText();
             loadConfig();
+            setUpInfo();
             setUpLanguaje();
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
@@ -90,6 +91,21 @@ public class MainActivity extends BaseActivity {//  |||||
         android.content.res.Configuration conf = res.getConfiguration();
         conf.setLocale(new Locale("es"));
         res.updateConfiguration(conf, dm);
+    }
+
+    private void setUpInfo() {
+        new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+            @Override
+            public Void process() throws Exception {
+                controller.readInfo();
+                return null;
+            }
+
+            @Override
+            public void post(Void value) {
+
+            }
+        });
     }
 
     private void loadConfig() {
