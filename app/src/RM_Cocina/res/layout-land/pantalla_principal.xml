@@ -28,13 +28,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginEnd="100dp"
+                android:layout_marginEnd="50dp"
                 android:layout_marginBottom="5dp"
                 android:layout_toStartOf="@+id/textViewNombreRest"
                 android:text="@string/user"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/texto_primario"
-                android:textSize="@dimen/textSizeNormal" />
+                android:textSize="@dimen/textSizeMedium" />
 
             <ImageButton
                 android:id="@+id/imageButton"
@@ -51,12 +51,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginStart="122dp"
-                android:layout_marginRight="94dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="100dp"
+                android:layout_marginRight="80dp"
+                android:layout_marginBottom="5dp"
                 android:layout_toEndOf="@+id/textViewNombreRest"
                 android:text="TextView"
                 android:textColor="@color/texto_primario"
-                android:textSize="@dimen/textSizeNormal" />
+                android:textSize="@dimen/textSizeMedium" />
 
             <ImageButton
                 android:id="@+id/buttonRefresh"
@@ -117,7 +119,7 @@
                                 android:hint="@string/formato_fecha"
                                 android:textColor="@color/texto_primario"
                                 android:textColorHint="@color/texto_primario"
-                                android:textSize="@dimen/textSizeMedium" />
+                                android:textSize="@dimen/textSizeLarge" />
 
                             <Switch
                                 android:id="@+id/switchExisIPV"
@@ -172,7 +174,7 @@
                                 android:gravity="center"
                                 android:text="Inicio"
                                 android:textColor="@color/texto_primario"
-                                android:textSize="@dimen/textSizeNormal" />
+                                android:textSize="@dimen/textSizeMedium" />
 
                             <View
                                 android:id="@+id/divider"
@@ -189,7 +191,7 @@
                                 android:gravity="center"
                                 android:text="Entrada"
                                 android:textColor="@color/texto_primario"
-                                android:textSize="@dimen/textSizeNormal" />
+                                android:textSize="@dimen/textSizeMedium" />
 
                             <View
                                 android:id="@+id/divider2"
@@ -205,7 +207,7 @@
                                 android:layout_weight="30"
                                 android:text="Disponibles"
                                 android:textColor="@color/texto_primario"
-                                android:textSize="@dimen/textSizeNormal" />
+                                android:textSize="@dimen/textSizeMedium" />
 
                             <View
                                 android:id="@+id/divider3"
@@ -222,7 +224,7 @@
                                 android:gravity="center"
                                 android:text="Cosumidos"
                                 android:textColor="@color/texto_primario"
-                                android:textSize="@dimen/textSizeNormal" />
+                                android:textSize="@dimen/textSizeMedium" />
 
                             <View
                                 android:id="@+id/divider4"
@@ -239,7 +241,7 @@
                                 android:gravity="center"
                                 android:text="Final"
                                 android:textColor="@color/texto_primario"
-                                android:textSize="@dimen/textSizeNormal" />
+                                android:textSize="@dimen/textSizeMedium" />
 
                         </LinearLayout>
 
@@ -311,7 +313,7 @@
             android:clickable="true"
             android:text="@string/label_cambiar_area"
             android:textColor="@color/especifico_app_primario"
-            android:textSize="@dimen/textSizeNormal" />
+            android:textSize="@dimen/textSizeLarge" />
 
     </LinearLayout>
     </LinearLayout>
