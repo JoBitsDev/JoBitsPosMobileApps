@@ -50,6 +50,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         setContentView(R.layout.pantalla_principal);
 
         initVarialbes();
+        initTab();
         addListeners();
         onCambiarAreaButtonClick();
         configurarTabla();
@@ -88,7 +89,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 cocinaTrabajo = "-";
             }
             labelCocinaName.setText(cocinaTrabajo);
-            initTab();
+
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
