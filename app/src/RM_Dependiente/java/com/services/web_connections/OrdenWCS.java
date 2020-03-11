@@ -1,6 +1,7 @@
 package com.services.web_connections;
 
 import com.services.models.OrdenModel;
+import com.utils.EnvironmentVariables;
 
 import java.io.IOException;
 import java.util.*;
@@ -49,14 +50,23 @@ public class OrdenWCS extends SimpleWebConnectionService {
         this.deLaCasa = false;
     }
 
-    public String fetchCodOrden() throws Exception {
+    /*public String fetchCodOrden() throws Exception {
         String resp = connect(path + FETCH_NO_ORDEN, null, super.TOKEN, HTTPMethod.GET);
         return this.codOrden = om.readValue(resp, String.class);
-    }
+    }*/
 
     public boolean initOrden() throws Exception {
-        fetchCodOrden();
-        connect(path + CREATE, this.codMesa, super.TOKEN, HTTPMethod.POST);
+        //fetchCodOrden();
+        if (EnvironmentVariables.ONLINE) {
+            connect(path + CREATE, this.codMesa, super.TOKEN, HTTPMethod.POST);
+        } else {
+            initOrdenOffline();
+        }
+        return true;
+    }
+
+    public boolean initOrdenOffline() throws Exception {
+
         return true;
     }
 
