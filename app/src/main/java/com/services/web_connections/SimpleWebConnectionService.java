@@ -47,7 +47,6 @@ public class SimpleWebConnectionService {
             port,
             path;
 
-    private String resp;
     /**
      * Coneccion.
      */
@@ -80,6 +79,7 @@ public class SimpleWebConnectionService {
      */
     public String connect(final String urlToExcecute, final String body, final String token, HTTPMethod method) throws Exception {
         //Set up the connection
+        String resp = "";
         URL url = new URL(urlToExcecute);
         con = (HttpURLConnection) url.openConnection();
         con.setDoInput(true);
@@ -102,7 +102,6 @@ public class SimpleWebConnectionService {
             BufferedReader input = new BufferedReader(
                     new InputStreamReader(con.getInputStream()),
                     8192);
-            resp = "";
             String linea;
             while ((linea = input.readLine()) != null) {
                 resp += linea;
@@ -115,7 +114,10 @@ public class SimpleWebConnectionService {
             BufferedReader input = new BufferedReader(
                     new InputStreamReader(con.getErrorStream()),
                     8192);
-            resp = input.readLine();
+            String linea;
+            while ((linea = input.readLine()) != null) {
+                resp += linea;
+            }
             input.close();
             con.disconnect();
             //os.close();
