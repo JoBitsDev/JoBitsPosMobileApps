@@ -141,7 +141,7 @@ public class SimpleWebConnectionService {
         return cache;
     }
 
-    private void saveResponse(String urlToExcecute, String resp) {
+    protected void saveResponse(String urlToExcecute, String resp) {
         try {
             FileOutputStream fos = new FileOutputStream(getFile(urlToExcecute));
             ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -244,8 +244,16 @@ public class SimpleWebConnectionService {
     }
 
     public void executeCola() {
+        final String urlLlaves = "LLAVES";
         try {
-            HashMap<String, String> llaves = new HashMap<String, String>();
+            //lee las llaves
+            FileInputStream fis = new FileInputStream(getFile(urlLlaves));
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            CacheModel cache = (CacheModel) ois.readObject();
+            fis.close();
+            ois.close();
+            HashMap<String, String> llaves = om.readValue(cache.getRespuesta(), HashMap.class);
+
             for (Iterator<RequestModel> iterator = cola.iterator(); iterator.hasNext(); ) {
                 RequestModel req = iterator.next();
                 updateRequest(llaves, req);
@@ -258,6 +266,7 @@ public class SimpleWebConnectionService {
                 } else {
                     connect(req);
                 }
+                saveResponse(urlLlaves, om.writeValueAsString(llaves));
             }
         } catch (Exception e) {
             e.printStackTrace();

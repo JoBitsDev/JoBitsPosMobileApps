@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.activities.R;
 import com.services.models.MesaModel;
+import com.services.models.OrdenModel;
 import com.services.web_connections.AreaWCS;
 import com.services.web_connections.OrdenWCS;
 import com.utils.adapters.MesaAdapter;
@@ -32,12 +33,23 @@ public class MesasController extends BaseController {
     public MesaAdapter getData(String selectedArea, Activity act) throws Exception {
         List<MesaModel> mesaModels;
         if (selectedArea == null) {
-            mesaModels = new  AreaWCS().findMesas();//    MesaXMlParser().fetch(urlMesas + "/AREA_" + selectedArea);
+            mesaModels = new AreaWCS().findMesas();//    MesaXMlParser().fetch(urlMesas + "/AREA_" + selectedArea);
         } else {
-            mesaModels = new  AreaWCS().findMesas(selectedArea);//new MesaXMlParser().fetch(urlMesas);
+            mesaModels = new AreaWCS().findMesas(selectedArea);//new MesaXMlParser().fetch(urlMesas);
         }
         MesaAdapter adaptador = new MesaAdapter(act, R.id.listaMesas, mesaModels, user);
         return adaptador;
+    }
+
+    public void initOrdenEnMesa(OrdenModel orden, String mesa) throws Exception {
+        List<MesaModel> mesaModels = new AreaWCS().findMesas();
+        for (MesaModel m : mesaModels) {
+            if (m.getCodMesa().matches(mesa)) {
+                //m.setEstado(orden.getCodOrden() + " " + user);
+                break;
+            }
+        }
+        new AreaWCS().saveMesasList(mesaModels);
     }
 
     public void starService(String codMesa) {

@@ -1,5 +1,6 @@
 package com.services.web_connections;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.services.models.MesaModel;
 
 import java.util.List;
@@ -21,6 +22,11 @@ public class AreaWCS extends SimpleWebConnectionService {
     public AreaWCS() {
         super();
         path += P;
+    }
+
+
+    public void saveMesasList(List<MesaModel> mesaModels) throws JsonProcessingException {
+        saveResponse(path + FIND_ALL, om.writeValueAsString(mesaModels));
     }
 
     public String[] getAreasName() throws Exception {

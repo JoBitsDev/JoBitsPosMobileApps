@@ -51,7 +51,10 @@ public class OrdenController extends BaseController {
     }
 
     public boolean initOrden() throws Exception {
-        return ordenWCService.initOrden();
+        OrdenModel orden = ordenWCService.initOrden();
+        String mesa = ordenWCService.getCodMesa();
+        new MesasController().initOrdenEnMesa(orden, mesa);
+        return true;
     }
 
     public boolean cederAUsuario(String usuario) throws Exception {

@@ -1,10 +1,12 @@
 package com.services.web_connections;
 
+import com.services.models.MesaModel;
 import com.services.models.OrdenModel;
 import com.services.models.RequestModel;
 import com.utils.EnvironmentVariables;
 
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.*;
 
 /**
@@ -56,20 +58,18 @@ public class OrdenWCS extends SimpleWebConnectionService {
         return this.codOrden = om.readValue(resp, String.class);
     }*/
 
-    public boolean initOrden() throws Exception {
+    public OrdenModel initOrden() throws Exception {
         RequestModel req = new RequestModel(path + CREATE, this.codMesa, super.TOKEN, HTTPMethod.POST);
         //fetchCodOrden();
         if (EnvironmentVariables.ONLINE) {
-            connect(req);
+            return om.readValue(connect(req), OrdenModel.class);
         } else {
-            initOrdenOffline();
+            return initOrdenOffline();
         }
-        return true;
     }
 
-    public boolean initOrdenOffline() throws Exception {
-
-        return true;
+    public OrdenModel initOrdenOffline() throws Exception {
+        return new OrdenModel(new SecureRandom().nextLong() + "");
     }
 
     public boolean addProducto(String codProducto) throws Exception {
@@ -199,5 +199,4 @@ public class OrdenWCS extends SimpleWebConnectionService {
     public void setCodMesa(String codMesa) {
         this.codMesa = codMesa;
     }
-
 }
