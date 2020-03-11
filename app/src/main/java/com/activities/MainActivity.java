@@ -22,6 +22,8 @@ import com.services.models.UbicacionModel;
 import com.services.notifications.ReceiverNotificationService;
 import com.utils.EnvironmentVariables;
 import com.utils.exception.ExceptionHandler;
+import com.utils.exception.ServerErrorException;
+import com.utils.exception.ServerNoCompatibleException;
 import com.utils.loading.LoadingHandler;
 import com.utils.loading.LoadingProcess;
 
@@ -35,7 +37,7 @@ import java.util.Locale;
  *
  * @extends BaseActivity ya que es una activity propia de la aplicacion.
  */
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity {//  |||||
 
     /**
      * Controller del MainActivity para manejar las peticiones a la capa inferior.
@@ -300,7 +302,23 @@ public class MainActivity extends BaseActivity {
             @Override
             public void post(Boolean value) {
                 if (value) {
-                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                    //load the info
+                    new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+                        @Override
+                        public Void process() throws Exception {
+                            controller.readInfo();
+                            return null;
+                        }
+
+                        @Override
+                        public void post(Void value) {
+                            if (getCompatibilidadServer()) {
+                                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                            } else {
+                                ExceptionHandler.handleException(new ServerNoCompatibleException(), act);
+                            }
+                        }
+                    });
                 } else {
                     act.showMessage(act.getApplication().getApplicationContext().getResources().
                             getText(R.string.noConnectionError).toString());
@@ -330,6 +348,14 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    private boolean getCompatibilidadServer() {
+        if (EnvironmentVariables.MAYOR != BuildConfig.MAYOR_SERVER_VERSION || BuildConfig.MINOR_SERVER_VERSION > EnvironmentVariables.MINOR) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public void startService(View view) {

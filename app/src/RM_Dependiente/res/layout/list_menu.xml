@@ -1,17 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textViewNombre"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:textColor="@color/texto_primario"
-        android:text="Nombre"
-        android:textSize="@dimen/textSizeNormal" />
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textViewNombre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_weight="20"
+            android:text="Nombre"
+            android:textColor="@color/texto_primario"
+            android:textSize="@dimen/textSizeMedium" />
+
+        <ImageButton
+            android:id="@+id/imageButtonRestantes"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:onClick="onViewRestantes"
+            android:src="@android:drawable/ic_menu_view" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textViewPrecio"
@@ -21,6 +38,6 @@
         android:layout_weight="1"
         android:text="Precio"
         android:textColor="@color/precios"
-        android:textSize="@dimen/textSizeNormal" />
+        android:textSize="@dimen/textSizeMedium" />
 
 </LinearLayout>

@@ -64,7 +64,6 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        user.setText("");
         pass.setText("");
         loginResult.setText("");
     }
@@ -119,7 +118,6 @@ public class LoginActivity extends BaseActivity {
         try {
             final String username = user.getText().toString();
             final String password = pass.getText().toString();
-            final String access = getResources().getString(R.string.access_level);
 
             if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
                 loginResult.setTextColor(Color.RED);

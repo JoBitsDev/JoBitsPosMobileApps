@@ -39,7 +39,6 @@ public class AlmacenInsumoAdapter extends ArrayAdapter<InsumoAlmacenModel> imple
         this.context = context;
         this.objects = objects;
         displayedObjects = objects;
-        Collections.sort(objects);
     }
 
     /**

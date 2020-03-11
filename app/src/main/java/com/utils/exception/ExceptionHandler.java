@@ -9,9 +9,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.activities.BaseActivity;
+import com.activities.BuildConfig;
 import com.activities.MainActivity;
 import com.activities.PantallaPrincipalActivity;
 import com.activities.R;
+import com.utils.EnvironmentVariables;
 
 import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeoutException;
@@ -65,9 +67,32 @@ public class ExceptionHandler {
             handleTimeoutException((Exception) e, activity);
         } else if (e instanceof NetworkOnMainThreadException) {
             handleNetworkOnMainThreadException((Exception) e, activity);
+        } else if (e instanceof ServerNoCompatibleException) {
+            handleServerNoCompatibleException((ServerNoCompatibleException) e, activity);
         } else {//error inesperado
             handleUnknownException((Exception) e, activity);
         }
+    }
+
+    private static void handleServerNoCompatibleException(ServerNoCompatibleException e, BaseActivity activity) {
+        final Context c = activity.getApplicationContext();
+        final View v = activity.findViewById(android.R.id.content).getRootView();
+
+        //mensaje explicando que pasa
+        String errorMessage = v.findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.servidorNoCompatible).toString();
+        errorMessage += "Version del servidor: " + EnvironmentVariables.MAYOR + "." + EnvironmentVariables.MINOR + ", requerida mínimo la " + BuildConfig.MAYOR_SERVER_VERSION + "." + BuildConfig.MINOR_SERVER_VERSION;
+        //popup a mostrar
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setMessage(errorMessage);
+        builder.setTitle(ExceptionHandler.POPUP_TITLE);
+
+        builder.setNeutralButton(ExceptionHandler.POPUP_BUTTON_TEXT, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {//comportamiento al clickear el boton
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
     }
 
     private static void handleNetworkOnMainThreadException(Exception e, BaseActivity activity) {

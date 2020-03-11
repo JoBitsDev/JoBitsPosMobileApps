@@ -79,18 +79,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
         addListeners();
         setAdapters();
         actualizar(formatDate());
-
-        new LoadingHandler<List<DetallesVentasModel>>(act, new LoadingProcess<List<DetallesVentasModel>>() {
-            @Override
-            public List<DetallesVentasModel> process() throws Exception {
-                return controller.getDetallesPorDependientes("16/01/2020", "prueba");
-            }
-
-            @Override
-            public void post(List<DetallesVentasModel> answer) {
-                int a = 0;
-            }
-        });
     }
 
     @Override
