@@ -73,6 +73,10 @@ public class SimpleWebConnectionService {
         path = "http://" + ip + ":" + port + "/" + EnvironmentVariables.STARTPATH;
     }
 
+    public String connect(final String urlToExcecute, final String body, final String token, final HTTPMethod method) throws Exception {
+        return connect(new RequestModel(urlToExcecute, body, token, method));
+    }
+
     /**
      * Metodo a usar para la coneccion al servicio.
      * Manda por POST la peticion a la url con el body especifico y el token de segurdad en el header

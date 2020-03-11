@@ -1,6 +1,7 @@
 package com.services.web_connections;
 
 import com.services.models.OrdenModel;
+import com.services.models.RequestModel;
 import com.utils.EnvironmentVariables;
 
 import java.io.IOException;
@@ -56,9 +57,10 @@ public class OrdenWCS extends SimpleWebConnectionService {
     }*/
 
     public boolean initOrden() throws Exception {
+        RequestModel req = new RequestModel(path + CREATE, this.codMesa, super.TOKEN, HTTPMethod.POST);
         //fetchCodOrden();
         if (EnvironmentVariables.ONLINE) {
-            connect(path + CREATE, this.codMesa, super.TOKEN, HTTPMethod.POST);
+            connect(req);
         } else {
             initOrdenOffline();
         }
@@ -79,6 +81,7 @@ public class OrdenWCS extends SimpleWebConnectionService {
         hm.put("codOrden", this.codOrden);
         hm.put("codProducto", codProducto);
         hm.put("cantidad", cantidad);
+
         connect(path + ADD, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
         return true;
     }
@@ -92,6 +95,7 @@ public class OrdenWCS extends SimpleWebConnectionService {
         hm.put("codOrden", this.codOrden);
         hm.put("codProducto", codProducto);
         hm.put("cantidad", cantidad);
+
         connect(path + REMOVE, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
         return true;
     }
