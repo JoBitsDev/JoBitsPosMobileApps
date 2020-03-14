@@ -4,14 +4,25 @@ import java.io.*;
 import java.net.URL;
 
 import com.activities.BaseActivity;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.services.models.CacheModel;
+import com.services.models.MesaModel;
+import com.services.models.OrdenModel;
+import com.services.models.RequestModel;
+import com.services.models.RequestType;
 import com.utils.Utils;
 import com.utils.exception.*;
 
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 import com.utils.EnvironmentVariables;
+
+import org.apache.http.HttpRequest;
 
 /**
  * Capa: Services
@@ -43,6 +54,7 @@ public class SimpleWebConnectionService {
     public static final int MAX_RESPONSE_TIME = 3 * 1000;
 
     public static final String DIR_CACHE = EnvironmentVariables.PERSISTENCE_PATH + "/";
+    private final String queque = "QUEQUE";
 
     /**
      * Partes de la URL de las consultas.
@@ -72,37 +84,38 @@ public class SimpleWebConnectionService {
         path = "http://" + ip + ":" + port + "/" + EnvironmentVariables.STARTPATH;
     }
 
+    public String connect(final String urlToExcecute, final String body, final String token, final HTTPMethod method) throws Exception {
+        return connect(new RequestModel(urlToExcecute, body, token, method));
+    }
+
     /**
      * Metodo a usar para la coneccion al servicio.
      * Manda por POST la peticion a la url con el body especifico y el token de segurdad en el header
      *
-     * @param urlToExcecute URL a ejecutar la peticion
-     * @param body          Cuerpo del mensaje, JSON con la info.
-     * @param token         Token de seguridad.
      * @return String con el formato JSON.
      * @throws Exception Si algo sale mal.
      */
-    public String connect(final String urlToExcecute, final String body, final String token, final HTTPMethod method) throws Exception {
-        CacheModel cache = checkCache(urlToExcecute);
+    public String connect(final RequestModel req) throws Exception {
+        CacheModel cache = checkCache(req.getUrlToExcecute());
         String resp = "";
         if (EnvironmentVariables.ONLINE) {//esta online
-            if (method == HTTPMethod.GET) {
+            if (req.getMethod() == HTTPMethod.GET) {
                 if (cache == null) {
-                    resp = connectToServer(urlToExcecute, body, token, method);//hay coneccion y no hay cache
-                    saveResponse(urlToExcecute, resp);
+                    resp = connectToServer(req.getUrlToExcecute(), req.getBody(), req.getToken(), req.getMethod());//hay coneccion y no hay cache
+                    saveResponse(req.getUrlToExcecute(), resp);
                     return resp;
                 } else {//tengo cache
                     resp = cache.getRespuesta();
                     //verifico con el server
-                    String check = validateInfo(urlToExcecute, resp);
+                    String check = validateInfo(req.getUrlToExcecute(), resp);
                     if (!check.isEmpty()) {
                         resp = check;
-                        saveResponse(urlToExcecute, resp);
+                        saveResponse(req.getUrlToExcecute(), resp);
                     }
                     return resp;
                 }
             } else {
-                return connectToServer(urlToExcecute, body, token, method);
+                return connectToServer(req.getUrlToExcecute(), req.getBody(), req.getToken(), req.getMethod());
             }
         } else {//no hay coneccion
             if (cache == null) {
@@ -133,7 +146,7 @@ public class SimpleWebConnectionService {
         return cache;
     }
 
-    private void saveResponse(String urlToExcecute, String resp) {
+    protected void saveResponse(String urlToExcecute, String resp) {
         try {
             FileOutputStream fos = new FileOutputStream(getFile(urlToExcecute));
             ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -224,6 +237,77 @@ public class SimpleWebConnectionService {
             con.disconnect();
             //os.close();
             throw new ServerErrorException(resp, code);
+        }
+    }
+
+    public void addRequestToQueque(RequestModel req) throws IOException, ClassNotFoundException {
+        CacheModel quequeCache = checkCache(queque);
+        ArrayList<RequestModel> cola = new ArrayList<RequestModel>();
+        if (quequeCache != null) {
+            cola = om.readValue(quequeCache.getRespuesta(), om.getTypeFactory().constructCollectionType(List.class, RequestModel.class));
+        }
+        cola.add(req);
+
+        saveResponse(queque, om.writeValueAsString(cola));
+    }
+
+    public boolean uploadQueque() throws Exception {
+        final String urlLlaves = "LLAVES";
+        //lee las llaves
+        CacheModel llavesCache = checkCache(urlLlaves);
+        HashMap<String, String> llaves = new HashMap<String, String>();
+        if (llavesCache != null) {
+            om.readValue(llavesCache.getRespuesta(), HashMap.class);
+        }
+
+        CacheModel quequeCache = checkCache(queque);
+        ArrayList<RequestModel> cola = new ArrayList<RequestModel>();
+        if (quequeCache != null) {
+            cola = om.readValue(quequeCache.getRespuesta(), om.getTypeFactory().constructCollectionType(List.class, RequestModel.class));
+        }
+        if (cola.isEmpty()) {
+            return false;
+        }
+        for (Iterator<RequestModel> iterator = cola.iterator(); iterator.hasNext(); ) {
+            try {
+                RequestModel req = iterator.next();
+                llaves.put("TOKEN", TOKEN);
+                updateRequest(llaves, req);
+                if (req.getType() == RequestType.LOGIN) {
+                    String token = connect(req);
+                    TOKEN = token;
+                } else if (req.getType() == RequestType.CREATE_ORDEN) {
+                    String resp = connect(req);
+                    OrdenModel orden = om.readValue(resp, OrdenModel.class);
+                    llaves.put(req.getUid(), orden.getCodOrden());
+                } else {
+                    connect(req);
+                }
+            } catch (ServerErrorException e) {
+                if (e.getCode() == HttpURLConnection.HTTP_INTERNAL_ERROR) {
+                    throw e;
+                } else if (e.getCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                    throw e;
+                }
+            }
+            iterator.remove();
+            saveResponse(queque, om.writeValueAsString(cola));
+            saveResponse(urlLlaves, om.writeValueAsString(llaves));
+        }
+        return true;
+    }
+
+    private void updateRequest(HashMap<String, String> llaves, RequestModel req) {
+        for (String key : llaves.keySet()) {
+            if (req.getBody() != null && req.getBody().contains(key)) {
+                req.setBody(req.getBody().replace(key, llaves.get(key)));
+            }
+            if (req.getToken() != null && req.getToken().contains(key)) {
+                req.setToken(req.getToken().replace(key, llaves.get(key)));
+            }
+            if (req.getUrlToExcecute() != null && req.getUrlToExcecute().contains(key)) {
+                req.setUrlToExcecute(req.getUrlToExcecute().replace(key, llaves.get(key)));
+            }
         }
     }
 }

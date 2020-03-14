@@ -8,6 +8,7 @@ package com.services.models;
 
 import android.graphics.Color;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.utils.EnvironmentVariables;
 
 /**
@@ -117,6 +118,7 @@ public class MesaModel implements Comparable<MesaModel> {
         return o1 - o2;
     }
 
+    @JsonIgnore
     public String getUsuario() {
         return getEstado() == null ? "null" : getEstado().split(" ")[1];
     }

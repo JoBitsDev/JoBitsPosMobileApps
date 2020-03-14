@@ -7,8 +7,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.controllers.BaseController;
+import com.controllers.MainController;
 import com.utils.EnvironmentVariables;
 import com.utils.exception.ExceptionHandler;
+import com.utils.loading.LoadingHandler;
+import com.utils.loading.LoadingProcess;
 
 /**
  * Capa: Activities
@@ -94,13 +98,6 @@ public abstract class BaseActivity extends Activity {
         builder.setMessage(message);
         builder.setTitle(ExceptionHandler.POPUP_TITLE);
 
-        builder.setNeutralButton("Modo OF-LINE", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {//comportamiento al clickear el boton
-                setUpOffline();
-                dialog.dismiss();
-            }
-        });
         builder.create().show();
     }
 
@@ -111,9 +108,25 @@ public abstract class BaseActivity extends Activity {
 
     public void setUpOnline() {
         EnvironmentVariables.ONLINE = true;
-
+        sincWhithServer();
     }
 
+    private void sincWhithServer() {
+        new LoadingHandler<Boolean>("Sincronizando con el servidor...", act, new LoadingProcess<Boolean>() {
+            @Override
+            public Boolean process() throws Exception {
+                return new MainController().uploadQueque();
+            }
+
+            @Override
+            public void post(Boolean value) {
+                Toast.makeText(act, "Sincronizado con el servidor. :)", Toast.LENGTH_LONG).show();
+                if (value) {
+                    onCreate(bundle);
+                }
+            }
+        });
+    }
     /*public void notificarError(Exception e) { Noficacion de error vieja, entes de procesarlo _todo con el ExceptionHandler.
         String noConnectionError = findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.noConnectionError).toString();
         //Mensaje a enviar cuando hay un error en el servidor

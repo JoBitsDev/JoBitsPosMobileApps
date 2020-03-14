@@ -1,6 +1,7 @@
 package com.controllers;
 
 import com.services.web_connections.CheckConnectionWCS;
+import com.services.web_connections.GeneralWCS;
 
 /**
  * Capa: Controllers
@@ -18,5 +19,9 @@ public abstract class BaseController {
      */
     public boolean checkConnection() throws Exception {
         return new CheckConnectionWCS().checkConnection();
+    }
+
+    public Boolean uploadQueque() throws Exception {
+        return new GeneralWCS().uploadQueque();
     }
 }

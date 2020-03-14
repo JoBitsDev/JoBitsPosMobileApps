@@ -41,7 +41,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         try {
             initVarialbes();
             addListeners();
-            configurarTabla();
+            onCambiarAreaButtonClick(null);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
@@ -50,9 +50,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
     @Override
     protected void initVarialbes() {
         try {
-            controller = new MesasController();
             String user = getIntent().getExtras().getString(String.valueOf(R.string.user));
-            controller.setUser(user);
+            controller = new MesasController(user);
 
             userLabel = ((TextView) findViewById(R.id.textviewusuario));
             userLabel.setText(user);
@@ -157,6 +156,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     private void continuar(final MesaModel m) {
         final Bundle data = new Bundle();
         data.putString(String.valueOf(R.string.mesa), m.getCodMesa());
+        data.putString(String.valueOf(R.string.area), selectedArea);
 
         new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
             @Override
@@ -232,7 +232,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
             @Override
             public void post(final String[] value) {
-                new AlertDialog.Builder(act).
+                AlertDialog alert = new AlertDialog.Builder(act).
                         setTitle(R.string.seleccionararea).
                         setSingleChoiceItems(value, selectedAreaWich, new DialogInterface.OnClickListener() {
                             @Override
@@ -242,7 +242,10 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                 dialog.dismiss();
                                 configurarTabla();
                             }
-                        }).create().show();
+                        }).create();
+                alert.setCancelable(false);
+                alert.setCanceledOnTouchOutside(false);
+                alert.show();
             }
         });
 
