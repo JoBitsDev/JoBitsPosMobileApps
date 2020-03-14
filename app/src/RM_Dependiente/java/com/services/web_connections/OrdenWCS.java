@@ -79,7 +79,7 @@ public class OrdenWCS extends SimpleWebConnectionService {
             connect(req);
         } else {
             addRequestToQueque(req);
-            new MesasController();
+            new MesasController().terminarOrdenEnMesa(codMesa);
         }
         return true;
     }
