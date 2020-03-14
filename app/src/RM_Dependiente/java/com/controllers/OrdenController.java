@@ -86,7 +86,28 @@ public class OrdenController extends BaseController {
     }
 
     public boolean addProducto(ProductoVentaModel lastClickedMenu, float cantidad) throws Exception {
-        return ordenWCService.addProducto(lastClickedMenu.getPCod(), cantidad);//TODO capas mezcladas actulizando el adaptdor desde el controlador
+        boolean resp = ordenWCService.addProducto(lastClickedMenu.getPCod(), cantidad);
+        if (!EnvironmentVariables.ONLINE) {
+            OrdenModel orden = ordenWCService.findOrden(ordenWCService.getCodOrden());
+            boolean exitProduct = false;
+            for (ProductoVentaOrdenModel prod : orden.getProductoVentaOrdenList()) {
+                if (prod.getProductoVenta().getPCod().matches(lastClickedMenu.getPCod())) {
+                    prod.setCantidad(prod.getCantidad() + cantidad);
+                    break;
+                }
+            }
+            if (!exitProduct) {
+                ProductoVentaOrdenModel p = new ProductoVentaOrdenModel();
+                p.setCantidad(cantidad);
+                p.setEnviadosacocina(0);
+                p.setOrdenModel(orden);
+                p.setProductoVenta(lastClickedMenu);
+                p.setProductovOrdenPKModel(null);
+                orden.getProductoVentaOrdenList().add(p);
+            }
+            ordenWCService.saveOrdenToCache(new ObjectMapper().writeValueAsString(orden));
+        }
+        return resp;
     }
 
     public void increasePoducto(ProductoVentaModel lastClickedMenu, ProductoVentaOrdenAdapter adapter, float cantidad) {
@@ -106,7 +127,15 @@ public class OrdenController extends BaseController {
     }
 
     public boolean sendToKitchen() throws Exception {
-        return ordenWCService.sendToKitchen();
+        boolean resp =  ordenWCService.sendToKitchen();
+        if (!EnvironmentVariables.ONLINE) {
+            OrdenModel orden = ordenWCService.findOrden(ordenWCService.getCodOrden());
+            for (ProductoVentaOrdenModel prod : orden.getProductoVentaOrdenList()) {
+                prod.setEnviadosacocina(prod.getCantidad());
+            }
+            ordenWCService.saveOrdenToCache(new ObjectMapper().writeValueAsString(orden));
+        }
+        return resp;
     }
 
     public boolean addNota(ProductoVentaModel productoVentaModel, String nota) throws Exception {
