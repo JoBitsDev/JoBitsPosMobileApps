@@ -98,7 +98,11 @@ public class OrdenController extends BaseController {
     }
 
     public boolean finishOrden() throws Exception {
-        return ordenWCService.finishOrden();
+        boolean resp = ordenWCService.finishOrden();
+        if (!EnvironmentVariables.ONLINE) {
+            new MesasController().terminarOrdenEnMesa(ordenWCService.getCodMesa());
+        }
+        return resp;
     }
 
     public boolean sendToKitchen() throws Exception {
