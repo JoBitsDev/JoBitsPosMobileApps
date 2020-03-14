@@ -101,9 +101,15 @@ public class MesaAdapter extends ArrayAdapter<MesaModel> {
                 } else if (second.getEstado().equals(EnvironmentVariables.ESTADO_MESA_ESPERANDO_CONFIRMACION)) {
                     return -1;//si esta no tiene orden va a ser > que la otra
                 } else {//si las dos tienen orden ver las ordenes
-                    int orden1 = Integer.parseInt(first.getEstado().split(" ")[0].split("-")[1]);
-                    int orden2 = Integer.parseInt(second.getEstado().split(" ")[0].split("-")[1]);
-                    return orden1 - orden2;
+                    long orden1 = Long.parseLong(first.getEstado().split(" ")[0].split("-")[1].trim());
+                    long orden2 = Long.parseLong(second.getEstado().split(" ")[0].split("-")[1].trim());
+                    if (orden1 > orden2) {
+                        return 1;
+                    } else if (orden2 > orden1) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
                 }
             }
         });
