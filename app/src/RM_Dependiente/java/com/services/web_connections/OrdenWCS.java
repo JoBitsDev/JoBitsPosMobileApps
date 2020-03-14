@@ -69,7 +69,7 @@ public class OrdenWCS extends SimpleWebConnectionService {
     }
 
     public OrdenModel initOrdenOffline() throws Exception {
-        return new OrdenModel("O - " + new SecureRandom().nextInt((int) Math.pow(10, 5)) + "");
+        return new OrdenModel("O - " + new SecureRandom().nextInt((int) Math.pow(10, 5)));
     }
 
     public boolean finishOrden() throws Exception {
@@ -78,7 +78,7 @@ public class OrdenWCS extends SimpleWebConnectionService {
             connect(req);
         } else {
             addRequestToQueque(req);
-            new MesasController();
+            new MesasController().terminarOrdenEnMesa(codMesa);
         }
         return true;
     }
