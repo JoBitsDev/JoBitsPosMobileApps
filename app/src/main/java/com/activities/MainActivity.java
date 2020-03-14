@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.controllers.MainController;
 import com.services.models.ConfigModel;
@@ -341,6 +342,8 @@ public class MainActivity extends BaseActivity {//  |||||
                 if (value) {
                     connectionStatusText.setText(R.string.conexion_succesfull);
                     connectionStatusText.setTextColor(Color.GREEN);
+
+                    setUpOnline();
                 } else {
                     connectionStatusText.setText(R.string.no_network);
                     connectionStatusText.setTextColor(Color.RED);
@@ -348,7 +351,6 @@ public class MainActivity extends BaseActivity {//  |||||
             }
         });
     }
-
     private boolean getCompatibilidadServer() {
         if (EnvironmentVariables.MAYOR != BuildConfig.MAYOR_SERVER_VERSION || BuildConfig.MINOR_SERVER_VERSION > EnvironmentVariables.MINOR) {
             return false;

@@ -17,9 +17,12 @@ public class GeneralWCS extends SimpleWebConnectionService {
         path += p;
     }
 
-    public HashMap<String,Object> readInfo() throws Exception {
+    public HashMap<String, Object> readInfo() throws Exception {
         String resp = connect(path + INFO, null, super.TOKEN, HTTPMethod.GET);
         return om.readValue(resp, HashMap.class);
     }
 
+    public boolean uploadQueque() {
+        return super.uploadQueque();
+    }
 }

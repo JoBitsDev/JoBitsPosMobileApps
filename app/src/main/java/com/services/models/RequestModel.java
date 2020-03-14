@@ -8,6 +8,7 @@ public class RequestModel {
     private String token;
     private HTTPMethod method;
     private RequestType type = RequestType.NORMAL;
+    private String uid;
 
     public RequestModel(String urlToExcecute, String body, String token, HTTPMethod method) {
         this.urlToExcecute = urlToExcecute;
@@ -22,6 +23,14 @@ public class RequestModel {
         this.token = token;
         this.method = method;
         this.type = type;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public RequestType getType() {

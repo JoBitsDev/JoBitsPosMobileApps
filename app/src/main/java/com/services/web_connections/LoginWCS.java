@@ -44,7 +44,8 @@ public class LoginWCS extends SimpleWebConnectionService {
         if (EnvironmentVariables.ONLINE) {
             TOKEN = connect(req);
         } else {
-            TOKEN = "TOKEN-" + System.currentTimeMillis();
+            TOKEN = "TOKEN";
+            req.setUid(TOKEN);
             addRequestToQueque(req);
         }
         return true;

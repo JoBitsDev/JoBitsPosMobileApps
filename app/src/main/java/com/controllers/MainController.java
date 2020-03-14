@@ -69,4 +69,8 @@ public class MainController extends BaseController {
         }
         return resp;
     }
+
+    public Boolean uploadQueque() {
+        return new GeneralWCS().uploadQueque();
+    }
 }

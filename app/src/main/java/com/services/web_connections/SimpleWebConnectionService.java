@@ -4,8 +4,10 @@ import java.io.*;
 import java.net.URL;
 
 import com.activities.BaseActivity;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.services.models.CacheModel;
+import com.services.models.OrdenModel;
 import com.services.models.RequestModel;
 import com.services.models.RequestType;
 import com.utils.Utils;
@@ -239,11 +241,12 @@ public class SimpleWebConnectionService {
         return cola;
     }
 
-    public void addRequestToQueque(RequestModel req) {
+    public void addRequestToQueque(RequestModel req) throws JsonProcessingException {
         cola.add(req);
+        saveResponse("QUEQUE", om.writeValueAsString(cola));
     }
 
-    public void executeCola() {
+    public boolean uploadQueque() {
         final String urlLlaves = "LLAVES";
         try {
             //lee las llaves
@@ -262,7 +265,8 @@ public class SimpleWebConnectionService {
                     llaves.put("TOKEN", token);
                 } else if (req.getType() == RequestType.CREATE_ORDEN) {
                     String resp = connect(req);
-                    llaves.put("###", resp);
+                    OrdenModel orden = om.readValue(resp, OrdenModel.class);
+                    llaves.put(req.getUid(), orden.getCodOrden());
                 } else {
                     connect(req);
                 }
@@ -271,7 +275,9 @@ public class SimpleWebConnectionService {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
 
     private void updateRequest(HashMap<String, String> llaves, RequestModel req) {

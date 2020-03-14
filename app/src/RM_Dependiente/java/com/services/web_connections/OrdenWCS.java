@@ -61,13 +61,12 @@ public class OrdenWCS extends SimpleWebConnectionService {
         if (EnvironmentVariables.ONLINE) {
             return om.readValue(connect(req), OrdenModel.class);
         } else {
-            return initOrdenOffline();
+            codOrden = "Offline-" + System.currentTimeMillis() + "";
+            OrdenModel orden = new OrdenModel(codOrden);
+            req.setUid(codOrden);
+            addRequestToQueque(req);
+            return orden;
         }
-    }
-
-    public OrdenModel initOrdenOffline() throws Exception {
-        codOrden = "Offline-" + System.currentTimeMillis() + "";
-        return new OrdenModel(codOrden);
     }
 
     public boolean finishOrden() throws Exception {
