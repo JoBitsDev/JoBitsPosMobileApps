@@ -1,5 +1,6 @@
 package com.services.web_connections;
 
+import com.controllers.MesasController;
 import com.services.models.MesaModel;
 import com.services.models.OrdenModel;
 import com.services.models.RequestModel;
@@ -69,11 +70,18 @@ public class OrdenWCS extends SimpleWebConnectionService {
     }
 
     public OrdenModel initOrdenOffline() throws Exception {
-        return new OrdenModel(new SecureRandom().nextLong() + "");
+        return new OrdenModel("O - " + new SecureRandom().nextInt((int) Math.pow(10, 5)) + "");
     }
 
-    public boolean addProducto(String codProducto) throws Exception {
-        return addProducto(codProducto, 1f);
+    public boolean finishOrden() throws Exception {
+        RequestModel req = new RequestModel(path + FINISH, this.codOrden, super.TOKEN, HTTPMethod.POST);
+        if (EnvironmentVariables.ONLINE) {
+            connect(req);
+        } else {
+            addRequestToQueque(req);
+            new MesasController();
+        }
+        return true;
     }
 
     public boolean addProducto(String codProducto, float cantidad) throws Exception {
@@ -97,11 +105,6 @@ public class OrdenWCS extends SimpleWebConnectionService {
         hm.put("cantidad", cantidad);
 
         connect(path + REMOVE, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
-        return true;
-    }
-
-    public boolean finishOrden() throws Exception {
-        connect(path + FINISH, this.codOrden, super.TOKEN, HTTPMethod.POST);
         return true;
     }
 
