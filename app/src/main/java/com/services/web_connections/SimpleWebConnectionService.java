@@ -271,10 +271,11 @@ public class SimpleWebConnectionService {
         for (Iterator<RequestModel> iterator = cola.iterator(); iterator.hasNext(); ) {
             try {
                 RequestModel req = iterator.next();
+                llaves.put("TOKEN", TOKEN);
                 updateRequest(llaves, req);
                 if (req.getType() == RequestType.LOGIN) {
                     String token = connect(req);
-                    llaves.put("TOKEN", token);
+                    TOKEN = token;
                 } else if (req.getType() == RequestType.CREATE_ORDEN) {
                     String resp = connect(req);
                     OrdenModel orden = om.readValue(resp, OrdenModel.class);
@@ -284,6 +285,8 @@ public class SimpleWebConnectionService {
                 }
             } catch (ServerErrorException e) {
                 if (e.getCode() == HttpURLConnection.HTTP_INTERNAL_ERROR) {
+                    throw e;
+                } else if (e.getCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                     throw e;
                 }
             }

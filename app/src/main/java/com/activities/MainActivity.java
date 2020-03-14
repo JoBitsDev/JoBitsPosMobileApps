@@ -199,6 +199,12 @@ public class MainActivity extends BaseActivity {//  |||||
             case R.id.editar_ubicacion:
                 editarUbicacion();
                 return true;
+            case R.id.action_turn_on_offline_mode_main:
+                setUpOffline();
+                return true;
+            case R.id.action_turn_off_offline_mode_main:
+                setUpOnline();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -351,6 +357,7 @@ public class MainActivity extends BaseActivity {//  |||||
             }
         });
     }
+
     private boolean getCompatibilidadServer() {
         if (EnvironmentVariables.MAYOR != BuildConfig.MAYOR_SERVER_VERSION || BuildConfig.MINOR_SERVER_VERSION > EnvironmentVariables.MINOR) {
             return false;

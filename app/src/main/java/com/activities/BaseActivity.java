@@ -98,13 +98,6 @@ public abstract class BaseActivity extends Activity {
         builder.setMessage(message);
         builder.setTitle(ExceptionHandler.POPUP_TITLE);
 
-        builder.setNeutralButton("Modo OF-LINE", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {//comportamiento al clickear el boton
-                setUpOffline();
-                dialog.dismiss();
-            }
-        });
         builder.create().show();
     }
 
