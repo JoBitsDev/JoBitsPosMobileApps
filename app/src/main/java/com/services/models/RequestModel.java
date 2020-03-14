@@ -2,13 +2,18 @@ package com.services.models;
 
 import com.services.web_connections.HTTPMethod;
 
-public class RequestModel {
+import java.io.Serializable;
+
+public class RequestModel implements Serializable {
     private String urlToExcecute;
     private String body;
     private String token;
     private HTTPMethod method;
     private RequestType type = RequestType.NORMAL;
     private String uid;
+
+    public RequestModel() {
+    }
 
     public RequestModel(String urlToExcecute, String body, String token, HTTPMethod method) {
         this.urlToExcecute = urlToExcecute;
