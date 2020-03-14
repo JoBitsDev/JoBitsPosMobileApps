@@ -22,6 +22,8 @@ import java.util.List;
 
 import com.utils.EnvironmentVariables;
 
+import org.apache.http.HttpRequest;
+
 /**
  * Capa: Services
  * Clase base para TODOS los servicios de la aplicación.
@@ -249,25 +251,25 @@ public class SimpleWebConnectionService {
         saveResponse(queque, om.writeValueAsString(cola));
     }
 
-    public boolean uploadQueque() {
+    public boolean uploadQueque() throws Exception {
         final String urlLlaves = "LLAVES";
-        try {
-            //lee las llaves
-            CacheModel llavesCache = checkCache(urlLlaves);
-            HashMap<String, String> llaves = new HashMap<String, String>();
-            if (llavesCache != null) {
-                om.readValue(llavesCache.getRespuesta(), HashMap.class);
-            }
+        //lee las llaves
+        CacheModel llavesCache = checkCache(urlLlaves);
+        HashMap<String, String> llaves = new HashMap<String, String>();
+        if (llavesCache != null) {
+            om.readValue(llavesCache.getRespuesta(), HashMap.class);
+        }
 
-            CacheModel quequeCache = checkCache(queque);
-            ArrayList<RequestModel> cola = new ArrayList<RequestModel>();
-            if (quequeCache != null) {
-                cola = om.readValue(quequeCache.getRespuesta(), om.getTypeFactory().constructCollectionType(List.class, RequestModel.class));
-            }
-            if (cola.isEmpty()) {
-                return false;
-            }
-            for (Iterator<RequestModel> iterator = cola.iterator(); iterator.hasNext(); ) {
+        CacheModel quequeCache = checkCache(queque);
+        ArrayList<RequestModel> cola = new ArrayList<RequestModel>();
+        if (quequeCache != null) {
+            cola = om.readValue(quequeCache.getRespuesta(), om.getTypeFactory().constructCollectionType(List.class, RequestModel.class));
+        }
+        if (cola.isEmpty()) {
+            return false;
+        }
+        for (Iterator<RequestModel> iterator = cola.iterator(); iterator.hasNext(); ) {
+            try {
                 RequestModel req = iterator.next();
                 updateRequest(llaves, req);
                 if (req.getType() == RequestType.LOGIN) {
@@ -280,13 +282,14 @@ public class SimpleWebConnectionService {
                 } else {
                     connect(req);
                 }
-                iterator.remove();
-                saveResponse(queque, om.writeValueAsString(cola));
-                saveResponse(urlLlaves, om.writeValueAsString(llaves));
+            } catch (ServerErrorException e) {
+                if (e.getCode() == HttpURLConnection.HTTP_INTERNAL_ERROR) {
+                    throw e;
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            iterator.remove();
+            saveResponse(queque, om.writeValueAsString(cola));
+            saveResponse(urlLlaves, om.writeValueAsString(llaves));
         }
         return true;
     }
