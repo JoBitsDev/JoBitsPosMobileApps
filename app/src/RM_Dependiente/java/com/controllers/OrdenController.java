@@ -30,12 +30,6 @@ public class OrdenController extends BaseController {
         return this;
     }
 
-    public boolean saveDeLaCasaOffline(String codOrden, boolean casa) throws Exception {
-        OrdenModel orden = ordenWCService.findOrden(codOrden);
-        orden.setDeLaCasa(casa);
-        ordenWCService.saveOrdenToCache(new ObjectMapper().writeValueAsString(orden));
-    }
-
     public List<SeccionModel> getSecciones() throws Exception {
         return new SeccionWCS().getSecciones();
     }
@@ -116,15 +110,21 @@ public class OrdenController extends BaseController {
         return new PersonalWCS().getPersonalTrabajando();
     }
 
-    public boolean setDeLaCasa(boolean resp) throws Exception {
-        return ordenWCService.setDeLaCasa(resp);
-    }
-
     public boolean isDeLaCasa() {
         return ordenWCService.isDeLaCasa();
     }
 
     public int getRestantes(String codProd) throws Exception {
         return new ProductoWCS().getRestantes(codProd);
+    }
+
+    public boolean setDeLaCasa(boolean casa) throws Exception {
+        boolean resp = ordenWCService.setDeLaCasa(casa);
+        if (!EnvironmentVariables.ONLINE) {
+            OrdenModel orden = ordenWCService.findOrden(ordenWCService.getCodOrden());
+            orden.setDeLaCasa(casa);
+            ordenWCService.saveOrdenToCache(new ObjectMapper().writeValueAsString(orden));
+        }
+        return resp;
     }
 }
