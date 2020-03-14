@@ -1,5 +1,6 @@
 package com.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.services.models.*;
 import com.services.web_connections.*;
 import com.utils.EnvironmentVariables;
@@ -27,6 +28,12 @@ public class OrdenController extends BaseController {
     public OrdenController starService(String codMesa) throws Exception {
         ordenWCService = new OrdenWCS(codMesa);
         return this;
+    }
+
+    public boolean saveDeLaCasaOffline(String codOrden, boolean casa) throws Exception {
+        OrdenModel orden = ordenWCService.findOrden(codOrden);
+        orden.setDeLaCasa(casa);
+        ordenWCService.saveOrdenToCache(new ObjectMapper().writeValueAsString(orden));
     }
 
     public List<SeccionModel> getSecciones() throws Exception {
