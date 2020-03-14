@@ -7,6 +7,7 @@ import com.activities.BaseActivity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.services.models.CacheModel;
+import com.services.models.MesaModel;
 import com.services.models.OrdenModel;
 import com.services.models.RequestModel;
 import com.services.models.RequestType;
@@ -17,6 +18,7 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import com.utils.EnvironmentVariables;
 
@@ -50,8 +52,7 @@ public class SimpleWebConnectionService {
     public static final int MAX_RESPONSE_TIME = 3 * 1000;
 
     public static final String DIR_CACHE = EnvironmentVariables.PERSISTENCE_PATH + "/";
-
-    protected ArrayList<RequestModel> cola = new ArrayList<RequestModel>();
+    private final String queque = "QUEQUE";
 
     /**
      * Partes de la URL de las consultas.
@@ -237,26 +238,35 @@ public class SimpleWebConnectionService {
         }
     }
 
-    public ArrayList<RequestModel> getCola() {
-        return cola;
-    }
-
-    public void addRequestToQueque(RequestModel req) throws JsonProcessingException {
+    public void addRequestToQueque(RequestModel req) throws IOException, ClassNotFoundException {
+        CacheModel quequeCache = checkCache(queque);
+        ArrayList<RequestModel> cola = new ArrayList<RequestModel>();
+        if (quequeCache != null) {
+            cola = om.readValue(quequeCache.getRespuesta(), om.getTypeFactory().constructCollectionType(List.class, RequestModel.class));
+        }
         cola.add(req);
-        saveResponse("QUEQUE", om.writeValueAsString(cola));
+
+        saveResponse(queque, om.writeValueAsString(cola));
     }
 
     public boolean uploadQueque() {
         final String urlLlaves = "LLAVES";
         try {
             //lee las llaves
-            FileInputStream fis = new FileInputStream(getFile(urlLlaves));
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            CacheModel cache = (CacheModel) ois.readObject();
-            fis.close();
-            ois.close();
-            HashMap<String, String> llaves = om.readValue(cache.getRespuesta(), HashMap.class);
+            CacheModel llavesCache = checkCache(urlLlaves);
+            HashMap<String, String> llaves = new HashMap<String, String>();
+            if (llavesCache != null) {
+                om.readValue(llavesCache.getRespuesta(), HashMap.class);
+            }
 
+            CacheModel quequeCache = checkCache(queque);
+            ArrayList<RequestModel> cola = new ArrayList<RequestModel>();
+            if (quequeCache != null) {
+                cola = om.readValue(quequeCache.getRespuesta(), om.getTypeFactory().constructCollectionType(List.class, RequestModel.class));
+            }
+            if (cola.isEmpty()) {
+                return false;
+            }
             for (Iterator<RequestModel> iterator = cola.iterator(); iterator.hasNext(); ) {
                 RequestModel req = iterator.next();
                 updateRequest(llaves, req);
@@ -270,8 +280,9 @@ public class SimpleWebConnectionService {
                 } else {
                     connect(req);
                 }
-                saveResponse(urlLlaves, om.writeValueAsString(llaves));
                 iterator.remove();
+                saveResponse(queque, om.writeValueAsString(cola));
+                saveResponse(urlLlaves, om.writeValueAsString(llaves));
             }
         } catch (Exception e) {
             e.printStackTrace();
