@@ -128,6 +128,9 @@ public abstract class BaseActivity extends Activity {
             @Override
             public void post(Boolean value) {
                 Toast.makeText(act, "Sincronizado con el servidor. :)", Toast.LENGTH_LONG).show();
+                if (value) {
+                    onCreate(bundle);
+                }
             }
         });
     }
