@@ -2,6 +2,9 @@ package com.services.web_connections;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.services.models.CredentialsModel;
+import com.services.models.RequestModel;
+import com.services.models.RequestType;
+import com.utils.EnvironmentVariables;
 import com.utils.exception.NoConnectionException;
 import com.utils.exception.ServerErrorException;
 
@@ -37,7 +40,13 @@ public class LoginWCS extends SimpleWebConnectionService {
     public boolean authenticate(String user, String pass) throws Exception {
         credentials = new CredentialsModel(user, pass);
         String body = new ObjectMapper().writeValueAsString(credentials);
-        TOKEN = connect(login_URL, body, null, HTTPMethod.POST);
+        RequestModel req = new RequestModel(login_URL, body, null, HTTPMethod.POST, RequestType.LOGIN);
+        if (EnvironmentVariables.ONLINE) {
+            TOKEN = connect(req);
+        } else {
+            TOKEN = "TOKEN-" + System.currentTimeMillis();
+            addRequestToQueque(req);
+        }
         return true;
     }
 
