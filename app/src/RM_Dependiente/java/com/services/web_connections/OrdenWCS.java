@@ -70,7 +70,7 @@ public class OrdenWCS extends SimpleWebConnectionService {
     }
 
     public OrdenModel initOrdenOffline() throws Exception {
-        return new OrdenModel("O - " + new SecureRandom().nextInt((int) Math.pow(10, 5)) + "");
+        return new OrdenModel("Offline-" + System.currentTimeMillis() + "");
     }
 
     public boolean finishOrden() throws Exception {
