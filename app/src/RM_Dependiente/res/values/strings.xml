@@ -2,8 +2,6 @@
     <string name="app_name">POS Dpte</string>
 
     <string name="hello_world">Hello world!</string>
-    <string name="action_turn_off_offline">Desactivar modo offline</string>
-    <string name="action_turn_on_offline">Activar modo offline</string>
 
     <string name="title_activity_fullscreen">FullscreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
