@@ -6,6 +6,7 @@ import com.services.web_connections.*;
 import com.utils.EnvironmentVariables;
 import com.utils.adapters.ProductoVentaOrdenAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,8 +54,10 @@ public class OrdenController extends BaseController {
 
     public boolean initOrden() throws Exception {
         OrdenModel orden = ordenWCService.initOrden();
+        orden.setProductoVentaOrdenList(new ArrayList<ProductoVentaOrdenModel>());
         String mesa = ordenWCService.getCodMesa();
         new MesasController().initOrdenEnMesa(orden, mesa);
+        ordenWCService.saveOrdenToCache(new ObjectMapper().writeValueAsString(orden));
         return true;
     }
 
