@@ -123,26 +123,40 @@ public class LoginActivity extends BaseActivity {
                 loginResult.setTextColor(Color.RED);
                 loginResult.setText(R.string.errorAlAutenticar);
             } else {
-
                 new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
                     @Override
                     public Boolean process() throws Exception {
-                        return controller.loginAction(username, password);
+                        return controller.checkConnection();
                     }
 
                     @Override
                     public void post(Boolean value) {
-                        if (value) {
-                            loginResult.setTextColor(Color.GREEN);
-                            loginResult.setText(R.string.autenticacionCorrecta);
+                        if (value) {//hay coneccion
+                            new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
+                                @Override
+                                public Boolean process() throws Exception {
+                                    return controller.loginAction(username, password);
+                                }
 
-                            //cambio de activity
-                            Intent launch = new Intent(act, PantallaPrincipalActivity.class);
-                            launch.putExtra(String.valueOf(R.string.user), username);
-                            startActivity(launch);
+                                @Override
+                                public void post(Boolean value) {
+                                    if (value) {
+                                        loginResult.setTextColor(Color.GREEN);
+                                        loginResult.setText(R.string.autenticacionCorrecta);
 
-                        } else {//si no es correcto lanza error
-                            errorAlAutenticar();
+                                        //cambio de activity
+                                        Intent launch = new Intent(act, PantallaPrincipalActivity.class);
+                                        launch.putExtra(String.valueOf(R.string.user), username);
+                                        startActivity(launch);
+
+                                    } else {//si no es correcto lanza error
+                                        errorAlAutenticar();
+                                    }
+                                }
+                            });
+                        } else {
+                            act.showMessage(act.getApplication().getApplicationContext().getResources().
+                                    getText(R.string.necesarioOnline).toString());
                         }
                     }
                 });

@@ -57,6 +57,7 @@ public class OrdenActivity extends BaseActivity {
     private ProductoVentaOrdenAdapter productoVentaOrdenAdapter;
     private TabHost host;
     private float lastX;
+    private String area;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +70,8 @@ public class OrdenActivity extends BaseActivity {
 
             //separado porque es un init y un set adapter en paralelo
             Bundle bundleExtra = getIntent().getExtras();
-            initMenu(bundleExtra.getString(String.valueOf(R.string.mesa)));
+            area = bundleExtra.getString(String.valueOf(R.string.area));
+            initMenu(area);
 
             setAdapters();
             addListeners();
@@ -100,11 +102,14 @@ public class OrdenActivity extends BaseActivity {
             cerrarOrdenButton = (Button) findViewById(R.id.buttonCerrarOrden);
             despacharACocinaButton = (Button) findViewById(R.id.buttondespacharCocina);
             searchText = (EditText) findViewById(R.id.searchText);
-            controller = new OrdenController();
 
             Bundle bundleExtra = getIntent().getExtras();
             mesaNoLabel.setText(bundleExtra.getString(String.valueOf(R.string.mesa)));//set el No de la mesa
-            dependienteLabel.setText(bundleExtra.getString(String.valueOf(R.string.user)));//set el label con el dependiente
+
+            String user = bundleExtra.getString(String.valueOf(R.string.user));
+            dependienteLabel.setText(user);//set el label con el dependiente
+            controller = new OrdenController(user);
+
             ordenNoLabel.setText(bundleExtra.getString(String.valueOf(R.string.cod_Orden)));//set el label de la orden
             productosVentaOrden = new ArrayList<ProductoVentaOrdenModel>();
             menuAdapter = new MenuAdapterThis(act, R.layout.list_menu, new ArrayList<ProductoVentaModel>());
@@ -427,7 +432,7 @@ public class OrdenActivity extends BaseActivity {
         menuSeccionListView.setAdapter(seccionAdapter);
     }
 
-    private void createOldOrden(Bundle bundleExtra) {
+    private void createOldOrden(final Bundle bundleExtra) {
         try {
 
             OrdenActivity old = (OrdenActivity) getLastNonConfigurationInstance();//TODO: porque un metodo deprecated??
@@ -457,7 +462,7 @@ public class OrdenActivity extends BaseActivity {
                     @Override
                     public Void process() throws Exception {
                         controller.starService(mesa);
-                        if (!controller.initOrden()) {
+                        if (!controller.initOrden(area)) {
                             throw new DayClosedException(getResources().getString(R.string.dayClosedError));
                         }
                         return null;
@@ -517,12 +522,12 @@ public class OrdenActivity extends BaseActivity {
         }
     }
 
-    private void initMenu(final String codMesa) {
+    private void initMenu(final String codArea) {
         new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
             @Override
             public Void process() throws Exception {
                 secciones = controller.getSecciones();
-                productos = controller.getProductos(codMesa);
+                productos = controller.getProductos(codArea);
                 return null;
             }
 
@@ -586,17 +591,11 @@ public class OrdenActivity extends BaseActivity {
                 case R.id.cederACamarero:
                     cederACamarero();
                     break;
-                case R.id.action_settings:
-                    return true;
                 default:
                     super.onOptionsItemSelected(item);
                     break;
             }
 
-            //noinspection SimplifiableIfStatement
-            if (id == R.id.action_settings) {//TODO: wath??????? por que si esta el case puesto???
-                return true;
-            }
             return super.onOptionsItemSelected(item);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
@@ -884,7 +883,7 @@ public class OrdenActivity extends BaseActivity {
                 new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
                     @Override
                     public Boolean process() throws Exception {
-                        return controller.removeProducto(lastClickedOrden.getProductoVenta());
+                        return controller.removeProducto(lastClickedOrden.getProductoVenta(), cantidad);
                     }
 
                     @Override
@@ -921,7 +920,7 @@ public class OrdenActivity extends BaseActivity {
         new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
             @Override
             public Boolean process() throws Exception {
-                return controller.finishOrden();
+                return controller.finishOrden(area);
             }
 
             @Override

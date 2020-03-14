@@ -68,15 +68,15 @@ public class OrdenReadOnlyActivity extends BaseActivity {
         totalPrincipal = (TextView) findViewById(R.id.totalPrincipalLabel);
         totalSecundaria = (TextView) findViewById(R.id.totalSecundariaLabel);
         listaOrden = (ListView) findViewById(R.id.listaOrdenReadOnly);
-        controller = new OrdenController();
         deLaCasaCheckBox = (CheckBox) findViewById(R.id.deLaCasaCheckBoxReadOnly);
         deLaCasaCheckBox.setEnabled(false);
 
         Bundle bundleExtra = getIntent().getExtras();
 
         mesa.setText(bundleExtra.getString(String.valueOf(R.string.mesa)));//set el No de la mesa
-        dependiente.setText(bundleExtra.getString(String.valueOf(R.string.user)));//set el label con el dependiente
-
+        String user = bundleExtra.getString(String.valueOf(R.string.user));
+        dependiente.setText(user);//set el label con el dependiente
+        controller = new OrdenController(user);
         ordenNo.setText(bundleExtra.getString(String.valueOf(R.string.cod_Orden)));//set el label de la orden
     }
 
