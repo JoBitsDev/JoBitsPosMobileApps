@@ -50,6 +50,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         setContentView(R.layout.pantalla_principal);
 
         initVarialbes();
+        initTab();
         addListeners();
         onCambiarAreaButtonClick();
         configurarTabla();
@@ -88,7 +89,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
                 cocinaTrabajo = "-";
             }
             labelCocinaName.setText(cocinaTrabajo);
-            initTab();
+
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
@@ -104,7 +105,9 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                ((IPVsAdapter) listViewIPV.getAdapter()).getFilter().filter(s.toString());
+                if (listViewIPV != null && listViewIPV.getAdapter() != null) {
+                    ((IPVsAdapter) listViewIPV.getAdapter()).getFilter().filter(s.toString());
+                }
             }
 
             @Override
@@ -213,6 +216,9 @@ public class PantallaPrincipalActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        initVarialbes();
+        addListeners();
+        //onCambiarAreaButtonClick();
         configurarTabla();
     }
 
