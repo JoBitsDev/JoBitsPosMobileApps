@@ -1,22 +1,18 @@
 package com.services.web_connections;
 
 import com.controllers.MesasController;
-import com.services.models.MesaModel;
 import com.services.models.OrdenModel;
 import com.services.models.RequestModel;
 import com.services.models.RequestType;
 import com.utils.EnvironmentVariables;
 
-import java.security.SecureRandom;
-import java.util.*;
+import java.util.HashMap;
 
 /**
  * Created by Jorge on 24/9/17.
  */
 
 public class OrdenWCS extends SimpleWebConnectionService {
-
-    private String codOrden, usuarioTrabajador, codMesa;
 
     private final String P = "orden/",
             FETCH_NO_ORDEN = "FETCH",
@@ -33,8 +29,8 @@ public class OrdenWCS extends SimpleWebConnectionService {
             GET_COMENSAL = "GET-COMENSAL",
             CEDER_ORDEN = "CEDER-ORDEN",
             VALIDATE = "VALIDATE";
-
     boolean deLaCasa = false;
+    private String codOrden, usuarioTrabajador, codMesa;
 
     public OrdenWCS(String codOrden, String codMesa) throws Exception {
         super();
@@ -89,8 +85,12 @@ public class OrdenWCS extends SimpleWebConnectionService {
         hm.put("codOrden", this.codOrden);
         hm.put("codProducto", codProducto);
         hm.put("cantidad", cantidad);
-
-        connect(path + ADD, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
+        RequestModel request = new RequestModel(path + ADD, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST, RequestType.NORMAL);
+        if (EnvironmentVariables.ONLINE) {
+            connect(request);
+        } else {
+            addRequestToQueque(request);
+        }
         return true;
     }
 
@@ -103,8 +103,12 @@ public class OrdenWCS extends SimpleWebConnectionService {
         hm.put("codOrden", this.codOrden);
         hm.put("codProducto", codProducto);
         hm.put("cantidad", cantidad);
-
-        connect(path + REMOVE, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
+        RequestModel request = new RequestModel(path + REMOVE, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
+        if (EnvironmentVariables.ONLINE) {
+            connect(request);
+        } else {
+            addRequestToQueque(request);
+        }
         return true;
     }
 
@@ -113,24 +117,23 @@ public class OrdenWCS extends SimpleWebConnectionService {
         HashMap<String, Object> hm = new HashMap<String, Object>();
         hm.put("codOrden", this.codOrden);
         hm.put("deLaCasa", this.deLaCasa);
-        RequestModel request = new RequestModel(path + SET_DE_LA_CASA,om.writeValueAsString(hm),super.TOKEN, HTTPMethod.POST,RequestType.NORMAL);
-        if (EnvironmentVariables.ONLINE){
+        RequestModel request = new RequestModel(path + SET_DE_LA_CASA, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST, RequestType.NORMAL);
+        if (EnvironmentVariables.ONLINE) {
             connect(request);
-        }else{
+        } else {
             addRequestToQueque(request);
         }
         return true;
     }
 
     public boolean sendToKitchen() throws Exception {
-     String urlToExecute = path + ENVIAR_COCINA;
-     RequestModel request = new RequestModel(urlToExecute,codOrden,super.TOKEN,HTTPMethod.POST,RequestType.NORMAL);
-      if (EnvironmentVariables.ONLINE){
-        connect(request);
-      }
-      else{
-       super.addRequestToQueque(request);
-      }
+        String urlToExecute = path + ENVIAR_COCINA;
+        RequestModel request = new RequestModel(urlToExecute, codOrden, super.TOKEN, HTTPMethod.POST, RequestType.NORMAL);
+        if (EnvironmentVariables.ONLINE) {
+            connect(request);
+        } else {
+            super.addRequestToQueque(request);
+        }
         return true;
     }
 
@@ -140,8 +143,8 @@ public class OrdenWCS extends SimpleWebConnectionService {
         return om.readValue(resp, OrdenModel.class);
     }
 
-    public void saveOrdenToCache(String ordenJson) throws Exception{
-        saveResponse(path + "?codOrden=" + codOrden,ordenJson);
+    public void saveOrdenToCache(String ordenJson) throws Exception {
+        saveResponse(path + "?codOrden=" + codOrden, ordenJson);
     }
 
     public boolean moverAMesa(String codMesa) throws Exception {
