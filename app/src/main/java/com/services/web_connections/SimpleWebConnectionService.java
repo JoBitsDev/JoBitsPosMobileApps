@@ -239,7 +239,7 @@ public class SimpleWebConnectionService {
         return cola;
     }
 
-    public void addRequest(RequestModel req) {
+    public void addRequestToQueque(RequestModel req) {
         cola.add(req);
     }
 
