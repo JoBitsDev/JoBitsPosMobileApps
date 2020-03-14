@@ -6,7 +6,6 @@ import com.services.models.OrdenModel;
 import com.services.models.RequestModel;
 import com.utils.EnvironmentVariables;
 
-import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.*;
 
@@ -118,7 +117,13 @@ public class OrdenWCS extends SimpleWebConnectionService {
     }
 
     public boolean sendToKitchen() throws Exception {
+
+      if (EnvironmentVariables.ONLINE){
         connect(path + ENVIAR_COCINA, codOrden, super.TOKEN, HTTPMethod.POST);
+      }
+      else{
+       super.addRequestToQueque();
+      }
         return true;
     }
 
