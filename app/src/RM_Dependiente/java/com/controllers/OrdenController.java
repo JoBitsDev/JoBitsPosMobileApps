@@ -99,7 +99,7 @@ public class OrdenController extends BaseController {
             if (!exitProduct) {
                 ProductoVentaOrdenModel p = new ProductoVentaOrdenModel();
                 p.setCantidad(cantidad);
-                p.setEnviadosacocina(0);
+                p.setEnviadosacocina(0f);
                 p.setOrdenModel(orden);
                 p.setProductoVenta(lastClickedMenu);
                 p.setProductovOrdenPKModel(null);
@@ -114,8 +114,22 @@ public class OrdenController extends BaseController {
         adapter.increase(lastClickedMenu, ordenWCService, cantidad);
     }
 
-    public boolean removeProducto(ProductoVentaModel productoVentaModel) throws Exception {
-        return ordenWCService.removeProducto(productoVentaModel.getPCod());
+    public boolean removeProducto(ProductoVentaModel productoVentaModel, float cant) throws Exception {
+        boolean resp = ordenWCService.removeProducto(productoVentaModel.getPCod(), cant);
+        if (!EnvironmentVariables.ONLINE) {
+            OrdenModel orden = ordenWCService.findOrden(ordenWCService.getCodOrden());
+            for (ProductoVentaOrdenModel prod : orden.getProductoVentaOrdenList()) {
+                if (prod.getProductoVenta().getPCod().matches(productoVentaModel.getPCod())) {
+                    if (cant > prod.getCantidad()) {
+                        throw new NullPointerException("No se puede eliminar mas de lo que tiene la orden.");
+                    }
+                    prod.setCantidad(prod.getCantidad() - cant);
+                    break;
+                }
+            }
+            ordenWCService.saveOrdenToCache(new ObjectMapper().writeValueAsString(orden));
+        }
+        return resp;
     }
 
     public boolean finishOrden() throws Exception {
@@ -127,7 +141,7 @@ public class OrdenController extends BaseController {
     }
 
     public boolean sendToKitchen() throws Exception {
-        boolean resp =  ordenWCService.sendToKitchen();
+        boolean resp = ordenWCService.sendToKitchen();
         if (!EnvironmentVariables.ONLINE) {
             OrdenModel orden = ordenWCService.findOrden(ordenWCService.getCodOrden());
             for (ProductoVentaOrdenModel prod : orden.getProductoVentaOrdenList()) {
