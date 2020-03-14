@@ -4,6 +4,7 @@ import com.controllers.MesasController;
 import com.services.models.MesaModel;
 import com.services.models.OrdenModel;
 import com.services.models.RequestModel;
+import com.services.models.RequestType;
 import com.utils.EnvironmentVariables;
 
 import java.security.SecureRandom;
@@ -112,17 +113,23 @@ public class OrdenWCS extends SimpleWebConnectionService {
         HashMap<String, Object> hm = new HashMap<String, Object>();
         hm.put("codOrden", this.codOrden);
         hm.put("deLaCasa", this.deLaCasa);
-        connect(path + SET_DE_LA_CASA, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
+        RequestModel request = new RequestModel(path + SET_DE_LA_CASA,om.writeValueAsString(hm),super.TOKEN, HTTPMethod.POST,RequestType.NORMAL);
+        if (EnvironmentVariables.ONLINE){
+            connect(request);
+        }else{
+            addRequestToQueque(request);
+        }
         return true;
     }
 
     public boolean sendToKitchen() throws Exception {
-
+     String urlToExecute = path + ENVIAR_COCINA;
+     RequestModel request = new RequestModel(urlToExecute,codOrden,super.TOKEN,HTTPMethod.POST,RequestType.NORMAL);
       if (EnvironmentVariables.ONLINE){
-        connect(path + ENVIAR_COCINA, codOrden, super.TOKEN, HTTPMethod.POST);
+        connect(request);
       }
       else{
-       super.addRequestToQueque();
+       super.addRequestToQueque(request);
       }
         return true;
     }
@@ -131,6 +138,10 @@ public class OrdenWCS extends SimpleWebConnectionService {
         String URL = path + "?codOrden=" + codOrden;
         String resp = connect(URL, null, super.TOKEN, HTTPMethod.GET);
         return om.readValue(resp, OrdenModel.class);
+    }
+
+    public void saveOrdenToCache(String ordenJson) throws Exception{
+        saveResponse(path + "?codOrden=" + codOrden,ordenJson);
     }
 
     public boolean moverAMesa(String codMesa) throws Exception {
