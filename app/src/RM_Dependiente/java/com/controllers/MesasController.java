@@ -40,7 +40,7 @@ public class MesasController extends BaseController {
     public MesaAdapter getData(String selectedArea, Activity act) throws Exception {
         List<MesaModel> mesaModels;
         if (selectedArea == null) {
-            mesaModels = new AreaWCS().findMesas();//    MesaXMlParser().fetch(urlMesas + "/AREA_" + selectedArea);
+            mesaModels = new AreaWCS().findMesas();
         } else {
             mesaModels = new AreaWCS().findMesas(selectedArea);//new MesaXMlParser().fetch(urlMesas);
         }

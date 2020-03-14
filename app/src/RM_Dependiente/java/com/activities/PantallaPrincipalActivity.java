@@ -41,7 +41,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         try {
             initVarialbes();
             addListeners();
-            configurarTabla();
+            onCambiarAreaButtonClick(null);
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
@@ -232,7 +232,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
             @Override
             public void post(final String[] value) {
-                new AlertDialog.Builder(act).
+                AlertDialog alert = new AlertDialog.Builder(act).
                         setTitle(R.string.seleccionararea).
                         setSingleChoiceItems(value, selectedAreaWich, new DialogInterface.OnClickListener() {
                             @Override
@@ -242,7 +242,10 @@ public class PantallaPrincipalActivity extends BaseActivity {
                                 dialog.dismiss();
                                 configurarTabla();
                             }
-                        }).create().show();
+                        }).create();
+                alert.setCancelable(false);
+                alert.setCanceledOnTouchOutside(false);
+                alert.show();
             }
         });
 
