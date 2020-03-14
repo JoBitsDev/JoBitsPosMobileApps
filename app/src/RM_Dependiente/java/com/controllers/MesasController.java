@@ -19,6 +19,8 @@ import java.util.List;
  */
 public class MesasController extends BaseController {
 
+
+    private static String ESTADO_MESA_VACIA = "vacia";
     private String user;
     private OrdenWCS ordenWCService = null;
 
@@ -45,7 +47,18 @@ public class MesasController extends BaseController {
         List<MesaModel> mesaModels = new AreaWCS().findMesas();
         for (MesaModel m : mesaModels) {
             if (m.getCodMesa().matches(mesa)) {
-                //m.setEstado(orden.getCodOrden() + " " + user);
+                m.setEstado(orden.getCodOrden() + " " + user);
+                break;
+            }
+        }
+        new AreaWCS().saveMesasList(mesaModels);
+    }
+
+    public void terminarOrdenEnMesa(String mesa) throws Exception{
+        List<MesaModel> mesaModels = new AreaWCS().findMesas();
+        for (MesaModel m : mesaModels) {
+            if (m.getCodMesa().matches(mesa)) {
+                m.setEstado(ESTADO_MESA_VACIA);
                 break;
             }
         }
