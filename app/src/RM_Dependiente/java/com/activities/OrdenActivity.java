@@ -57,6 +57,7 @@ public class OrdenActivity extends BaseActivity {
     private ProductoVentaOrdenAdapter productoVentaOrdenAdapter;
     private TabHost host;
     private float lastX;
+    private String area;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +70,8 @@ public class OrdenActivity extends BaseActivity {
 
             //separado porque es un init y un set adapter en paralelo
             Bundle bundleExtra = getIntent().getExtras();
-            initMenu(bundleExtra.getString(String.valueOf(R.string.area)));
+            area = bundleExtra.getString(String.valueOf(R.string.area));
+            initMenu(area);
 
             setAdapters();
             addListeners();
@@ -430,7 +432,7 @@ public class OrdenActivity extends BaseActivity {
         menuSeccionListView.setAdapter(seccionAdapter);
     }
 
-    private void createOldOrden(Bundle bundleExtra) {
+    private void createOldOrden(final Bundle bundleExtra) {
         try {
 
             OrdenActivity old = (OrdenActivity) getLastNonConfigurationInstance();//TODO: porque un metodo deprecated??
@@ -460,7 +462,7 @@ public class OrdenActivity extends BaseActivity {
                     @Override
                     public Void process() throws Exception {
                         controller.starService(mesa);
-                        if (!controller.initOrden()) {
+                        if (!controller.initOrden(area)) {
                             throw new DayClosedException(getResources().getString(R.string.dayClosedError));
                         }
                         return null;
@@ -918,7 +920,7 @@ public class OrdenActivity extends BaseActivity {
         new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
             @Override
             public Boolean process() throws Exception {
-                return controller.finishOrden();
+                return controller.finishOrden(area);
             }
 
             @Override

@@ -25,8 +25,9 @@ public class AreaWCS extends SimpleWebConnectionService {
     }
 
 
-    public void saveMesasList(List<MesaModel> mesaModels) throws JsonProcessingException {
-        saveResponse(path + FIND_ALL, om.writeValueAsString(mesaModels));
+    public void saveMesasList(List<MesaModel> mesaModels, String area) throws JsonProcessingException {
+        String URL = path + FIND_ALL_MESAS_AREA + "?selectedArea=" + area;
+        saveResponse(URL, om.writeValueAsString(mesaModels));
     }
 
     public String[] getAreasName() throws Exception {
@@ -38,11 +39,6 @@ public class AreaWCS extends SimpleWebConnectionService {
         String URL = path + FIND_VACIAS + "?codMesa=" + codMesa;
         String resp = connect(URL, null, super.TOKEN, HTTPMethod.GET);
         return om.readValue(resp, om.getTypeFactory().constructArrayType(String.class));
-    }
-
-    public List<MesaModel> findMesas() throws Exception {
-        String resp = connect(path + FIND_ALL, null, super.TOKEN, HTTPMethod.GET);
-        return om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, MesaModel.class));
     }
 
     public List<MesaModel> findMesas(String selectedArea) throws Exception {

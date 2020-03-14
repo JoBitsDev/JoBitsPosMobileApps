@@ -38,36 +38,31 @@ public class MesasController extends BaseController {
     }
 
     public MesaAdapter getData(String selectedArea, Activity act) throws Exception {
-        List<MesaModel> mesaModels;
-        if (selectedArea == null) {
-            mesaModels = new AreaWCS().findMesas();
-        } else {
-            mesaModels = new AreaWCS().findMesas(selectedArea);//new MesaXMlParser().fetch(urlMesas);
-        }
+        List<MesaModel>  mesaModels = new AreaWCS().findMesas(selectedArea);
         MesaAdapter adaptador = new MesaAdapter(act, R.id.listaMesas, mesaModels, user);
         return adaptador;
     }
 
-    public void initOrdenEnMesa(OrdenModel orden, String mesa) throws Exception {
-        List<MesaModel> mesaModels = new AreaWCS().findMesas();
+    public void initOrdenEnMesa(OrdenModel orden, String mesa, String area) throws Exception {
+        List<MesaModel> mesaModels = new AreaWCS().findMesas(area);
         for (MesaModel m : mesaModels) {
             if (m.getCodMesa().matches(mesa)) {
                 m.setEstado(orden.getCodOrden() + " " + user);
                 break;
             }
         }
-        new AreaWCS().saveMesasList(mesaModels);
+        new AreaWCS().saveMesasList(mesaModels, area);
     }
 
-    public void terminarOrdenEnMesa(String mesa) throws Exception {
-        List<MesaModel> mesaModels = new AreaWCS().findMesas();
+    public void terminarOrdenEnMesa(String mesa,String area) throws Exception {
+        List<MesaModel> mesaModels = new AreaWCS().findMesas(area);
         for (MesaModel m : mesaModels) {
             if (m.getCodMesa().matches(mesa)) {
                 m.setEstado(ESTADO_MESA_VACIA);
                 break;
             }
         }
-        new AreaWCS().saveMesasList(mesaModels);
+        new AreaWCS().saveMesasList(mesaModels,area);
     }
 
     public void starService(String codMesa) {

@@ -56,11 +56,11 @@ public class OrdenController extends BaseController {
         return ordenWCService.getCodOrden();
     }
 
-    public boolean initOrden() throws Exception {
+    public boolean initOrden(String area) throws Exception {
         OrdenModel orden = ordenWCService.initOrden();
         orden.setProductoVentaOrdenList(new ArrayList<ProductoVentaOrdenModel>());
         String mesa = ordenWCService.getCodMesa();
-        new MesasController(user).initOrdenEnMesa(orden, mesa);
+        new MesasController(user).initOrdenEnMesa(orden, mesa,area);
         ordenWCService.saveOrdenToCache(new ObjectMapper().writeValueAsString(orden));
         return true;
     }
@@ -137,12 +137,12 @@ public class OrdenController extends BaseController {
         return resp;
     }
 
-    public boolean finishOrden() throws Exception {
+    public boolean finishOrden(String area) throws Exception {
         boolean resp = false;
         if (puedoCerrar(ordenWCService.getCodOrden())) {
             resp = ordenWCService.finishOrden();
             if (!EnvironmentVariables.ONLINE) {
-                new MesasController(user).terminarOrdenEnMesa(ordenWCService.getCodMesa());
+                new MesasController(user).terminarOrdenEnMesa(ordenWCService.getCodMesa(),area);
             }
         }
         return resp;
