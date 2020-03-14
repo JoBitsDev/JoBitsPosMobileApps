@@ -267,6 +267,7 @@ public class SimpleWebConnectionService {
                     connect(req);
                 }
                 saveResponse(urlLlaves, om.writeValueAsString(llaves));
+                iterator.remove();
             }
         } catch (Exception e) {
             e.printStackTrace();
