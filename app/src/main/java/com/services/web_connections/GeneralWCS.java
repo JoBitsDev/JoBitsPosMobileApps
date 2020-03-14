@@ -22,7 +22,7 @@ public class GeneralWCS extends SimpleWebConnectionService {
         return om.readValue(resp, HashMap.class);
     }
 
-    public boolean uploadQueque() {
+    public boolean uploadQueque() throws Exception {
         return super.uploadQueque();
     }
 }

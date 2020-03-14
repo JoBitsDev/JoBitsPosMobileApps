@@ -21,7 +21,7 @@ public abstract class BaseController {
         return new CheckConnectionWCS().checkConnection();
     }
 
-    public Boolean uploadQueque() {
+    public Boolean uploadQueque() throws Exception {
         return new GeneralWCS().uploadQueque();
     }
 }
