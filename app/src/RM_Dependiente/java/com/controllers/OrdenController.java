@@ -81,16 +81,8 @@ public class OrdenController extends BaseController {
         return new AreaWCS().findVacias(ordenWCService.getCodMesa());
     }
 
-    public boolean addProducto(ProductoVentaModel lastClickedMenu) throws Exception {
-        return ordenWCService.addProducto(lastClickedMenu.getPCod());
-    }
-
     public boolean addProducto(ProductoVentaModel lastClickedMenu, float cantidad) throws Exception {
         return ordenWCService.addProducto(lastClickedMenu.getPCod(), cantidad);//TODO capas mezcladas actulizando el adaptdor desde el controlador
-    }
-
-    public void increasePoducto(ProductoVentaModel lastClickedMenu, ProductoVentaOrdenAdapter adapter) {
-        adapter.increase(lastClickedMenu, ordenWCService, 1);//TODO capas mezcladas actulizando el adaptdor desde el controlador
     }
 
     public void increasePoducto(ProductoVentaModel lastClickedMenu, ProductoVentaOrdenAdapter adapter, float cantidad) {
@@ -101,18 +93,6 @@ public class OrdenController extends BaseController {
         return ordenWCService.removeProducto(productoVentaModel.getPCod());
     }
 
-    public boolean removeProductoVarios(ProductoVentaModel productoVentaModel, float cant) throws Exception {
-        return ordenWCService.removeProducto(productoVentaModel.getPCod(), cant);
-    }
-
-    public void decresePoducto(ProductoVentaModel lastClickedMenu, ProductoVentaOrdenAdapter adapter) {
-        adapter.decrease(lastClickedMenu, 1);//TODO capas mezcladas actulizando el adaptdor desde el controlador
-    }
-
-    public void decresePoducto(ProductoVentaModel lastClickedMenu, ProductoVentaOrdenAdapter adapter, float cantidad) {
-        adapter.decrease(lastClickedMenu, cantidad);
-    }
-
     public boolean finishOrden() throws Exception {
         return ordenWCService.finishOrden();
     }
@@ -121,13 +101,8 @@ public class OrdenController extends BaseController {
         return ordenWCService.sendToKitchen();
     }
 
-
     public boolean addNota(ProductoVentaModel productoVentaModel, String nota) throws Exception {
         return ordenWCService.addNota(productoVentaModel.getPCod(), nota);
-    }
-
-    public void setCodOrden(String codOrden) {
-        ordenWCService.setCodOrden(codOrden);
     }
 
     public String[] getUsuariosActivos() throws Exception {
