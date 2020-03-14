@@ -1,10 +1,12 @@
 package com.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.services.models.*;
 import com.services.web_connections.*;
 import com.utils.EnvironmentVariables;
 import com.utils.adapters.ProductoVentaOrdenAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,8 +54,10 @@ public class OrdenController extends BaseController {
 
     public boolean initOrden() throws Exception {
         OrdenModel orden = ordenWCService.initOrden();
+        orden.setProductoVentaOrdenList(new ArrayList<ProductoVentaOrdenModel>());
         String mesa = ordenWCService.getCodMesa();
         new MesasController().initOrdenEnMesa(orden, mesa);
+        ordenWCService.saveOrdenToCache(new ObjectMapper().writeValueAsString(orden));
         return true;
     }
 
@@ -94,7 +98,11 @@ public class OrdenController extends BaseController {
     }
 
     public boolean finishOrden() throws Exception {
-        return ordenWCService.finishOrden();
+        boolean resp = ordenWCService.finishOrden();
+        if (!EnvironmentVariables.ONLINE) {
+            new MesasController().terminarOrdenEnMesa(ordenWCService.getCodMesa());
+        }
+        return resp;
     }
 
     public boolean sendToKitchen() throws Exception {
@@ -109,15 +117,21 @@ public class OrdenController extends BaseController {
         return new PersonalWCS().getPersonalTrabajando();
     }
 
-    public boolean setDeLaCasa(boolean resp) throws Exception {
-        return ordenWCService.setDeLaCasa(resp);
-    }
-
     public boolean isDeLaCasa() {
         return ordenWCService.isDeLaCasa();
     }
 
     public int getRestantes(String codProd) throws Exception {
         return new ProductoWCS().getRestantes(codProd);
+    }
+
+    public boolean setDeLaCasa(boolean casa) throws Exception {
+        boolean resp = ordenWCService.setDeLaCasa(casa);
+        if (!EnvironmentVariables.ONLINE) {
+            OrdenModel orden = ordenWCService.findOrden(ordenWCService.getCodOrden());
+            orden.setDeLaCasa(casa);
+            ordenWCService.saveOrdenToCache(new ObjectMapper().writeValueAsString(orden));
+        }
+        return resp;
     }
 }
