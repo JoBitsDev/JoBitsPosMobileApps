@@ -80,6 +80,7 @@ public class LoadingHandler<T> extends AsyncTask<Void, Void, T> {
      * Excepcion que se puede lanzar en caso que algo salga mal en #doInBackground()
      */
     private Exception exc = null;
+    private String message = "Cargando...";
 
     /**
      * Crea el Hnadler, solo se encarga de ejecutar la secuencia.
@@ -94,13 +95,26 @@ public class LoadingHandler<T> extends AsyncTask<Void, Void, T> {
     }
 
     /**
+     * Crea el Hnadler, solo se encarga de ejecutar la secuencia.
+     *
+     * @param activity Activity sobre el que se va a mostrar el dialog.
+     * @param process  Proceso que se va a ejecutar en background mientras sale el cargando.
+     */
+    public LoadingHandler(String message, BaseActivity activity, LoadingProcess process) {
+        this.activity = activity;
+        this.process = process;
+        this.message = message;
+        this.execute();//start the secuence
+    }
+
+    /**
      * Muestra el progress dialog activo, cargando indefinidamente.
      * Termina cuando termina el proceso.
      */
     public void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(activity);
-            mProgressDialog.setMessage("Cargando ...");
+            mProgressDialog.setMessage(message);
             mProgressDialog.setIndeterminate(true);
             mProgressDialog.setCancelable(false);
             mProgressDialog.setCanceledOnTouchOutside(false);

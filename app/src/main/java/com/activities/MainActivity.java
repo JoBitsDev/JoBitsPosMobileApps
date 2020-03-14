@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.controllers.MainController;
 import com.services.models.ConfigModel;
@@ -198,6 +199,12 @@ public class MainActivity extends BaseActivity {//  |||||
             case R.id.editar_ubicacion:
                 editarUbicacion();
                 return true;
+            case R.id.action_turn_on_offline_mode_main:
+                setUpOffline();
+                return true;
+            case R.id.action_turn_off_offline_mode_main:
+                setUpOnline();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -292,10 +299,10 @@ public class MainActivity extends BaseActivity {//  |||||
      *
      * @param v View de la aplicacion.
      */
-    private void onInitializeSesionButtOnClick(View v) {
+    private void onInitializeSesionButtOnClick(final View v) {
         new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
             @Override
-            public Boolean process() {
+            public Boolean process() throws Exception {
                 return controller.checkConnection();
             }
 
@@ -320,8 +327,7 @@ public class MainActivity extends BaseActivity {//  |||||
                         }
                     });
                 } else {
-                    act.showMessage(act.getApplication().getApplicationContext().getResources().
-                            getText(R.string.noConnectionError).toString());
+                    manageNoConnection(getResources().getText(R.string.noConnectionError).toString());
                 }
             }
         });
@@ -333,7 +339,7 @@ public class MainActivity extends BaseActivity {//  |||||
     private void updateConnectionText() {
         new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
             @Override
-            public Boolean process() {
+            public Boolean process() throws Exception {
                 return controller.checkConnection();
             }
 
@@ -342,6 +348,8 @@ public class MainActivity extends BaseActivity {//  |||||
                 if (value) {
                     connectionStatusText.setText(R.string.conexion_succesfull);
                     connectionStatusText.setTextColor(Color.GREEN);
+
+                    setUpOnline();
                 } else {
                     connectionStatusText.setText(R.string.no_network);
                     connectionStatusText.setTextColor(Color.RED);
