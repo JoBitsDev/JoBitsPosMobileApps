@@ -17,9 +17,13 @@ import java.util.List;
  */
 public class OrdenController extends BaseController {
 
-    public static final String urlListProducts_ = "http://" + EnvironmentVariables.getIP() + ":" + EnvironmentVariables.getPORT() + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.orden/LISTPRODUCTS_";
-
     private OrdenWCS ordenWCService = null;
+
+    private String user;
+
+    public OrdenController(String user) {
+        this.user = user;
+    }
 
     public OrdenController starService(String codOrden, String codMesa) throws Exception {
         ordenWCService = new OrdenWCS(codOrden, codMesa);
@@ -35,8 +39,8 @@ public class OrdenController extends BaseController {
         return new SeccionWCS().getSecciones();
     }
 
-    public List<ProductoVentaModel> getProductos(String codMesa) throws Exception {
-        return new ProductoWCS().getProducts(codMesa);
+    public List<ProductoVentaModel> getProductos(String codArea) throws Exception {
+        return new ProductoWCS().getProducts(codArea);
     }
 
     public List<ProductoVentaOrdenModel> getProductoVentaOrden(String codOrden) throws Exception {
@@ -56,7 +60,7 @@ public class OrdenController extends BaseController {
         OrdenModel orden = ordenWCService.initOrden();
         orden.setProductoVentaOrdenList(new ArrayList<ProductoVentaOrdenModel>());
         String mesa = ordenWCService.getCodMesa();
-        new MesasController().initOrdenEnMesa(orden, mesa);
+        new MesasController(user).initOrdenEnMesa(orden, mesa);
         ordenWCService.saveOrdenToCache(new ObjectMapper().writeValueAsString(orden));
         return true;
     }
@@ -92,6 +96,7 @@ public class OrdenController extends BaseController {
             boolean exitProduct = false;
             for (ProductoVentaOrdenModel prod : orden.getProductoVentaOrdenList()) {
                 if (prod.getProductoVenta().getPCod().matches(lastClickedMenu.getPCod())) {
+                    exitProduct = true;
                     prod.setCantidad(prod.getCantidad() + cantidad);
                     break;
                 }
@@ -133,11 +138,24 @@ public class OrdenController extends BaseController {
     }
 
     public boolean finishOrden() throws Exception {
-        boolean resp = ordenWCService.finishOrden();
-        if (!EnvironmentVariables.ONLINE) {
-            new MesasController().terminarOrdenEnMesa(ordenWCService.getCodMesa());
+        boolean resp = false;
+        if (puedoCerrar(ordenWCService.getCodOrden())) {
+            resp = ordenWCService.finishOrden();
+            if (!EnvironmentVariables.ONLINE) {
+                new MesasController(user).terminarOrdenEnMesa(ordenWCService.getCodMesa());
+            }
         }
         return resp;
+    }
+
+    private boolean puedoCerrar(String codOrden) throws Exception {
+        OrdenModel orden = new OrdenWCS(user).findOrden(codOrden);
+        for (ProductoVentaOrdenModel prod : orden.getProductoVentaOrdenList()) {
+            if (prod.getEnviadosacocina() < prod.getCantidad()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean sendToKitchen() throws Exception {

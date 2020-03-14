@@ -69,7 +69,7 @@ public class OrdenActivity extends BaseActivity {
 
             //separado porque es un init y un set adapter en paralelo
             Bundle bundleExtra = getIntent().getExtras();
-            initMenu(bundleExtra.getString(String.valueOf(R.string.mesa)));
+            initMenu(bundleExtra.getString(String.valueOf(R.string.area)));
 
             setAdapters();
             addListeners();
@@ -100,11 +100,14 @@ public class OrdenActivity extends BaseActivity {
             cerrarOrdenButton = (Button) findViewById(R.id.buttonCerrarOrden);
             despacharACocinaButton = (Button) findViewById(R.id.buttondespacharCocina);
             searchText = (EditText) findViewById(R.id.searchText);
-            controller = new OrdenController();
 
             Bundle bundleExtra = getIntent().getExtras();
             mesaNoLabel.setText(bundleExtra.getString(String.valueOf(R.string.mesa)));//set el No de la mesa
-            dependienteLabel.setText(bundleExtra.getString(String.valueOf(R.string.user)));//set el label con el dependiente
+
+            String user = bundleExtra.getString(String.valueOf(R.string.user));
+            dependienteLabel.setText(user);//set el label con el dependiente
+            controller = new OrdenController(user);
+
             ordenNoLabel.setText(bundleExtra.getString(String.valueOf(R.string.cod_Orden)));//set el label de la orden
             productosVentaOrden = new ArrayList<ProductoVentaOrdenModel>();
             menuAdapter = new MenuAdapterThis(act, R.layout.list_menu, new ArrayList<ProductoVentaModel>());
@@ -517,12 +520,12 @@ public class OrdenActivity extends BaseActivity {
         }
     }
 
-    private void initMenu(final String codMesa) {
+    private void initMenu(final String codArea) {
         new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
             @Override
             public Void process() throws Exception {
                 secciones = controller.getSecciones();
-                productos = controller.getProductos(codMesa);
+                productos = controller.getProductos(codArea);
                 return null;
             }
 

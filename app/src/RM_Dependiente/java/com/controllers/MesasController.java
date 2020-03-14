@@ -7,6 +7,7 @@ import com.services.models.MesaModel;
 import com.services.models.OrdenModel;
 import com.services.web_connections.AreaWCS;
 import com.services.web_connections.OrdenWCS;
+import com.utils.EnvironmentVariables;
 import com.utils.adapters.MesaAdapter;
 
 import java.util.List;
@@ -23,6 +24,10 @@ public class MesasController extends BaseController {
     private static String ESTADO_MESA_VACIA = "vacia";
     private String user;
     private OrdenWCS ordenWCService = null;
+
+    public MesasController(String user) {
+        this.user = user;
+    }
 
     public String getUser() {
         return user;
@@ -54,7 +59,7 @@ public class MesasController extends BaseController {
         new AreaWCS().saveMesasList(mesaModels);
     }
 
-    public void terminarOrdenEnMesa(String mesa) throws Exception{
+    public void terminarOrdenEnMesa(String mesa) throws Exception {
         List<MesaModel> mesaModels = new AreaWCS().findMesas();
         for (MesaModel m : mesaModels) {
             if (m.getCodMesa().matches(mesa)) {
@@ -74,7 +79,7 @@ public class MesasController extends BaseController {
     }
 
     public boolean validate() throws Exception {
-        return ordenWCService.validate();
+        return EnvironmentVariables.ONLINE ? ordenWCService.validate() : true;
     }
 
     public String[] getAreas() throws Exception {

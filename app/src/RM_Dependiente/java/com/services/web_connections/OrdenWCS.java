@@ -30,7 +30,7 @@ public class OrdenWCS extends SimpleWebConnectionService {
             CEDER_ORDEN = "CEDER-ORDEN",
             VALIDATE = "VALIDATE";
     boolean deLaCasa = false;
-    private String codOrden, usuarioTrabajador, codMesa;
+    private String codOrden, codMesa;
 
     public OrdenWCS(String codOrden, String codMesa) throws Exception {
         super();
@@ -56,7 +56,7 @@ public class OrdenWCS extends SimpleWebConnectionService {
     }*/
 
     public OrdenModel initOrden() throws Exception {
-        RequestModel req = new RequestModel(path + CREATE, this.codMesa, super.TOKEN, HTTPMethod.POST);
+        RequestModel req = new RequestModel(path + CREATE, this.codMesa, super.TOKEN, HTTPMethod.POST, RequestType.CREATE_ORDEN);
         //fetchCodOrden();
         if (EnvironmentVariables.ONLINE) {
             return om.readValue(connect(req), OrdenModel.class);
@@ -66,7 +66,8 @@ public class OrdenWCS extends SimpleWebConnectionService {
     }
 
     public OrdenModel initOrdenOffline() throws Exception {
-        return new OrdenModel("Offline-" + System.currentTimeMillis() + "");
+        codOrden = "Offline-" + System.currentTimeMillis() + "";
+        return new OrdenModel(codOrden);
     }
 
     public boolean finishOrden() throws Exception {
@@ -75,7 +76,6 @@ public class OrdenWCS extends SimpleWebConnectionService {
             connect(req);
         } else {
             addRequestToQueque(req);
-            new MesasController().terminarOrdenEnMesa(codMesa);
         }
         return true;
     }
@@ -92,10 +92,6 @@ public class OrdenWCS extends SimpleWebConnectionService {
             addRequestToQueque(request);
         }
         return true;
-    }
-
-    public boolean removeProducto(String codProducto) throws Exception {
-        return removeProducto(codProducto, 1);
     }
 
     public boolean removeProducto(String codProducto, float cantidad) throws Exception {
@@ -208,10 +204,6 @@ public class OrdenWCS extends SimpleWebConnectionService {
 
     public void setCodOrden(String codOrden) {
         this.codOrden = codOrden;
-    }
-
-    public String getUsuarioTrabajador() {
-        return usuarioTrabajador;
     }
 
     public String getCodMesa() {

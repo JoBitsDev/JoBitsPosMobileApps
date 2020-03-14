@@ -50,9 +50,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
     @Override
     protected void initVarialbes() {
         try {
-            controller = new MesasController();
             String user = getIntent().getExtras().getString(String.valueOf(R.string.user));
-            controller.setUser(user);
+            controller = new MesasController(user);
 
             userLabel = ((TextView) findViewById(R.id.textviewusuario));
             userLabel.setText(user);
@@ -157,6 +156,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     private void continuar(final MesaModel m) {
         final Bundle data = new Bundle();
         data.putString(String.valueOf(R.string.mesa), m.getCodMesa());
+        data.putString(String.valueOf(R.string.area), selectedArea);
 
         new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
             @Override
