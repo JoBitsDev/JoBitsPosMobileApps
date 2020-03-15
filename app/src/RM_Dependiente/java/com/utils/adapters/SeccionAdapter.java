@@ -1,7 +1,6 @@
 package com.utils.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.activities.R;
-import com.services.models.SeccionModel;
+import com.services.models.orden.SeccionModel;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,10 +1,12 @@
 package com.controllers;
 
-import com.services.models.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.services.models.orden.*;
 import com.services.web_connections.*;
 import com.utils.EnvironmentVariables;
 import com.utils.adapters.ProductoVentaOrdenAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,9 +17,13 @@ import java.util.List;
  */
 public class OrdenController extends BaseController {
 
-    public static final String urlListProducts_ = "http://" + EnvironmentVariables.getIP() + ":" + EnvironmentVariables.getPORT() + "/" + EnvironmentVariables.STARTPATH + "com.restmanager.orden/LISTPRODUCTS_";
-
     private OrdenWCS ordenWCService = null;
+
+    private String user;
+
+    public OrdenController(String user) {
+        this.user = user;
+    }
 
     public OrdenController starService(String codOrden, String codMesa) throws Exception {
         ordenWCService = new OrdenWCS(codOrden, codMesa);
@@ -33,8 +39,8 @@ public class OrdenController extends BaseController {
         return new SeccionWCS().getSecciones();
     }
 
-    public List<ProductoVentaModel> getProductos(String codMesa) throws Exception {
-        return new ProductoWCS().getProducts(codMesa);
+    public List<ProductoVentaModel> getProductos(String codArea) throws Exception {
+        return new ProductoWCS().getProducts(codArea);
     }
 
     public List<ProductoVentaOrdenModel> getProductoVentaOrden(String codOrden) throws Exception {
@@ -50,8 +56,13 @@ public class OrdenController extends BaseController {
         return ordenWCService.getCodOrden();
     }
 
-    public boolean initOrden() throws Exception {
-        return ordenWCService.initOrden();
+    public boolean initOrden(String area) throws Exception {
+        OrdenModel orden = ordenWCService.initOrden();
+        orden.setProductoVentaOrdenList(new ArrayList<ProductoVentaOrdenModel>());
+        String mesa = ordenWCService.getCodMesa();
+        new MesasController(user).initOrdenEnMesa(orden, mesa,area);
+        ordenWCService.saveOrdenToCache(new ObjectMapper().writeValueAsString(orden));
+        return true;
     }
 
     public boolean cederAUsuario(String usuario) throws Exception {
@@ -78,61 +89,93 @@ public class OrdenController extends BaseController {
         return new AreaWCS().findVacias(ordenWCService.getCodMesa());
     }
 
-    public boolean addProducto(ProductoVentaModel lastClickedMenu) throws Exception {
-        return ordenWCService.addProducto(lastClickedMenu.getPCod());
-    }
-
     public boolean addProducto(ProductoVentaModel lastClickedMenu, float cantidad) throws Exception {
-        return ordenWCService.addProducto(lastClickedMenu.getPCod(), cantidad);//TODO capas mezcladas actulizando el adaptdor desde el controlador
-    }
-
-    public void increasePoducto(ProductoVentaModel lastClickedMenu, ProductoVentaOrdenAdapter adapter) {
-        adapter.increase(lastClickedMenu, ordenWCService, 1);//TODO capas mezcladas actulizando el adaptdor desde el controlador
+        boolean resp = ordenWCService.addProducto(lastClickedMenu.getPCod(), cantidad);
+        if (!EnvironmentVariables.ONLINE) {
+            OrdenModel orden = ordenWCService.findOrden(ordenWCService.getCodOrden());
+            boolean exitProduct = false;
+            for (ProductoVentaOrdenModel prod : orden.getProductoVentaOrdenList()) {
+                if (prod.getProductoVenta().getPCod().matches(lastClickedMenu.getPCod())) {
+                    exitProduct = true;
+                    prod.setCantidad(prod.getCantidad() + cantidad);
+                    break;
+                }
+            }
+            if (!exitProduct) {
+                ProductoVentaOrdenModel p = new ProductoVentaOrdenModel();
+                p.setCantidad(cantidad);
+                p.setEnviadosacocina(0f);
+                p.setOrdenModel(orden);
+                p.setProductoVenta(lastClickedMenu);
+                p.setProductovOrdenPKModel(null);
+                orden.getProductoVentaOrdenList().add(p);
+            }
+            ordenWCService.saveOrdenToCache(new ObjectMapper().writeValueAsString(orden));
+        }
+        return resp;
     }
 
     public void increasePoducto(ProductoVentaModel lastClickedMenu, ProductoVentaOrdenAdapter adapter, float cantidad) {
         adapter.increase(lastClickedMenu, ordenWCService, cantidad);
     }
 
-    public boolean removeProducto(ProductoVentaModel productoVentaModel) throws Exception {
-        return ordenWCService.removeProducto(productoVentaModel.getPCod());
+    public boolean removeProducto(ProductoVentaModel productoVentaModel, float cant) throws Exception {
+        boolean resp = ordenWCService.removeProducto(productoVentaModel.getPCod(), cant);
+        if (!EnvironmentVariables.ONLINE) {
+            OrdenModel orden = ordenWCService.findOrden(ordenWCService.getCodOrden());
+            for (ProductoVentaOrdenModel prod : orden.getProductoVentaOrdenList()) {
+                if (prod.getProductoVenta().getPCod().matches(productoVentaModel.getPCod())) {
+                    if (cant > prod.getCantidad()) {
+                        throw new NullPointerException("No se puede eliminar mas de lo que tiene la orden.");
+                    }
+                    prod.setCantidad(prod.getCantidad() - cant);
+                    break;
+                }
+            }
+            ordenWCService.saveOrdenToCache(new ObjectMapper().writeValueAsString(orden));
+        }
+        return resp;
     }
 
-    public boolean removeProductoVarios(ProductoVentaModel productoVentaModel, float cant) throws Exception {
-        return ordenWCService.removeProducto(productoVentaModel.getPCod(), cant);
+    public boolean finishOrden(String area) throws Exception {
+        boolean resp = false;
+        if (puedoCerrar(ordenWCService.getCodOrden())) {
+            resp = ordenWCService.finishOrden();
+            if (!EnvironmentVariables.ONLINE) {
+                new MesasController(user).terminarOrdenEnMesa(ordenWCService.getCodMesa(),area);
+            }
+        }
+        return resp;
     }
 
-    public void decresePoducto(ProductoVentaModel lastClickedMenu, ProductoVentaOrdenAdapter adapter) {
-        adapter.decrease(lastClickedMenu, 1);//TODO capas mezcladas actulizando el adaptdor desde el controlador
-    }
-
-    public void decresePoducto(ProductoVentaModel lastClickedMenu, ProductoVentaOrdenAdapter adapter, float cantidad) {
-        adapter.decrease(lastClickedMenu, cantidad);
-    }
-
-    public boolean finishOrden() throws Exception {
-        return ordenWCService.finishOrden();
+    private boolean puedoCerrar(String codOrden) throws Exception {
+        OrdenModel orden = new OrdenWCS(user).findOrden(codOrden);
+        for (ProductoVentaOrdenModel prod : orden.getProductoVentaOrdenList()) {
+            if (prod.getEnviadosacocina() < prod.getCantidad()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean sendToKitchen() throws Exception {
-        return ordenWCService.sendToKitchen();
+        boolean resp = ordenWCService.sendToKitchen();
+        if (!EnvironmentVariables.ONLINE) {
+            OrdenModel orden = ordenWCService.findOrden(ordenWCService.getCodOrden());
+            for (ProductoVentaOrdenModel prod : orden.getProductoVentaOrdenList()) {
+                prod.setEnviadosacocina(prod.getCantidad());
+            }
+            ordenWCService.saveOrdenToCache(new ObjectMapper().writeValueAsString(orden));
+        }
+        return resp;
     }
-
 
     public boolean addNota(ProductoVentaModel productoVentaModel, String nota) throws Exception {
         return ordenWCService.addNota(productoVentaModel.getPCod(), nota);
     }
 
-    public void setCodOrden(String codOrden) {
-        ordenWCService.setCodOrden(codOrden);
-    }
-
     public String[] getUsuariosActivos() throws Exception {
         return new PersonalWCS().getPersonalTrabajando();
-    }
-
-    public boolean setDeLaCasa(boolean resp) throws Exception {
-        return ordenWCService.setDeLaCasa(resp);
     }
 
     public boolean isDeLaCasa() {
@@ -141,5 +184,15 @@ public class OrdenController extends BaseController {
 
     public int getRestantes(String codProd) throws Exception {
         return new ProductoWCS().getRestantes(codProd);
+    }
+
+    public boolean setDeLaCasa(boolean casa) throws Exception {
+        boolean resp = ordenWCService.setDeLaCasa(casa);
+        if (!EnvironmentVariables.ONLINE) {
+            OrdenModel orden = ordenWCService.findOrden(ordenWCService.getCodOrden());
+            orden.setDeLaCasa(casa);
+            ordenWCService.saveOrdenToCache(new ObjectMapper().writeValueAsString(orden));
+        }
+        return resp;
     }
 }

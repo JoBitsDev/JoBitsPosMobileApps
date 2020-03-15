@@ -1,7 +1,6 @@
 <resources>
 
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
     <string name="title_activity_login">Iniciar Sesión</string>
 
     <string name="title_activity_about">Sobre</string>
@@ -20,11 +19,13 @@
     <string name="noConnectionError">No hay conexión con el servidor.
         \nVerifique que esta conectado a la wi-fi
         \ny que la PC servidor se encuentra encendida y con el servicio funcionando</string>
+    <string name="necesarioOnline">Para realizar esta acción es necesario estar Online</string>
     <string name="serverError">A ocurrido un error procesando la petición al servidor:\n</string>
     <string name="unespectedError">Uppppsssss algo no funciona :(\n
-        Si el error persiste contacte con soporte técnico.</string>
+        Si el error persiste contacte con soporte técnico.\n</string>
     <string name="timeoutError">La respuesta al servidor ha exedido el tiempo de espera.</string>
     <string name="networkOnMainThreadError">Ejecutado conneción al servidor en hilo principal.</string>
+    <string name="noCacheException">No hay conección con el servidor y la informacion requerida no se encuentra almacenada.</string>
 
     <string name="dayClosedError">La caja debe comenzar el dia \nde trabajo para acceder a las ordenes</string>
     <string name="cambiar_ubicacion">Cambiar ubicación</string>
@@ -32,5 +33,8 @@
     <string name="formato_fecha">dd/mm/yyyy</string>
 
     <string name="formato_hora">00:00:00</string>
+
+    <string name="action_turn_off_offline">Desactivar modo offline</string>
+    <string name="action_turn_on_offline">Activar modo offline</string>s
 
 </resources>

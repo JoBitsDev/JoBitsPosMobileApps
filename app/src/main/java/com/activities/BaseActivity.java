@@ -1,7 +1,18 @@
 package com.activities;
 
 import android.app.*;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
+
+import com.controllers.BaseController;
+import com.controllers.MainController;
+import com.utils.EnvironmentVariables;
+import com.utils.exception.ExceptionHandler;
+import com.utils.loading.LoadingHandler;
+import com.utils.loading.LoadingProcess;
 
 /**
  * Capa: Activities
@@ -16,6 +27,18 @@ public abstract class BaseActivity extends Activity {
     protected BaseActivity act = this;
 
     private Bundle bundle;
+
+    private static BaseActivity other;
+
+    public static Context getContext() {
+        return other.getApplicationContext();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        other = this;
+        super.onCreate(savedInstanceState);
+    }
 
     /**
      * Método abstracto a reimplementar para inicializar las variables del XML en el activity.
@@ -37,6 +60,7 @@ public abstract class BaseActivity extends Activity {
 
     /**
      * Get el bundle. Es usado por ejemplo en almacen para pasarle cosas al initVariables.
+     *
      * @return
      */
     public Bundle getBundle() {
@@ -45,6 +69,7 @@ public abstract class BaseActivity extends Activity {
 
     /**
      * Set el nuevo bundle.
+     *
      * @param bundle
      */
     public void setBundle(Bundle bundle) {
@@ -68,7 +93,40 @@ public abstract class BaseActivity extends Activity {
         new AlertDialog.Builder(this).setMessage(message).create().show();
     }
 
+    public void manageNoConnection(String message) {//popup a mostrar
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message);
+        builder.setTitle(ExceptionHandler.POPUP_TITLE);
 
+        builder.create().show();
+    }
+
+    public void setUpOffline() {
+        EnvironmentVariables.ONLINE = false;
+        Toast.makeText(this, "Usted a cambiado a modo offline.", Toast.LENGTH_LONG).show();
+    }
+
+    public void setUpOnline() {
+        EnvironmentVariables.ONLINE = true;
+        sincWhithServer();
+    }
+
+    private void sincWhithServer() {
+        new LoadingHandler<Boolean>("Sincronizando con el servidor...", act, new LoadingProcess<Boolean>() {
+            @Override
+            public Boolean process() throws Exception {
+                return new MainController().uploadQueque();
+            }
+
+            @Override
+            public void post(Boolean value) {
+                Toast.makeText(act, "Sincronizado con el servidor. :)", Toast.LENGTH_LONG).show();
+                if (value) {
+                    onCreate(bundle);
+                }
+            }
+        });
+    }
     /*public void notificarError(Exception e) { Noficacion de error vieja, entes de procesarlo _todo con el ExceptionHandler.
         String noConnectionError = findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.noConnectionError).toString();
         //Mensaje a enviar cuando hay un error en el servidor

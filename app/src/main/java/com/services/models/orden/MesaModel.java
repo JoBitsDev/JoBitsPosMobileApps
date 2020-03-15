@@ -3,12 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.services.models;
+package com.services.models.orden;
 
 
-import android.graphics.Color;
-
-import com.utils.EnvironmentVariables;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * @author Jorge
@@ -117,6 +115,7 @@ public class MesaModel implements Comparable<MesaModel> {
         return o1 - o2;
     }
 
+    @JsonIgnore
     public String getUsuario() {
         return getEstado() == null ? "null" : getEstado().split(" ")[1];
     }

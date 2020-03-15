@@ -1,17 +1,18 @@
 package com.services.web_connections;
 
-import com.services.models.OrdenModel;
+import com.controllers.MesasController;
+import com.services.models.orden.*;
+import com.services.models.RequestModel;
+import com.services.models.RequestType;
+import com.utils.EnvironmentVariables;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
 
 /**
  * Created by Jorge on 24/9/17.
  */
 
 public class OrdenWCS extends SimpleWebConnectionService {
-
-    private String codOrden, usuarioTrabajador, codMesa;
 
     private final String P = "orden/",
             FETCH_NO_ORDEN = "FETCH",
@@ -28,8 +29,8 @@ public class OrdenWCS extends SimpleWebConnectionService {
             GET_COMENSAL = "GET-COMENSAL",
             CEDER_ORDEN = "CEDER-ORDEN",
             VALIDATE = "VALIDATE";
-
     boolean deLaCasa = false;
+    private String codOrden, codMesa;
 
     public OrdenWCS(String codOrden, String codMesa) throws Exception {
         super();
@@ -49,19 +50,33 @@ public class OrdenWCS extends SimpleWebConnectionService {
         this.deLaCasa = false;
     }
 
-    public String fetchCodOrden() throws Exception {
+    /*public String fetchCodOrden() throws Exception {
         String resp = connect(path + FETCH_NO_ORDEN, null, super.TOKEN, HTTPMethod.GET);
         return this.codOrden = om.readValue(resp, String.class);
+    }*/
+
+    public OrdenModel initOrden() throws Exception {
+        RequestModel req = new RequestModel(path + CREATE, this.codMesa, super.TOKEN, HTTPMethod.POST, RequestType.CREATE_ORDEN);
+        //fetchCodOrden();
+        if (EnvironmentVariables.ONLINE) {
+            return om.readValue(connect(req), OrdenModel.class);
+        } else {
+            codOrden = "Offline-" + System.currentTimeMillis() + "";
+            OrdenModel orden = new OrdenModel(codOrden);
+            req.setUid(codOrden);
+            addRequestToQueque(req);
+            return orden;
+        }
     }
 
-    public boolean initOrden() throws Exception {
-        fetchCodOrden();
-        connect(path + CREATE, this.codMesa, super.TOKEN, HTTPMethod.POST);
+    public boolean finishOrden() throws Exception {
+        RequestModel req = new RequestModel(path + FINISH, this.codOrden, super.TOKEN, HTTPMethod.POST);
+        if (EnvironmentVariables.ONLINE) {
+            connect(req);
+        } else {
+            addRequestToQueque(req);
+        }
         return true;
-    }
-
-    public boolean addProducto(String codProducto) throws Exception {
-        return addProducto(codProducto, 1f);
     }
 
     public boolean addProducto(String codProducto, float cantidad) throws Exception {
@@ -69,12 +84,13 @@ public class OrdenWCS extends SimpleWebConnectionService {
         hm.put("codOrden", this.codOrden);
         hm.put("codProducto", codProducto);
         hm.put("cantidad", cantidad);
-        connect(path + ADD, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
+        RequestModel request = new RequestModel(path + ADD, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST, RequestType.NORMAL);
+        if (EnvironmentVariables.ONLINE) {
+            connect(request);
+        } else {
+            addRequestToQueque(request);
+        }
         return true;
-    }
-
-    public boolean removeProducto(String codProducto) throws Exception {
-        return removeProducto(codProducto, 1);
     }
 
     public boolean removeProducto(String codProducto, float cantidad) throws Exception {
@@ -82,12 +98,12 @@ public class OrdenWCS extends SimpleWebConnectionService {
         hm.put("codOrden", this.codOrden);
         hm.put("codProducto", codProducto);
         hm.put("cantidad", cantidad);
-        connect(path + REMOVE, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
-        return true;
-    }
-
-    public boolean finishOrden() throws Exception {
-        connect(path + FINISH, this.codOrden, super.TOKEN, HTTPMethod.POST);
+        RequestModel request = new RequestModel(path + REMOVE, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
+        if (EnvironmentVariables.ONLINE) {
+            connect(request);
+        } else {
+            addRequestToQueque(request);
+        }
         return true;
     }
 
@@ -96,12 +112,23 @@ public class OrdenWCS extends SimpleWebConnectionService {
         HashMap<String, Object> hm = new HashMap<String, Object>();
         hm.put("codOrden", this.codOrden);
         hm.put("deLaCasa", this.deLaCasa);
-        connect(path + SET_DE_LA_CASA, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
+        RequestModel request = new RequestModel(path + SET_DE_LA_CASA, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST, RequestType.NORMAL);
+        if (EnvironmentVariables.ONLINE) {
+            connect(request);
+        } else {
+            addRequestToQueque(request);
+        }
         return true;
     }
 
     public boolean sendToKitchen() throws Exception {
-        connect(path + ENVIAR_COCINA, codOrden, super.TOKEN, HTTPMethod.POST);
+        String urlToExecute = path + ENVIAR_COCINA;
+        RequestModel request = new RequestModel(urlToExecute, codOrden, super.TOKEN, HTTPMethod.POST, RequestType.NORMAL);
+        if (EnvironmentVariables.ONLINE) {
+            connect(request);
+        } else {
+            super.addRequestToQueque(request);
+        }
         return true;
     }
 
@@ -109,6 +136,10 @@ public class OrdenWCS extends SimpleWebConnectionService {
         String URL = path + "?codOrden=" + codOrden;
         String resp = connect(URL, null, super.TOKEN, HTTPMethod.GET);
         return om.readValue(resp, OrdenModel.class);
+    }
+
+    public void saveOrdenToCache(String ordenJson) throws Exception {
+        saveResponse(path + "?codOrden=" + codOrden, ordenJson);
     }
 
     public boolean moverAMesa(String codMesa) throws Exception {
@@ -174,10 +205,6 @@ public class OrdenWCS extends SimpleWebConnectionService {
         this.codOrden = codOrden;
     }
 
-    public String getUsuarioTrabajador() {
-        return usuarioTrabajador;
-    }
-
     public String getCodMesa() {
         return codMesa;
     }
@@ -185,5 +212,4 @@ public class OrdenWCS extends SimpleWebConnectionService {
     public void setCodMesa(String codMesa) {
         this.codMesa = codMesa;
     }
-
 }

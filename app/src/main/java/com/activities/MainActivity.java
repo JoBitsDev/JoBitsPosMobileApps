@@ -5,14 +5,17 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.controllers.MainController;
 import com.services.models.ConfigModel;
@@ -27,6 +30,7 @@ import com.utils.loading.LoadingProcess;
 
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
+import java.util.Locale;
 
 /**
  * Capa: Activities
@@ -75,9 +79,34 @@ public class MainActivity extends BaseActivity {//  |||||
 
             updateConnectionText();
             loadConfig();
+            setUpInfo();
+            setUpLanguaje();
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
         }
+    }
+
+    private void setUpLanguaje() {
+        Resources res = getApplicationContext().getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        android.content.res.Configuration conf = res.getConfiguration();
+        conf.setLocale(new Locale("es"));
+        res.updateConfiguration(conf, dm);
+    }
+
+    private void setUpInfo() {
+        new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
+            @Override
+            public Void process() throws Exception {
+                controller.readInfo();
+                return null;
+            }
+
+            @Override
+            public void post(Void value) {
+
+            }
+        });
     }
 
     private void loadConfig() {
@@ -169,6 +198,12 @@ public class MainActivity extends BaseActivity {//  |||||
                 return true;
             case R.id.editar_ubicacion:
                 editarUbicacion();
+                return true;
+            case R.id.action_turn_on_offline_mode_main:
+                setUpOffline();
+                return true;
+            case R.id.action_turn_off_offline_mode_main:
+                setUpOnline();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -264,10 +299,10 @@ public class MainActivity extends BaseActivity {//  |||||
      *
      * @param v View de la aplicacion.
      */
-    private void onInitializeSesionButtOnClick(View v) {
+    private void onInitializeSesionButtOnClick(final View v) {
         new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
             @Override
-            public Boolean process() {
+            public Boolean process() throws Exception {
                 return controller.checkConnection();
             }
 
@@ -292,8 +327,7 @@ public class MainActivity extends BaseActivity {//  |||||
                         }
                     });
                 } else {
-                    act.showMessage(act.getApplication().getApplicationContext().getResources().
-                            getText(R.string.noConnectionError).toString());
+                    manageNoConnection(getResources().getText(R.string.noConnectionError).toString());
                 }
             }
         });
@@ -305,7 +339,7 @@ public class MainActivity extends BaseActivity {//  |||||
     private void updateConnectionText() {
         new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
             @Override
-            public Boolean process() {
+            public Boolean process() throws Exception {
                 return controller.checkConnection();
             }
 
@@ -314,6 +348,8 @@ public class MainActivity extends BaseActivity {//  |||||
                 if (value) {
                     connectionStatusText.setText(R.string.conexion_succesfull);
                     connectionStatusText.setTextColor(Color.GREEN);
+
+                    setUpOnline();
                 } else {
                     connectionStatusText.setText(R.string.no_network);
                     connectionStatusText.setTextColor(Color.RED);

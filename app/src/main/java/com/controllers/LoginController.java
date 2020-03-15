@@ -27,7 +27,8 @@ public class LoginController extends BaseController {
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public boolean loginAction(String username, String password) throws Exception {
-        return loginWCS.authenticate(username,password);
+        boolean resp = loginWCS.authenticate(username,password);//no el return directo para si hay que simular offline
+        return resp;
     }
 
     public String getToken() {
