@@ -1,17 +1,24 @@
 package com.activities;
 
-import android.view.*;
-import android.widget.*;
-import android.content.*;
-import android.os.Bundle;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.Switch;
+import android.widget.TextView;
 
+import com.controllers.MesasController;
 import com.services.models.orden.MesaModel;
 import com.utils.EnvironmentVariables;
-import com.controllers.MesasController;
-
-import com.utils.exception.*;
 import com.utils.adapters.MesaAdapter;
+import com.utils.exception.ExceptionHandler;
+import com.utils.exception.NoExistingException;
 import com.utils.loading.LoadingHandler;
 import com.utils.loading.LoadingProcess;
 
@@ -186,9 +193,8 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
                         @Override
                         public void post(Boolean value) {
+                            data.putString(String.valueOf(R.string.cod_Orden), cod_orden);
                             if (value) {
-                                data.putString(String.valueOf(R.string.cod_Orden), cod_orden);
-
                                 if (!controller.getUser().equals(m.getUsuario())) {//si no es el usuario pide confirmacion
                                     AlertDialog.Builder builder = new AlertDialog.Builder(act);
                                     builder.setMessage("La mesa que quiere acceder " +
