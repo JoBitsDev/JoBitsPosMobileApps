@@ -1,4 +1,4 @@
-package com.services.models;
+package com.services.models.orden;
 
 public class ProductovOrdenPKModel {
 

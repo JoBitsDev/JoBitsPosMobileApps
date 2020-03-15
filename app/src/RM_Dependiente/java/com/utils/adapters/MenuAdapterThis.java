@@ -10,7 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.activities.R;
-import com.services.models.ProductoVentaModel;
+import com.services.models.orden.ProductoVentaModel;
 import com.utils.EnvironmentVariables;
 
 import java.util.List;

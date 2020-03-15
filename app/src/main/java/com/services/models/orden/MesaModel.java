@@ -3,13 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.services.models;
+package com.services.models.orden;
 
-
-import android.graphics.Color;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.utils.EnvironmentVariables;
 
 /**
  * @author Jorge

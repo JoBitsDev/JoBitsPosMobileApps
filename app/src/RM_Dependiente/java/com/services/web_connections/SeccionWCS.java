@@ -1,6 +1,6 @@
 package com.services.web_connections;
 
-import com.services.models.SeccionModel;
+import com.services.models.orden.SeccionModel;
 
 import java.util.List;
 

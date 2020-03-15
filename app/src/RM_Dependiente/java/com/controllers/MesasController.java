@@ -3,7 +3,7 @@ package com.controllers;
 import android.app.Activity;
 
 import com.activities.R;
-import com.services.models.MesaModel;
+import com.services.models.orden.MesaModel;
 import com.services.models.OrdenModel;
 import com.services.web_connections.AreaWCS;
 import com.services.web_connections.OrdenWCS;

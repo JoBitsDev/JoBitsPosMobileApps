@@ -4,13 +4,11 @@ import java.io.*;
 import java.net.URL;
 
 import com.activities.BaseActivity;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.services.models.CacheModel;
-import com.services.models.MesaModel;
-import com.services.models.OrdenModel;
 import com.services.models.RequestModel;
 import com.services.models.RequestType;
+import com.services.models.orden.OrdenModel;
 import com.utils.Utils;
 import com.utils.exception.*;
 
@@ -21,8 +19,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.utils.EnvironmentVariables;
-
-import org.apache.http.HttpRequest;
 
 /**
  * Capa: Services

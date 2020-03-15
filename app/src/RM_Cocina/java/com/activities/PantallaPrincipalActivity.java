@@ -11,7 +11,6 @@ import android.widget.*;
 import com.controllers.CocinaController;
 import com.services.models.IpvRegistroModel;
 import com.services.models.ProductoVentaOrdenModel;
-import com.services.models.ProductoVentaOrdenModel;
 import com.services.web_connections.*;
 import com.utils.adapters.IPVsAdapter;
 import com.utils.EnvironmentVariables;

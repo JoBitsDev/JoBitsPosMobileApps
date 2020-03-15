@@ -10,7 +10,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.activities.R;
-import com.services.models.*;
+import com.services.models.orden.ProductoVentaModel;
+import com.services.models.orden.ProductoVentaOrdenModel;
+import com.services.models.orden.ProductovOrdenPKModel;
 import com.services.web_connections.OrdenWCS;
 import com.utils.EnvironmentVariables;
 
