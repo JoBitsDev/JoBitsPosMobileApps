@@ -59,7 +59,9 @@ public class OrdenWCS extends SimpleWebConnectionService {
         RequestModel req = new RequestModel(path + CREATE, this.codMesa, super.TOKEN, HTTPMethod.POST, RequestType.CREATE_ORDEN);
         //fetchCodOrden();
         if (EnvironmentVariables.ONLINE) {
-            return om.readValue(connect(req), OrdenModel.class);
+            OrdenModel o = om.readValue(connect(req), OrdenModel.class);
+            this.codOrden = o.getCodOrden();
+            return o;
         } else {
             codOrden = "Offline-" + System.currentTimeMillis() + "";
             OrdenModel orden = new OrdenModel(codOrden);
