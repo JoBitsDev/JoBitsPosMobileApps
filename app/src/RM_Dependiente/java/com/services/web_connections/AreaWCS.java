@@ -1,7 +1,7 @@
 package com.services.web_connections;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.services.models.MesaModel;
+import com.services.models.orden.MesaModel;
 
 import java.util.List;
 

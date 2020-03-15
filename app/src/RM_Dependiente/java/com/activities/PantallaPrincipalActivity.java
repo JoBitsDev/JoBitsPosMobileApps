@@ -6,7 +6,7 @@ import android.content.*;
 import android.os.Bundle;
 import android.app.AlertDialog;
 
-import com.services.models.MesaModel;
+import com.services.models.orden.MesaModel;
 import com.utils.EnvironmentVariables;
 import com.controllers.MesasController;
 

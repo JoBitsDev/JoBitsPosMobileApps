@@ -6,7 +6,7 @@ import android.view.*;
 import android.widget.*;
 
 import com.activities.R;
-import com.services.models.MesaModel;
+import com.services.models.orden.MesaModel;
 import com.utils.EnvironmentVariables;
 
 import java.util.*;

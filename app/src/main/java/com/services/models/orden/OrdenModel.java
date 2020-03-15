@@ -1,5 +1,5 @@
 
-package com.services.models;
+package com.services.models.orden;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * @author Jorge
