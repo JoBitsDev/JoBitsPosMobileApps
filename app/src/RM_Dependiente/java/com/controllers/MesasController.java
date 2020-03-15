@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import com.activities.R;
 import com.services.models.orden.MesaModel;
-import com.services.models.OrdenModel;
+import com.services.models.orden.*;
 import com.services.web_connections.AreaWCS;
 import com.services.web_connections.OrdenWCS;
 import com.utils.EnvironmentVariables;

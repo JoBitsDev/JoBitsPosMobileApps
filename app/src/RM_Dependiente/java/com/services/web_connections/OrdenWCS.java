@@ -1,7 +1,7 @@
 package com.services.web_connections;
 
 import com.controllers.MesasController;
-import com.services.models.OrdenModel;
+import com.services.models.orden.*;
 import com.services.models.RequestModel;
 import com.services.models.RequestType;
 import com.utils.EnvironmentVariables;
