@@ -23,9 +23,9 @@ android {
         }
         RM_Almacen {
             applicationId 'jobits.pos.almacen'
-            versionCode 11
-            versionName '3.0.0'
-            buildConfigField "Integer", "MAYOR_SERVER_VERSION", '4'
+            versionCode 12
+            versionName '4.0.0'
+            buildConfigField "Integer", "MAYOR_SERVER_VERSION", '5'
             buildConfigField "Integer", "MINOR_SERVER_VERSION", '0'
         }
         RM_Cocina {
