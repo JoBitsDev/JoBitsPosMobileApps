@@ -37,9 +37,9 @@ android {
         }
         JoBits_POS_Manager {
             applicationId 'jobits.pos.manager'
-            versionCode 2
-            versionName '2.0.0'
-            buildConfigField "Integer", "MAYOR_SERVER_VERSION", '4'
+            versionCode 3
+            versionName '3.0.0'
+            buildConfigField "Integer", "MAYOR_SERVER_VERSION", '5'
             buildConfigField "Integer", "MINOR_SERVER_VERSION", '0'
         }
     }
