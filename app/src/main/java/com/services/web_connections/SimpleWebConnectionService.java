@@ -88,7 +88,7 @@ public class SimpleWebConnectionService {
     }
 
     public String connect(final String urlToExcecute, final String body, final String token, final HTTPMethod method) throws Exception {
-        return connect(new RequestModel(urlToExcecute, body, token, method));
+        return connect(new RequestModel(urlToExcecute, body,TENNANT_TOKEN, token, method));
     }
 
     /**
@@ -104,7 +104,7 @@ public class SimpleWebConnectionService {
         if (EnvironmentVariables.ONLINE) {//esta online
             if (req.getMethod() == HTTPMethod.GET) {
                 if (cache == null) {
-                    resp = connectToServer(req.getUrlToExcecute(), req.getBody(), req.getToken(), req.getMethod());//hay coneccion y no hay cache
+                    resp = connectToServer(req.getUrlToExcecute(), req.getBody(),req.getTennantToken(), req.getToken(), req.getMethod());//hay coneccion y no hay cache
                     saveResponse(req.getUrlToExcecute(), resp);
                     return resp;
                 } else {//tengo cache
@@ -118,7 +118,7 @@ public class SimpleWebConnectionService {
                     return resp;
                 }
             } else {
-                return connectToServer(req.getUrlToExcecute(), req.getBody(), req.getToken(), req.getMethod());
+                return connectToServer(req.getUrlToExcecute(), req.getBody(),req.getTennantToken(), req.getToken(), req.getMethod());
             }
         } else {//no hay coneccion
             if (cache == null) {
@@ -132,7 +132,7 @@ public class SimpleWebConnectionService {
     public String validateInfo(String urlToExcecute, String resp) throws Exception {
         String sha = Utils.getSHA256(resp);
         String pathValidate = "http://" + ip + ":" + port + "/" + EnvironmentVariables.STARTPATH;
-        return connectToServer(pathValidate + "configuracion/CHECK-SHA?url=" + urlToExcecute + "&sha=" + sha, null, TOKEN, HTTPMethod.GET);
+        return connectToServer(pathValidate + "configuracion/CHECK-SHA?url=" + urlToExcecute + "&sha=" + sha, null,TENNANT_TOKEN, TOKEN, HTTPMethod.GET);
     }
 
     public CacheModel checkCache(final String urlToExcecute) {
@@ -196,7 +196,7 @@ public class SimpleWebConnectionService {
     }
 
     public String connectToServer(final String urlToExcecute, final String body,
-                                  final String token, HTTPMethod method) throws Exception {
+                                  final String tennantToken,final String token, HTTPMethod method) throws Exception {
         //Set up the connection
         String resp = "";
         URL url = new URL(urlToExcecute);
@@ -208,6 +208,7 @@ public class SimpleWebConnectionService {
         con.setReadTimeout(MAX_READ_TIME);
         con.setConnectTimeout(MAX_RESPONSE_TIME);
         con.setRequestProperty(HTTP_HEADER_AUTHORITATION, HTTP_HEADER_BEARER + token);
+        con.setRequestProperty(HTTP_HEADER_LOCATION, HTTP_HEADER_TENNANT_ID + tennantToken);
 
         // Starts the query
         if (method != HTTPMethod.GET) {
@@ -254,7 +255,7 @@ public class SimpleWebConnectionService {
         saveResponse(queque, om.writeValueAsString(cola));
     }
 
-    public boolean uploadQueque() throws Exception {
+    public boolean uploadQueque() throws Exception {//TODO: falta tratamiento con tennant offline
         final String urlLlaves = "LLAVES";
         //lee las llaves
         CacheModel llavesCache = checkCache(urlLlaves);
