@@ -30,6 +30,22 @@
         android:hint="Puerto"
         android:inputType="number" />
 
+    <EditText
+        android:id="@+id/usuario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="4"
+        android:hint="Usuario"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/contrasena"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="4"
+        android:hint="Contrasena"
+        android:inputType="number|textPassword" />
+
     <Button
         android:id="@+id/ok"
         android:layout_width="match_parent"
