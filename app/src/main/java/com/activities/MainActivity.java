@@ -251,6 +251,8 @@ public class MainActivity extends BaseActivity {//  |||||
                         final EditText nombre = (EditText) d.findViewById(R.id.nombre);
                         final EditText ip = (EditText) d.findViewById(R.id.ip);
                         final EditText puerto = (EditText) d.findViewById(R.id.puerto);
+                        final EditText usuario = (EditText) d.findViewById(R.id.usuario);
+                        final EditText contrasena = (EditText) d.findViewById(R.id.contrasena);
                         final Button button = (Button) d.findViewById(R.id.ok);
 
                         d.setTitle("Editar Ubicación");
@@ -262,7 +264,9 @@ public class MainActivity extends BaseActivity {//  |||||
                                     String n = nombre.getText().toString();
                                     String i = ip.getText().toString();
                                     String p = puerto.getText().toString();
-                                    controller.editarUbicacion(posicAReemplazar, new UbicacionModel(n, i, p));
+                                    String u = usuario.getText().toString();
+                                    String c = contrasena.getText().toString();
+                                    controller.editarUbicacion(posicAReemplazar, new UbicacionModel(n, i, p,u,c));
                                     controller.guardarCFG(openFileOutput(EnvironmentVariables.CONFIG_PATH, Context.MODE_PRIVATE));
                                     updateConnectionText();
                                 } catch (Exception e) {
