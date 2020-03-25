@@ -29,13 +29,20 @@ import com.utils.EnvironmentVariables;
 
 public class SimpleWebConnectionService {
 
-    private final String AUTHORITATION = "Authorization";
-    private final String BEARER = "Bearer ";
+    private final String HTTP_HEADER_LOCATION = "Location";
+    private final String HTTP_HEADER_TENNANT_ID = "TennantId ";
+    private final String HTTP_HEADER_AUTHORITATION = "Authorization";
+    private final String HTTP_HEADER_BEARER = "Bearer ";
 
     /**
      * Token para las llamandas seguras al servidor.
      */
     protected static String TOKEN = null;
+
+    /**
+     * Token para autenticarse en el servidor y que este lo redirija hacia la base de datos correspondiente
+     */
+    protected static String TENNANT_TOKEN = null;
 
     /**
      * Tiempo maximo esperado para la lectura.
@@ -200,7 +207,7 @@ public class SimpleWebConnectionService {
         con.setRequestProperty("Content-Type", "text/plain");
         con.setReadTimeout(MAX_READ_TIME);
         con.setConnectTimeout(MAX_RESPONSE_TIME);
-        con.setRequestProperty(AUTHORITATION, BEARER + token);
+        con.setRequestProperty(HTTP_HEADER_AUTHORITATION, HTTP_HEADER_BEARER + token);
 
         // Starts the query
         if (method != HTTPMethod.GET) {
