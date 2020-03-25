@@ -56,7 +56,7 @@ public class OrdenWCS extends SimpleWebConnectionService {
     }*/
 
     public OrdenModel initOrden() throws Exception {
-        RequestModel req = new RequestModel(path + CREATE, this.codMesa, super.TOKEN, HTTPMethod.POST, RequestType.CREATE_ORDEN);
+        RequestModel req = new RequestModel(path + CREATE, this.codMesa, super.TENNANT_TOKEN,super.TOKEN, HTTPMethod.POST, RequestType.CREATE_ORDEN);
         //fetchCodOrden();
         if (EnvironmentVariables.ONLINE) {
             OrdenModel o = om.readValue(connect(req), OrdenModel.class);
@@ -72,7 +72,7 @@ public class OrdenWCS extends SimpleWebConnectionService {
     }
 
     public boolean finishOrden() throws Exception {
-        RequestModel req = new RequestModel(path + FINISH, this.codOrden, super.TOKEN, HTTPMethod.POST);
+        RequestModel req = new RequestModel(path + FINISH, this.codOrden,super.TENNANT_TOKEN, super.TOKEN, HTTPMethod.POST);
         if (EnvironmentVariables.ONLINE) {
             connect(req);
         } else {
@@ -86,7 +86,7 @@ public class OrdenWCS extends SimpleWebConnectionService {
         hm.put("codOrden", this.codOrden);
         hm.put("codProducto", codProducto);
         hm.put("cantidad", cantidad);
-        RequestModel request = new RequestModel(path + ADD, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST, RequestType.NORMAL);
+        RequestModel request = new RequestModel(path + ADD, om.writeValueAsString(hm),super.TENNANT_TOKEN, super.TOKEN, HTTPMethod.POST, RequestType.NORMAL);
         if (EnvironmentVariables.ONLINE) {
             connect(request);
         } else {
@@ -100,7 +100,7 @@ public class OrdenWCS extends SimpleWebConnectionService {
         hm.put("codOrden", this.codOrden);
         hm.put("codProducto", codProducto);
         hm.put("cantidad", cantidad);
-        RequestModel request = new RequestModel(path + REMOVE, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
+        RequestModel request = new RequestModel(path + REMOVE, om.writeValueAsString(hm), super.TENNANT_TOKEN,super.TOKEN, HTTPMethod.POST);
         if (EnvironmentVariables.ONLINE) {
             connect(request);
         } else {
@@ -114,7 +114,7 @@ public class OrdenWCS extends SimpleWebConnectionService {
         HashMap<String, Object> hm = new HashMap<String, Object>();
         hm.put("codOrden", this.codOrden);
         hm.put("deLaCasa", this.deLaCasa);
-        RequestModel request = new RequestModel(path + SET_DE_LA_CASA, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST, RequestType.NORMAL);
+        RequestModel request = new RequestModel(path + SET_DE_LA_CASA, om.writeValueAsString(hm),super.TENNANT_TOKEN, super.TOKEN, HTTPMethod.POST, RequestType.NORMAL);
         if (EnvironmentVariables.ONLINE) {
             connect(request);
         } else {
@@ -125,7 +125,7 @@ public class OrdenWCS extends SimpleWebConnectionService {
 
     public boolean sendToKitchen() throws Exception {
         String urlToExecute = path + ENVIAR_COCINA;
-        RequestModel request = new RequestModel(urlToExecute, codOrden, super.TOKEN, HTTPMethod.POST, RequestType.NORMAL);
+        RequestModel request = new RequestModel(urlToExecute, codOrden,super.TENNANT_TOKEN, super.TOKEN, HTTPMethod.POST, RequestType.NORMAL);
         if (EnvironmentVariables.ONLINE) {
             connect(request);
         } else {
