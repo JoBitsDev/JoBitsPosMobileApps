@@ -104,7 +104,7 @@ public class SimpleWebConnectionService {
         if (EnvironmentVariables.ONLINE) {//esta online
             if (req.getMethod() == HTTPMethod.GET) {
                 if (cache == null) {
-                    resp = connectToServer(req.getUrlToExcecute(), req.getBody(),req.getTennantToken(), req.getToken(), req.getMethod());//hay coneccion y no hay cache
+                    resp = connectToServer(req.getUrlToExcecute(), req.getBody(),req.getTennantToken(), req.getToken(), req.getMethod());//hay conexion y no hay cache
                     saveResponse(req.getUrlToExcecute(), resp);
                     return resp;
                 } else {//tengo cache
