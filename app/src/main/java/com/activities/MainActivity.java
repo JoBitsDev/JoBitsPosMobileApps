@@ -235,7 +235,7 @@ public class MainActivity extends BaseActivity {//  |||||
 
     private void editarUbicacion() {
         String ubicaciones[] = controller.getAllUbicaciones();
-        new AlertDialog.Builder(act).
+        Dialog d = new AlertDialog.Builder(act).
                 setTitle(R.string.cambiar_ubicacion).
                 setSingleChoiceItems(ubicaciones, controller.getCfg().getSelected(), new DialogInterface.OnClickListener() {
                     @Override
@@ -274,6 +274,7 @@ public class MainActivity extends BaseActivity {//  |||||
                                 }
                             }
                         });
+                        d.setCanceledOnTouchOutside(false);
                         d.show();
                     }
                 }).setNeutralButton(R.string.cancelar, new DialogInterface.OnClickListener() {
@@ -281,7 +282,8 @@ public class MainActivity extends BaseActivity {//  |||||
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
-        }).create().show();
+        }).create();
+        d.show();
 
     }
 
