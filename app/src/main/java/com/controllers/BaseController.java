@@ -2,6 +2,8 @@ package com.controllers;
 
 import com.services.web_connections.CheckConnectionWCS;
 import com.services.web_connections.GeneralWCS;
+import com.services.web_connections.LoginWCS;
+import com.utils.EnvironmentVariables;
 
 /**
  * Capa: Controllers
@@ -18,6 +20,7 @@ public abstract class BaseController {
      * @return true si hay coneccion con el servidor, false de lo contrario.
      */
     public boolean checkConnection() throws Exception {
+        new LoginWCS().getTennantToken(EnvironmentVariables.getUsuarioTennant(),EnvironmentVariables.getPassTennant());
         return new CheckConnectionWCS().checkConnection();
     }
 

@@ -41,4 +41,10 @@ public class CredentialsModel {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "{ \"username\":\"" + username + "\"" +
+                ",\"password\":\"" + password + "\" }";
+    }
 }

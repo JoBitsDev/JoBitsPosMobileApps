@@ -19,6 +19,7 @@ import com.utils.exception.ServerErrorException;
 public class LoginWCS extends SimpleWebConnectionService {
 
     private final String login_URL;
+    private final String URL_GET_TENNANT_TOKEN;
 
     private CredentialsModel credentials;
 
@@ -28,6 +29,7 @@ public class LoginWCS extends SimpleWebConnectionService {
     public LoginWCS() {
         super();
         this.login_URL = path + "login/AUTH";
+        this.URL_GET_TENNANT_TOKEN = path + "login/GET-TENNANT-TOKEN";
     }
 
     /**
@@ -40,7 +42,7 @@ public class LoginWCS extends SimpleWebConnectionService {
     public boolean authenticate(String user, String pass) throws Exception {
         credentials = new CredentialsModel(user, pass);
         String body = new ObjectMapper().writeValueAsString(credentials);
-        RequestModel req = new RequestModel(login_URL, body, null, HTTPMethod.POST, RequestType.LOGIN);
+        RequestModel req = new RequestModel(login_URL, credentials.toString(), TENNANT_TOKEN, TOKEN, HTTPMethod.POST, RequestType.LOGIN);
         if (EnvironmentVariables.ONLINE) {
             TOKEN = connect(req);
         } else {
@@ -57,5 +59,17 @@ public class LoginWCS extends SimpleWebConnectionService {
 
     public void setToken(String token) {
         TOKEN = token;
+    }
+
+    public void getTennantToken(String user, String pass) throws Exception {
+        CredentialsModel credentials = new CredentialsModel(user, pass);
+        RequestModel req = new RequestModel(URL_GET_TENNANT_TOKEN, credentials.toString(), TENNANT_TOKEN, TOKEN, HTTPMethod.POST, RequestType.TENNANT);
+        if (EnvironmentVariables.ONLINE) {
+            TENNANT_TOKEN = connect(req);
+        } else {
+            TENNANT_TOKEN = "TENNANT_TOKEN";
+            req.setUid(TENNANT_TOKEN);
+            addRequestToQueque(req);
+        }
     }
 }

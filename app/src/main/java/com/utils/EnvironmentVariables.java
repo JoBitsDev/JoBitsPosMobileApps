@@ -76,6 +76,15 @@ public class EnvironmentVariables {
         return ubicacionActual.getIp();
     }
 
+    public static String getUsuarioTennant(){
+        return ubicacionActual.getUsuario();
+    }
+
+    public static String getPassTennant(){
+        return ubicacionActual.getPassword();
+    }
+
+
     public static String getPORT() {
         return ubicacionActual.getPuerto();
     }
