@@ -1,24 +1,31 @@
 package com.services.web_connections;
 
-import java.io.*;
-import java.net.URL;
-
 import com.activities.BaseActivity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.services.models.CacheModel;
 import com.services.models.RequestModel;
 import com.services.models.RequestType;
 import com.services.models.orden.OrdenModel;
+import com.utils.EnvironmentVariables;
 import com.utils.Utils;
-import com.utils.exception.*;
+import com.utils.exception.NoCacheException;
+import com.utils.exception.ServerErrorException;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
-import com.utils.EnvironmentVariables;
 
 /**
  * Capa: Services
@@ -29,34 +36,28 @@ import com.utils.EnvironmentVariables;
 
 public class SimpleWebConnectionService {
 
-    private final String HTTP_HEADER_LOCATION = "Location";
-    private final String HTTP_HEADER_TENNANT_ID = "TennantId ";
-    private final String HTTP_HEADER_AUTHORITATION = "Authorization";
-    private final String HTTP_HEADER_BEARER = "Bearer ";
-
-    /**
-     * Token para las llamandas seguras al servidor.
-     */
-    protected static String TOKEN = null;
-
-    /**
-     * Token para autenticarse en el servidor y que este lo redirija hacia la base de datos correspondiente
-     */
-    protected static String TENNANT_TOKEN = null;
-
     /**
      * Tiempo maximo esperado para la lectura.
      */
     public static final int MAX_READ_TIME = 5 * 1000;
-
-    protected final ObjectMapper om = new ObjectMapper();
-
     /**
      * Tiempo maximo esperado para la respuesta del servidor.
      */
     public static final int MAX_RESPONSE_TIME = 3 * 1000;
-
     public static final String DIR_CACHE = EnvironmentVariables.PERSISTENCE_PATH + "/";
+    /**
+     * Token para las llamandas seguras al servidor.
+     */
+    protected static String TOKEN = null;
+    /**
+     * Token para autenticarse en el servidor y que este lo redirija hacia la base de datos correspondiente
+     */
+    protected static String TENNANT_TOKEN = null;
+    protected final ObjectMapper om = new ObjectMapper();
+    private final String HTTP_HEADER_LOCATION = "Location";
+    private final String HTTP_HEADER_TENNANT_ID = "TennantId ";
+    private final String HTTP_HEADER_AUTHORITATION = "Authorization";
+    private final String HTTP_HEADER_BEARER = "Bearer ";
     private final String queque = "QUEQUE";
 
     /**
@@ -88,7 +89,7 @@ public class SimpleWebConnectionService {
     }
 
     public String connect(final String urlToExcecute, final String body, final String token, final HTTPMethod method) throws Exception {
-        return connect(new RequestModel(urlToExcecute, body,TENNANT_TOKEN, token, method));
+        return connect(new RequestModel(urlToExcecute, body, TENNANT_TOKEN, token, method));
     }
 
     /**
@@ -104,7 +105,7 @@ public class SimpleWebConnectionService {
         if (EnvironmentVariables.ONLINE) {//esta online
             if (req.getMethod() == HTTPMethod.GET) {
                 if (cache == null) {
-                    resp = connectToServer(req.getUrlToExcecute(), req.getBody(),req.getTennantToken(), req.getToken(), req.getMethod());//hay conexion y no hay cache
+                    resp = connectToServer(req.getUrlToExcecute(), req.getBody(), req.getTennantToken(), req.getToken(), req.getMethod());//hay conexion y no hay cache
                     saveResponse(req.getUrlToExcecute(), resp);
                     return resp;
                 } else {//tengo cache
@@ -118,7 +119,7 @@ public class SimpleWebConnectionService {
                     return resp;
                 }
             } else {
-                return connectToServer(req.getUrlToExcecute(), req.getBody(),req.getTennantToken(), req.getToken(), req.getMethod());
+                return connectToServer(req.getUrlToExcecute(), req.getBody(), req.getTennantToken(), req.getToken(), req.getMethod());
             }
         } else {//no hay coneccion
             if (cache == null) {
@@ -132,7 +133,7 @@ public class SimpleWebConnectionService {
     public String validateInfo(String urlToExcecute, String resp) throws Exception {
         String sha = Utils.getSHA256(resp);
         String pathValidate = "http://" + ip + ":" + port + "/" + EnvironmentVariables.STARTPATH;
-        return connectToServer(pathValidate + "configuracion/CHECK-SHA?url=" + urlToExcecute + "&sha=" + sha, null,TENNANT_TOKEN, TOKEN, HTTPMethod.GET);
+        return connectToServer(pathValidate + "configuracion/CHECK-SHA?url=" + urlToExcecute + "&sha=" + sha, null, TENNANT_TOKEN, TOKEN, HTTPMethod.GET);
     }
 
     public CacheModel checkCache(final String urlToExcecute) {
@@ -196,7 +197,7 @@ public class SimpleWebConnectionService {
     }
 
     public String connectToServer(final String urlToExcecute, final String body,
-                                  final String tennantToken,final String token, HTTPMethod method) throws Exception {
+                                  final String tennantToken, final String token, HTTPMethod method) throws Exception {
         //Set up the connection
         String resp = "";
         URL url = new URL(urlToExcecute);
@@ -276,10 +277,14 @@ public class SimpleWebConnectionService {
             try {
                 RequestModel req = iterator.next();
                 llaves.put("TOKEN", TOKEN);
+                llaves.put("TENNANT_TOKEN",TENNANT_TOKEN);
                 updateRequest(llaves, req);
                 if (req.getType() == RequestType.LOGIN) {
                     String token = connect(req);
                     TOKEN = token;
+                } else if (req.getType() == RequestType.TENNANT) {
+                    String resp = connect(req);
+                    TENNANT_TOKEN = resp;
                 } else if (req.getType() == RequestType.CREATE_ORDEN) {
                     String resp = connect(req);
                     OrdenModel orden = om.readValue(resp, OrdenModel.class);
@@ -308,6 +313,9 @@ public class SimpleWebConnectionService {
             }
             if (req.getToken() != null && req.getToken().contains(key)) {
                 req.setToken(req.getToken().replace(key, llaves.get(key)));
+            }
+            if (req.getTennantToken() != null && req.getTennantToken().contains(key)) {
+                req.setTennantToken(req.getTennantToken().replace(key, llaves.get(key)));
             }
             if (req.getUrlToExcecute() != null && req.getUrlToExcecute().contains(key)) {
                 req.setUrlToExcecute(req.getUrlToExcecute().replace(key, llaves.get(key)));
