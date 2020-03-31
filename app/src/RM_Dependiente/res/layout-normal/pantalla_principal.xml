@@ -49,12 +49,12 @@
                 android:id="@+id/textView12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
                 android:text="@string/estadoMesas"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/texto_primario"
-                android:textSize="@dimen/subtitulos"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true" />
+                android:textSize="@dimen/textSizeNormal" />
                 android:textColor="@color/color_primario_oscuro"
                 android:textSize="@dimen/textSizeExact20" />
 
@@ -81,7 +81,7 @@
                 android:gravity="clip_horizontal|center_vertical"
                 android:text="Cambiar Area"
                 android:textColor="@color/texto_secundario"
-                android:textSize="@dimen/textSizeNormal" />
+                android:textSize="@dimen/textSizeSmall" />
 
         </LinearLayout>
     </LinearLayout>
