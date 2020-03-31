@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:text="Large Text"
+        android:text="<Estado Conexión>"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#19ff00"
         android:textSize="@dimen/textSizeSmall" />

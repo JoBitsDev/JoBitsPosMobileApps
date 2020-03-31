@@ -10,10 +10,10 @@
     <dimen name="titulo_Texto">40sp</dimen>
 
     <dimen name="MainTitle">50sp</dimen>
-    <dimen name="textSizeLarge">40dp</dimen>
-    <dimen name="textSizeSmall">15dp</dimen>
-    <dimen name="textSizeNormal">25dp</dimen>
-    <dimen name="textSizeMedium">30dp</dimen>
-    <dimen name="textSizeExact20">20dp</dimen>
-    <dimen name="textSizeTitle">50dp</dimen>
+    <dimen name="textSizeLarge">40sp</dimen>
+    <dimen name="textSizeSmall">15sp</dimen>
+    <dimen name="textSizeNormal">25sp</dimen>
+    <dimen name="textSizeMedium">30sp</dimen>
+    <dimen name="textSizeExact20">20sp</dimen>
+    <dimen name="textSizeTitle">50sp</dimen>
 </resources>

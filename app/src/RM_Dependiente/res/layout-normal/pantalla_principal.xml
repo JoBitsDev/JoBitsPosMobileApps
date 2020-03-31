@@ -32,7 +32,7 @@
                     android:text="@string/user"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@color/texto_primario"
-                    android:textSize="@dimen/textSizeExact20" />
+                    android:textSize="@dimen/textSizeSmall" />
 
                 <Switch
                     android:id="@+id/switchOrden"
@@ -41,7 +41,7 @@
                     android:layout_weight="1"
                     android:textOff="@string/mesa"
                     android:textOn="@string/orden"
-                    android:textSize="@dimen/textSizeExact20" />
+                    android:textSize="@dimen/textSizeSmall" />
             </LinearLayout>
 
 
@@ -75,36 +75,14 @@
 
 
             <Button
-                android:id="@+id/cambiarArea"
+                android:id="@+id/cambiarArea2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="5dp"
-                android:enabled="false"
-                android:text="Pedido en Barra"
+                android:gravity="clip_horizontal|center_vertical"
+                android:text="Cambiar Area"
                 android:textColor="@color/texto_secundario"
-                android:textSize="@dimen/textSizeExact20"
-                tools:ignore="ButtonStyle" />
+                android:textSize="@dimen/textSizeNormal" />
 
-            <Button
-                android:id="@+id/pedidoDomicilio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                android:text="Pedido a Domicilio"
-                android:textSize="@dimen/textSizeExact20"
-                android:textColor="@color/texto_secundario"
-                tools:ignore="ButtonStyle" />
-
-            <Button
-                android:id="@+id/button7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:textColor="@color/texto_secundario"
-                android:layout_toStartOf="@+id/textViewNombreRest"
-                android:enabled="false"
-                android:text="R" />
         </LinearLayout>
     </LinearLayout>
 
