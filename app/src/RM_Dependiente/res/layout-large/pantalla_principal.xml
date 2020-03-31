@@ -40,7 +40,7 @@
                 android:layout_gravity="center_horizontal"
                 android:text="@string/rest_Name"
                 android:textColor="@color/texto_primario"
-                android:textSize="@dimen/textSizeTitle" />
+                android:textSize="@dimen/textSizeH1" />
 
             <TextView
                 android:id="@+id/textView12"
@@ -102,30 +102,6 @@
                 android:textColor="@color/texto_secundario"
                 android:textSize="@dimen/textSizeNormal" />
 
-            <Button
-                android:id="@+id/pedidoDomicilio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:enabled="false"
-                android:gravity="clip_vertical|center_horizontal"
-                android:text="Pedido a Domicilio"
-                android:textColor="@color/texto_secundario"
-                android:textSize="@dimen/textSizeNormal" />
-
-            <Button
-                android:id="@+id/button7"
-                android:layout_width="82dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_toStartOf="@+id/textViewNombreRest"
-                android:enabled="false"
-                android:text="R"
-                android:textColor="@color/texto_secundario"
-                android:textSize="@dimen/textSizeNormal" />
         </LinearLayout>
     </LinearLayout>
 

@@ -34,7 +34,7 @@
             android:hint="@string/buscar"
             android:inputType="textPersonName"
             android:textColor="@color/color_Buttons"
-            android:textSize="@dimen/textSizeMedium"
+            android:textSize="@dimen/textSizeNormal"
             android:visibility="visible" />
 
         <ImageButton

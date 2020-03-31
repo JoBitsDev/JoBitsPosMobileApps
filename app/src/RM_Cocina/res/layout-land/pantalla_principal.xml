@@ -21,7 +21,7 @@
                 android:layout_centerVertical="false"
                 android:text="Rest Name"
                 android:textColor="@color/texto_primario"
-                android:textSize="@dimen/MainTitle" />
+                android:textSize="@dimen/textSizeH1" />
 
             <TextView
                 android:id="@+id/labelUsuario"
@@ -34,7 +34,7 @@
                 android:text="@string/user"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/texto_primario"
-                android:textSize="@dimen/textSizeMedium" />
+                android:textSize="@dimen/textSizeNormal" />
 
             <ImageButton
                 android:id="@+id/imageButton"
@@ -58,7 +58,7 @@
                 android:layout_toEndOf="@+id/textViewNombreRest"
                 android:text="TextView"
                 android:textColor="@color/texto_primario"
-                android:textSize="@dimen/textSizeMedium" />
+                android:textSize="@dimen/textSizeNormal" />
 
             <ImageButton
                 android:id="@+id/buttonRefresh"
@@ -148,7 +148,7 @@
                                 android:hint="Buscar"
                                 android:inputType="textPersonName"
                                 android:textColor="@color/texto_primario"
-                                android:textSize="@dimen/textSizeMedium"
+                                android:textSize="@dimen/textSizeNormal"
                                 android:visibility="visible" />
                         </LinearLayout>
 
@@ -174,7 +174,7 @@
                                 android:gravity="center"
                                 android:text="Inicio"
                                 android:textColor="@color/texto_primario"
-                                android:textSize="@dimen/textSizeMedium" />
+                                android:textSize="@dimen/textSizeNormal" />
 
                             <View
                                 android:id="@+id/divider"
@@ -191,7 +191,7 @@
                                 android:gravity="center"
                                 android:text="Entrada"
                                 android:textColor="@color/texto_primario"
-                                android:textSize="@dimen/textSizeMedium" />
+                                android:textSize="@dimen/textSizeNormal" />
 
                             <View
                                 android:id="@+id/divider2"
@@ -207,7 +207,7 @@
                                 android:layout_weight="30"
                                 android:text="Disponibles"
                                 android:textColor="@color/texto_primario"
-                                android:textSize="@dimen/textSizeMedium" />
+                                android:textSize="@dimen/textSizeNormal" />
 
                             <View
                                 android:id="@+id/divider3"
@@ -224,7 +224,7 @@
                                 android:gravity="center"
                                 android:text="Cosumidos"
                                 android:textColor="@color/texto_primario"
-                                android:textSize="@dimen/textSizeMedium" />
+                                android:textSize="@dimen/textSizeNormal" />
 
                             <View
                                 android:id="@+id/divider4"
@@ -241,7 +241,7 @@
                                 android:gravity="center"
                                 android:text="Final"
                                 android:textColor="@color/texto_primario"
-                                android:textSize="@dimen/textSizeMedium" />
+                                android:textSize="@dimen/textSizeNormal" />
 
                         </LinearLayout>
 

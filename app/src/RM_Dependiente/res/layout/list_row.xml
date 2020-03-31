@@ -8,13 +8,13 @@
         android:id="@+id/boxTitulo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/titulos" />
+        android:textSize="@dimen/textSizeLarge" />
 
     <TextView
         android:id="@+id/boxSubtitulo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/subtitulos" />
+        android:textSize="@dimen/textSizeNormal" />
 
 </LinearLayout>
 

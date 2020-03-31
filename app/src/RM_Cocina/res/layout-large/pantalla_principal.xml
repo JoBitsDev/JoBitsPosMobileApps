@@ -21,7 +21,7 @@
                 android:layout_centerVertical="false"
                 android:text="Rest Name"
                 android:textColor="@color/texto_primario"
-                android:textSize="@dimen/MainTitle" />
+                android:textSize="@dimen/textSizeH1" />
 
             <TextView
                 android:id="@+id/labelUsuario"
@@ -112,7 +112,7 @@
                                 android:hint="@string/formato_fecha"
                                 android:textColor="@color/texto_primario"
                                 android:textColorHint="@color/texto_primario"
-                                android:textSize="@dimen/textSizeMedium" />
+                                android:textSize="@dimen/textSizeNormal" />
 
                             <Switch
                                 android:id="@+id/switchExisIPV"
@@ -141,7 +141,7 @@
                                 android:hint="Buscar"
                                 android:inputType="textPersonName"
                                 android:textColor="@color/texto_primario"
-                                android:textSize="@dimen/textSizeMedium"
+                                android:textSize="@dimen/textSizeNormal"
                                 android:visibility="visible" />
                         </LinearLayout>
 

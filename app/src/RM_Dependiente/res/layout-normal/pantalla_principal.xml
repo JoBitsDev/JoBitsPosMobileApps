@@ -75,13 +75,13 @@
 
 
             <Button
-                android:id="@+id/cambiarArea2"
+                android:id="@+id/cambiarArea"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="clip_horizontal|center_vertical"
                 android:text="Cambiar Area"
                 android:textColor="@color/texto_secundario"
-                android:textSize="@dimen/textSizeSmall" />
+                android:textSize="@dimen/textSizeNormal" />
 
         </LinearLayout>
     </LinearLayout>

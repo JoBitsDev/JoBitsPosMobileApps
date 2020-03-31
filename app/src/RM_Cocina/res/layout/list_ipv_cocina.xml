@@ -68,7 +68,7 @@
             android:gravity="center"
             android:hint="Final"
             android:textColor="@color/secundario"
-            android:textSize="@dimen/textSizeMedium" />
+            android:textSize="@dimen/textSizeNormal" />
 
     </LinearLayout>
 
