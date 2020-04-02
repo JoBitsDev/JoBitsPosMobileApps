@@ -19,7 +19,7 @@
             android:layout_weight="20"
             android:text="Nombre"
             android:textColor="@color/texto_primario"
-            android:textSize="@dimen/textSizeMedium" />
+            android:textSize="@dimen/textSizeNormal" />
 
         <ImageButton
             android:id="@+id/imageButtonRestantes"
@@ -38,6 +38,6 @@
         android:layout_weight="1"
         android:text="Precio"
         android:textColor="@color/precios"
-        android:textSize="@dimen/textSizeMedium" />
+        android:textSize="@dimen/textSizeNormal" />
 
 </LinearLayout>

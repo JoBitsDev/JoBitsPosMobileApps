@@ -69,7 +69,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="20"
-            android:choiceMode="singleChoice" />
+            android:choiceMode="singleChoice"
+            android:smoothScrollbar="true" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -80,28 +81,11 @@
                 android:id="@+id/cambiarArea"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:text="Pedido en Barra"
-                android:textColor="@color/texto_secundario"/>
-
-            <Button
-                android:id="@+id/pedidoDomicilio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                android:text="Pedido a Domicilio"
-                android:textColor="@color/texto_secundario"/>
-
-            <Button
-                android:id="@+id/button7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginEnd="61dp"
-                android:layout_toStartOf="@+id/textViewNombreRest"
+                android:gravity="clip_horizontal|center_vertical"
+                android:text="Cambiar Area"
                 android:textColor="@color/texto_secundario"
-                android:enabled="false"
-                android:text="R" />
+                android:textSize="@dimen/textSizeNormal" />
+
         </LinearLayout>
     </LinearLayout>
 

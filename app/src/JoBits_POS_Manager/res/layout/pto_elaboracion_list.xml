@@ -39,7 +39,7 @@
                 android:hint="Código"
                 android:inputType="text"
                 android:textColorHint="@color/texto_secundario"
-                android:textSize="@dimen/textSizeMedium" />
+                android:textSize="@dimen/textSizeNormal" />
 
         </LinearLayout>
 

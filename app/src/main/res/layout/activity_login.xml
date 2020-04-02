@@ -27,7 +27,7 @@
             android:text="Auntenticar"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/texto_primario"
-            android:textSize="@dimen/MainTitle" />
+            android:textSize="@dimen/textSizeH1" />
 
 
         <EditText

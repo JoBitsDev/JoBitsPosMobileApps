@@ -13,7 +13,7 @@
         android:hint="Nombre"
         android:textColor="@color/texto_primario"
         android:textColorHint="@color/texto_secundario"
-        android:textSize="@dimen/textSizeMedium" />
+        android:textSize="@dimen/textSizeNormal" />
 
     <TextView
         android:id="@+id/textViewCant"
@@ -23,7 +23,7 @@
         android:hint="Cant"
         android:textColor="@color/texto_primario"
         android:textColorHint="@color/texto_secundario"
-        android:textSize="@dimen/textSizeMedium" />
+        android:textSize="@dimen/textSizeNormal" />
 
     <ImageButton
         android:id="@+id/buttonMas"
@@ -35,7 +35,7 @@
         android:onClick="onAddProductoClick"
         android:src="@android:drawable/ic_input_add"
         android:textColor="@color/texto_primario"
-        android:textSize="@dimen/textSizeMedium"
+        android:textSize="@dimen/textSizeNormal"
         tools:src="@android:drawable/ic_input_add" />
 
     <ImageButton
@@ -46,6 +46,6 @@
         android:onClick="onRemoveProductoClick"
         android:src="@drawable/minus"
         android:textColor="@color/texto_primario"
-        android:textSize="@dimen/textSizeMedium"
+        android:textSize="@dimen/textSizeNormal"
         tools:src="@drawable/minus" />
 </LinearLayout>

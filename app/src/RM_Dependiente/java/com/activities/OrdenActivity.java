@@ -342,6 +342,7 @@ public class OrdenActivity extends BaseActivity {
 
     private boolean onMenuOrdenListViewAddLongClick(final View v, final int position) {
         try {
+            lastClickedMenu = productoVentaOrdenAdapter.getItem(position).getProductoVenta();
             final EditText input = new EditText(v.getContext());
             input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
             input.setRawInputType(Configuration.KEYBOARD_12KEY);

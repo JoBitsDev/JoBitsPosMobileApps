@@ -8,12 +8,12 @@
     <dimen name="ListNames">40sp</dimen>
     <dimen name="precio">17sp</dimen>
     <dimen name="titulo_Texto">40sp</dimen>
+    <dimen name="listButtons">55dp</dimen>
 
-    <dimen name="MainTitle">50sp</dimen>
-    <dimen name="textSizeLarge">40dp</dimen>
-    <dimen name="textSizeSmall">15dp</dimen>
-    <dimen name="textSizeNormal">25dp</dimen>
-    <dimen name="textSizeMedium">30dp</dimen>
-    <dimen name="textSizeExact20">20dp</dimen>
-    <dimen name="textSizeTitle">50dp</dimen>
+    <dimen name="textSizeH1">50sp</dimen>
+    <dimen name="textSizeLarge">40sp</dimen>
+    <dimen name="textSizeNormal">25sp</dimen>
+    <dimen name="textSizeSmall">15sp</dimen>
+    <dimen name="textSizeExact20">20sp</dimen>
+
 </resources>

@@ -62,7 +62,7 @@
             android:gravity="center"
             android:hint="Disponible"
             android:textColor="@color/texto_primario"
-            android:textSize="@dimen/textSizeMedium" />
+            android:textSize="@dimen/textSizeNormal" />
 
         <View
             android:id="@+id/divider3"
@@ -79,7 +79,7 @@
             android:gravity="center"
             android:hint="Cosumido"
             android:textColor="@color/texto_primario"
-            android:textSize="@dimen/textSizeMedium" />
+            android:textSize="@dimen/textSizeNormal" />
 
         <View
             android:id="@+id/divider4"

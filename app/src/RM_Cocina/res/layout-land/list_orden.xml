@@ -50,7 +50,7 @@
             android:text="(Nota)"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/auxiliar"
-            android:textSize="@dimen/textSizeMedium"
+            android:textSize="@dimen/textSizeNormal"
             android:textStyle="italic" />
 
         <ImageButton

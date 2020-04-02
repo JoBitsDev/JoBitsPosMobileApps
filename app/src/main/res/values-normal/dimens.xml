@@ -8,11 +8,9 @@
     <dimen name="ListNames">25sp</dimen>
     <dimen name="precio">17sp</dimen>
 
-    <dimen name="MainTitle">35sp</dimen>
-    <dimen name="textSizeLarge">25dp</dimen>
-    <dimen name="textSizeSmall">10dp</dimen>
-    <dimen name="textSizeNormal">10dp</dimen>
-    <dimen name="textSizeMedium">15dp</dimen>
-    <dimen name="textSizeExact20">20dp</dimen>
-    <dimen name="textSizeTitle">35dp</dimen>
+    <dimen name="textSizeH1">35sp</dimen>
+    <dimen name="textSizeLarge">25sp</dimen>
+    <dimen name="textSizeSmall">9sp</dimen>
+    <dimen name="textSizeNormal">18sp</dimen>
+    <dimen name="textSizeExact20">20sp</dimen>
 </resources>
