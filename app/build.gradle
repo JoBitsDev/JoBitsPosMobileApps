@@ -16,8 +16,8 @@ android {
     productFlavors {
         RM_Dependiente {
             applicationId 'jobits.pos.dpte'
-            versionCode 25
-            versionName '4.0.1'
+            versionCode 26
+            versionName '4.0.2'
             buildConfigField "Integer", "MAYOR_SERVER_VERSION", '5'
             buildConfigField "Integer", "MINOR_SERVER_VERSION", '0'
         }
