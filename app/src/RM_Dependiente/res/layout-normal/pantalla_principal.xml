@@ -80,8 +80,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="5dp"
-                android:enabled="false"
-                android:text="Pedido en Barra"
+                android:enabled="true"
+                android:text="Cambiar Area"
                 android:textColor="@color/texto_secundario"
                 android:textSize="@dimen/textSizeExact20"
                 tools:ignore="ButtonStyle" />

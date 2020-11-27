@@ -191,7 +191,7 @@ public class OrdenWCS extends SimpleWebConnectionService {
     }
 
     public boolean validate() throws Exception {
-        connect(path + VALIDATE + "?codOrden=" + this.codOrden, null, super.TOKEN, HTTPMethod.GET);
+        connect(path + VALIDATE + "?codOrden=" + this.codOrden + "&codMesa=" + codMesa, null, super.TOKEN, HTTPMethod.GET);
         return true;
     }
 
