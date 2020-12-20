@@ -3,6 +3,6 @@
     <item android:drawable="@color/primario" /><!-- color de fondo -->
     <item>
         <bitmap
-            android:src="@drawable/jobits_logos" /> <!-- imagen centrada -->
+            android:src="@drawable/jobits_splash" /> <!-- imagen centrada -->
     </item>
 </layer-list>
