@@ -6,6 +6,7 @@
 package com.services.models.orden;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.List;
  *
  * @author Jorge
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SeccionModel implements Serializable, Comparable<SeccionModel>{
 
     private static final long serialVersionUID = 1L;

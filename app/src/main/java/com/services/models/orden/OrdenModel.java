@@ -1,7 +1,7 @@
-
 package com.services.models.orden;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * @author Jorge
  */
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OrdenModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -46,6 +46,10 @@ public class OrdenModel implements Serializable {
         return productoVentaOrdenList;
     }
 
+    public void setProductoVentaOrdenList(ArrayList<ProductoVentaOrdenModel> productoVentaOrdenList) {
+        this.productoVentaOrdenList = productoVentaOrdenList;
+    }
+
     public String getCodOrden() {
         return codOrden;
     }
@@ -76,10 +80,6 @@ public class OrdenModel implements Serializable {
 
     public void setGananciaXporciento(Float gananciaXporciento) {
         this.gananciaXporciento = gananciaXporciento;
-    }
-
-    public void setProductoVentaOrdenList(ArrayList<ProductoVentaOrdenModel> productoVentaOrdenList) {
-        this.productoVentaOrdenList = productoVentaOrdenList;
     }
 
     @JsonGetter("mesacodMesa")

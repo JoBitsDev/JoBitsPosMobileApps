@@ -44,8 +44,8 @@ public class ProductoVentaOrdenModel implements Serializable {
         this.cantidad = cantidad;
     }
 
-    public ProductoVentaOrdenModel(String productoVentapCod, String ordencodOrden) {
-        this.productovOrdenPKModel = new ProductovOrdenPKModel(productoVentapCod, ordencodOrden);
+    public ProductoVentaOrdenModel(String productoVentapCod, String ordencodOrden, int productoOrdenId ) {
+        this.productovOrdenPKModel = new ProductovOrdenPKModel(productoVentapCod,ordencodOrden,productoOrdenId);
     }
 
     public int getNumeroComensal() {

@@ -5,15 +5,18 @@
  */
 package com.services.models.orden;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 
 /**
  * @author Jorge
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductoVentaModel implements Serializable, Comparable<ProductoVentaModel> {
 
     private static final long serialVersionUID = 1L;
-    private String pCod;
+    private String codigoProducto;
     private String nombre;
     private float precioVenta;
     private String descripcion;
@@ -23,11 +26,11 @@ public class ProductoVentaModel implements Serializable, Comparable<ProductoVent
     }
 
     public String getPCod() {
-        return pCod;
+        return codigoProducto;
     }
 
     public void setPCod(String pCod) {
-        this.pCod = pCod;
+        this.codigoProducto = pCod;
     }
 
     public String getNombre() {
@@ -42,12 +45,12 @@ public class ProductoVentaModel implements Serializable, Comparable<ProductoVent
         return precioVenta;
     }
 
-    public String getpCod() {
-        return pCod;
+    public String getCodigoProducto() {
+        return codigoProducto;
     }
 
-    public void setpCod(String pCod) {
-        this.pCod = pCod;
+    public void setCodigoProducto(String codigoProducto) {
+        this.codigoProducto = codigoProducto;
     }
 
     public void setPrecioVenta(float precioVenta) {
@@ -73,7 +76,7 @@ public class ProductoVentaModel implements Serializable, Comparable<ProductoVent
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (pCod != null ? pCod.hashCode() : 0);
+        hash += (codigoProducto != null ? codigoProducto.hashCode() : 0);
         return hash;
     }
 
@@ -83,7 +86,7 @@ public class ProductoVentaModel implements Serializable, Comparable<ProductoVent
             return false;
         }
         ProductoVentaModel other = (ProductoVentaModel) object;
-        if ((this.pCod == null && other.pCod != null) || (this.pCod != null && !this.pCod.equals(other.pCod))) {
+        if ((this.codigoProducto == null && other.codigoProducto != null) || (this.codigoProducto != null && !this.codigoProducto.equals(other.codigoProducto))) {
             return false;
         }
         return true;
@@ -91,7 +94,7 @@ public class ProductoVentaModel implements Serializable, Comparable<ProductoVent
 
     @Override
     public String toString() {
-        return "com.services.objetos.ProductoVentaModel[ pCod=" + pCod + " ]";
+        return "com.services.objetos.ProductoVentaModel[ codigoProducto=" + codigoProducto + " ]";
     }
 
     @Override

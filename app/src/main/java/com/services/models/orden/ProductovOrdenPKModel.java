@@ -2,18 +2,27 @@ package com.services.models.orden;
 
 public class ProductovOrdenPKModel {
 
-
     private String productoVentapCod;
 
-
     private String ordencodOrden;
+
+    private int productoOrdenId;
 
     public ProductovOrdenPKModel() {
     }
 
-    public ProductovOrdenPKModel(String productoVentapCod, String ordencodOrden) {
+    public ProductovOrdenPKModel(String productoVentapCod, String ordencodOrden, int productoOrdenId) {
         this.productoVentapCod = productoVentapCod;
         this.ordencodOrden = ordencodOrden;
+        this.productoOrdenId = productoOrdenId;
+    }
+
+    public int getProductoOrdenId() {
+        return productoOrdenId;
+    }
+
+    public void setProductoOrdenId(int productoOrdenId) {
+        this.productoOrdenId = productoOrdenId;
     }
 
     public String getProductoVentapCod() {
@@ -60,5 +69,4 @@ public class ProductovOrdenPKModel {
     public String toString() {
         return "com.restManager.ProductoVentaOrdenPKModel[ productoVentapCod=" + productoVentapCod + ", ordencodOrden=" + ordencodOrden + " ]";
     }
-    
 }
