@@ -21,7 +21,6 @@ public class OrdenModel implements Serializable {
     private Float porciento;
     private Float gananciaXporciento;
 
-    @JsonManagedReference
     private ArrayList<ProductoVentaOrdenModel> productoVentaOrdenList;
 
     private MesaModel mesacodMesaModel;
