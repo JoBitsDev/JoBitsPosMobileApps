@@ -104,8 +104,7 @@ public class OrdenController extends BaseController {
             if (!exitProduct) {
                 ProductoVentaOrdenModel p = new ProductoVentaOrdenModel();
                 p.setCantidad(cantidad);
-                p.setEnviadosacocina(0f);
-                p.setOrdenModel(orden);
+                p.setEnviadosACocina(0f);
                 p.setProductoVenta(lastClickedMenu);
                 p.setProductovOrdenPKModel(null);
                 orden.getProductoVentaOrdenList().add(p);
@@ -151,7 +150,7 @@ public class OrdenController extends BaseController {
     private boolean puedoCerrar(String codOrden) throws Exception {
         OrdenModel orden = new OrdenWCS(user).findOrden(codOrden);
         for (ProductoVentaOrdenModel prod : orden.getProductoVentaOrdenList()) {
-            if (prod.getEnviadosacocina() < prod.getCantidad()) {
+            if (prod.getEnviadosACocina() < prod.getCantidad()) {
                 return false;
             }
         }
@@ -163,7 +162,7 @@ public class OrdenController extends BaseController {
         if (!EnvironmentVariables.ONLINE) {
             OrdenModel orden = ordenWCService.findOrden(ordenWCService.getCodOrden());
             for (ProductoVentaOrdenModel prod : orden.getProductoVentaOrdenList()) {
-                prod.setEnviadosacocina(prod.getCantidad());
+                prod.setEnviadosACocina(prod.getCantidad());
             }
             ordenWCService.saveOrdenToCache(new ObjectMapper().writeValueAsString(orden));
         }
