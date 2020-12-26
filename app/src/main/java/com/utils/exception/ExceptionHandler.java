@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.NetworkOnMainThreadException;
+import android.text.Html;
 import android.view.View;
 import android.widget.Toast;
 
@@ -214,7 +215,15 @@ public class ExceptionHandler {
 
         //popup a mostrar
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setMessage(unespectedError + "" + e.getMessage());
+
+        unespectedError += "<br>" + e.getMessage() + "<br>";
+        for (StackTraceElement s : e.getStackTrace()) {
+            if (s.getClassName().contains("com.")) {
+                unespectedError += "C:" + s.getClassName() + " L:" + s.getLineNumber() + "<br>";
+            }
+        }
+        
+        builder.setMessage(Html.fromHtml(unespectedError));
         builder.setTitle(ExceptionHandler.POPUP_TITLE);
 
         builder.setNeutralButton(ExceptionHandler.POPUP_BUTTON_TEXT, new DialogInterface.OnClickListener() {

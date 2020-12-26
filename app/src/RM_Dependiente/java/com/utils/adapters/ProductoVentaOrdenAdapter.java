@@ -24,9 +24,9 @@ import java.util.List;
  */
 public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenModel> {
     public final int c = Color.GREEN;
+    boolean read_only = false;
     private List<ProductoVentaOrdenModel> objects;
     private Activity context;
-    boolean read_only = false;
     private View.OnLongClickListener addListener;
     private View.OnLongClickListener removeListener;
 
@@ -116,11 +116,13 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
             objects.set(i, pv);
 
         } else {
-            ProductovOrdenPKModel pk = new ProductovOrdenPKModel(p.getPCod(), o.getCodOrden());
+            ProductovOrdenPKModel pk = new ProductovOrdenPKModel();
+            pk.setOrdencodOrden(o.getCodOrden());
+            pk.setProductoVentapCod(p.getPCod());
             pv = new ProductoVentaOrdenModel(pk);
             pv.setProductoVenta(p);
             pv.setCantidad(ammount);
-            pv.setEnviadosacocina((float) 0);
+            pv.setEnviadosACocina((float) 0);
             objects.add(pv);
         }
         notifyDataSetChanged();
@@ -156,7 +158,9 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
 
     public void setObjects(List<ProductoVentaOrdenModel> objects) {
         this.objects.clear();
-        this.objects.addAll(objects);
+        if (objects != null) {
+            this.objects.addAll(objects);
+        }
         notifyDataSetChanged();
     }
 

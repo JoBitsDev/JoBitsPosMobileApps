@@ -7,10 +7,12 @@ package com.services.models.orden;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * @author Jorge
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MesaModel implements Comparable<MesaModel> {
 
     private static final long serialVersionUID = 1L;
