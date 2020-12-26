@@ -880,28 +880,25 @@ public class OrdenActivity extends BaseActivity {
 
     private void removeProductosVarios(final float cantidad) {
         if (lastClickedOrden != null) {
-            if (lastClickedOrden.getCantidad() > lastClickedOrden.getEnviadosacocina()) {
-                new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
-                    @Override
-                    public Boolean process() throws Exception {
-                        return controller.removeProducto(lastClickedOrden.getProductoVenta(), cantidad);
-                    }
+            new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
+                @Override
+                public Boolean process() throws Exception {
+                    return controller.removeProducto(lastClickedOrden.getProductoVenta(), cantidad);
+                }
 
-                    @Override
-                    public void post(Boolean value) {
-                        if (value) {
-                            ProductoVentaOrdenAdapter adapter = (ProductoVentaOrdenAdapter) listaOrden.getAdapter();
-                            adapter.decrease(lastClickedOrden.getProductoVenta(), cantidad);
-                            updateCosto();
-                            Toast.makeText(act, "Removido " + cantidad + " " + lastClickedOrden.getProductoVenta().getNombre() + " del pedido.", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(act, R.string.errorAlBorrar, Toast.LENGTH_SHORT).show();
-                        }
+                @Override
+                public void post(Boolean value) {
+                    if (value) {
+                        ProductoVentaOrdenAdapter adapter = (ProductoVentaOrdenAdapter) listaOrden.getAdapter();
+                        adapter.decrease(lastClickedOrden.getProductoVenta(), cantidad);
+                        updateCosto();
+                        Toast.makeText(act, "Removido " + cantidad + " " + lastClickedOrden.getProductoVenta().getNombre() + " del pedido.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(act, R.string.errorAlBorrar, Toast.LENGTH_SHORT).show();
                     }
-                });
-            } else {
-                showMessage("Para eliminar un producto enviado a cocina \n necesita autorizacion.");
-            }
+                }
+            });
+
         } else {
             Toast.makeText(act, R.string.noItemSeleccionado, Toast.LENGTH_SHORT).show();
         }
