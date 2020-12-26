@@ -35,6 +35,7 @@
     <string name="formato_hora">00:00:00</string>
 
     <string name="action_turn_off_offline">Desactivar modo offline</string>
-    <string name="action_turn_on_offline">Activar modo offline</string>s
+    <string name="action_turn_on_offline">Activar modo offline</string>
+    <string name="seleccionarVenta">Seleccionar Venta</string>s
 
 </resources>
