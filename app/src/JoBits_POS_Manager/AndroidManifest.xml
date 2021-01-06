@@ -9,7 +9,7 @@
         <activity
             android:name="com.activities.DetallesVentasActivity"
             android:label="Detalles"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.activities.PantallaPrincipalActivity"
             android:label="Estadisticas"

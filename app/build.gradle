@@ -1,10 +1,9 @@
 apply plugin: 'com.android.application'
 android {
-    compileSdkVersion 17
-    buildToolsVersion "28.0.3"
+    compileSdkVersion 21
     defaultConfig {
         minSdkVersion 17
-        targetSdkVersion 17
+        targetSdkVersion 21
         applicationId 'jobits.pos'
     }
     buildTypes {
@@ -13,6 +12,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "version"
     productFlavors {
         RM_Dependiente {
             applicationId 'jobits.pos.dpte'
@@ -43,15 +44,12 @@ android {
             buildConfigField "Integer", "MINOR_SERVER_VERSION", '0'
         }
     }
-    packagingOptions {
-        pickFirst  'META-INF/*'
-    }
 }
 
 
 dependencies {
-    compile 'it.sephiroth.android.library.horizontallistview:hlistview:1.2.2'
-    compile 'com.fasterxml.jackson.core:jackson-core:2.9.8'
-    compile 'com.fasterxml.jackson.core:jackson-annotations:2.9.8'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
+    implementation 'it.sephiroth.android.library.horizontallistview:hlistview:1.2.2'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.9.8'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.9.8'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
 }
