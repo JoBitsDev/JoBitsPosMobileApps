@@ -15,25 +15,29 @@ public class UbicacionModel implements Serializable {
     private String puerto;
     private String usuario;
     private String password;
+    private int usuarioId;
+    private int baseDatosId;
 
 
-    public UbicacionModel(String nombre, String ip, String puerto, String usuario, String password) {
+    public UbicacionModel(String nombre, String ip, String puerto, String usuario, String password, int usuarioId, int baseDatosId) {
         this.nombre = nombre;
         this.ip = ip;
         this.puerto = puerto;
         this.usuario = usuario;
         this.password = password;
+        this.usuarioId = usuarioId;
+        this.baseDatosId = baseDatosId;
     }
 
     public static UbicacionModel getDefaultUbicacion() {
-        return new UbicacionModel(NOMBRE_XD, IP_XD, PUERTO_XD, USUARIO_XD, PASS_XD);
+        return new UbicacionModel(NOMBRE_XD, IP_XD, PUERTO_XD, USUARIO_XD, PASS_XD,0,0);
     }
 
     public static UbicacionModel[] getDefaultArrayUbicaciones() {
-        return new UbicacionModel[]{new UbicacionModel(NOMBRE_XD, IP_XD, PUERTO_XD, USUARIO_XD, PASS_XD)
-                , new UbicacionModel(NOMBRE_XD, "192.168.173.2", PUERTO_XD, USUARIO_XD, PASS_XD)
-                , new UbicacionModel(NOMBRE_XD, "192.168.173.3", PUERTO_XD, USUARIO_XD, PASS_XD)
-                , new UbicacionModel(NOMBRE_XD, "192.168.173.4", PUERTO_XD, USUARIO_XD, PASS_XD)};
+        return new UbicacionModel[]{new UbicacionModel(NOMBRE_XD, IP_XD, PUERTO_XD, USUARIO_XD, PASS_XD,0,0)
+                , new UbicacionModel(NOMBRE_XD, "192.168.173.2", PUERTO_XD, USUARIO_XD, PASS_XD,0,0)
+                , new UbicacionModel(NOMBRE_XD, "192.168.173.3", PUERTO_XD, USUARIO_XD, PASS_XD,0,0)
+                , new UbicacionModel(NOMBRE_XD, "192.168.173.4", PUERTO_XD, USUARIO_XD, PASS_XD,0,0)};
     }
 
     public String getNombre() {
@@ -74,5 +78,21 @@ public class UbicacionModel implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getUsuarioId() {
+        return usuarioId;
+    }
+
+    public void setUsuarioId(int usuarioId) {
+        this.usuarioId = usuarioId;
+    }
+
+    public int getBaseDatosId() {
+        return baseDatosId;
+    }
+
+    public void setBaseDatosId(int baseDatosId) {
+        this.baseDatosId = baseDatosId;
     }
 }

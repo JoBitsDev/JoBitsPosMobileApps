@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.controllers.MainController;
 import com.services.models.ConfigModel;
@@ -23,7 +22,6 @@ import com.services.models.UbicacionModel;
 import com.services.notifications.ReceiverNotificationService;
 import com.utils.EnvironmentVariables;
 import com.utils.exception.ExceptionHandler;
-import com.utils.exception.ServerErrorException;
 import com.utils.exception.ServerNoCompatibleException;
 import com.utils.loading.LoadingHandler;
 import com.utils.loading.LoadingProcess;
@@ -77,8 +75,8 @@ public class MainActivity extends BaseActivity {//  |||||
             initVarialbes();
             addListeners();
 
-            updateConnectionText();
             loadConfig();
+            updateConnectionText();
             setUpInfo();
             setUpLanguaje();
         } catch (Exception e) {
@@ -250,6 +248,8 @@ public class MainActivity extends BaseActivity {//  |||||
 
                         final EditText nombre = (EditText) d.findViewById(R.id.nombre);
                         final EditText ip = (EditText) d.findViewById(R.id.ip);
+                        final EditText usuarioId = (EditText) d.findViewById(R.id.usuarioId);
+                        final EditText dBaseId = (EditText) d.findViewById(R.id.baseDatoId);
                         final EditText puerto = (EditText) d.findViewById(R.id.puerto);
                         final EditText usuario = (EditText) d.findViewById(R.id.usuario);
                         final EditText contrasena = (EditText) d.findViewById(R.id.contrasena);
@@ -264,9 +264,11 @@ public class MainActivity extends BaseActivity {//  |||||
                                     String n = nombre.getText().toString();
                                     String i = ip.getText().toString();
                                     String p = puerto.getText().toString();
+                                    int uId = Integer.parseInt(usuarioId.getText().toString());
+                                    int bdId = Integer.parseInt(dBaseId.getText().toString());
                                     String u = usuario.getText().toString();
                                     String c = contrasena.getText().toString();
-                                    controller.editarUbicacion(posicAReemplazar, new UbicacionModel(n, i, p,u,c));
+                                    controller.editarUbicacion(posicAReemplazar, new UbicacionModel(n, i, p, u, c, uId, bdId));
                                     controller.guardarCFG(openFileOutput(EnvironmentVariables.CONFIG_PATH, Context.MODE_PRIVATE));
                                     updateConnectionText();
                                 } catch (Exception e) {
