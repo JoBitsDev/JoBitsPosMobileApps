@@ -1,12 +1,14 @@
 package com.services.web_connections;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.services.models.CredentialsModel;
-import com.services.models.RequestModel;
-import com.services.models.RequestType;
-import com.utils.EnvironmentVariables;
+import com.services.models.Token;
+import com.services.web_connections.interfaces.LoginWCI;
 import com.utils.exception.NoConnectionException;
 import com.utils.exception.ServerErrorException;
+
+import java.util.Map;
+
+import retrofit2.Response;
 
 /**
  * Capa: Services.
@@ -16,10 +18,10 @@ import com.utils.exception.ServerErrorException;
  * @extends SimpleWebConnectionService ya que es un servicio.
  */
 
-public class LoginWCS extends SimpleWebConnectionService {
+public class LoginWCS extends RetrofitBaseConection {
 
-    private final String login_URL;
-    private final String URL_GET_TENNANT_TOKEN;
+    LoginWCI loginService = retrofit.create(LoginWCI.class);
+
 
     private CredentialsModel credentials;
 
@@ -28,8 +30,6 @@ public class LoginWCS extends SimpleWebConnectionService {
      */
     public LoginWCS() {
         super();
-        this.login_URL = path + "login/AUTH";
-        this.URL_GET_TENNANT_TOKEN = path + "login/GET-TENNANT-TOKEN";
     }
 
     /**
@@ -40,17 +40,14 @@ public class LoginWCS extends SimpleWebConnectionService {
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public boolean authenticate(String user, String pass) throws Exception {
-        credentials = new CredentialsModel(user, pass);
-        String body = new ObjectMapper().writeValueAsString(credentials);
-        RequestModel req = new RequestModel(login_URL, credentials.toString(), TENNANT_TOKEN, TOKEN, HTTPMethod.POST, RequestType.LOGIN);
-        if (EnvironmentVariables.ONLINE) {
-            TOKEN = connect(req);
+        Response<Map<String,String>> ret = loginService.getToken(TENNANT_TOKEN,
+                HTTP_HEADER_BASIC + new CredentialsModel(user, pass).getBase64BasicAuth()).execute();
+        if (ret.isSuccessful()) {
+            TOKEN = ret.body().get("Token");
+            return true;
         } else {
-            TOKEN = "TOKEN";
-            req.setUid(TOKEN);
-            addRequestToQueque(req);
+            throw new ServerErrorException(ret.errorBody().string(), ret.code());
         }
-        return true;
     }
 
     public String getToken() {
@@ -61,15 +58,20 @@ public class LoginWCS extends SimpleWebConnectionService {
         TOKEN = token;
     }
 
-    public void getTennantToken(String user, String pass) throws Exception {
-        CredentialsModel credentials = new CredentialsModel(user, pass);
-        RequestModel req = new RequestModel(URL_GET_TENNANT_TOKEN, credentials.toString(), TENNANT_TOKEN, TOKEN, HTTPMethod.POST, RequestType.TENNANT);
-        if (EnvironmentVariables.ONLINE) {
-            TENNANT_TOKEN = connect(req);
-        } else {
-            TENNANT_TOKEN = "TENNANT_TOKEN";
-            req.setUid(TENNANT_TOKEN);
-            addRequestToQueque(req);
+    /**
+     * Obtiene el token de la base de datos
+     *
+     * @throws ServerErrorException  si hay error en el servidor.
+     * @throws NoConnectionException si no hay coneccion con el servidor.
+     */
+    public boolean getTennantToken(String user, String pass, int idUser, int idBaseDatos) throws Exception {
+        Response<Token> res = loginService.getTennantToken(HTTP_HEADER_BASIC + new CredentialsModel(user, pass).getBase64BasicAuth(), idUser, idBaseDatos).execute();
+        if (res.isSuccessful()) {
+            TENNANT_TOKEN = res.body().getToken();
+            return true;
         }
+
+        throw new ServerErrorException(res.errorBody().string(), res.code());
+
     }
 }
