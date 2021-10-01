@@ -1,15 +1,17 @@
 package com.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.controllers.LoginController;
 import com.utils.exception.ExceptionHandler;
-import com.utils.exception.NoConnectionException;
-import com.utils.exception.ServerErrorException;
 import com.utils.loading.LoadingHandler;
 import com.utils.loading.LoadingProcess;
 
@@ -20,6 +22,14 @@ import com.utils.loading.LoadingProcess;
  * @extends BaseActivity ya que es una activity propia de la aplicacion.
  */
 public class LoginActivity extends BaseActivity {
+
+
+    /**
+     * Preferencias para guardar y cargar login credentials
+     */
+    private static final String PREFS_NAME = "preferences";
+    private static final String PREF_UNAME = "Username";
+    private static final String PREF_PASSWORD = "Password";
 
     /**
      * Controller del LoginActivity para manejar las peticiones a la capa inferior.
@@ -61,11 +71,36 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+    private void saveCredentials() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+
+        editor.putString(PREF_UNAME, user.getText().toString());
+        editor.putString(PREF_PASSWORD, pass.getText().toString());
+        editor.commit();
+    }
+
+    private void loadCredentials() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME,
+                Context.MODE_PRIVATE);
+
+        // Get value
+        user.setText(settings.getString(PREF_UNAME, ""));
+        pass.setText(settings.getString(PREF_PASSWORD, ""));
+    }
+
+
     @Override
     protected void onResume() {
         super.onResume();
-        pass.setText("");
-        loginResult.setText("");
+        loadCredentials();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveCredentials();
     }
 
     @Override
