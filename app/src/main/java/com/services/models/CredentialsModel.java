@@ -1,5 +1,7 @@
 package com.services.models;
 
+import android.util.Base64;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 
@@ -30,6 +32,10 @@ public class CredentialsModel {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getBase64BasicAuth(){
+        return Base64.encodeToString((username+":"+password).getBytes(), Base64.NO_WRAP);
     }
 
     private String getSHA256(String pass) {
