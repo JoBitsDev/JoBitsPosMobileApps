@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="activity_horizontal_margin">16sp</dimen>
-    <dimen name="activity_vertical_margin">16sp</dimen>
-    <dimen name="subtitulos">15sp</dimen>
-    <dimen name="icondimension">30sp</dimen>
-    <dimen name="titulos">25sp</dimen>
-    <dimen name="ListNames">25sp</dimen>
-    <dimen name="precio">17sp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="subtitulos">15dp</dimen>
+    <dimen name="icondimension">30dp</dimen>
+    <dimen name="titulos">25dp</dimen>
+    <dimen name="ListNames">25dp</dimen>
+    <dimen name="precio">17dp</dimen>
 
-    <dimen name="textSizeH1">35sp</dimen>
-    <dimen name="textSizeLarge">25sp</dimen>
-    <dimen name="textSizeSmall">9sp</dimen>
-    <dimen name="textSizeNormal">18sp</dimen>
-    <dimen name="textSizeExact20">20sp</dimen>
+    <dimen name="textSizeH1">35dp</dimen>
+    <dimen name="textSizeLarge">25dp</dimen>
+    <dimen name="textSizeSmall">9dp</dimen>
+    <dimen name="textSizeNormal">22dp</dimen>
+    <dimen name="textSizeExact20">20dp</dimen>
 </resources>
