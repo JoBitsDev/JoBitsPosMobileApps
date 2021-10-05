@@ -1,13 +1,16 @@
 package com.services.web_connections;
 
 import com.services.models.DetallesVentasModel;
+import com.services.models.VentaResumenModel;
+import com.services.web_connections.interfaces.ResumenVentasWCI;
 
 import java.util.List;
 
-public class ResumenVentasWCS extends SimpleWebConnectionService {
+import retrofit2.Response;
+
+public class ResumenVentasWCS extends RetrofitBaseConection {
 
     private final String p = "venta/",
-            RESUMEN = "SALES",
             RESUMEN_COUNT = "SALES-COUNT",
             DETALLES_POR_AREA = "DETALLES-POR-AREA",
             DETALLES_POR_DEPENDIENTE = "DETALLES-POR-DEPENDIENTE",
@@ -20,39 +23,46 @@ public class ResumenVentasWCS extends SimpleWebConnectionService {
         path += p;
     }
 
-    public List<Integer> getResumenVentasCount(String fecha) throws Exception {
-        String URL = path + RESUMEN_COUNT + "?fecha=" + fecha.replace("/", "-");
-        String resp = connect(URL, null, TOKEN, HTTPMethod.GET);
-        return om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, Integer.TYPE));
+    public List<Integer> getResumenVentasCount(int[] fecha) throws Exception {
+        Response<List<Integer>> resp = retrofit.create(ResumenVentasWCI.class).getIdsVentas(TENNANT_TOKEN
+                , HTTP_HEADER_BEARER + TOKEN
+                , fecha[0], fecha[1], fecha[2]).execute();
+        return handleResponse(resp);
     }
 
-    public String getResumenVentas(int idVenta) throws Exception {
-        String URL = path + RESUMEN + "?idVenta=" + idVenta;
-        return connect(URL, null, TOKEN, HTTPMethod.GET);
+    public VentaResumenModel getResumenVentas(int idVenta) throws Exception {
+        Response<VentaResumenModel> resp = retrofit.create(ResumenVentasWCI.class).getResumenGeneralFrom(TENNANT_TOKEN
+                , HTTP_HEADER_BEARER + TOKEN
+                , idVenta).execute();
+        return handleResponse(resp);
     }
 
     public List<DetallesVentasModel> getDetallesPorArea(int idVenta, String areaCod) throws Exception {
-        String URL = path + DETALLES_POR_AREA + "?idVenta=" + idVenta + "&areaCod=" + areaCod;
-        String resp = connect(URL, null, TOKEN, HTTPMethod.GET);
-        return om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, DetallesVentasModel.class));
+        Response<List<DetallesVentasModel>> resp = retrofit.create(ResumenVentasWCI.class).getDetailsFromArea(TENNANT_TOKEN
+                , HTTP_HEADER_BEARER + TOKEN
+                , idVenta, areaCod).execute();
+        return handleResponse(resp);
     }
 
     public List<DetallesVentasModel> getDetallesPorDependientes(int idVenta, String usuario) throws Exception {
-        String URL = path + DETALLES_POR_DEPENDIENTE + "?idVenta=" + idVenta + "&usuario=" + usuario;
-        String resp = connect(URL, null, TOKEN, HTTPMethod.GET);
-        return om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, DetallesVentasModel.class));
+        Response<List<DetallesVentasModel>> resp = retrofit.create(ResumenVentasWCI.class).getDetailsFromDpte(TENNANT_TOKEN
+                , HTTP_HEADER_BEARER + TOKEN
+                , idVenta, usuario).execute();
+        return handleResponse(resp);
     }
 
     public List<DetallesVentasModel> getDetallesPorCocina(int idVenta, String cocinaCod) throws Exception {
-        String URL = path + DETALLES_POR_COCINA + "?idVenta=" + idVenta + "&cocinaCod=" + cocinaCod;
-        String resp = connect(URL, null, TOKEN, HTTPMethod.GET);
-        return om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, DetallesVentasModel.class));
+        Response<List<DetallesVentasModel>> resp = retrofit.create(ResumenVentasWCI.class).getDetailsFromPtoElaboracion(TENNANT_TOKEN
+                , HTTP_HEADER_BEARER + TOKEN
+                , idVenta, cocinaCod).execute();
+        return handleResponse(resp);
     }
 
     public List<DetallesVentasModel> getDetallesPor(int idVenta) throws Exception {
-        String URL = path + DETALLES_POR + "?idVenta=" + idVenta;
-        String resp = connect(URL, null, TOKEN, HTTPMethod.GET);
-        return om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, DetallesVentasModel.class));
+        Response<List<DetallesVentasModel>> resp = retrofit.create(ResumenVentasWCI.class).getDetailsGeneral(TENNANT_TOKEN
+                , HTTP_HEADER_BEARER + TOKEN
+                , idVenta).execute();
+        return handleResponse(resp);
     }
 
 }

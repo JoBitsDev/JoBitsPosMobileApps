@@ -1,6 +1,5 @@
 package com.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.services.models.DetallesVentasModel;
 import com.services.models.VentaResumenModel;
 import com.services.web_connections.ResumenVentasWCS;
@@ -11,14 +10,13 @@ public class ResumenVentasController extends BaseController {
     private ResumenVentasWCS resumenVentasWCS = new ResumenVentasWCS();
 
 
-    public List<Integer> getResumenVentasCount(String fecha) throws Exception {
+    public List<Integer> getResumenVentasCount(int[] fecha) throws Exception {
         return resumenVentasWCS.getResumenVentasCount(fecha);
 
     }
 
     public VentaResumenModel getResumenVentas(int idVenta) throws Exception {
-        String body = resumenVentasWCS.getResumenVentas(idVenta);
-        return new ObjectMapper().readValue(body, VentaResumenModel.class);
+        return resumenVentasWCS.getResumenVentas(idVenta);
     }
 
     public List<DetallesVentasModel> getDetallesPorArea(int idVenta, String areaCod) throws Exception {

@@ -92,7 +92,9 @@ public class PantallaPrincipalActivity extends BaseActivity {
             año = calendar.get(Calendar.YEAR);
 
             editTextShowDate = (EditText) findViewById(R.id.editTextDatePicker);
-            editTextShowDate.setText(formatDate());
+            int[] date = formatDate();
+            String slash = "/";
+            editTextShowDate.setText(date[2] + slash + date[1] + slash + date[0]);
             imageButtonDatePicker = (ImageButton) findViewById(R.id.imageButtonDatePicker);
             imageButtonActualizar = (ImageButton) findViewById(R.id.buttonActualizar);
             listViewGeneral = (ListView) findViewById(R.id.listViewGeneral);
@@ -138,7 +140,12 @@ public class PantallaPrincipalActivity extends BaseActivity {
             imageButtonActualizar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    seleccionarIdVenta(editTextShowDate.getText().toString());
+                    String[] parsed = editTextShowDate.getText().toString().split("/");
+                    int aaaa = Integer.parseInt(parsed[2]);
+                    int mm = Integer.parseInt(parsed[1]);
+                    int dd = Integer.parseInt(parsed[0]);
+                    int[] ret = {aaaa, mm, dd};
+                    seleccionarIdVenta(ret);
                 }
             });
 
@@ -155,7 +162,12 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    seleccionarIdVenta(editTextShowDate.getText().toString());
+                    String[] parsed = editTextShowDate.getText().toString().split("/");
+                    int aaaa = Integer.parseInt(parsed[2]);
+                    int mm = Integer.parseInt(parsed[1]);
+                    int dd = Integer.parseInt(parsed[0]);
+                    int[] ret = {aaaa, mm, dd};
+                    seleccionarIdVenta(ret);
                 }
             });
         } catch (Exception e) {
@@ -325,7 +337,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
         });
     }
 
-    private void seleccionarIdVenta(final String fecha) {
+    private void seleccionarIdVenta(final int[] fecha) {
         new LoadingHandler<List<Integer>>(act, new LoadingProcess<List<Integer>>() {
             @Override
             public List<Integer> process() throws Exception {
@@ -473,13 +485,14 @@ public class PantallaPrincipalActivity extends BaseActivity {
         recogerFecha.show();
     }
 
-    private String formatDate() {
+    private int[] formatDate() {
         //Esta variable lo que realiza es aumentar en uno el mes ya que comienza desde 0 = enero
         final int mesActual = mes + 1;
         //Formateo el día obtenido: antepone el 0 si son menores de 10
         String diaFormateado = (dia < 10) ? "0" + String.valueOf(dia) : String.valueOf(dia);
         //Formateo el mes obtenido: antepone el 0 si son menores de 10
         String mesFormateado = (mesActual < 10) ? "0" + String.valueOf(mesActual) : String.valueOf(mesActual);
-        return diaFormateado + "/" + mesFormateado + "/" + año;
+        int[] ret = {año, mes, dia};
+        return ret;
     }
 }
