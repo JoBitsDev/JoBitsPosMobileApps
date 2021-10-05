@@ -10,19 +10,6 @@ import retrofit2.Response;
 
 public class ResumenVentasWCS extends RetrofitBaseConection {
 
-    private final String p = "venta/",
-            RESUMEN_COUNT = "SALES-COUNT",
-            DETALLES_POR_AREA = "DETALLES-POR-AREA",
-            DETALLES_POR_DEPENDIENTE = "DETALLES-POR-DEPENDIENTE",
-            DETALLES_POR_COCINA = "DETALLES-POR-COCINA",
-            DETALLES_POR = "DETALLES-POR";
-
-
-    public ResumenVentasWCS() {
-        super();
-        path += p;
-    }
-
     public List<Integer> getResumenVentasCount(int[] fecha) throws Exception {
         Response<List<Integer>> resp = retrofit.create(ResumenVentasWCI.class).getIdsVentas(TENNANT_TOKEN
                 , HTTP_HEADER_BEARER + TOKEN

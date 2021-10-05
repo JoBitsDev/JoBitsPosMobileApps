@@ -15,21 +15,6 @@ import com.utils.exception.ServerErrorException;
 public class PersonalWCS extends RetrofitBaseConection {
 
     /**
-     * Path a la peticion.
-     */
-    private String P = "login/";
-
-    /**
-     * Peticion al servidor
-     */
-    private String PERSONAL_TRABAJANDO = "MOSTRAR-PERSONAL-TRABAJANDO";
-
-    public PersonalWCS() {
-        super();
-        path += P;
-    }
-
-    /**
      * Obtiene los usuarios activos en ese momento para poder ceder orden.
      *
      * @return Un arreglo de Strign con los usuarios activos.

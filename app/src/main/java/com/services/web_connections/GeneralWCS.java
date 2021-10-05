@@ -12,15 +12,6 @@ import java.util.Map;
 
 public class GeneralWCS extends RetrofitBaseConection {
 
-
-    private String p = "general/";
-    final String INFO = "INFO";
-
-    public GeneralWCS() {
-        super();
-        path += p;
-    }
-
     public HashMap<String, Object> readInfo() throws Exception {
         SiteInfoWCI infoService = retrofit.create(SiteInfoWCI.class);
         HashMap<String, Object> ret = infoService.getSiteVersion(TENNANT_TOKEN,HTTP_HEADER_BASIC+TOKEN).execute().body();
