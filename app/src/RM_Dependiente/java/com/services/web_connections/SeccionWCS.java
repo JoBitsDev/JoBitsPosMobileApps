@@ -1,23 +1,17 @@
 package com.services.web_connections;
 
 import com.services.models.orden.SeccionModel;
+import com.services.web_connections.interfaces.SeccionWCI;
 
 import java.util.List;
 
 /**
  * Created by Jorge on 2/7/17.
  */
-public class SeccionWCS extends SimpleWebConnectionService {
-
-    final String P = "seccion/";
-
-    public SeccionWCS() {
-        super();
-        path += P;
-    }
+public class SeccionWCS extends RetrofitBaseConection {
 
     public List<SeccionModel> getSecciones() throws Exception {
-        String resp = connect(path, null, super.TOKEN, HTTPMethod.GET);
-        return om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, SeccionModel.class));
+        return handleResponse(retrofit.create(SeccionWCI.class).findAll(TENNANT_TOKEN,HTTP_HEADER_BEARER+TOKEN).execute());
     }
+
 }

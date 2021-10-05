@@ -2,49 +2,36 @@ package com.services.web_connections;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.services.models.orden.MesaModel;
+import com.services.web_connections.interfaces.AreaWCI;
 
 import java.util.List;
 
 /**
  * Created by Jorge on 2/7/17.
  */
-public class AreaWCS extends SimpleWebConnectionService {
+public class AreaWCS extends RetrofitBaseConection {
 
-    final String P = "area/";
+    AreaWCI service = retrofit.create(AreaWCI.class);
 
     /**
      * Etiquetas a llamar.
      */
-    final String FIND_VACIAS = "FIND-VACIAS",
-            FIND_ALL = "FIND-ALL",
-            FIND_ALL_MESAS_AREA = "FIND-ALL-MESAS-AREA";
-
-    public AreaWCS() {
-        super();
-        path += P;
-    }
-
 
     public void saveMesasList(List<MesaModel> mesaModels, String area) throws JsonProcessingException {
-        String URL = path + FIND_ALL_MESAS_AREA + "?selectedArea=" + area;
-        saveResponse(URL, om.writeValueAsString(mesaModels));
+        // saveResponse(URL, om.writeValueAsString(mesaModels));
     }
 
     public String[] getAreasName() throws Exception {
-        String resp = connect(path, null, super.TOKEN, HTTPMethod.GET);
-        return om.readValue(resp, om.getTypeFactory().constructArrayType(String.class));
+        return handleResponse(service.getAreasNames(TENNANT_TOKEN, HTTP_HEADER_BEARER + TOKEN).execute());
     }
 
     public String[] findVacias(String codMesa) throws Exception {
-        String URL = path + FIND_VACIAS + "?codMesa=" + codMesa;
-        String resp = connect(URL, null, super.TOKEN, HTTPMethod.GET);
-        return om.readValue(resp, om.getTypeFactory().constructArrayType(String.class));
+        return handleResponse(service.findVacias(TENNANT_TOKEN, HTTP_HEADER_BEARER + TOKEN, codMesa).execute());
     }
 
+
     public List<MesaModel> findMesas(String selectedArea) throws Exception {
-        String URL = path + FIND_ALL_MESAS_AREA + "?selectedArea=" + selectedArea;
-        String resp = connect(URL, null, super.TOKEN, HTTPMethod.GET);
-        return om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, MesaModel.class));
+        return handleResponse(service.getMesasFromArea(TENNANT_TOKEN, HTTP_HEADER_BEARER + TOKEN, selectedArea).execute());
     }
 
 }
