@@ -74,6 +74,6 @@
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="5dp"
-        android:layout_weight="50"
+        android:layout_weight="5"
         android:background="@color/primario" />
 </LinearLayout>
