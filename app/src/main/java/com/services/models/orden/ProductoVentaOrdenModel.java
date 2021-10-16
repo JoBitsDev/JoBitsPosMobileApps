@@ -6,7 +6,6 @@
 package com.services.models.orden;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 
@@ -17,12 +16,8 @@ import java.io.Serializable;
 public class ProductoVentaOrdenModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    protected int id;
     private Float enviadosACocina;
-
-    @JsonProperty("productoVentaOrdenPK")
-    protected ProductovOrdenPKModel productovOrdenPKModel;
-
     private float cantidad;
 
     private ProductoVentaModel productoVenta;
@@ -32,17 +27,21 @@ public class ProductoVentaOrdenModel implements Serializable {
     public ProductoVentaOrdenModel() {
     }
 
-    public ProductoVentaOrdenModel(ProductovOrdenPKModel productovOrdenPKModel) {
-        this.productovOrdenPKModel = productovOrdenPKModel;
+    public ProductoVentaOrdenModel(int id) {
+        this.id = id;
     }
 
-    public ProductoVentaOrdenModel(ProductovOrdenPKModel productovOrdenPKModel, float cantidad) {
-        this.productovOrdenPKModel = productovOrdenPKModel;
+    public ProductoVentaOrdenModel(int id, float cantidad) {
+        this.id = id;
         this.cantidad = cantidad;
     }
 
-    public ProductoVentaOrdenModel(String productoVentapCod, String ordencodOrden, int productoOrdenId ) {
-        this.productovOrdenPKModel = new ProductovOrdenPKModel(productoVentapCod,ordencodOrden,productoOrdenId);
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getNumeroComensal() {
@@ -51,14 +50,6 @@ public class ProductoVentaOrdenModel implements Serializable {
 
     public void setNumeroComensal(int numeroComensal) {
         this.numeroComensal = numeroComensal;
-    }
-
-    public ProductovOrdenPKModel getProductovOrdenPKModel() {
-        return productovOrdenPKModel;
-    }
-
-    public void setProductovOrdenPKModel(ProductovOrdenPKModel productovOrdenPKModel) {
-        this.productovOrdenPKModel = productovOrdenPKModel;
     }
 
     public float getCantidad() {
@@ -79,16 +70,8 @@ public class ProductoVentaOrdenModel implements Serializable {
 
 
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (productovOrdenPKModel != null ? productovOrdenPKModel.hashCode() : 0);
-        return hash;
-    }
-
-
-    @Override
     public String toString() {
-        return "com.restManager.ProductoVentaOrdenModel[ productovOrdenPKModel=" + productovOrdenPKModel + " ]";
+        return "com.restManager.ProductoVentaOrdenModel[ productovOrdenPKModel=" + id + " ]";
     }
 
     public Float getEnviadosACocina() {

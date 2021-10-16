@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.activities.R;
 import com.services.models.orden.ProductoVentaModel;
 import com.services.models.orden.ProductoVentaOrdenModel;
-import com.services.models.orden.ProductovOrdenPKModel;
 import com.services.web_connections.OrdenWCS;
 import com.utils.EnvironmentVariables;
 
@@ -116,10 +115,7 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
             objects.set(i, pv);
 
         } else {
-            ProductovOrdenPKModel pk = new ProductovOrdenPKModel();
-            pk.setOrdencodOrden(o.getCodOrden());
-            pk.setProductoVentapCod(p.getPCod());
-            pv = new ProductoVentaOrdenModel(pk);
+            pv = new ProductoVentaOrdenModel();
             pv.setProductoVenta(p);
             pv.setCantidad(ammount);
             pv.setEnviadosACocina((float) 0);

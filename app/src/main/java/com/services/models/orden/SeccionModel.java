@@ -23,7 +23,7 @@ public class SeccionModel implements Serializable, Comparable<SeccionModel>{
     private String nombreSeccion;
     private String descripcion;
 
-    @JsonIgnore
+
     private List<ProductoVentaModel> productos = new ArrayList<ProductoVentaModel>();
 
     public SeccionModel() {

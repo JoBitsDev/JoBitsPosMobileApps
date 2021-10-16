@@ -20,7 +20,6 @@ public class ProductoVentaModel implements Serializable, Comparable<ProductoVent
     private String nombre;
     private float precioVenta;
     private String descripcion;
-    private SeccionModel seccionnombreSeccion;
 
     public ProductoVentaModel() {
     }
@@ -63,14 +62,6 @@ public class ProductoVentaModel implements Serializable, Comparable<ProductoVent
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public SeccionModel getSeccionnombreSeccion() {
-        return seccionnombreSeccion;
-    }
-
-    public void setSeccionnombreSeccion(SeccionModel seccionnombreSeccion) {
-        this.seccionnombreSeccion = seccionnombreSeccion;
     }
 
     @Override
