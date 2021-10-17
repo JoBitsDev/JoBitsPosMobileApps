@@ -19,9 +19,9 @@ public interface AreaWCI{
     Call<String[]> getAreasNames(@Header("Tennant") String tennantToken
             , @Header("Authorization") String bearerToken);
 
-    @GET(AREA_LIST_PATH + "mostrar-vacias/{codMesa}/names")
+    @GET(AREA_LIST_PATH + "mostrar-vacias/names")
     Call<String[]> findVacias(@Header("Tennant") String tennantToken
-            , @Header("Authorization") String bearerToken,@Path("codMesa") String codMesa);
+            , @Header("Authorization") String bearerToken);
 
     @GET(AREA_LIST_PATH + "{idArea}/list-mesas")
     Call<List<MesaModel>> getMesasFromArea(@Header("Tennant") String tennantToken

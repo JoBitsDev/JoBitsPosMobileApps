@@ -4,10 +4,8 @@ import android.app.Activity;
 
 import com.activities.R;
 import com.services.models.orden.MesaModel;
-import com.services.models.orden.*;
 import com.services.web_connections.AreaWCS;
 import com.services.web_connections.OrdenWCS;
-import com.utils.EnvironmentVariables;
 import com.utils.adapters.MesaAdapter;
 
 import java.util.List;
@@ -38,23 +36,12 @@ public class MesasController extends BaseController {
     }
 
     public MesaAdapter getData(String selectedArea, Activity act) throws Exception {
-        List<MesaModel>  mesaModels = new AreaWCS().findMesas(selectedArea);
+        List<MesaModel> mesaModels = new AreaWCS().findMesas(selectedArea);
         MesaAdapter adaptador = new MesaAdapter(act, R.id.listaMesas, mesaModels, user);
         return adaptador;
     }
 
-    public void initOrdenEnMesa(OrdenModel orden, String mesa, String area) throws Exception {
-        List<MesaModel> mesaModels = new AreaWCS().findMesas(area);
-        for (MesaModel m : mesaModels) {
-            if (m.getCodMesa().matches(mesa)) {
-                m.setEstado(orden.getCodOrden() + " " + user);
-                break;
-            }
-        }
-        new AreaWCS().saveMesasList(mesaModels, area);
-    }
-
-    public void terminarOrdenEnMesa(String mesa,String area) throws Exception {
+    public void terminarOrdenEnMesa(String mesa, String area) throws Exception {
         List<MesaModel> mesaModels = new AreaWCS().findMesas(area);
         for (MesaModel m : mesaModels) {
             if (m.getCodMesa().matches(mesa)) {
@@ -62,7 +49,7 @@ public class MesasController extends BaseController {
                 break;
             }
         }
-        new AreaWCS().saveMesasList(mesaModels,area);
+        new AreaWCS().saveMesasList(mesaModels, area);
     }
 
     public void starService(String codMesa) {
@@ -74,7 +61,8 @@ public class MesasController extends BaseController {
     }
 
     public boolean validate() throws Exception {
-        return EnvironmentVariables.ONLINE ? ordenWCService.validate() : true;
+        ordenWCService.validate();
+        return true;
     }
 
     public String[] getAreas() throws Exception {

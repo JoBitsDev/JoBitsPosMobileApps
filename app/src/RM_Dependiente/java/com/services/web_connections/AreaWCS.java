@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.services.models.orden.MesaModel;
 import com.services.web_connections.interfaces.AreaWCI;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,11 +27,14 @@ public class AreaWCS extends RetrofitBaseConection {
     }
 
     public String[] findVacias(String codMesa) throws Exception {
-        return handleResponse(service.findVacias(TENNANT_TOKEN, HTTP_HEADER_BEARER + TOKEN, codMesa).execute());
+        return handleResponse(service.findVacias(TENNANT_TOKEN, HTTP_HEADER_BEARER + TOKEN).execute());
     }
 
 
     public List<MesaModel> findMesas(String selectedArea) throws Exception {
+        if (selectedArea == null) {
+            return new ArrayList<>();
+        }
         return handleResponse(service.getMesasFromArea(TENNANT_TOKEN, HTTP_HEADER_BEARER + TOKEN, selectedArea).execute());
     }
 

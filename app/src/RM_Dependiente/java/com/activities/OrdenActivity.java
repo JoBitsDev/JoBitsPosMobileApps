@@ -47,7 +47,7 @@ public class OrdenActivity extends BaseActivity {
     private ListView listaOrden;
     private CheckBox deLaCasaCheckBox;
     private List<SeccionModel> secciones;
-    private List<ProductoVentaModel> productos;
+   // private List<ProductoVentaModel> productos;
     private List<ProductoVentaOrdenModel> productosVentaOrden;
     private ProductoVentaModel lastClickedMenu = null;
     private ProductoVentaOrdenModel lastClickedOrden = null;
@@ -57,7 +57,7 @@ public class OrdenActivity extends BaseActivity {
     private ProductoVentaOrdenAdapter productoVentaOrdenAdapter;
     private TabHost host;
     private float lastX;
-    private String area;
+    private String idMesa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +70,8 @@ public class OrdenActivity extends BaseActivity {
 
             //separado porque es un init y un set adapter en paralelo
             Bundle bundleExtra = getIntent().getExtras();
-            area = bundleExtra.getString(String.valueOf(R.string.area));
-            initMenu(area);
+            idMesa = bundleExtra.getString(String.valueOf(R.string.mesa));
+            initMenu(idMesa);
 
             setAdapters();
             addListeners();
@@ -463,7 +463,7 @@ public class OrdenActivity extends BaseActivity {
                     @Override
                     public Void process() throws Exception {
                         controller.starService(mesa);
-                        if (!controller.initOrden(area)) {
+                        if (!controller.initOrden()) {
                             throw new DayClosedException(getResources().getString(R.string.dayClosedError));
                         }
                         return null;
@@ -527,22 +527,13 @@ public class OrdenActivity extends BaseActivity {
         new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
             @Override
             public Void process() throws Exception {
-                secciones = controller.getSecciones();
-                productos = controller.getProductos(codArea);
+                secciones = controller.getSecciones(idMesa);
+               // productos = controller.getProductos(codArea);
                 return null;
             }
 
             @Override
             public void post(Void value) {
-                for (ProductoVentaModel x : productos) {
-                    for (SeccionModel y : secciones) {
-                        if (x.getSeccionnombreSeccion().getNombreSeccion().equals(y.getNombreSeccion())) {
-                            y.addProducto(x);
-                            break;
-                        }
-                    }
-                }
-
                 for (Iterator<SeccionModel> it = secciones.iterator(); it.hasNext(); ) {//TODO: Revisar el for que asi es como mejor funciona
                     SeccionModel secc = it.next();
                     if (secc.getProductos().isEmpty()) {
@@ -883,7 +874,7 @@ public class OrdenActivity extends BaseActivity {
             new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
                 @Override
                 public Boolean process() throws Exception {
-                    return controller.removeProducto(lastClickedOrden.getProductoVenta(), cantidad);
+                    return controller.removeProducto(lastClickedOrden, cantidad);
                 }
 
                 @Override
@@ -918,7 +909,7 @@ public class OrdenActivity extends BaseActivity {
         new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
             @Override
             public Boolean process() throws Exception {
-                return controller.finishOrden(area);
+                return controller.finishOrden();
             }
 
             @Override

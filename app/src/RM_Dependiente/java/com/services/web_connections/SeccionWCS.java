@@ -13,5 +13,7 @@ public class SeccionWCS extends RetrofitBaseConection {
     public List<SeccionModel> getSecciones() throws Exception {
         return handleResponse(retrofit.create(SeccionWCI.class).findAll(TENNANT_TOKEN,HTTP_HEADER_BEARER+TOKEN).execute());
     }
-
+    public List<SeccionModel> getSeccionesOf(String idMesa) throws Exception {
+        return handleResponse(retrofit.create(SeccionWCI.class).findByMesa(TENNANT_TOKEN,HTTP_HEADER_BEARER+TOKEN,idMesa).execute());
+    }
 }
