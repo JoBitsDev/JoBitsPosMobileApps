@@ -245,6 +245,7 @@ public class MainActivity extends BaseActivity {//  |||||
 
                         final Dialog d = new Dialog(act);
                         d.setContentView(R.layout.cambiar_ubicacion_dialog);
+                        UbicacionModel model = controller.getCfg().getUbicaciones()[posicAReemplazar];
 
                         final EditText nombre = (EditText) d.findViewById(R.id.nombre);
                         final EditText ip = (EditText) d.findViewById(R.id.ip);
@@ -254,6 +255,14 @@ public class MainActivity extends BaseActivity {//  |||||
                         final EditText usuario = (EditText) d.findViewById(R.id.usuario);
                         final EditText contrasena = (EditText) d.findViewById(R.id.contrasena);
                         final Button button = (Button) d.findViewById(R.id.ok);
+
+                        nombre.setText(model.getNombre());
+                        ip.setText(model.getIp());
+                        usuarioId.setText(""+model.getUsuarioId());
+                        dBaseId.setText(""+model.getBaseDatosId());
+                        puerto.setText(model.getPuerto());
+                        usuario.setText(model.getUsuario());
+                        contrasena.setText(model.getPassword());
 
                         d.setTitle("Editar Ubicación");
                         button.setOnClickListener(new View.OnClickListener() {
