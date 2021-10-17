@@ -21,7 +21,7 @@ public class PersonalWCS extends RetrofitBaseConection {
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public String[] getPersonalTrabajando() throws Exception {//TODO: buscan endpoint que satisfaga esta solucitud
+    public String[] getPersonalOnline() throws Exception {//TODO: buscan endpoint que satisfaga esta solucitud
         String[] ret = {};
         return ret;
     }
