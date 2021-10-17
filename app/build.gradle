@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 android {
-    compileSdkVersion 30
+    compileSdk 30
     defaultConfig {
-        minSdkVersion 26
+        minSdkVersion 21
         targetSdkVersion 30
         applicationId 'jobits.pos'
     }
@@ -49,6 +49,7 @@ android {
             buildConfigField "Integer", "MINOR_SERVER_VERSION", '0'
         }
     }
+    buildToolsVersion '31.0.0'
 }
 
 
@@ -60,7 +61,7 @@ dependencies {
     implementation 'it.sephiroth.android.library.horizontallistview:hlistview:1.2.2'
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.5'
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.12.3'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.3'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.12.5'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.5'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.5'
 }
