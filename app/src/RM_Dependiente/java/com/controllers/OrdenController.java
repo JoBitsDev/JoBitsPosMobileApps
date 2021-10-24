@@ -74,8 +74,7 @@ public class OrdenController extends BaseController {
     }
 
     public String getNota(ProductoVentaOrdenModel pVO) throws Exception {
-        throw new ServerErrorException("Funcionalidad deshabilitada", 500);
-//        return ordenWCService.getNota(pVO.getProductoVenta().getPCod());
+        return ordenWCService.getNota(pVO.getId());
     }
 
     public String getComensal(ProductoVentaOrdenModel pVO) throws Exception {
@@ -96,27 +95,27 @@ public class OrdenController extends BaseController {
         return new AreaWCS().findVacias(ordenWCService.getCodMesa());
     }
 
-    public boolean addProducto(ProductoVentaModel lastClickedMenu, float cantidad) throws Exception {
-        OrdenModel orden = ordenWCService.addProducto(lastClickedMenu.getPCod(), cantidad);
-        if (!EnvironmentVariables.ONLINE) {
-            boolean exitProduct = false;
-            for (ProductoVentaOrdenModel prod : orden.getProductoVentaOrdenList()) {
-                if (prod.getProductoVenta().getPCod().matches(lastClickedMenu.getPCod())) {
-                    exitProduct = true;
-                    prod.setCantidad(prod.getCantidad() + cantidad);
-                    break;
-                }
-            }
-            if (!exitProduct) {
-                ProductoVentaOrdenModel p = new ProductoVentaOrdenModel();
-                p.setCantidad(cantidad);
-                p.setEnviadosACocina(0f);
-                p.setProductoVenta(lastClickedMenu);
-                orden.getProductoVentaOrdenList().add(p);
-            }
-            ordenWCService.saveOrdenToCache(new ObjectMapper().writeValueAsString(orden));
-        }
-        return true;
+    public OrdenModel addProducto(ProductoVentaModel lastClickedMenu, float cantidad) throws Exception {
+        return ordenWCService.addProducto(lastClickedMenu.getPCod(), cantidad);
+//        if (!EnvironmentVariables.ONLINE) {
+//            boolean exitProduct = false;
+//            for (ProductoVentaOrdenModel prod : orden.getProductoVentaOrdenList()) {
+//                if (prod.getProductoVenta().getPCod().matches(lastClickedMenu.getPCod())) {
+//                    exitProduct = true;
+//                    prod.setCantidad(prod.getCantidad() + cantidad);
+//                    break;
+//                }
+//            }
+//            if (!exitProduct) {
+//                ProductoVentaOrdenModel p = new ProductoVentaOrdenModel();
+//                p.setCantidad(cantidad);
+//                p.setEnviadosACocina(0f);
+//                p.setProductoVenta(lastClickedMenu);
+//                orden.getProductoVentaOrdenList().add(p);
+//            }
+//            ordenWCService.saveOrdenToCache(new ObjectMapper().writeValueAsString(orden));
+//        }
+//        return true;
     }
 
     public void increasePoducto(ProductoVentaModel lastClickedMenu, ProductoVentaOrdenAdapter adapter, float cantidad) {
@@ -170,10 +169,9 @@ public class OrdenController extends BaseController {
         return resp;
     }
 
-    public boolean addNota(ProductoVentaModel productoVentaModel, String nota) throws Exception {
-        throw new ServerErrorException("Funcionalidad deshabilitada", 500);
-//        ordenWCService.addNota(productoVentaModel.getPCod(), nota);
-        //      return true;
+    public boolean addNota(ProductoVentaOrdenModel productoVentaModel, String nota) throws Exception {
+        ordenWCService.addNota(productoVentaModel.getId(), nota);
+        return true;
     }
 
     public String[] getUsuariosActivos() throws Exception {

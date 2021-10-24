@@ -3,6 +3,8 @@ package com.services.web_connections.interfaces;
 
 import com.services.models.orden.OrdenModel;
 
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -64,17 +66,17 @@ public interface OrdenWCI {
 
 
     @POST(ORDEN_PATH + "{id}/add-nota/{idProducto}/{nota}")
-    Call<OrdenModel> addNota(@Header("Tennant") String tennantToken
+    Call<Void> addNota(@Header("Tennant") String tennantToken
             , @Header("Authorization") String bearerToken
             , @Path("id") String idOrden
-            , @Path("idProducto") String idProducto
+            , @Path("idProducto") int idProducto
             , @Path("nota") String nota);
 
-    @POST(ORDEN_PATH + "{id}/get-nota-from/{idProducto}")
-    Call<String> getNota(@Header("Tennant") String tennantToken
+    @GET(ORDEN_PATH + "{id}/get-nota-from/{idProducto}")
+    Call<Map<String,String>> getNota(@Header("Tennant") String tennantToken
             , @Header("Authorization") String bearerToken
             , @Path("id") String idOrden
-            , @Path("idProducto") String idProducto);
+            , @Path("idProducto") int idProducto);
 
     @POST(ORDEN_PATH + "{id}/ceder/{user}")
     Call<Boolean> cederUsuario(@Header("Tennant") String tennantToken

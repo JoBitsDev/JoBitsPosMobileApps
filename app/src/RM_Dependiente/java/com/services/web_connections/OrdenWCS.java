@@ -81,13 +81,12 @@ public class OrdenWCS extends RetrofitBaseConection {
         return true;
     }
 
-    public OrdenModel addNota(String pCod, String nota) throws Exception {
-        return handleResponse(service.addNota(TENNANT_TOKEN, getBearerToken(), codOrden, pCod, nota).execute());
-
+    public void addNota(int pCod, String nota) throws Exception {
+        handleResponse(service.addNota(TENNANT_TOKEN, getBearerToken(), codOrden, pCod, nota).execute());
     }
 
-    public String getNota(String pCod) throws Exception {
-        return handleResponse(service.getNota(TENNANT_TOKEN, getBearerToken(), codOrden, pCod).execute());
+    public String getNota(int pCod) throws Exception {
+        return handleResponse(service.getNota(TENNANT_TOKEN, getBearerToken(), codOrden, pCod).execute()).get("nota");
     }
 
     public boolean cederAUsuario(String usuario) throws Exception {

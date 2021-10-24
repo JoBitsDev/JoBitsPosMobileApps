@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.controllers.OrdenController;
+import com.services.models.orden.OrdenModel;
 import com.services.models.orden.ProductoVentaModel;
 import com.services.models.orden.ProductoVentaOrdenModel;
 import com.services.models.orden.SeccionModel;
@@ -41,7 +42,7 @@ public class OrdenActivity extends BaseActivity {
 
     private OrdenController controller;
     private Button cerrarOrdenButton, despacharACocinaButton;
-    private TextView mesaNoLabel, ordenNoLabel, dependienteLabel, totalPrincipalLabel, totalSecundariaLabel;
+    private TextView mesaNoLabel, ordenNoLabel, dependienteLabel, totalPrincipalLabel;
     private EditText searchText;
     private ListView menuProductosListView, menuSeccionListView;
     private ListView listaOrden;
@@ -93,7 +94,6 @@ public class OrdenActivity extends BaseActivity {
             ordenNoLabel = (TextView) findViewById(R.id.ordenNoLabel);
             dependienteLabel = (TextView) findViewById(R.id.dependienteLabel);
             totalPrincipalLabel = (TextView) findViewById(R.id.totalPrincipalLabel);
-            totalSecundariaLabel = (TextView) findViewById(R.id.totalSecundariaLabel);
             deLaCasaCheckBox = (CheckBox) findViewById(R.id.deLaCasaCheckBox);
             menuProductosListView = (ListView) findViewById(R.id.menuListView);
             menuSeccionListView = (ListView) findViewById(R.id.menuPrincipalListView);
@@ -834,10 +834,8 @@ public class OrdenActivity extends BaseActivity {
             }
             if (EnvironmentVariables.MONEDA_PRINCIPAL.equals(" MN")) {
                 totalPrincipalLabel.setText(EnvironmentVariables.setDosLugaresDecimales(tot) + EnvironmentVariables.MONEDA_PRINCIPAL);
-                totalSecundariaLabel.setText(EnvironmentVariables.setDosLugaresDecimales(tot / EnvironmentVariables.CAMBIO) + EnvironmentVariables.MONEDA_SECUNDARIA);
             } else {
                 totalPrincipalLabel.setText(EnvironmentVariables.setDosLugaresDecimales(tot) + EnvironmentVariables.MONEDA_PRINCIPAL);
-                totalSecundariaLabel.setText(EnvironmentVariables.setDosLugaresDecimales(tot * EnvironmentVariables.CAMBIO) + EnvironmentVariables.MONEDA_SECUNDARIA);
             }
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
@@ -846,21 +844,27 @@ public class OrdenActivity extends BaseActivity {
 
     public void addProductosVarios(final float cantidad) {
         if (lastClickedMenu != null) {
-            new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
+            new LoadingHandler<OrdenModel>(act, new LoadingProcess<OrdenModel>() {
                 @Override
-                public Boolean process() throws Exception {
+                public OrdenModel process() throws Exception {
                     return controller.addProducto(lastClickedMenu, cantidad);
                 }
 
                 @Override
-                public void post(Boolean value) {
-                    if (value) {
-                        controller.increasePoducto(lastClickedMenu, (ProductoVentaOrdenAdapter) listaOrden.getAdapter(), cantidad);
-                        updateCosto();
-                        Toast.makeText(act, "Agregado " + cantidad + " " + lastClickedMenu.getNombre() + " al pedido.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(act, R.string.errorAlAutenticar, Toast.LENGTH_SHORT).show();//TODO: como que error al autenticar??
-                    }
+                public void post(OrdenModel value) {
+                    ProductoVentaOrdenAdapter adapter =  (ProductoVentaOrdenAdapter) listaOrden.getAdapter();
+                    adapter.clear();
+                    adapter.addAll(value.getProductoVentaOrdenList());
+                    adapter.notifyDataSetChanged();
+                    updateCosto();
+                    Toast.makeText(act, "Agregado " + cantidad + " " + lastClickedMenu.getNombre() + " al pedido.", Toast.LENGTH_SHORT).show();
+//                    if (value) {
+//                        controller.increasePoducto(lastClickedMenu, (ProductoVentaOrdenAdapter) listaOrden.getAdapter(), cantidad);
+//                        updateCosto();
+//                        Toast.makeText(act, "Agregado " + cantidad + " " + lastClickedMenu.getNombre() + " al pedido.", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Toast.makeText(act, R.string.errorAlAutenticar, Toast.LENGTH_SHORT).show();//TODO: como que error al autenticar??
+//                    }
                 }
             });
 
@@ -966,7 +970,7 @@ public class OrdenActivity extends BaseActivity {
         new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
             @Override
             public Boolean process() throws Exception {
-                return controller.addNota(lastClickedOrden.getProductoVenta(), nota);
+                return controller.addNota(lastClickedOrden, nota);
             }
 
             @Override
