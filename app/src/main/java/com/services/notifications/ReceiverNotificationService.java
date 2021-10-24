@@ -185,8 +185,8 @@ public class ReceiverNotificationService extends Service {
                 .setPriority(Notification.PRIORITY_HIGH)
                 .setAutoCancel(true)
                 .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
-                .setSmallIcon(R.drawable.logo_android)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.logo_android))
+                .setSmallIcon(R.drawable.logo_app)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.logo_app))
                 .build();
         NotificationManager notificationManager = (NotificationManager)
                 getSystemService(NOTIFICATION_SERVICE);

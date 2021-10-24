@@ -21,7 +21,7 @@
                 android:layout_centerVertical="false"
                 android:text="Rest Name"
                 android:textColor="@color/texto_primario"
-                android:textSize="@dimen/MainTitle" />
+                android:textSize="@dimen/textSizeH1" />
 
             <TextView
                 android:id="@+id/labelUsuario"

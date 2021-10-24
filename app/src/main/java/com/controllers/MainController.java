@@ -33,8 +33,8 @@ public class MainController extends BaseController {
         EnvironmentVariables.NOMBRE_REST = (String) hm.get("nombre");
         EnvironmentVariables.MONEDA_PRINCIPAL = (String) hm.get("monedaPrincipal");
         EnvironmentVariables.MONEDA_SECUNDARIA = (String) hm.get("monedaSecundaria");
-        EnvironmentVariables.MAYOR = (Integer) hm.get("majorVersion");
-        EnvironmentVariables.MINOR = (Integer) hm.get("minorVersion");
+        EnvironmentVariables.MAYOR = (Integer) hm.get("mayor_Version");
+        EnvironmentVariables.MINOR = (Integer) hm.get("minor_Version");
     }
 
     public void setSelected(int wich) {

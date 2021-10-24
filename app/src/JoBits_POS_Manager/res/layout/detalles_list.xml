@@ -17,7 +17,7 @@
             android:layout_weight="30"
             android:hint="Producto"
             android:textColor="@color/primario"
-            android:textSize="@dimen/textSizeMedium" />
+            android:textSize="@dimen/textSizeNormal" />
 
         <View
             android:id="@+id/divider"

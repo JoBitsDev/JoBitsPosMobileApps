@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.activities.R;
 import com.services.models.orden.ProductoVentaModel;
 import com.services.models.orden.ProductoVentaOrdenModel;
-import com.services.models.orden.ProductovOrdenPKModel;
 import com.services.web_connections.OrdenWCS;
 import com.utils.EnvironmentVariables;
 
@@ -24,9 +23,9 @@ import java.util.List;
  */
 public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenModel> {
     public final int c = Color.GREEN;
+    boolean read_only = false;
     private List<ProductoVentaOrdenModel> objects;
     private Activity context;
-    boolean read_only = false;
     private View.OnLongClickListener addListener;
     private View.OnLongClickListener removeListener;
 
@@ -67,7 +66,6 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
             holder.adjunto = (ImageButton) item.findViewById(R.id.adjuntoButton);
             holder.add = (ImageButton) item.findViewById(R.id.addButton);
             holder.remove = (ImageButton) item.findViewById(R.id.removeButton);
-            holder.comensal = (ImageButton) item.findViewById(R.id.comensalButton);
             holder.add.setOnLongClickListener(addListener);
             holder.remove.setOnLongClickListener(removeListener);
 
@@ -85,12 +83,9 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         holder.adjunto.setTag(position);
         holder.add.setTag(position);
         holder.remove.setTag(position);
-        holder.comensal.setTag(position);
-
         if (read_only) {
             holder.add.setVisibility(View.INVISIBLE);
             holder.remove.setVisibility(View.INVISIBLE);
-            holder.comensal.setVisibility(View.INVISIBLE);
             holder.adjunto.setVisibility(View.INVISIBLE);
         }
 
@@ -116,11 +111,10 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
             objects.set(i, pv);
 
         } else {
-            ProductovOrdenPKModel pk = new ProductovOrdenPKModel(p.getPCod(), o.getCodOrden());
-            pv = new ProductoVentaOrdenModel(pk);
+            pv = new ProductoVentaOrdenModel();
             pv.setProductoVenta(p);
             pv.setCantidad(ammount);
-            pv.setEnviadosacocina((float) 0);
+            pv.setEnviadosACocina((float) 0);
             objects.add(pv);
         }
         notifyDataSetChanged();
@@ -156,7 +150,9 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
 
     public void setObjects(List<ProductoVentaOrdenModel> objects) {
         this.objects.clear();
-        this.objects.addAll(objects);
+        if (objects != null) {
+            this.objects.addAll(objects);
+        }
         notifyDataSetChanged();
     }
 
@@ -174,7 +170,7 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         TextView nombreProducto,
                 precioVenta,
                 cantidad;
-        ImageButton add, remove, adjunto, comensal;
+        ImageButton add, remove, adjunto;
     }
 
 

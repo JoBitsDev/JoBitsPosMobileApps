@@ -71,7 +71,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
             listaMesas = (ListView) findViewById(R.id.listaMesas);
 
             cambiarAreaButton = (Button) findViewById(R.id.cambiarArea);
-            pedidoDomicilioButton = (Button) findViewById(R.id.pedidoDomicilio);
 
             switchOrden = (Switch) findViewById(R.id.switchOrden);
         } catch (Exception e) {

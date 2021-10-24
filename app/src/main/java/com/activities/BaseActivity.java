@@ -108,7 +108,7 @@ public abstract class BaseActivity extends Activity {
 
     public void setUpOnline() {
         EnvironmentVariables.ONLINE = true;
-        sincWhithServer();
+        //sincWhithServer();
     }
 
     private void sincWhithServer() {

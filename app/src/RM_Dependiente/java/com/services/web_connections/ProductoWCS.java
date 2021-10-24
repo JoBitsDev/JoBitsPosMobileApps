@@ -1,36 +1,23 @@
 package com.services.web_connections;
 
 import com.services.models.orden.ProductoVentaModel;
+import com.services.web_connections.interfaces.ProductoWCI;
 
 import java.util.List;
 
 /**
  * Created by Jorge on 2/7/17.
  */
-public class ProductoWCS extends SimpleWebConnectionService {
+public class ProductoWCS extends RetrofitBaseConection {
 
-    final String P = "productoventa/";
-
-    /**
-     * Etiquetas a llamar.
-     */
-    final String PRODUCTS = "PRODUCTS",
-            RESTANTES = "RESTANTES";
-
-    public ProductoWCS() {
-        super();
-        path += P;
-    }
 
     public List<ProductoVentaModel> getProducts(String codArea) throws Exception {
-        String URL = path + PRODUCTS + "?codArea=" + codArea;
-        String resp = connect(URL, null, super.TOKEN, HTTPMethod.GET);
-        return om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, ProductoVentaModel.class));
+        return handleResponse(retrofit.create(ProductoWCI.class)
+                .findAllByArea(TENNANT_TOKEN,HTTP_HEADER_BEARER + TOKEN,codArea).execute());
     }
 
     public int getRestantes(String codProd) throws Exception {
-        String URL = path + RESTANTES + "?codProducto=" + codProd;
-        String resp = connect(URL, null, super.TOKEN, HTTPMethod.GET);
-        return om.readValue(resp, Integer.class);
+        return handleResponse(retrofit.create(ProductoWCI.class)
+                .getRestantes(TENNANT_TOKEN,getBearerToken(),codProd).execute());
     }
 }

@@ -1,6 +1,7 @@
 package com.utils;
 
 import com.services.models.UbicacionModel;
+import com.services.web_connections.RetrofitBaseConection;
 
 import java.text.SimpleDateFormat;
 
@@ -76,6 +77,22 @@ public class EnvironmentVariables {
         return ubicacionActual.getIp();
     }
 
+    public static String getUsuarioTennant(){
+        return ubicacionActual.getUsuario();
+    }
+
+    public static String getPassTennant(){
+        return ubicacionActual.getPassword();
+    }
+
+    public static int getUsuarioId(){
+        return ubicacionActual.getUsuarioId();
+    }
+
+    public static int getBaseDatosId(){
+        return ubicacionActual.getBaseDatosId();
+    }
+
     public static String getPORT() {
         return ubicacionActual.getPuerto();
     }
@@ -86,5 +103,6 @@ public class EnvironmentVariables {
 
     public static void setUbicacionActual(UbicacionModel act) {
         ubicacionActual = act;
+        RetrofitBaseConection.setRetrofit("http://"+ubicacionActual.getIp()+":"+ubicacionActual.getPuerto()+"/jobits/");
     }
 }

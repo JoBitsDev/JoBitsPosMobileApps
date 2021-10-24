@@ -8,6 +8,7 @@ public class RequestModel implements Serializable {
     private String urlToExcecute;
     private String body;
     private String token;
+    private String tennantToken;
     private HTTPMethod method;
     private RequestType type = RequestType.NORMAL;
     private String uid;
@@ -15,20 +16,23 @@ public class RequestModel implements Serializable {
     public RequestModel() {
     }
 
-    public RequestModel(String urlToExcecute, String body, String token, HTTPMethod method) {
+    public RequestModel(String urlToExcecute, String body, String tennantToken, String token, HTTPMethod method) {
         this.urlToExcecute = urlToExcecute;
         this.body = body;
         this.token = token;
         this.method = method;
+        this.tennantToken = tennantToken;
     }
 
-    public RequestModel(String urlToExcecute, String body, String token, HTTPMethod method, RequestType type) {
+    public RequestModel(String urlToExcecute, String body, String tennantToken, String token, HTTPMethod method, RequestType type) {
         this.urlToExcecute = urlToExcecute;
         this.body = body;
         this.token = token;
         this.method = method;
         this.type = type;
+        this.tennantToken = tennantToken;
     }
+
 
     public String getUid() {
         return uid;
@@ -76,5 +80,13 @@ public class RequestModel implements Serializable {
 
     public void setMethod(HTTPMethod method) {
         this.method = method;
+    }
+
+    public String getTennantToken() {
+        return tennantToken;
+    }
+
+    public void setTennantToken(String tennantToken) {
+        this.tennantToken = tennantToken;
     }
 }

@@ -1,5 +1,7 @@
 package com.services.models;
 
+import android.util.Base64;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 
@@ -32,6 +34,10 @@ public class CredentialsModel {
         this.password = password;
     }
 
+    public String getBase64BasicAuth(){
+        return Base64.encodeToString((username+":"+password).getBytes(), Base64.NO_WRAP);
+    }
+
     private String getSHA256(String pass) {
         try {
             byte arr[] = MessageDigest.getInstance("SHA-256").digest(pass.getBytes());
@@ -40,5 +46,11 @@ public class CredentialsModel {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return "{ \"username\":\"" + username + "\"" +
+                ",\"password\":\"" + password + "\" }";
     }
 }

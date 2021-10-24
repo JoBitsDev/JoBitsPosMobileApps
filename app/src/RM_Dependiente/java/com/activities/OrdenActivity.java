@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.controllers.OrdenController;
+import com.services.models.orden.OrdenModel;
 import com.services.models.orden.ProductoVentaModel;
 import com.services.models.orden.ProductoVentaOrdenModel;
 import com.services.models.orden.SeccionModel;
@@ -41,13 +42,13 @@ public class OrdenActivity extends BaseActivity {
 
     private OrdenController controller;
     private Button cerrarOrdenButton, despacharACocinaButton;
-    private TextView mesaNoLabel, ordenNoLabel, dependienteLabel, totalPrincipalLabel, totalSecundariaLabel;
+    private TextView mesaNoLabel, ordenNoLabel, dependienteLabel, totalPrincipalLabel;
     private EditText searchText;
     private ListView menuProductosListView, menuSeccionListView;
     private ListView listaOrden;
     private CheckBox deLaCasaCheckBox;
     private List<SeccionModel> secciones;
-    private List<ProductoVentaModel> productos;
+   // private List<ProductoVentaModel> productos;
     private List<ProductoVentaOrdenModel> productosVentaOrden;
     private ProductoVentaModel lastClickedMenu = null;
     private ProductoVentaOrdenModel lastClickedOrden = null;
@@ -57,7 +58,7 @@ public class OrdenActivity extends BaseActivity {
     private ProductoVentaOrdenAdapter productoVentaOrdenAdapter;
     private TabHost host;
     private float lastX;
-    private String area;
+    private String idMesa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +71,8 @@ public class OrdenActivity extends BaseActivity {
 
             //separado porque es un init y un set adapter en paralelo
             Bundle bundleExtra = getIntent().getExtras();
-            area = bundleExtra.getString(String.valueOf(R.string.area));
-            initMenu(area);
+            idMesa = bundleExtra.getString(String.valueOf(R.string.mesa));
+            initMenu(idMesa);
 
             setAdapters();
             addListeners();
@@ -93,7 +94,6 @@ public class OrdenActivity extends BaseActivity {
             ordenNoLabel = (TextView) findViewById(R.id.ordenNoLabel);
             dependienteLabel = (TextView) findViewById(R.id.dependienteLabel);
             totalPrincipalLabel = (TextView) findViewById(R.id.totalPrincipalLabel);
-            totalSecundariaLabel = (TextView) findViewById(R.id.totalSecundariaLabel);
             deLaCasaCheckBox = (CheckBox) findViewById(R.id.deLaCasaCheckBox);
             menuProductosListView = (ListView) findViewById(R.id.menuListView);
             menuSeccionListView = (ListView) findViewById(R.id.menuPrincipalListView);
@@ -342,6 +342,7 @@ public class OrdenActivity extends BaseActivity {
 
     private boolean onMenuOrdenListViewAddLongClick(final View v, final int position) {
         try {
+            lastClickedMenu = productoVentaOrdenAdapter.getItem(position).getProductoVenta();
             final EditText input = new EditText(v.getContext());
             input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
             input.setRawInputType(Configuration.KEYBOARD_12KEY);
@@ -462,7 +463,7 @@ public class OrdenActivity extends BaseActivity {
                     @Override
                     public Void process() throws Exception {
                         controller.starService(mesa);
-                        if (!controller.initOrden(area)) {
+                        if (!controller.initOrden()) {
                             throw new DayClosedException(getResources().getString(R.string.dayClosedError));
                         }
                         return null;
@@ -526,22 +527,13 @@ public class OrdenActivity extends BaseActivity {
         new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
             @Override
             public Void process() throws Exception {
-                secciones = controller.getSecciones();
-                productos = controller.getProductos(codArea);
+                secciones = controller.getSecciones(idMesa);
+               // productos = controller.getProductos(codArea);
                 return null;
             }
 
             @Override
             public void post(Void value) {
-                for (ProductoVentaModel x : productos) {
-                    for (SeccionModel y : secciones) {
-                        if (x.getSeccionnombreSeccion().getNombreSeccion().equals(y.getNombreSeccion())) {
-                            y.addProducto(x);
-                            break;
-                        }
-                    }
-                }
-
                 for (Iterator<SeccionModel> it = secciones.iterator(); it.hasNext(); ) {//TODO: Revisar el for que asi es como mejor funciona
                     SeccionModel secc = it.next();
                     if (secc.getProductos().isEmpty()) {
@@ -842,10 +834,8 @@ public class OrdenActivity extends BaseActivity {
             }
             if (EnvironmentVariables.MONEDA_PRINCIPAL.equals(" MN")) {
                 totalPrincipalLabel.setText(EnvironmentVariables.setDosLugaresDecimales(tot) + EnvironmentVariables.MONEDA_PRINCIPAL);
-                totalSecundariaLabel.setText(EnvironmentVariables.setDosLugaresDecimales(tot / EnvironmentVariables.CAMBIO) + EnvironmentVariables.MONEDA_SECUNDARIA);
             } else {
                 totalPrincipalLabel.setText(EnvironmentVariables.setDosLugaresDecimales(tot) + EnvironmentVariables.MONEDA_PRINCIPAL);
-                totalSecundariaLabel.setText(EnvironmentVariables.setDosLugaresDecimales(tot * EnvironmentVariables.CAMBIO) + EnvironmentVariables.MONEDA_SECUNDARIA);
             }
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
@@ -854,21 +844,27 @@ public class OrdenActivity extends BaseActivity {
 
     public void addProductosVarios(final float cantidad) {
         if (lastClickedMenu != null) {
-            new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
+            new LoadingHandler<OrdenModel>(act, new LoadingProcess<OrdenModel>() {
                 @Override
-                public Boolean process() throws Exception {
+                public OrdenModel process() throws Exception {
                     return controller.addProducto(lastClickedMenu, cantidad);
                 }
 
                 @Override
-                public void post(Boolean value) {
-                    if (value) {
-                        controller.increasePoducto(lastClickedMenu, (ProductoVentaOrdenAdapter) listaOrden.getAdapter(), cantidad);
-                        updateCosto();
-                        Toast.makeText(act, "Agregado " + cantidad + " " + lastClickedMenu.getNombre() + " al pedido.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(act, R.string.errorAlAutenticar, Toast.LENGTH_SHORT).show();//TODO: como que error al autenticar??
-                    }
+                public void post(OrdenModel value) {
+                    ProductoVentaOrdenAdapter adapter =  (ProductoVentaOrdenAdapter) listaOrden.getAdapter();
+                    adapter.clear();
+                    adapter.addAll(value.getProductoVentaOrdenList());
+                    adapter.notifyDataSetChanged();
+                    updateCosto();
+                    Toast.makeText(act, "Agregado " + cantidad + " " + lastClickedMenu.getNombre() + " al pedido.", Toast.LENGTH_SHORT).show();
+//                    if (value) {
+//                        controller.increasePoducto(lastClickedMenu, (ProductoVentaOrdenAdapter) listaOrden.getAdapter(), cantidad);
+//                        updateCosto();
+//                        Toast.makeText(act, "Agregado " + cantidad + " " + lastClickedMenu.getNombre() + " al pedido.", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Toast.makeText(act, R.string.errorAlAutenticar, Toast.LENGTH_SHORT).show();//TODO: como que error al autenticar??
+//                    }
                 }
             });
 
@@ -879,28 +875,25 @@ public class OrdenActivity extends BaseActivity {
 
     private void removeProductosVarios(final float cantidad) {
         if (lastClickedOrden != null) {
-            if (lastClickedOrden.getCantidad() > lastClickedOrden.getEnviadosacocina()) {
-                new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
-                    @Override
-                    public Boolean process() throws Exception {
-                        return controller.removeProducto(lastClickedOrden.getProductoVenta(), cantidad);
-                    }
+            new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
+                @Override
+                public Boolean process() throws Exception {
+                    return controller.removeProducto(lastClickedOrden, cantidad);
+                }
 
-                    @Override
-                    public void post(Boolean value) {
-                        if (value) {
-                            ProductoVentaOrdenAdapter adapter = (ProductoVentaOrdenAdapter) listaOrden.getAdapter();
-                            adapter.decrease(lastClickedOrden.getProductoVenta(), cantidad);
-                            updateCosto();
-                            Toast.makeText(act, "Removido " + cantidad + " " + lastClickedOrden.getProductoVenta().getNombre() + " del pedido.", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(act, R.string.errorAlBorrar, Toast.LENGTH_SHORT).show();
-                        }
+                @Override
+                public void post(Boolean value) {
+                    if (value) {
+                        ProductoVentaOrdenAdapter adapter = (ProductoVentaOrdenAdapter) listaOrden.getAdapter();
+                        adapter.decrease(lastClickedOrden.getProductoVenta(), cantidad);
+                        updateCosto();
+                        Toast.makeText(act, "Removido " + cantidad + " " + lastClickedOrden.getProductoVenta().getNombre() + " del pedido.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(act, R.string.errorAlBorrar, Toast.LENGTH_SHORT).show();
                     }
-                });
-            } else {
-                showMessage("Para eliminar un producto enviado a cocina \n necesita autorizacion.");
-            }
+                }
+            });
+
         } else {
             Toast.makeText(act, R.string.noItemSeleccionado, Toast.LENGTH_SHORT).show();
         }
@@ -920,7 +913,7 @@ public class OrdenActivity extends BaseActivity {
         new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
             @Override
             public Boolean process() throws Exception {
-                return controller.finishOrden(area);
+                return controller.finishOrden();
             }
 
             @Override
@@ -977,7 +970,7 @@ public class OrdenActivity extends BaseActivity {
         new LoadingHandler<Boolean>(act, new LoadingProcess<Boolean>() {
             @Override
             public Boolean process() throws Exception {
-                return controller.addNota(lastClickedOrden.getProductoVenta(), nota);
+                return controller.addNota(lastClickedOrden, nota);
             }
 
             @Override

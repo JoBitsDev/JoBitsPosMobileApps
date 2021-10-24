@@ -1,8 +1,7 @@
 package com.services.web_connections;
 
-import com.utils.exception.*;
-
-import java.util.List;
+import com.utils.exception.NoConnectionException;
+import com.utils.exception.ServerErrorException;
 
 /**
  * Capa: Services.
@@ -13,22 +12,7 @@ import java.util.List;
  * @extends SimpleWebConnectionService ya que es un servicio.
  */
 
-public class PersonalWCS extends SimpleWebConnectionService {
-
-    /**
-     * Path a la peticion.
-     */
-    private String P = "login/";
-
-    /**
-     * Peticion al servidor
-     */
-    private String PERSONAL_TRABAJANDO = "MOSTRAR-PERSONAL-TRABAJANDO";
-
-    public PersonalWCS() {
-        super();
-        path += P;
-    }
+public class PersonalWCS extends RetrofitBaseConection {
 
     /**
      * Obtiene los usuarios activos en ese momento para poder ceder orden.
@@ -37,9 +21,8 @@ public class PersonalWCS extends SimpleWebConnectionService {
      * @throws ServerErrorException  si hay error en el servidor.
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
-    public String[] getPersonalTrabajando() throws Exception {
-        String URL = path + PERSONAL_TRABAJANDO;
-        String resp = connect(URL, null, super.TOKEN, HTTPMethod.GET);
-        return om.readValue(resp, om.getTypeFactory().constructArrayType(String.class));
+    public String[] getPersonalOnline() throws Exception {//TODO: buscan endpoint que satisfaga esta solucitud
+        String[] ret = {};
+        return ret;
     }
 }
