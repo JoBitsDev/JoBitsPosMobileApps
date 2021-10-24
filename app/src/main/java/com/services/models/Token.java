@@ -1,6 +1,7 @@
 package com.services.models;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
     /**
      * FirstDream
@@ -12,7 +13,7 @@ import java.util.Objects;
 
         private Integer id;
         private String token;
-        private LocalDateTime expira;
+        private Date expira;
 
         public Token() {
         }
@@ -26,7 +27,7 @@ import java.util.Objects;
         }
 
         public String getToken() {
-            if (expira.isBefore(LocalDateTime.now())) {
+            if (expira.before(new Date())) {
                 token = null;
             }
             return token;
@@ -37,14 +38,14 @@ import java.util.Objects;
         }
 
         public boolean isAlive() {
-            return LocalDateTime.now().isBefore(expira);
+            return new Date().before(expira);
         }
 
-        public LocalDateTime getExpira() {
+        public Date getExpira() {
             return expira;
         }
 
-        public void setExpira(LocalDateTime expira) {
+        public void setExpira(Date expira) {
             this.expira = expira;
         }
 
