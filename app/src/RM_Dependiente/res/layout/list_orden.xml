@@ -38,14 +38,6 @@
             android:onClick="onAdjuntoClick"
             android:src="@drawable/adjunto" />
 
-        <ImageButton
-            android:id="@+id/comensalButton"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:onClick="onComensalClick"
-            android:scaleType="fitXY"
-            android:src="@drawable/empty_user" />
-
 
         <ImageButton
             android:id="@+id/addButton"

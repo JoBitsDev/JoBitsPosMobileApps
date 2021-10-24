@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:ems="4"
         android:hint="Contrasena"
-        android:inputType="number|textPassword" />
+        android:inputType="number|textPassword"/>
 
     <Button
         android:id="@+id/ok"

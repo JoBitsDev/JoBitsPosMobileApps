@@ -220,19 +220,7 @@
 
                                     android:gravity="center"
                                     android:maxLines="1"
-                                    android:text="0.00 C.U.C"
-                                    android:textAppearance="?android:attr/textAppearanceLarge"
-                                    android:textColor="@color/precios"
-                                    android:textSize="@dimen/textSizeNormal"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/totalSecundariaLabel"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:gravity="center"
-                                    android:text="0.00 C.U.C"
+                                    android:text="0.00 C.U.P"
                                     android:textAppearance="?android:attr/textAppearanceLarge"
                                     android:textColor="@color/precios"
                                     android:textSize="@dimen/textSizeNormal"

@@ -66,7 +66,6 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
             holder.adjunto = (ImageButton) item.findViewById(R.id.adjuntoButton);
             holder.add = (ImageButton) item.findViewById(R.id.addButton);
             holder.remove = (ImageButton) item.findViewById(R.id.removeButton);
-            holder.comensal = (ImageButton) item.findViewById(R.id.comensalButton);
             holder.add.setOnLongClickListener(addListener);
             holder.remove.setOnLongClickListener(removeListener);
 
@@ -84,12 +83,9 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         holder.adjunto.setTag(position);
         holder.add.setTag(position);
         holder.remove.setTag(position);
-        holder.comensal.setTag(position);
-
         if (read_only) {
             holder.add.setVisibility(View.INVISIBLE);
             holder.remove.setVisibility(View.INVISIBLE);
-            holder.comensal.setVisibility(View.INVISIBLE);
             holder.adjunto.setVisibility(View.INVISIBLE);
         }
 
@@ -174,7 +170,7 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         TextView nombreProducto,
                 precioVenta,
                 cantidad;
-        ImageButton add, remove, adjunto, comensal;
+        ImageButton add, remove, adjunto;
     }
 
 
