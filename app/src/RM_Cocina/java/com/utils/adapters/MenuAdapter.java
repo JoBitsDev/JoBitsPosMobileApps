@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.activities.R;
 import com.services.models.*;
+import com.services.models.orden.ProductoVentaOrdenModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +39,8 @@ public class MenuAdapter extends BaseExpandableListAdapter {
     private List<Contenedor> createContenedores() {
         ArrayList<Contenedor> ret = new ArrayList<Contenedor>();
         for(ProductoVentaOrdenModel x: displayedSecciones){
-            Contenedor newContenedor = new Contenedor(x,x.getOrden().getMesacodMesa().getCodMesa()
-                    + " " + x.getOrden().getMesacodMesa().getEstado().split(" ")[1]);
+            Contenedor newContenedor = new Contenedor(x,x.getCodMesa()
+                    + " " + x.getCodOrden());
             int index = -1;
             if((index = ret.indexOf(newContenedor)) != -1){
             ret.get(index).addContenedor(newContenedor);

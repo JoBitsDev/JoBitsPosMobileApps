@@ -3,7 +3,7 @@ package com.controllers;
 import android.content.Context;
 
 import com.services.models.IpvRegistroModel;
-import com.services.models.ProductoVentaOrdenModel;
+import com.services.models.orden.ProductoVentaOrdenModel;
 import com.services.web_connections.AlmacenWCS;
 import com.services.web_connections.CocinaWCS;
 import com.services.web_connections.NotificationWCS;
