@@ -1,6 +1,8 @@
 package com.services.web_connections;
 
 import com.services.models.IpvRegistroModel;
+import com.services.web_connections.interfaces.AlmacenWCI;
+
 import java.util.List;
 
 /**
@@ -9,31 +11,26 @@ import java.util.List;
  *
  * @extends SimpleWebConnectionService ya que es un servicio.
  */
-public class AlmacenWCS extends SimpleWebConnectionService {
+public class AlmacenWCS extends RetrofitBaseConection {
 
-    /**
-     * Path local.
-     */
-    final String P = "almacen/";
+
+    private AlmacenWCI service = retrofit.create(AlmacenWCI.class);
 
     public AlmacenWCS() {
         super();
-        path += P;
     }
 
     /**
      * Etiquetas a llamar.
      */
-    final String REGISTRO_EXISTENCIAS = "REGISTRO-EXISTENCIAS",
-            REGISTRO_IPVS = "REGISTRO-IPVS";
 
     public List<IpvRegistroModel> getIPVRegistroExistencias(String codCocina) throws Exception {
-        String resp = connect(path + REGISTRO_EXISTENCIAS + "?ptoElab=" + codCocina, null, super.TOKEN, HTTPMethod.GET);
-        return om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, IpvRegistroModel.class));
+    return handleResponse(service.getIpvRegistro(TENNANT_TOKEN,getBearerToken(),codCocina).execute());
     }
 
     public List<IpvRegistroModel> getIPVRegistroIPVS(String codCocina) throws Exception {
-        String resp = connect(path + REGISTRO_IPVS + "?ptoElab=" + codCocina, null, super.TOKEN, HTTPMethod.GET);
-        return om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, IpvRegistroModel.class));
+        return handleResponse(service.getIpvventa(TENNANT_TOKEN,getBearerToken(),codCocina).execute());
     }
+
+
 }
