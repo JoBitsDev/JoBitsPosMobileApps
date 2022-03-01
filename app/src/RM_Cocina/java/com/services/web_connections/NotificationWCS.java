@@ -1,34 +1,27 @@
 package com.services.web_connections;
 
 
-import com.services.models.ProductoVentaOrdenModel;
+import com.services.models.orden.ProductoVentaOrdenModel;
+import com.services.web_connections.interfaces.NotificationWCI;
 
-import java.util.HashMap;
 import java.util.List;
 
-public class NotificationWCS extends SimpleWebConnectionService {
+public class NotificationWCS extends RetrofitBaseConection {
 
-    private final String P = "notificacion/",
-            NOTIFY = "NOTIFY",
-            FETCH_PENDING_ORDERS = "PENDING";
+    private NotificationWCI service = retrofit.create(NotificationWCI.class);
 
     public NotificationWCS() {
         super();
-        path += P;
     }
 
     public List<ProductoVentaOrdenModel> fetchPendingOrders(String codCocina) throws Exception {
-        String URL = path + FETCH_PENDING_ORDERS + "?codCocina=" + codCocina;
-        String resp = connect(URL, null, super.TOKEN, HTTPMethod.GET);
-        return om.readValue(resp, om.getTypeFactory().constructCollectionType(List.class, ProductoVentaOrdenModel.class));
+        return handleResponse(service.getNotifications(TENNANT_TOKEN, getBearerToken(), codCocina).execute());
     }
 
     public String notificar(ProductoVentaOrdenModel po) throws Exception {
-        HashMap<String, Object> hm = new HashMap<String, Object>();
-        hm.put("codOrden", po.getProductoVentaOrdenPK().getOrdencodOrden());
-        hm.put("codProducto", po.getProductoVenta().getPCod());
-        String resp = connect(path + NOTIFY, om.writeValueAsString(hm), super.TOKEN, HTTPMethod.POST);
-        return om.readValue(resp, String.class);
+        return handleResponse(service.notifiOfCompletition(TENNANT_TOKEN,
+                getBearerToken(), "", po.getId(), po.getCantidad()).execute());//TODO: fix
     }
+
 
 }
