@@ -11,9 +11,12 @@ import android.provider.Settings;
 import com.activities.R;
 import com.utils.EnvironmentVariables;
 
-import java.io.*;
-import java.net.Socket;
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
+import java.net.Socket;
 
 /**
  * Capa: Services
@@ -80,7 +83,12 @@ public class ReceiverNotificationService extends Service {
 
     @Override
     public void onDestroy() {
-        backgroundListener.destroy();
+        try {
+            server.close();
+            backgroundListener.interrupt();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
