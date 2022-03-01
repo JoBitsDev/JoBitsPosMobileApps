@@ -19,6 +19,9 @@ public class ProductoVentaOrdenModel implements Serializable {
     protected int id;
     private Float enviadosACocina;
     private float cantidad;
+    private String codOrden;
+    private String codMesa;
+    private String nota;
 
     private ProductoVentaModel productoVenta;
     private int numeroComensal;
@@ -68,6 +71,29 @@ public class ProductoVentaOrdenModel implements Serializable {
         this.productoVenta = productoVenta;
     }
 
+    public String getCodOrden() {
+        return codOrden;
+    }
+
+    public void setCodOrden(String codOrden) {
+        this.codOrden = codOrden;
+    }
+
+    public String getCodMesa() {
+        return codMesa;
+    }
+
+    public void setCodMesa(String codMesa) {
+        this.codMesa = codMesa;
+    }
+
+    public String getNota() {
+        return nota;
+    }
+
+    public void setNota(String nota) {
+        this.nota = nota;
+    }
 
     @Override
     public String toString() {
