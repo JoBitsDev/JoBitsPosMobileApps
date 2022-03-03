@@ -17,7 +17,7 @@ public class ServerErrorException extends ExecutionException {
     private ApiError apiError;
 
     public ServerErrorException(ApiError error) {
-        super(error.toString());
+        super(error.getMessage());
         this.apiError = error;
         this.code = apiError.getStatus();
     }
@@ -29,6 +29,10 @@ public class ServerErrorException extends ExecutionException {
 
     public ServerErrorException() {
         code = 0;
+    }
+
+    public ApiError getApiError() {
+        return apiError;
     }
 
     public int getCode() {
