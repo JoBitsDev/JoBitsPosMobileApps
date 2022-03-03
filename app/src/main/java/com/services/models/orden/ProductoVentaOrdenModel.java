@@ -21,6 +21,7 @@ public class ProductoVentaOrdenModel implements Serializable {
     private float cantidad;
     private String codOrden;
     private String codMesa;
+    private String usuario;
     private String nota;
 
     private ProductoVentaModel productoVenta;
@@ -37,6 +38,14 @@ public class ProductoVentaOrdenModel implements Serializable {
     public ProductoVentaOrdenModel(int id, float cantidad) {
         this.id = id;
         this.cantidad = cantidad;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
     public int getId() {

@@ -40,7 +40,7 @@ public class MenuAdapter extends BaseExpandableListAdapter {
         ArrayList<Contenedor> ret = new ArrayList<Contenedor>();
         for(ProductoVentaOrdenModel x: displayedSecciones){
             Contenedor newContenedor = new Contenedor(x,x.getCodMesa()
-                    + " " + x.getCodOrden());
+                    + " " + x.getUsuario());
             int index = -1;
             if((index = ret.indexOf(newContenedor)) != -1){
             ret.get(index).addContenedor(newContenedor);
