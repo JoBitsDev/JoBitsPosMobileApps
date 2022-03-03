@@ -168,11 +168,15 @@ public class PantallaPrincipalActivity extends BaseActivity {
     }
 
     public void onSwitchClick() {
+        if (host.getCurrentTab() == 0) {
+            return;
+        }
         final String orden = switchExistencia.isChecked() ? String.valueOf(R.string.ipv) : String.valueOf(R.string.exist);
         final String change = switchExistencia.isChecked() ? "Cosumidos" : "Vendidos";
         textViewToChange.setText(change);
 
         if (orden.equalsIgnoreCase(String.valueOf(R.string.ipv))) {
+
             new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
                 @Override
                 public Void process() throws Exception {
