@@ -23,7 +23,7 @@ public interface NotificationWCI {
         @Path("cod_cocina") String codCocina);
 
     @POST(NOTIFICACION_PATH + "notify/{cod_orden}/{id_producto_orden}/{cantidad}")
-    Call<String>notifiOfCompletition(
+    Call<List<String>>notifiOfCompletition(
             @Header("Tennant") String tennantToken,
             @Header("Authorization") String bearerToken,
             @Path("cod_orden") String codOrden,

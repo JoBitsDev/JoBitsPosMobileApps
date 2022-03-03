@@ -2,12 +2,15 @@ package com.services.web_connections;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-//import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.utils.EnvironmentVariables;
+import com.utils.exception.ApiError;
 import com.utils.exception.ServerErrorException;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 
+import okhttp3.ResponseBody;
+import retrofit2.Converter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
@@ -24,9 +27,10 @@ public class RetrofitBaseConection {
     public static final int MAX_RESPONSE_TIME = 3 * 1000;
     public static final String DIR_CACHE = EnvironmentVariables.PERSISTENCE_PATH + "/";
     protected static final ObjectMapper oMapper = new ObjectMapper()
-           // .registerModule(new JavaTimeModule())
+            // .registerModule(new JavaTimeModule())
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     protected static Retrofit retrofit;
+    protected static Converter<ResponseBody, ApiError> converter;
     /**
      * Token para las llamandas seguras al servidor.
      */
@@ -46,6 +50,7 @@ public class RetrofitBaseConection {
                 .baseUrl(baseUrl)
                 .addConverterFactory(JacksonConverterFactory.create(oMapper))
                 .build();
+        converter = retrofit.responseBodyConverter(ApiError.class, new Annotation[0]);
     }
 
     protected <T> T handleResponse(Response<T> resp) throws ServerErrorException {
@@ -53,7 +58,8 @@ public class RetrofitBaseConection {
             return resp.body();
         } else {
             try {
-                throw new ServerErrorException(resp.errorBody().string(), resp.code());
+                ApiError error = converter.convert(resp.errorBody());
+                throw new ServerErrorException(error);
             } catch (IOException ex) {
                 throw new ServerErrorException(resp.message(), resp.code());
             }

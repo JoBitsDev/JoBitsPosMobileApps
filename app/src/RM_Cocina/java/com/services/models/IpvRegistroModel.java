@@ -5,20 +5,20 @@
  */
 
 package com.services.models;
+
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * FirstDream
+ *
  * @author Jorge
- * 
  */
 
 public class IpvRegistroModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    protected IpvRegistroPK ipvRegistroPK;
+    protected String nombre;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
 
     private Float inicio;
@@ -32,20 +32,28 @@ public class IpvRegistroModel implements Serializable {
     public IpvRegistroModel() {
     }
 
-    public IpvRegistroModel(IpvRegistroPK ipvRegistroPK) {
-        this.ipvRegistroPK = ipvRegistroPK;
+    public IpvRegistroModel(String nombre) {
+        this.nombre = nombre;
     }
 
-    public IpvRegistroModel(String ipvinsumocodInsumo, String ipvcocinacodCocina, Date fecha) {
-        this.ipvRegistroPK = new IpvRegistroPK(ipvinsumocodInsumo, ipvcocinacodCocina, fecha);
+    public IpvRegistroModel(String nombre, Float inicio, Float entrada, Float disponible,
+                            Float consumo, Float consumoReal, Float final1, Float finalReal) {
+        this.nombre = nombre;
+        this.inicio = inicio;
+        this.entrada = entrada;
+        this.disponible = disponible;
+        this.consumo = consumo;
+        this.consumoReal = consumoReal;
+        this.final1 = final1;
+        this.finalReal = finalReal;
     }
 
-    public IpvRegistroPK getIpvRegistroPK() {
-        return ipvRegistroPK;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setIpvRegistroPK(IpvRegistroPK ipvRegistroPK) {
-        this.ipvRegistroPK = ipvRegistroPK;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public Float getInicio() {
@@ -107,7 +115,7 @@ public class IpvRegistroModel implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (ipvRegistroPK != null ? ipvRegistroPK.hashCode() : 0);
+        hash += (nombre != null ? nombre.hashCode() : 0);
         return hash;
     }
 
@@ -118,15 +126,15 @@ public class IpvRegistroModel implements Serializable {
             return false;
         }
         IpvRegistroModel other = (IpvRegistroModel) object;
-        if ((this.ipvRegistroPK == null && other.ipvRegistroPK != null) || (this.ipvRegistroPK != null && !this.ipvRegistroPK.equals(other.ipvRegistroPK))) {
+        if ((this.nombre == null && other.nombre != null) || (this.nombre != null && !this.nombre.equals(other.nombre))) {
             return false;
         }
         return true;
     }
 
     @Override
-    public String toString() {
-        return "com.restmanager.IpvRegistroModel[ ipvRegistroPK=" + ipvRegistroPK + " ]";
+    public java.lang.String toString() {
+        return "com.restmanager.IpvRegistroModel[ ipvRegistroPK=" + nombre + " ]";
     }
 
 }

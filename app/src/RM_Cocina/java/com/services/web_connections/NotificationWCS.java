@@ -20,7 +20,7 @@ public class NotificationWCS extends RetrofitBaseConection {
 
     public String notificar(ProductoVentaOrdenModel po) throws Exception {
         return handleResponse(service.notifiOfCompletition(TENNANT_TOKEN,
-                getBearerToken(), "", po.getId(), po.getCantidad()).execute());//TODO: fix
+                getBearerToken(), po.getCodOrden(), po.getId(), po.getCantidad()).execute()).get(0);//TODO: fix
     }
 
 

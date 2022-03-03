@@ -14,6 +14,14 @@ import java.util.concurrent.ExecutionException;
 public class ServerErrorException extends ExecutionException {
     private final int code;
 
+    private ApiError apiError;
+
+    public ServerErrorException(ApiError error) {
+        super(error.toString());
+        this.apiError = error;
+        this.code = apiError.getStatus();
+    }
+
     public ServerErrorException(String message, int code) {
         super(message);
         this.code = code;

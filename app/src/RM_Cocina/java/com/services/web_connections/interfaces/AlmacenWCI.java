@@ -15,7 +15,7 @@ public interface AlmacenWCI {
 
     public static final String IPV_PATH = "ipv/";
     public static final String GET_IPV_REGISTRO_LIST_PATH = IPV_PATH + "/ipv-registro-list/{cod_cocina}";
-    public static final String GET_IPV_REGISTRO_VENTA_LIST_PATH = IPV_PATH + "/ipv-venta-list/cod_cocina}";
+    public static final String GET_IPV_REGISTRO_VENTA_LIST_PATH = IPV_PATH + "/ipv-venta-list/{cod_cocina}";
 
 
     @GET(GET_IPV_REGISTRO_LIST_PATH)
@@ -24,7 +24,7 @@ public interface AlmacenWCI {
             @Header("Authorization") String bearerToken,
             @Path("cod_cocina") String codCocina);
 
-    @POST(GET_IPV_REGISTRO_VENTA_LIST_PATH)
+    @GET(GET_IPV_REGISTRO_VENTA_LIST_PATH)
     Call<List<IpvRegistroModel>> getIpvventa(
             @Header("Tennant") String tennantToken,
             @Header("Authorization") String bearerToken,

@@ -25,11 +25,11 @@ public class AlmacenWCS extends RetrofitBaseConection {
      */
 
     public List<IpvRegistroModel> getIPVRegistroExistencias(String codCocina) throws Exception {
-    return handleResponse(service.getIpvRegistro(TENNANT_TOKEN,getBearerToken(),codCocina).execute());
+        return handleResponse(service.getIpvventa(TENNANT_TOKEN,getBearerToken(),codCocina).execute());//TODO;invertir
     }
 
     public List<IpvRegistroModel> getIPVRegistroIPVS(String codCocina) throws Exception {
-        return handleResponse(service.getIpvventa(TENNANT_TOKEN,getBearerToken(),codCocina).execute());
+    return handleResponse(service.getIpvRegistro(TENNANT_TOKEN,getBearerToken(),codCocina).execute());//TODO:invertir
     }
 
 

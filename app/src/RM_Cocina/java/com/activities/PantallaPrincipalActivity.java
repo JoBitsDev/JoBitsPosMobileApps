@@ -5,25 +5,37 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.*;
-import android.widget.*;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ExpandableListView;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.Switch;
+import android.widget.TabHost;
+import android.widget.TextView;
 
 import com.controllers.CocinaController;
 import com.services.models.IpvRegistroModel;
 import com.services.models.orden.ProductoVentaOrdenModel;
-import com.services.web_connections.*;
-import com.utils.adapters.IPVsAdapter;
 import com.utils.EnvironmentVariables;
+import com.utils.adapters.IPVsAdapter;
 import com.utils.adapters.MenuAdapter;
 import com.utils.exception.ExceptionHandler;
 import com.utils.loading.LoadingHandler;
 import com.utils.loading.LoadingProcess;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class PantallaPrincipalActivity extends BaseActivity {
 
+    List<IpvRegistroModel> ipvRegistroModelList;
     private CocinaController controller;
     private String user, cocinaTrabajo;
     private int wichCocina;
@@ -40,7 +52,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
      */
     private EditText searchTextIPV;
     private IPVsAdapter ipVsAdapter;
-    List<IpvRegistroModel> ipvRegistroModelList;
     private ListView listViewIPV;
 
     @Override
@@ -322,21 +333,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     }
 
     private void obtenerFecha() {
-        new LoadingHandler<Date>(act, new LoadingProcess<Date>() {
-            @Override
-            public Date process() throws Exception {
-                List<IpvRegistroModel> models = controller.getIPVRegistroExistencias(cocinaTrabajo);
-                if (models.isEmpty()) {
-                    return new Date();
-                }
-                return models.get(0).getIpvRegistroPK().getFecha();
-            }
-
-            @Override
-            public void post(Date answer) {
-                pickDate.setText(formatDate(answer));
-            }
-        });
+        pickDate.setText(formatDate(new Date()));
     }
 
     private void initTab() {

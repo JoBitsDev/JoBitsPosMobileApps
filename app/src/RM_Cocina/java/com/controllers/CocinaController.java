@@ -43,14 +43,6 @@ public class CocinaController extends BaseController {
         return new NotificationWCS().fetchPendingOrders(cocinaTrabajo);
     }
 
-    public IPVsAdapter getIPVAdapter(Context c, int ipvRegisro) throws Exception {
-        return new IPVsAdapter(c, ipvRegisro, almacenWCS.getIPVRegistroExistencias(""));
-    }
-
-    public IPVsAdapter getIPVAdapter(Context c, int ipvRegisro, String codCocina) throws Exception {
-        return new IPVsAdapter(c, ipvRegisro, almacenWCS.getIPVRegistroExistencias(codCocina));
-    }
-
     public List<IpvRegistroModel> getIPVRegistroExistencias(String codCocina) throws Exception {
         return almacenWCS.getIPVRegistroExistencias(codCocina);
     }

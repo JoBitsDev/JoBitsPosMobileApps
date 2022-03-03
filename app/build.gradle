@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdk 30
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 17
         targetSdkVersion 30
         applicationId 'jobits.pos'
     }
@@ -22,7 +22,7 @@ android {
     productFlavors {
         RM_Dependiente {
             applicationId 'jobits.pos.dpte'
-            versionCode 27
+            versionCode 28
             versionName '4.1.1'
             buildConfigField "Integer", "MAYOR_SERVER_VERSION", '8'
             buildConfigField "Integer", "MINOR_SERVER_VERSION", '0'
@@ -36,9 +36,9 @@ android {
         }
         RM_Cocina {
             applicationId 'jobits.pos.cocina'
-            versionCode 9
-            versionName '4.0.0'
-            buildConfigField "Integer", "MAYOR_SERVER_VERSION", '7'
+            versionCode 10
+            versionName '4.0.1'
+            buildConfigField "Integer", "MAYOR_SERVER_VERSION", '8'
             buildConfigField "Integer", "MINOR_SERVER_VERSION", '0'
         }
         JoBits_POS_Manager {
@@ -55,13 +55,13 @@ android {
 
 dependencies {
     // https://mvnrepository.com/artifact/com.squareup.retrofit2/retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.4'
     // https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-jackson
-    implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-jackson:2.6.4'
     implementation 'it.sephiroth.android.library.horizontallistview:hlistview:1.2.2'
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
     //implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.5'
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.12.5'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.5'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.5'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.9.8'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.9.8'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
 }
