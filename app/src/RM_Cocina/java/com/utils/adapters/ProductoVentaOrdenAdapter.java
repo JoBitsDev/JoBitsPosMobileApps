@@ -10,7 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.activities.R;
-import com.services.models.ProductoVentaOrdenModel;
+import com.services.models.orden.ProductoVentaOrdenModel;
 
 import java.util.List;
 
@@ -57,7 +57,7 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         holder.cantidad.setText(String.valueOf(objects.get(position).getCantidad()));
         holder.nota.setText(objects.get(position).getNota() != null
                 ? objects.get(position).getNota() :"Sin Especifícaciones");
-        objects.get(position).getOrden().getCodOrden();
+        objects.get(position).getCodOrden();
         holder.add.setTag(position);
 
         return(item);

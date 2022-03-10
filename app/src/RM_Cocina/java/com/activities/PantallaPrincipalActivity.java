@@ -5,27 +5,39 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.*;
-import android.widget.*;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ExpandableListView;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.Switch;
+import android.widget.TabHost;
+import android.widget.TextView;
 
 import com.controllers.CocinaController;
 import com.services.models.IpvRegistroModel;
-import com.services.models.ProductoVentaOrdenModel;
-import com.services.web_connections.*;
-import com.utils.adapters.IPVsAdapter;
+import com.services.models.orden.ProductoVentaOrdenModel;
 import com.utils.EnvironmentVariables;
+import com.utils.adapters.IPVsAdapter;
 import com.utils.adapters.MenuAdapter;
 import com.utils.exception.ExceptionHandler;
 import com.utils.loading.LoadingHandler;
 import com.utils.loading.LoadingProcess;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class PantallaPrincipalActivity extends BaseActivity {
 
+    List<IpvRegistroModel> ipvRegistroModelList;
     private CocinaController controller;
-    private String user, cocinaTrabajo;
+    private String user;
     private int wichCocina;
     private TextView labelRestName, labelCocinaName, labelUsuario, pickDate, textViewToChange;
     private ExpandableListView lista;
@@ -40,7 +52,6 @@ public class PantallaPrincipalActivity extends BaseActivity {
      */
     private EditText searchTextIPV;
     private IPVsAdapter ipVsAdapter;
-    List<IpvRegistroModel> ipvRegistroModelList;
     private ListView listViewIPV;
 
     @Override
@@ -58,12 +69,14 @@ public class PantallaPrincipalActivity extends BaseActivity {
     @Override
     void initVarialbes() {
         try {
-            controller = new CocinaController();
+            if (controller == null) {
+                controller = new CocinaController("");
+            }
             cambiarAreaButton = (Button) findViewById(R.id.buttonCambiarArea);
             refreshButton = (ImageButton) findViewById(R.id.buttonRefresh);
             labelRestName = (TextView) findViewById(R.id.textViewNombreRest);
             labelCocinaName = (TextView) findViewById(R.id.textViewNombreCocina);
-            labelCocinaName.setText("");
+            labelCocinaName.setText(controller.getCodCocina());
             labelUsuario = (TextView) findViewById(R.id.labelUsuario);
             lista = (ExpandableListView) findViewById(R.id.listaMesas);
             wichCocina = 0;
@@ -79,15 +92,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
             }
 
             user = getIntent().getExtras().getString(String.valueOf(R.string.user));
-            cocinaTrabajo = getIntent().getExtras().getString(String.valueOf(R.string.cocina_cod));
-
             labelUsuario.setText(user);
 
 
-            if (cocinaTrabajo == null) {
-                cocinaTrabajo = "-";
-            }
-            labelCocinaName.setText(cocinaTrabajo);
+
+            labelCocinaName.setText(controller.getCodCocina());
 
         } catch (Exception e) {
             ExceptionHandler.handleException(e, act);
@@ -157,15 +166,19 @@ public class PantallaPrincipalActivity extends BaseActivity {
     }
 
     public void onSwitchClick() {
+        if (host.getCurrentTab() == 0) {
+            return;
+        }
         final String orden = switchExistencia.isChecked() ? String.valueOf(R.string.ipv) : String.valueOf(R.string.exist);
         final String change = switchExistencia.isChecked() ? "Cosumidos" : "Vendidos";
         textViewToChange.setText(change);
 
         if (orden.equalsIgnoreCase(String.valueOf(R.string.ipv))) {
+
             new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
                 @Override
                 public Void process() throws Exception {
-                    ipVsAdapter = new IPVsAdapter(act, R.layout.list_ipv_cocina, controller.getIPVRegistroIPVS(cocinaTrabajo));
+                    ipVsAdapter = new IPVsAdapter(act, R.layout.list_ipv_cocina, controller.getIPVRegistroIPVS(controller.getCodCocina()));
                     return null;
                 }
 
@@ -178,7 +191,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
             new LoadingHandler<Void>(act, new LoadingProcess<Void>() {
                 @Override
                 public Void process() throws Exception {
-                    ipVsAdapter = new IPVsAdapter(act, R.layout.list_ipv_cocina, controller.getIPVRegistroExistencias(cocinaTrabajo));
+                    ipVsAdapter = new IPVsAdapter(act, R.layout.list_ipv_cocina, controller.getIPVRegistroExistencias(controller.getCodCocina()));
                     return null;
                 }
 
@@ -236,9 +249,9 @@ public class PantallaPrincipalActivity extends BaseActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        //if (id == R.id.action_settings) {
+        //    return true;
+        //}
 
         return super.onOptionsItemSelected(item);
     }
@@ -274,20 +287,20 @@ public class PantallaPrincipalActivity extends BaseActivity {
 
             @Override
             public void post(final String[] answer) {
-                if (cocinaTrabajo == null) {
-                    cocinaTrabajo = answer[0];
+                if (controller.getCodCocina() == null) {
+                    controller.setCodCocina(answer[0]);
                 }
                 new AlertDialog.Builder(act).
                         setTitle(R.string.seleccionar_cocina).
                         setSingleChoiceItems(answer, wichCocina, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                cocinaTrabajo = answer[which];
                                 wichCocina = which;
+                                controller.setCodCocina(answer[wichCocina]);
                                 dialog.dismiss();
                                 configurarTabla();
                                 onSwitchClick();
-                                labelCocinaName.setText(cocinaTrabajo);
+                                labelCocinaName.setText(controller.getCodCocina());
                             }
                         }).create().show();
             }
@@ -295,11 +308,11 @@ public class PantallaPrincipalActivity extends BaseActivity {
     }
 
     public void configurarTabla() {
-        final String cocina = cocinaTrabajo;
+        final String cocina = controller.getCodCocina();
         new LoadingHandler<MenuAdapter>(act, new LoadingProcess<MenuAdapter>() {
             @Override
             public MenuAdapter process() throws Exception {
-                if (!cocinaTrabajo.equals("-")) {
+                if (!controller.getCodCocina().equals("-")) {
                     pedidos = controller.fetchPendingOrders(cocina);
                 }
                 if (pedidos == null) {
@@ -322,21 +335,7 @@ public class PantallaPrincipalActivity extends BaseActivity {
     }
 
     private void obtenerFecha() {
-        new LoadingHandler<Date>(act, new LoadingProcess<Date>() {
-            @Override
-            public Date process() throws Exception {
-                List<IpvRegistroModel> models = controller.getIPVRegistroExistencias(cocinaTrabajo);
-                if (models.isEmpty()) {
-                    return new Date();
-                }
-                return models.get(0).getIpvRegistroPK().getFecha();
-            }
-
-            @Override
-            public void post(Date answer) {
-                pickDate.setText(formatDate(answer));
-            }
-        });
+        pickDate.setText(formatDate(new Date()));
     }
 
     private void initTab() {

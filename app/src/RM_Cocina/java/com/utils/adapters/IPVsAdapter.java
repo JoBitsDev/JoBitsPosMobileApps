@@ -79,7 +79,7 @@ public class IPVsAdapter extends ArrayAdapter<String> implements Filterable {
         holder.disponibles.setText(displayedObjects.get(position).getDisponible() + "");
         holder.consumidos.setText(displayedObjects.get(position).getConsumo() + "");
         holder.finals.setText(displayedObjects.get(position).getFinal1() + "");
-        holder.nombre.setText(displayedObjects.get(position).getIpvRegistroPK().getIpvinsumocodInsumo());
+        holder.nombre.setText(displayedObjects.get(position).getNombre());
         return (item);
     }
 
@@ -127,7 +127,7 @@ public class IPVsAdapter extends ArrayAdapter<String> implements Filterable {
                 } else {
                     constraint = constraint.toString().toLowerCase();
                     for (IpvRegistroModel i : objects) {
-                        String data = i.getIpvRegistroPK().getIpvinsumocodInsumo();
+                        String data = i.getNombre();
                         if (data.toLowerCase().contains(constraint.toString())) {
                             filteredArrList.add(i);
                         }
