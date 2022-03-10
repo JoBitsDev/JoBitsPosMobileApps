@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.NetworkOnMainThreadException;
 import android.text.Html;
 import android.view.View;
@@ -43,6 +42,11 @@ public class ExceptionHandler {
      * Titulo del boton del Popup que se le muestra al usuario.
      */
     public static final String POPUP_BUTTON_TEXT = "OK";
+
+    /**
+     * Titulo  del boton de detalles
+     */
+    public static final String POPUP_BUTTON_TEXT_DETAILS = "Detalles..";
 
     /**
      * Duracion por defecto del Toast.
@@ -105,7 +109,7 @@ public class ExceptionHandler {
 
         //mensaje explicando que pasa
         String errorMessage = v.findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.servidorNoCompatible).toString();
-        errorMessage += "Version del servidor: " + EnvironmentVariables.MAYOR + "." + EnvironmentVariables.MINOR + ", requerida mínimo la " + BuildConfig.MAYOR_SERVER_VERSION + "." + BuildConfig.MINOR_SERVER_VERSION;
+        errorMessage += "Version del servidor: " + EnvironmentVariables.MAYOR + "." + EnvironmentVariables.MINOR + ", requerida la " + BuildConfig.MAYOR_SERVER_VERSION + "." + BuildConfig.MINOR_SERVER_VERSION;
         //popup a mostrar
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setMessage(errorMessage);
@@ -165,7 +169,7 @@ public class ExceptionHandler {
      * @param activity Donde se lanzo la excepcion para poder notificar al usuario.
      */
     private static void handleNoConnectionException(Exception e, final BaseActivity activity) {
-         final View v = activity.findViewById(android.R.id.content).getRootView();
+        final View v = activity.findViewById(android.R.id.content).getRootView();
 
         //mensaje explicando que pasa
         String noConnectionErrorMessage = v.findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.noConnectionError).toString();
@@ -184,20 +188,53 @@ public class ExceptionHandler {
         final View v = activity.findViewById(android.R.id.content).getRootView();
 
         //mensaje explicando que pasa
-        String serverErrorMessage = v.findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.serverError).toString();
-        serverErrorMessage += e.getMessage();
+        String serverErrorMessage = e.getMessage();
         //popup a mostrar
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setMessage(serverErrorMessage);
-        builder.setTitle(ExceptionHandler.POPUP_TITLE);
+        builder.setTitle(v.findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.serverError));
 
         builder.setNeutralButton(ExceptionHandler.POPUP_BUTTON_TEXT, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {//comportamiento al clickear el boton
                 dialog.dismiss();
+
             }
         });
-        builder.create().show();
+        builder.setPositiveButton(ExceptionHandler.POPUP_BUTTON_TEXT_DETAILS, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                showDetails(e, activity);
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private static void showDetails(ServerErrorException e, final BaseActivity activity) {
+        final Context c = activity.getApplicationContext();
+        final View v = activity.findViewById(android.R.id.content).getRootView();
+
+        //mensaje explicando que pasa
+        String serverErrorMessage = e.getMessage() + "\n";
+        for (String s : e.getApiError().getErrors()) {
+            serverErrorMessage += e.getApiError().getErrors() + "\n";
+        }
+        //popup a mostrar
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setMessage(serverErrorMessage);
+        builder.setTitle(v.findViewById(android.R.id.content).getRootView().getContext().getResources().getText(R.string.serverError));
+
+        builder.setNeutralButton(ExceptionHandler.POPUP_BUTTON_TEXT, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {//comportamiento al clickear el boton
+                dialog.dismiss();
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     /**
@@ -222,7 +259,7 @@ public class ExceptionHandler {
                 unespectedError += "C:" + s.getClassName() + " L:" + s.getLineNumber() + "<br>";
             }
         }
-        
+
         builder.setMessage(Html.fromHtml(unespectedError));
         builder.setTitle(ExceptionHandler.POPUP_TITLE);
 

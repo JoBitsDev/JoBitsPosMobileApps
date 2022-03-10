@@ -1,6 +1,7 @@
 package com.services.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.services.models.orden.ProductoVentaOrdenModel;
 
 import java.io.Serializable;
 import java.util.*;

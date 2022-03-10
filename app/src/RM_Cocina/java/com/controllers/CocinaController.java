@@ -1,13 +1,10 @@
 package com.controllers;
 
-import android.content.Context;
-
 import com.services.models.IpvRegistroModel;
-import com.services.models.ProductoVentaOrdenModel;
+import com.services.models.orden.ProductoVentaOrdenModel;
 import com.services.web_connections.AlmacenWCS;
 import com.services.web_connections.CocinaWCS;
 import com.services.web_connections.NotificationWCS;
-import com.utils.adapters.IPVsAdapter;
 
 import java.util.List;
 
@@ -24,11 +21,21 @@ public class CocinaController extends BaseController {
      */
     AlmacenWCS almacenWCS;
 
+    String codCocina = "-";
+
     /**
      * Constructor de la clase.
      */
-    public CocinaController() {
+    public CocinaController(String codCocina) {
         almacenWCS = new AlmacenWCS();
+    }
+
+    public String getCodCocina() {
+        return codCocina;
+    }
+
+    public void setCodCocina(String codCocina) {
+        this.codCocina = codCocina;
     }
 
     public String notificar(ProductoVentaOrdenModel po) throws Exception {
@@ -41,14 +48,6 @@ public class CocinaController extends BaseController {
 
     public List<ProductoVentaOrdenModel> fetchPendingOrders(String cocinaTrabajo) throws Exception {
         return new NotificationWCS().fetchPendingOrders(cocinaTrabajo);
-    }
-
-    public IPVsAdapter getIPVAdapter(Context c, int ipvRegisro) throws Exception {
-        return new IPVsAdapter(c, ipvRegisro, almacenWCS.getIPVRegistroExistencias(""));
-    }
-
-    public IPVsAdapter getIPVAdapter(Context c, int ipvRegisro, String codCocina) throws Exception {
-        return new IPVsAdapter(c, ipvRegisro, almacenWCS.getIPVRegistroExistencias(codCocina));
     }
 
     public List<IpvRegistroModel> getIPVRegistroExistencias(String codCocina) throws Exception {
