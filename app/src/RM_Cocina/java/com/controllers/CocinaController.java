@@ -1,13 +1,10 @@
 package com.controllers;
 
-import android.content.Context;
-
 import com.services.models.IpvRegistroModel;
 import com.services.models.orden.ProductoVentaOrdenModel;
 import com.services.web_connections.AlmacenWCS;
 import com.services.web_connections.CocinaWCS;
 import com.services.web_connections.NotificationWCS;
-import com.utils.adapters.IPVsAdapter;
 
 import java.util.List;
 
@@ -24,11 +21,21 @@ public class CocinaController extends BaseController {
      */
     AlmacenWCS almacenWCS;
 
+    String codCocina = "-";
+
     /**
      * Constructor de la clase.
      */
-    public CocinaController() {
+    public CocinaController(String codCocina) {
         almacenWCS = new AlmacenWCS();
+    }
+
+    public String getCodCocina() {
+        return codCocina;
+    }
+
+    public void setCodCocina(String codCocina) {
+        this.codCocina = codCocina;
     }
 
     public String notificar(ProductoVentaOrdenModel po) throws Exception {
