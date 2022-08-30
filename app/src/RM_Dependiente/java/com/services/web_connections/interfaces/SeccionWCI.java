@@ -12,7 +12,7 @@ import retrofit2.http.Path;
 
 public interface SeccionWCI {
 
-    public static final String SECCION_LIST_PATH = "seccion-list/";
+    public static final String SECCION_LIST_PATH = "pos/seccion/";
 
     @GET(SECCION_LIST_PATH + "list")
     Call<List<SeccionModel>> findAll(@Header("Tennant") String tennantToken

@@ -40,10 +40,10 @@ public class LoginWCS extends RetrofitBaseConection {
      * @throws NoConnectionException si no hay coneccion con el servidor.
      */
     public boolean authenticate(String user, String pass) throws Exception {
-        Response<Map<String,String>> ret = loginService.getToken(TENNANT_TOKEN,
+        Response<Map<String,Object>> ret = loginService.getToken(TENNANT_TOKEN,
                 HTTP_HEADER_BASIC + new CredentialsModel(user, pass).getBase64BasicAuth()).execute();
         if (ret.isSuccessful()) {
-            TOKEN = ret.body().get("Token");
+            TOKEN = ret.body().get("Token").toString();
             return true;
         } else {
             throw new ServerErrorException(ret.errorBody().string(), ret.code());

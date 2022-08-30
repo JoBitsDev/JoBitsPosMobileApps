@@ -56,7 +56,7 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         holder.nombreProducto.setText(objects.get(position).getProductoVenta().getNombre());
         holder.cantidad.setText(String.valueOf(objects.get(position).getCantidad()));
         holder.nota.setText(objects.get(position).getNota() != null
-                ? objects.get(position).getNota() :"Sin Especifícaciones");
+                ? objects.get(position).getNota().getDescripcion() :"Sin Especifícaciones");
         objects.get(position).getCodOrden();
         holder.add.setTag(position);
 

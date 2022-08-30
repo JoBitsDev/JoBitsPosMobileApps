@@ -52,7 +52,7 @@ public class MesasController extends BaseController {
         new AreaWCS().saveMesasList(mesaModels, area);
     }
 
-    public void starService(String codMesa) {
+    public void starService(String codMesa) throws Exception{
         ordenWCService = new OrdenWCS(codMesa);
     }
 

@@ -2,7 +2,6 @@ package com.services.models.orden;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 import java.io.Serializable;
@@ -20,8 +19,9 @@ public class OrdenModel implements Serializable {
     private boolean deLaCasa;
     private Float porciento;
     private Float gananciaXporciento;
+    private float ordenvalorMonetario;
 
-    private ArrayList<ProductoVentaOrdenModel> productoVentaOrdenList;
+    private ArrayList<ProductoVentaOrdenModel> productovOrdenList;
 
     private MesaModel mesacodMesaModel;
 
@@ -41,12 +41,12 @@ public class OrdenModel implements Serializable {
         return deLaCasa;
     }
 
-    public ArrayList<ProductoVentaOrdenModel> getProductoVentaOrdenList() {
-        return productoVentaOrdenList;
+    public ArrayList<ProductoVentaOrdenModel> getProductovOrdenList() {
+        return productovOrdenList;
     }
 
-    public void setProductoVentaOrdenList(ArrayList<ProductoVentaOrdenModel> productoVentaOrdenList) {
-        this.productoVentaOrdenList = productoVentaOrdenList;
+    public void setProductovOrdenList(ArrayList<ProductoVentaOrdenModel> productovOrdenList) {
+        this.productovOrdenList = productovOrdenList;
     }
 
     public String getCodOrden() {
@@ -79,6 +79,14 @@ public class OrdenModel implements Serializable {
 
     public void setGananciaXporciento(Float gananciaXporciento) {
         this.gananciaXporciento = gananciaXporciento;
+    }
+
+    public float getOrdenvalorMonetario() {
+        return ordenvalorMonetario;
+    }
+
+    public void setOrdenvalorMonetario(float ordenvalorMonetario) {
+        this.ordenvalorMonetario = ordenvalorMonetario;
     }
 
     @JsonGetter("mesacodMesa")

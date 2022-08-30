@@ -13,7 +13,7 @@ import retrofit2.http.Path;
 public interface LoginWCI {
 
     @GET("pos/auth/basic")
-    Call<Map<String,String>> getToken(@Header("Tennant") String tennantToken, @Header("Authorization") String base64Credentials);
+    Call<Map<String,Object>> getToken(@Header("Tennant") String tennantToken, @Header("Authorization") String base64Credentials);
 
     @GET("tennant/cuenta/{idCuenta}/token-for/{idBaseDatos}")
     Call<Token> getTennantToken(@Header("Authorization") String base64CredentialsForTennant,
