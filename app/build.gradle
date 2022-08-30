@@ -36,9 +36,9 @@ android {
         }
         RM_Cocina {
             applicationId 'jobits.pos.cocina'
-            versionCode 12
-            versionName '4.1.0'
-            buildConfigField "Integer", "MAYOR_SERVER_VERSION", '8'
+            versionCode 13
+            versionName '4.2.0'
+            buildConfigField "Integer", "MAYOR_SERVER_VERSION", '9'
             buildConfigField "Integer", "MINOR_SERVER_VERSION", '0'
         }
         JoBits_POS_Manager {
