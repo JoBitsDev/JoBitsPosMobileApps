@@ -93,7 +93,7 @@ public class OrdenReadOnlyActivity extends BaseActivity {
         try {
             float tot = 0;
             for (ProductoVentaOrdenModel x : productosVOrden) {
-                tot += x.getProductoVenta().getPrecioVenta() * x.getCantidad();
+                tot += x.getPrecioVendido() * x.getCantidad();
             }
             if (EnvironmentVariables.MONEDA_PRINCIPAL.equals(EnvironmentVariables.MONEDA_PRINCIPAL)) {
                 totalPrincipal.setText(EnvironmentVariables.setDosLugaresDecimales(tot) + EnvironmentVariables.MONEDA_PRINCIPAL);
