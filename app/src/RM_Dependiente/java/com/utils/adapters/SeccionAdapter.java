@@ -139,15 +139,15 @@ public class SeccionAdapter extends ArrayAdapter<SeccionModel> implements Filter
                     for (int i = 0; i < secciones.size(); i++) {
                         boolean contain = false;
                         SeccionModel aux = new SeccionModel(secciones.get(i).getNombreSeccion());
-                        for (int j = 0; j < secciones.get(i).getProductos().size(); j++) {
-                            String data = secciones.get(i).getProductos().get(j).getNombre();
+                        for (int j = 0; j < secciones.get(i).getProductoVentaList().size(); j++) {
+                            String data = secciones.get(i).getProductoVentaList().get(j).getNombre();
                             if (data.toLowerCase().contains(constraint.toString())) {
                                 if (!contain) {
-                                    aux.addProducto(secciones.get(i).getProductos().get(j));
+                                    aux.addProducto(secciones.get(i).getProductoVentaList().get(j));
                                     filteredArrList.add(aux);
                                     contain = true;
                                 } else {
-                                    aux.addProducto(secciones.get(i).getProductos().get(j));
+                                    aux.addProducto(secciones.get(i).getProductoVentaList().get(j));
                                 }
                             }
                         }

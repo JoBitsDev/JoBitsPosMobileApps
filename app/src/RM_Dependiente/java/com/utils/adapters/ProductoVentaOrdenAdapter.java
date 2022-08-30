@@ -75,9 +75,9 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         }
 
         holder.precioVenta.setTextColor(c);
-        holder.nombreProducto.setText(objects.get(position).getProductoVenta().getNombre());
+        holder.nombreProducto.setText(objects.get(position).getNombreProductoVendido());
         holder.precioVenta.setText(
-                objects.get(position).getProductoVenta().getPrecioVenta() *
+                objects.get(position).getPrecioVendido() *
                         objects.get(position).getCantidad() + EnvironmentVariables.MONEDA_PRINCIPAL);
         holder.cantidad.setText("x " + String.valueOf(objects.get(position).getCantidad()));
         holder.adjunto.setTag(position);
@@ -103,7 +103,7 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
         int i = 0;
         for (; i < objects.size() && !existe; i++) {
             pv = objects.get(i);
-            existe = pv.getProductoVenta().equals(p);
+            existe = pv.getNombreProductoVendido().equals(p.getNombre());
         }
         if (existe) {
             i--;
@@ -112,22 +112,23 @@ public class ProductoVentaOrdenAdapter extends ArrayAdapter<ProductoVentaOrdenMo
 
         } else {
             pv = new ProductoVentaOrdenModel();
-            pv.setProductoVenta(p);
+            pv.setNombreProductoVendido(p.getNombre());
+            pv.setPrecioVendido(p.getPrecioVenta());
             pv.setCantidad(ammount);
-            pv.setEnviadosACocina((float) 0);
+            pv.setEnviadosacocina((float) 0);
             objects.add(pv);
         }
         notifyDataSetChanged();
     }
 
-    public void decrease(ProductoVentaModel p, float cant) {
+    public void decrease(ProductoVentaOrdenModel p, float cant) {
 
         boolean existe = false;
         ProductoVentaOrdenModel pv = null;
         int i = 0;
         for (; i < objects.size() && !existe; i++) {
             pv = objects.get(i);
-            existe = pv.getProductoVenta().getPCod().equals(p.getPCod());
+            existe = pv.getId() == p.getId();
         }
         if (existe) {
             i--;
