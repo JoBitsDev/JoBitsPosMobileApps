@@ -1,12 +1,15 @@
 package com.services.notifications;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.IBinder;
 import android.provider.Settings;
+import android.support.v4.app.NotificationCompat;
 
 import com.activities.R;
 import com.utils.EnvironmentVariables;
@@ -26,36 +29,31 @@ import java.net.Socket;
  */
 public class ReceiverNotificationService extends Service {
 
+    private static final String CHANNEL_ID = "org.jobits.pos";
     /**
      * Socket con el servidor.
      */
     private ServerSocket server; // server socket
-
     /**
      * Socket con el cliente.
      */
     private Socket connection; // connection to client
-
     /**
      * Output stream to client.
      */
     private ObjectOutputStream output; // output stream to client
-
     /**
      * Input stream from client.
      */
     private ObjectInputStream input; // input stream from client
-
     /**
      * Counter of number of connections.
      */
     private int counter = 1; // counter of number of connections
-
     /**
      * Mensajes qa mostrar.
      */
-    private String notificationTitle, notificationMessage, notificationDescription;
-
+    private String notificationTitle = "Notificacion", notificationMessage = "Notificacion", notificationDescription = "Noficacion";
     /**
      * Hilo del listener para comunicarse en paralelo.
      */
@@ -71,6 +69,23 @@ public class ReceiverNotificationService extends Service {
     }
 
 
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "JoBits POS";
+            String description = "POS Software";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -79,6 +94,12 @@ public class ReceiverNotificationService extends Service {
     @Override
     public void onCreate() {
         backgroundListener.start();
+        createNotificationChannel();
+        fireNotification(
+                "JoBits POS",
+                "Notificaciones Activadas",
+                "Las notificaciones fueron activadas");
+
     }
 
     @Override
@@ -186,7 +207,7 @@ public class ReceiverNotificationService extends Service {
      */
     private void fireNotification() {
 
-        Notification builder = new Notification.Builder(this)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
                 .setContentTitle(notificationTitle)
                 .setContentText(notificationMessage)
                 .setSubText(notificationDescription)
@@ -194,11 +215,31 @@ public class ReceiverNotificationService extends Service {
                 .setAutoCancel(true)
                 .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
                 .setSmallIcon(R.drawable.logo_app)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.logo_app))
-                .build();
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.logo_app));
+
         NotificationManager notificationManager = (NotificationManager)
                 getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify((int) Math.random() * 100, builder);
+        notificationManager.notify((int) Math.random() * 100, builder.build());
+    }
+
+    /**
+     * Crea las notificaciones.
+     */
+    private void fireNotification(String notificationTitle, String notificationDescription, String notificationMessage) {
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
+                .setContentTitle(notificationTitle)
+                .setContentText(notificationMessage)
+                .setSubText(notificationDescription)
+                .setPriority(Notification.PRIORITY_HIGH)
+                .setAutoCancel(true)
+                .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
+                .setSmallIcon(R.drawable.logo_app)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.logo_app));
+
+        NotificationManager notificationManager = (NotificationManager)
+                getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify((int) Math.random() * 100, builder.build());
     }
 
 }
