@@ -10,12 +10,10 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import com.activities.R;
-import com.services.models.*;
 import com.services.models.orden.ProductoVentaOrdenModel;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 
 /**
@@ -26,25 +24,25 @@ public class MenuAdapter extends BaseExpandableListAdapter {
     private Context _context;
     private List<ProductoVentaOrdenModel> displayedSecciones;
     private List<Contenedor> contenedores;
-    private int[] colors = {Color.RED,Color.GRAY,Color.MAGENTA,Color.CYAN,Color.DKGRAY,Color.LTGRAY};
+    private int[] colors = {Color.RED, Color.GRAY, Color.MAGENTA, Color.CYAN, Color.DKGRAY, Color.LTGRAY};
 
 
     public MenuAdapter(Context context, List<ProductoVentaOrdenModel> pedidos) {
         this._context = context;
         this.displayedSecciones = pedidos;
 
-       contenedores = createContenedores();
+        contenedores = createContenedores();
     }
 
     private List<Contenedor> createContenedores() {
         ArrayList<Contenedor> ret = new ArrayList<Contenedor>();
-        for(ProductoVentaOrdenModel x: displayedSecciones){
-            Contenedor newContenedor = new Contenedor(x,x.getCodMesa()
+        for (ProductoVentaOrdenModel x : displayedSecciones) {
+            Contenedor newContenedor = new Contenedor(x, x.getCodMesa()
                     + " " + x.getUsuario());
             int index = -1;
-            if((index = ret.indexOf(newContenedor)) != -1){
-            ret.get(index).addContenedor(newContenedor);
-            }else{
+            if ((index = ret.indexOf(newContenedor)) != -1) {
+                ret.get(index).addContenedor(newContenedor);
+            } else {
                 ret.add(newContenedor);
             }
 
@@ -67,10 +65,9 @@ public class MenuAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        final String
-                childNombre = ((ProductoVentaOrdenModel) getChild(groupPosition, childPosition)).getProductoVenta().getNombre(),
-                cantidad = String.valueOf(((ProductoVentaOrdenModel)getChild(groupPosition,childPosition)).getCantidad()),
-                nota = ((ProductoVentaOrdenModel) getChild(groupPosition, childPosition)).getNota();
+        final String childNombre = ((ProductoVentaOrdenModel) getChild(groupPosition, childPosition)).getProductoVenta().getNombre(),
+                cantidad = String.valueOf(((ProductoVentaOrdenModel) getChild(groupPosition, childPosition)).getCantidad()),
+                nota = ((ProductoVentaOrdenModel) getChild(groupPosition, childPosition)).getNota().getDescripcion();
 
 
         if (convertView == null) {
@@ -89,8 +86,9 @@ public class MenuAdapter extends BaseExpandableListAdapter {
         txtNombre.setText(childNombre);
         txtPrecio.setText(cantidad);
         txtNota.setText(nota != null ? nota : "Sin Especificaciones");
-        if (nota == null){
-        txtNota.setTextColor(Color.BLACK);}
+        if (txtNota.getText().equals("Sin Especificaciones")) {
+            txtNota.setTextColor(Color.BLACK);
+        }
         return convertView;
     }
 
@@ -128,7 +126,7 @@ public class MenuAdapter extends BaseExpandableListAdapter {
                 .findViewById(R.id.boxParent);
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
-        lblListHeader.setTextColor(colors[groupPosition%colors.length]);
+        lblListHeader.setTextColor(colors[groupPosition % colors.length]);
 
         return convertView;
     }
@@ -171,8 +169,8 @@ public class MenuAdapter extends BaseExpandableListAdapter {
             this.codOrden = codOrden;
         }
 
-        public void addContenedor(Contenedor c){
-             pedido.addAll(c.getPedido());
+        public void addContenedor(Contenedor c) {
+            pedido.addAll(c.getPedido());
         }
 
         @Override
