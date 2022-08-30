@@ -17,27 +17,23 @@ public class ProductoVentaOrdenModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
     protected int id;
-    private Float enviadosACocina;
+    private Float enviadosacocina;
     private float cantidad;
     private String codOrden;
     private String codMesa;
     private String usuario;
-    private String nota;
+    private Nota nota ;
 
     private ProductoVentaModel productoVenta;
+
+    private String nombreProductoVendido;
+    private float precioVendido;
     private int numeroComensal;
 
 
     public ProductoVentaOrdenModel() {
-    }
+        nota = new Nota();
 
-    public ProductoVentaOrdenModel(int id) {
-        this.id = id;
-    }
-
-    public ProductoVentaOrdenModel(int id, float cantidad) {
-        this.id = id;
-        this.cantidad = cantidad;
     }
 
     public String getUsuario() {
@@ -72,12 +68,28 @@ public class ProductoVentaOrdenModel implements Serializable {
         this.cantidad = cantidad;
     }
 
+    public String getNombreProductoVendido() {
+        return nombreProductoVendido;
+    }
+
+    public void setNombreProductoVendido(String nombreProductoVendido) {
+        this.nombreProductoVendido = nombreProductoVendido;
+    }
+
     public ProductoVentaModel getProductoVenta() {
         return productoVenta;
     }
 
     public void setProductoVenta(ProductoVentaModel productoVenta) {
         this.productoVenta = productoVenta;
+    }
+
+    public float getPrecioVendido() {
+        return precioVendido;
+    }
+
+    public void setPrecioVendido(float precioVendido) {
+        this.precioVendido = precioVendido;
     }
 
     public String getCodOrden() {
@@ -96,11 +108,11 @@ public class ProductoVentaOrdenModel implements Serializable {
         this.codMesa = codMesa;
     }
 
-    public String getNota() {
+    public Nota getNota() {
         return nota;
     }
 
-    public void setNota(String nota) {
+    public void setNota(Nota nota) {
         this.nota = nota;
     }
 
@@ -109,12 +121,12 @@ public class ProductoVentaOrdenModel implements Serializable {
         return "com.restManager.ProductoVentaOrdenModel[ productovOrdenPKModel=" + id + " ]";
     }
 
-    public Float getEnviadosACocina() {
-        return enviadosACocina;
+    public Float getEnviadosacocina() {
+        return enviadosacocina;
     }
 
-    public void setEnviadosACocina(Float enviadosACocina) {
-        this.enviadosACocina = enviadosACocina;
+    public void setEnviadosacocina(Float enviadosacocina) {
+        this.enviadosacocina = enviadosacocina;
     }
 
 

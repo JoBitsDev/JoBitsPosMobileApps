@@ -24,7 +24,7 @@ public class SeccionModel implements Serializable, Comparable<SeccionModel>{
     private String descripcion;
 
 
-    private List<ProductoVentaModel> productos = new ArrayList<ProductoVentaModel>();
+    private List<ProductoVentaModel> productoVentaList = new ArrayList<ProductoVentaModel>();
 
     public SeccionModel() {
     }
@@ -53,12 +53,12 @@ public class SeccionModel implements Serializable, Comparable<SeccionModel>{
         this.descripcion = descripcion;
     }
 
-    public List<ProductoVentaModel> getProductos() {
-        return productos;
+    public List<ProductoVentaModel> getProductoVentaList() {
+        return productoVentaList;
     }
 
-    public void setProductos(List<ProductoVentaModel> productos) {
-        this.productos = productos;
+    public void setProductoVentaList(List<ProductoVentaModel> productos) {
+        this.productoVentaList = productos;
     }
 
     @Override
@@ -91,8 +91,8 @@ public class SeccionModel implements Serializable, Comparable<SeccionModel>{
     }
 
     public void addProducto(ProductoVentaModel x) {
-        if(!productos.contains(x)){
-            productos.add(x);
+        if(!productoVentaList.contains(x)){
+            productoVentaList.add(x);
         }
     }
 }
