@@ -1,5 +1,6 @@
 package com.services.web_connections;
 
+import com.services.models.VentaId;
 import com.services.models.orden.OrdenModel;
 import com.services.web_connections.interfaces.OrdenWCI;
 import com.utils.exception.ServerErrorException;
@@ -14,18 +15,25 @@ public class OrdenWCS extends RetrofitBaseConection {
 
     boolean deLaCasa = false;
     private OrdenWCI service = retrofit.create(OrdenWCI.class);
+    public static VentaId ventaId;
     private String codOrden, codMesa;
 
     public OrdenWCS(String codOrden, String codMesa) throws Exception {
         super();
+        if (ventaId == null){
+            ventaId = handleResponse(service.resolveAbierta(TENNANT_TOKEN,getBearerToken()).execute());
+        }
         this.codMesa = codMesa;
         this.codOrden = codOrden;
         this.deLaCasa = findOrden(codOrden).getDeLaCasa();
     }
 
 
-    public OrdenWCS(String codMesa) {
+    public OrdenWCS(String codMesa) throws Exception{
         super();
+        if (ventaId == null){
+            ventaId = handleResponse(service.resolveAbierta(TENNANT_TOKEN,getBearerToken()).execute());
+        }
         this.codMesa = codMesa;
         this.deLaCasa = false;
     }
@@ -36,13 +44,14 @@ public class OrdenWCS extends RetrofitBaseConection {
     }*/
 
     public OrdenModel initOrden() throws Exception {
-        OrdenModel ret = handleResponse(service.create(TENNANT_TOKEN, getBearerToken(), codMesa).execute());
+        OrdenModel ret = handleResponse(service.create(TENNANT_TOKEN, getBearerToken(),ventaId.getId(), codMesa).execute());
         codOrden = ret.getCodOrden();
         return ret;
     }
 
     public boolean finishOrden() throws Exception {
-        Response<?> ret = service.finish(TENNANT_TOKEN, getBearerToken(), codOrden, true).execute();
+        OrdenModel orden = findOrden(codOrden);
+        Response<?> ret = service.finish(TENNANT_TOKEN, getBearerToken(), codOrden, true,orden.getOrdenvalorMonetario(),0).execute();
         if (ret.isSuccessful()) {
             return true;
         } else {
@@ -64,7 +73,8 @@ public class OrdenWCS extends RetrofitBaseConection {
     }
 
     public boolean sendToKitchen() throws Exception {
-        return handleResponse(service.enviarCocina(TENNANT_TOKEN, getBearerToken(), codOrden).execute());
+         handleResponse(service.enviarCocina(TENNANT_TOKEN, getBearerToken(), codOrden).execute());
+         return true;
     }
 
     public OrdenModel findOrden(String codOrden) throws Exception {

@@ -12,7 +12,7 @@ import retrofit2.http.Path;
 
 public interface AreaWCI{
 
-    public static final String AREA_LIST_PATH = "area-venta/";
+    public static final String AREA_LIST_PATH = "pos/area-venta/";
 
 
     @GET(AREA_LIST_PATH + "list/names")
