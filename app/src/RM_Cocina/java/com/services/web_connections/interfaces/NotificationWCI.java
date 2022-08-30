@@ -13,7 +13,7 @@ import retrofit2.http.Path;
 
 public interface NotificationWCI {
 
-    public static final String NOTIFICACION_PATH = "notifications/";
+    public static final String NOTIFICACION_PATH = "pos/notifications/";
 
 
     @GET(NOTIFICACION_PATH + "{cod_cocina}/get-pending")
