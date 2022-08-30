@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdk 30
     defaultConfig {
-        minSdkVersion 17
+        minSdkVersion 16
         targetSdkVersion 30
         applicationId 'jobits.pos'
     }
@@ -52,16 +52,15 @@ android {
     buildToolsVersion '31.0.0'
 }
 
-
 dependencies {
     // https://mvnrepository.com/artifact/com.squareup.retrofit2/retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.6.4'
+    implementation 'com.squareup.okhttp3:okhttp:3.12.0'
+    //implementation 'com.squareup.okhttp3:logging-interceptor:2.6.4'
+
     // https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-jackson
     implementation 'com.squareup.retrofit2:converter-jackson:2.6.4'
     implementation 'it.sephiroth.android.library.horizontallistview:hlistview:1.2.2'
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
     //implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.5'
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.9.8'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.9.8'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
 }
